@@ -1,0 +1,3 @@
+[submodule "FarLight/vendor/spdlog"]
+	path = FarLight/vendor/spdlog
+	url = https://github.com/gabime/spdlog
