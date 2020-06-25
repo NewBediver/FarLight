@@ -1,15 +1,13 @@
 #pragma once
 
 #include "Core.h"
+#include "EventSystem/Event.h"
 
 namespace FarLight
 {
 	class FARLIGHT_API Application
 	{
 	public:
-		Application();
-		virtual ~Application();
-
 		void Run();
 	};
 

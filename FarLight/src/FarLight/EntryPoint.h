@@ -11,6 +11,7 @@ int main(int args, char** argv)
 
 	auto app = FarLight::CreateApplication();
 	FL_INFO("Client application initialized.");
+
 	app->Run();
 	delete app;
 }

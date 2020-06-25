@@ -5,6 +5,9 @@ namespace FarLight
 	std::shared_ptr<spdlog::logger> Logger::s_CoreLogger;
 	std::shared_ptr<spdlog::logger> Logger::s_ClientLogger;
 
+	inline std::shared_ptr<spdlog::logger>& Logger::GetCoreLogger() { return s_CoreLogger; }
+	inline std::shared_ptr<spdlog::logger>& Logger::GetClientLogger() { return s_ClientLogger; }
+
 	void Logger::Init()
 	{
 		spdlog::set_pattern("%^[%T] [%l] [%n] : %v%$");

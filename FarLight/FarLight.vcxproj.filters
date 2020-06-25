@@ -1,42 +1,76 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Исходные файлы">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="FarLight">
+      <UniqueIdentifier>{763A0B50-6207-665B-8B20-5403774C9BE9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="FarLight\EventSystem">
+      <UniqueIdentifier>{2CE13AC7-1870-C490-C18E-D88BADFCD436}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы ресурсов">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="FarLight\EventSystem\MouseEvents">
+      <UniqueIdentifier>{F95CC0DA-E5AD-AB1C-0E12-9ADEFAC13E86}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\FarLight\Core.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
+    <ClInclude Include="src\FarLight.h" />
     <ClInclude Include="src\FarLight\Application.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>FarLight</Filter>
     </ClInclude>
-    <ClInclude Include="src\FarLight.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="src\FarLight\Core.h">
+      <Filter>FarLight</Filter>
     </ClInclude>
     <ClInclude Include="src\FarLight\EntryPoint.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>FarLight</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FarLight\EventSystem\Event.h">
+      <Filter>FarLight\EventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FarLight\EventSystem\EventEnums.h">
+      <Filter>FarLight\EventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FarLight\EventSystem\MouseEvents\MouseButtonEvent.h">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FarLight\EventSystem\MouseEvents\MouseButtonPressedEvent.h">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FarLight\EventSystem\MouseEvents\MouseButtonReleasedEvent.h">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FarLight\EventSystem\MouseEvents\MouseMovedEvent.h">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FarLight\EventSystem\MouseEvents\MouseScrolledEvent.h">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
     </ClInclude>
     <ClInclude Include="src\FarLight\Logger.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>FarLight</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FarLight\Application.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>FarLight</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FarLight\EventSystem\Event.cpp">
+      <Filter>FarLight\EventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FarLight\EventSystem\MouseEvents\MouseButtonEvent.cpp">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FarLight\EventSystem\MouseEvents\MouseButtonPressedEvent.cpp">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FarLight\EventSystem\MouseEvents\MouseButtonReleasedEvent.cpp">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FarLight\EventSystem\MouseEvents\MouseMovedEvent.cpp">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FarLight\EventSystem\MouseEvents\MouseScrolledEvent.cpp">
+      <Filter>FarLight\EventSystem\MouseEvents</Filter>
     </ClCompile>
     <ClCompile Include="src\FarLight\Logger.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>FarLight</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
