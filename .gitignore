@@ -6,6 +6,13 @@ bin-int/
 # FarLight files
 *.log
 
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+
 
 ### C++ ###
 # Prerequisites
