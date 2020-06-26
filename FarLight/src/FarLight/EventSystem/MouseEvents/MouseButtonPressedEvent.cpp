@@ -18,5 +18,7 @@ namespace FarLight
 	inline EventType MouseButtonPressedEvent::GetType() const { return GetStaticType(); }
 	inline std::string MouseButtonPressedEvent::GetName() const { return "MouseButtonPressed"; }
 
+	MouseButtonPressedEvent::~MouseButtonPressedEvent() { }
+
 }
 

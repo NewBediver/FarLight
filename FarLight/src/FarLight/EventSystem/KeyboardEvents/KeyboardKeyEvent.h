@@ -5,19 +5,20 @@
 namespace FarLight
 {
 
-	class FARLIGHT_API MouseButtonEvent
+	class FARLIGHT_API KeyboardKeyEvent
 		: public Event
 	{
 	public:
-		int GetButton() const;
+		int GetKeyCode() const;
 		virtual int GetCategoryFlags() const override;
 
-		virtual ~MouseButtonEvent();
+		virtual ~KeyboardKeyEvent();
 
 	protected:
-		MouseButtonEvent(int button);
+		KeyboardKeyEvent(int keyCode);
 
-		int button;
+		int keyboardKeyCode;
 	};
 
 }
+

@@ -22,4 +22,6 @@ namespace FarLight
 	inline std::string MouseScrolledEvent::GetName() const { return "MouseScrolled"; }
 	inline int MouseScrolledEvent::GetCategoryFlags() const { return (MouseEventCategory | InputEventCategory); }
 
+	MouseScrolledEvent::~MouseScrolledEvent() { }
+
 }

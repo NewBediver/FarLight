@@ -8,7 +8,7 @@ namespace FarLight
 	enum class EventType
 	{
 		None = 0,
-		KeyPressedEventType, KeyReleasedEventType,
+		KeyboardKeyPressedEventType, KeyboardKeyReleasedEventType,
 		MouseButtonPressedEventType, MouseButtonReleasedEventType, MouseMovedEventType, MouseScrolledEventType
 	};
 

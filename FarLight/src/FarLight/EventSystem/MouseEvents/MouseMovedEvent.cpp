@@ -3,8 +3,8 @@
 namespace FarLight
 {
 
-	MouseMovedEvent::MouseMovedEvent(double x, double y)
-		: coordX(x), coordY(y) { }
+	MouseMovedEvent::MouseMovedEvent(double coordX, double coordY)
+		: coordX(coordX), coordY(coordY) { }
 
 	inline EventType MouseMovedEvent::GetStaticType() { return EventType::MouseMovedEventType; }
 
@@ -21,5 +21,7 @@ namespace FarLight
 	inline EventType MouseMovedEvent::GetType() const { return GetStaticType(); }
 	inline std::string MouseMovedEvent::GetName() const { return "MouseMoved"; }
 	inline int MouseMovedEvent::GetCategoryFlags() const { return (MouseEventCategory | InputEventCategory); }
+
+	MouseMovedEvent::~MouseMovedEvent() { }
 
 }

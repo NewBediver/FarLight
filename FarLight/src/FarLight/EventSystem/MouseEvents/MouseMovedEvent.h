@@ -11,7 +11,7 @@ namespace FarLight
         public Event
     {
     public:
-        MouseMovedEvent(double, double);
+        MouseMovedEvent(double coordX, double coordY);
        
         static EventType GetStaticType();
 
@@ -22,6 +22,8 @@ namespace FarLight
         virtual EventType GetType() const override;
         virtual std::string GetName() const override;
         virtual int GetCategoryFlags() const override;
+
+        virtual ~MouseMovedEvent();
 
     private:
         double coordX, coordY;

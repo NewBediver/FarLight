@@ -25,15 +25,14 @@ namespace FarLight
 
 		virtual std::string ToString() const;
 
-		bool IsInCategory(const EventCategory&) const;
+		bool IsInCategory(const EventCategory& eventCategory) const;
+
+		virtual ~Event();
 
 	protected:
 		bool isHandled = false;
 	};
 
-	inline std::ostream& operator<<(std::ostream& os, const Event& event)
-	{
-		return os << event.ToString();
-	}
+	extern std::ostream& operator<<(std::ostream& os, const Event& event);
 
 }
