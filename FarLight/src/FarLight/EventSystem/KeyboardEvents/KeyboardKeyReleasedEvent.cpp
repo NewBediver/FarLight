@@ -5,12 +5,12 @@ namespace FarLight
 	KeyboardKeyReleasedEvent::KeyboardKeyReleasedEvent(int keyCode)
 		: KeyboardKeyEvent(keyCode) { }
 
-	EventType KeyboardKeyReleasedEvent::GetStaticType() { return EventType::KeyboardKeyPressedEventType; }
+	EventType KeyboardKeyReleasedEvent::GetStaticType() { return EventType::KeyboardKeyReleasedEventType; }
 
 	std::string KeyboardKeyReleasedEvent::ToString() const
 	{
 		std::stringstream ss;
-		ss << "KeyboardKeyReleasedEvent: " << "(" << keyboardKeyCode << ") " << repeatCount << " times.";
+		ss << "KeyboardKeyReleasedEvent: " << "(" << keyboardKeyCode << ").";
 		return ss.str();
 	}
 

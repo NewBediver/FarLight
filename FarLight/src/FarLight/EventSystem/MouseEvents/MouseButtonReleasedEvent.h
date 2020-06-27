@@ -7,7 +7,7 @@
 namespace FarLight
 {
 
-	class MouseButtonReleasedEvent
+	class FARLIGHT_API MouseButtonReleasedEvent
 		: public MouseButtonEvent
 	{
 	public:

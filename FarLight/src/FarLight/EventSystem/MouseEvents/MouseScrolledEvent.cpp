@@ -14,7 +14,8 @@ namespace FarLight
 	std::string MouseScrolledEvent::ToString() const
 	{
 		std::stringstream ss;
-		ss << "MouseScrolledEvent: (" << offsetX << ", " << offsetY << ")";
+		ss.precision(3);
+		ss << std::fixed << "MouseScrolled: (" << offsetX << ", " << offsetY << ").";
 		return ss.str();
 	}
 

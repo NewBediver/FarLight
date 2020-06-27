@@ -15,7 +15,7 @@ namespace FarLight
 		virtual ~KeyboardKeyEvent();
 
 	protected:
-		KeyboardKeyEvent(int keyCode);
+		explicit KeyboardKeyEvent(int keyCode);
 
 		int keyboardKeyCode;
 	};

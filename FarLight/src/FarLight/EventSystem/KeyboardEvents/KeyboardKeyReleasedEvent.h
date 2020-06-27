@@ -19,8 +19,5 @@ namespace FarLight
 		virtual std::string GetName() const override;
 
 		virtual ~KeyboardKeyReleasedEvent();
-
-	private:
-		int repeatCount;
 	};
 }

@@ -14,7 +14,8 @@ namespace FarLight
 	std::string MouseMovedEvent::ToString() const
 	{
 		std::stringstream ss;
-		ss << "MouseMovedEvent: (" << coordX << ", " << coordY << ")";
+		ss.precision(3);
+		ss << std::fixed << "MouseMoved: (" << coordX << ", " << coordY << ").";
 		return ss.str();
 	}
 
