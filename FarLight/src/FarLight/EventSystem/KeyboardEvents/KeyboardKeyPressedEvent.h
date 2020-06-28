@@ -2,8 +2,6 @@
 
 #include "KeyboardKeyEvent.h"
 
-#include <sstream>
-
 namespace FarLight
 {
 	class FARLIGHT_API KeyboardKeyPressedEvent

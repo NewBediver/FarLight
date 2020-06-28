@@ -4,7 +4,6 @@
 
 namespace FarLight
 {
-
 	class FARLIGHT_API KeyboardKeyEvent
 		: public Event
 	{
@@ -19,6 +18,4 @@ namespace FarLight
 
 		int keyboardKeyCode;
 	};
-
 }
-

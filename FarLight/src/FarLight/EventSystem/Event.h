@@ -1,14 +1,12 @@
 #pragma once
 
+#include "flpch.h"
+
 #include "FarLight/Core.h"
 #include "EventEnums.h"
 
-#include <string>
-#include <ostream>
-
 namespace FarLight
 {
-
 	/*
 	Simple blocking events.
 	Later some kind of Event Buffer will be created.
@@ -18,6 +16,8 @@ namespace FarLight
 
 	class FARLIGHT_API Event
 	{
+		friend class EventDispatcher;
+
 	public:
 		virtual EventType GetType() const = 0;
 		virtual std::string GetName() const = 0;
@@ -34,5 +34,4 @@ namespace FarLight
 	};
 
 	extern std::ostream& operator<<(std::ostream& os, const Event& event);
-
 }

@@ -2,11 +2,8 @@
 
 #include "FarLight/EventSystem/Event.h"
 
-#include <sstream>
-
 namespace FarLight
 {
-
     class FARLIGHT_API MouseMovedEvent :
         public Event
     {
@@ -28,5 +25,4 @@ namespace FarLight
     private:
         double coordX, coordY;
     };
-
 }

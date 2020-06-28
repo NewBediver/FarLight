@@ -4,7 +4,6 @@
 
 namespace FarLight
 {
-
 	class FARLIGHT_API MouseButtonEvent
 		: public Event
 	{
@@ -19,5 +18,4 @@ namespace FarLight
 
 		int button;
 	};
-
 }

@@ -1,3 +1,5 @@
+#include "flpch.h"
+
 #include "KeyboardKeyReleasedEvent.h"
 
 namespace FarLight

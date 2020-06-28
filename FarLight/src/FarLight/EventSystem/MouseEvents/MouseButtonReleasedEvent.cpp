@@ -1,8 +1,9 @@
+#include "flpch.h"
+
 #include "MouseButtonReleasedEvent.h"
 
 namespace FarLight
 {
-
 	MouseButtonReleasedEvent::MouseButtonReleasedEvent(int button)
 		: MouseButtonEvent(button) { }
 
@@ -19,5 +20,4 @@ namespace FarLight
 	inline std::string MouseButtonReleasedEvent::GetName() const { return "MouseButtonReleased"; }
 
 	MouseButtonReleasedEvent::~MouseButtonReleasedEvent() { }
-
 }

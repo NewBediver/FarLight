@@ -1,8 +1,9 @@
+#include "flpch.h"
+
 #include "MouseMovedEvent.h"
 
 namespace FarLight
 {
-
 	MouseMovedEvent::MouseMovedEvent(double coordX, double coordY)
 		: coordX(coordX), coordY(coordY) { }
 
@@ -24,5 +25,4 @@ namespace FarLight
 	inline int MouseMovedEvent::GetCategoryFlags() const { return (MouseEventCategory | InputEventCategory); }
 
 	MouseMovedEvent::~MouseMovedEvent() { }
-
 }

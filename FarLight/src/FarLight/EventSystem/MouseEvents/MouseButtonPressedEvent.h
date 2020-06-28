@@ -2,11 +2,8 @@
 
 #include "MouseButtonEvent.h"
 
-#include <sstream>
-
 namespace FarLight
 {
-
 	class FARLIGHT_API MouseButtonPressedEvent
 		: public MouseButtonEvent
 	{
@@ -22,8 +19,4 @@ namespace FarLight
 
 		virtual ~MouseButtonPressedEvent();
 	};
-
 }
-
-
-

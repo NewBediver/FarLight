@@ -1,8 +1,9 @@
+#include "flpch.h"
+
 #include "MouseScrolledEvent.h"
 
 namespace FarLight
 {
-
 	MouseScrolledEvent::MouseScrolledEvent(double offsetX, double offsetY)
 		: offsetX(offsetX), offsetY(offsetY) { }
 
@@ -24,5 +25,4 @@ namespace FarLight
 	inline int MouseScrolledEvent::GetCategoryFlags() const { return (MouseEventCategory | InputEventCategory); }
 
 	MouseScrolledEvent::~MouseScrolledEvent() { }
-
 }

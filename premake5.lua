@@ -18,6 +18,9 @@ project "FarLight"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "flpch.h"
+	pchsource "FarLight/src/flpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",

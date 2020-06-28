@@ -1,3 +1,5 @@
+#include "flpch.h"
+
 #include "Logger.h"
 
 namespace FarLight

@@ -1,3 +1,5 @@
+#include "flpch.h"
+
 #include "KeyboardKeyEvent.h"
 
 namespace FarLight
@@ -7,7 +9,4 @@ namespace FarLight
 	inline int KeyboardKeyEvent::GetKeyCode() const { return keyboardKeyCode; }
 	inline int KeyboardKeyEvent::GetCategoryFlags() const { return (KeyboardEventCategory | InputEventCategory); }
 	KeyboardKeyEvent::~KeyboardKeyEvent() { }
-	
 }
-
-

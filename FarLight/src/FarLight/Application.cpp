@@ -1,3 +1,5 @@
+#include "flpch.h"
+
 #include "Application.h"
 
 namespace FarLight
@@ -7,4 +9,3 @@ namespace FarLight
 		while (true);
 	}
 }
-

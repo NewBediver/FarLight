@@ -1,3 +1,5 @@
+#include "flpch.h"
+
 #include "MouseButtonEvent.h"
 
 namespace FarLight
@@ -9,5 +11,4 @@ namespace FarLight
 	inline int MouseButtonEvent::GetCategoryFlags() const { return (InputEventCategory | MouseEventCategory | MouseButtonEventCategory); }
 
 	MouseButtonEvent::~MouseButtonEvent() { }
-
 }

@@ -4,7 +4,6 @@
 
 namespace FarLight
 {
-
 	enum class EventType
 	{
 		None = 0,
@@ -21,6 +20,4 @@ namespace FarLight
 		MouseEventCategory = BIT(3),
 		MouseButtonEventCategory = BIT(4)
 	};
-
 }
-

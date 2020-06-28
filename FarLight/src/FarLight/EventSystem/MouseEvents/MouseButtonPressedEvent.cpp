@@ -1,8 +1,9 @@
+#include "flpch.h"
+
 #include "MouseButtonPressedEvent.h"
 
 namespace FarLight
 {
-
 	MouseButtonPressedEvent::MouseButtonPressedEvent(int button)
 		: MouseButtonEvent(button) { }
 
@@ -19,6 +20,4 @@ namespace FarLight
 	inline std::string MouseButtonPressedEvent::GetName() const { return "MouseButtonPressed"; }
 
 	MouseButtonPressedEvent::~MouseButtonPressedEvent() { }
-
 }
-
