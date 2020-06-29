@@ -10,6 +10,16 @@ workspace "FarLight"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "FarLight/vendor/GLFW/include"
+IncludeDir["spdlog"] = "FarLight/vendor/spdlog/include"
+IncludeDir["GoogleTest"] = "FarLightTests/vendor/googletest/googletest/include"
+
+IncludeDir["FarLightSrc"] = "FarLight/src"
+
+include "FarLight/vendor/GLFW"
+include "FarLightTests/vendor/googletest"
+
 project "FarLight"
 	location "FarLight"
 	kind "SharedLib"
@@ -29,8 +39,15 @@ project "FarLight"
 
 	includedirs
 	{
-		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{IncludeDir.FarLightSrc}",
+		"%{IncludeDir.spdlog}",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -51,7 +68,11 @@ project "FarLight"
 		}
 
 	filter "configurations:Debug"
-		defines "FL_DEBUG"
+		defines 
+		{
+			"FL_DEBUG",
+			"FL_ENABLE_ASSERTS"
+		}
 		symbols "On"
 
 	filter "configurations:Release"
@@ -78,8 +99,8 @@ project "Sandbox"
 
 	includedirs
 	{
-		"FarLight/vendor/spdlog/include",
-		"FarLight/src"
+		"%{IncludeDir.FarLightSrc}",
+		"%{IncludeDir.spdlog}"
 	}
 
 	links
@@ -87,49 +108,6 @@ project "Sandbox"
 		"FarLight"
 	}
 	
-	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "Off"
-		systemversion "latest"
-
-		defines
-		{
-			"FL_PLATFORM_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines "FL_DEBUG"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "FL_RELEASE"
-		optimize "On"
-
-	filter "configurations:Dist"
-		defines "FL_DIST"
-		optimize "On"
-
-project "GoogleTestsCompilation"
-	location "GoogleTestsCompilation"
-	kind "StaticLib"
-	language "C++"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/src/**.cc"
-	}
-
-	includedirs
-	{
-		"%{prj.name}/vendor/googletest/googletest",
-		"%{prj.name}/vendor/googletest/googletest/include"
-	}
-
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "Off"
@@ -168,14 +146,10 @@ project "FarLightTests"
 
 	includedirs
 	{
-		"GoogleTestsCompilation/vendor/googletest/googletest",
-		"GoogleTestsCompilation/vendor/googletest/googletest/include",
-		"FarLight/src"
-	}
-
-	libdirs
-	{
-		"../bin/" .. outputdir .. "/GoogleTestsCompilation"
+		"%{IncludeDir.FarLightSrc}",
+		"%{IncludeDir.GoogleTest}",
+		"%{IncludeDir.spdlog}",
+		"%{IncludeDir.GLFW}"
 	}
 
 	links
@@ -195,13 +169,7 @@ project "FarLightTests"
 		}
 
 	filter "configurations:Debug"
-		defines "FL_DEBUG"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "FL_RELEASE"
-		optimize "On"
-
-	filter "configurations:Dist"
-		defines "FL_DIST"
 		optimize "On"

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FarLight/Logger.h"
+
 #include <iostream>
 #include <ostream>
 #include <istream>

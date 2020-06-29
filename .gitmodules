@@ -1,6 +1,9 @@
 [submodule "FarLight/vendor/spdlog"]
 	path = FarLight/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "GoogleTestsCompilation/vendor/googletest"]
-	path = GoogleTestsCompilation/vendor/googletest
-	url = https://github.com/google/googletest.git
+[submodule "FarLight/vendor/GLFW"]
+	path = FarLight/vendor/GLFW
+	url = https://github.com/TheCherno/glfw
+[submodule "FarLightTests/vendor/googletest"]
+	path = FarLightTests/vendor/googletest
+	url = https://github.com/google/googletest
