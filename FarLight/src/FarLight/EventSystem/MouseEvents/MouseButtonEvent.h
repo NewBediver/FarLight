@@ -11,10 +11,10 @@ namespace FarLight
 		int GetButton() const;
 		virtual int GetCategoryFlags() const override;
 
-		virtual ~MouseButtonEvent();
+		virtual ~MouseButtonEvent() = default;
 
 	protected:
-		MouseButtonEvent(int button);
+		explicit MouseButtonEvent(int button);
 
 		int button;
 	};

@@ -8,7 +8,7 @@ namespace FarLight
 		: public KeyboardKeyEvent
 	{
 	public:
-		KeyboardKeyPressedEvent(int keyCode, int repeatCount);
+		explicit KeyboardKeyPressedEvent(int keyCode, int repeatCount);
 
 		static EventType GetStaticType();
 
@@ -17,8 +17,6 @@ namespace FarLight
 		virtual std::string ToString() const override;
 		virtual EventType GetType() const override;
 		virtual std::string GetName() const override;
-
-		virtual ~KeyboardKeyPressedEvent();
 
 	private:
 		int repeatCount;

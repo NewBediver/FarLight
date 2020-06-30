@@ -13,7 +13,7 @@ namespace FarLight
 		using uint = unsigned int;
 		using EventCallbackFunction = std::function<void(Event&)>;
 
-		virtual ~Window();
+		virtual ~Window() = default;
 
 		virtual void OnUpdate() = 0;
 

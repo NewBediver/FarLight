@@ -10,12 +10,20 @@ namespace FarLight
 		using eventFunction = std::function<bool(const T&)>;
 
 	public:
-		EventDispatcher(const Event& evt);
+		explicit EventDispatcher(Event& evt);
 
 		template<typename T>
-		bool Dispatch(eventFunction<T> func) const;
+		bool Dispatch(const eventFunction<T>& func)
+		{
+			if (evt.GetType() == T::GetStaticType())
+			{
+				evt.isHandled = func(static_cast<T&>(evt));
+				return true;
+			}
+			return false;
+		}
 
 	private:
-		const Event& evt;
+		Event& evt;
 	};
 }

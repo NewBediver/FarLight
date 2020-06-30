@@ -54,16 +54,16 @@ TEST_F(MouseScrolledEventTest, ToString)
 
 TEST_F(MouseScrolledEventTest, GetOffsetX)
 {
-	EXPECT_EQ(e1->GetOffsetX(), 10.000);
-	EXPECT_EQ(e2->GetOffsetX(), 0.124);
-	EXPECT_EQ(e3->GetOffsetX(), 7.5871);
+	EXPECT_EQ(e1->GetXOffset(), 10.000);
+	EXPECT_EQ(e2->GetXOffset(), 0.124);
+	EXPECT_EQ(e3->GetXOffset(), 7.5871);
 }
 
 TEST_F(MouseScrolledEventTest, GetOffsetY)
 {
-	EXPECT_EQ(e1->GetOffsetY(), 4.6);
-	EXPECT_EQ(e2->GetOffsetY(), 0.1249);
-	EXPECT_EQ(e3->GetOffsetY(), 6.42);
+	EXPECT_EQ(e1->GetYOffset(), 4.6);
+	EXPECT_EQ(e2->GetYOffset(), 0.1249);
+	EXPECT_EQ(e3->GetYOffset(), 6.42);
 }
 
 TEST_F(MouseScrolledEventTest, GetCategoryFlags)

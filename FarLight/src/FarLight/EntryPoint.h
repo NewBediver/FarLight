@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Core.h"
+#include "Application.h"
+#include "Logger.h"
+
 #ifdef FL_PLATFORM_WINDOWS
 
 extern FarLight::Application* FarLight::CreateApplication();

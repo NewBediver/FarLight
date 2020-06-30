@@ -12,6 +12,6 @@ namespace FarLight
 		uint width;
 		uint height;
 
-		WindowProps(const std::string& title = "FarLight Engine", uint width = 1280, uint height = 720);
+		explicit WindowProps(const std::string& title = "FarLight Engine", uint width = 1280, uint height = 720);
 	};
 }

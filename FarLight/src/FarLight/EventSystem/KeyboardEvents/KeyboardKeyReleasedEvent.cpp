@@ -12,12 +12,10 @@ namespace FarLight
 	std::string KeyboardKeyReleasedEvent::ToString() const
 	{
 		std::stringstream ss;
-		ss << "KeyboardKeyReleasedEvent: " << "(" << keyboardKeyCode << ").";
+		ss << "KeyboardKeyReleasedEvent: " << "(" << keyCode << ").";
 		return ss.str();
 	}
 
 	inline EventType KeyboardKeyReleasedEvent::GetType() const { return GetStaticType(); }
 	inline std::string KeyboardKeyReleasedEvent::GetName() const { return "KeyboardKeyReleased"; }
-
-	KeyboardKeyReleasedEvent::~KeyboardKeyReleasedEvent() { }
 }

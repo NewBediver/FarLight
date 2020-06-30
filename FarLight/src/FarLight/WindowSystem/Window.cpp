@@ -5,8 +5,6 @@
 
 namespace FarLight
 {
-	Window::~Window() { }
-
 	Window* Window::Create(const WindowProps& props)
 	{
 		return new WindowsWindow(props);

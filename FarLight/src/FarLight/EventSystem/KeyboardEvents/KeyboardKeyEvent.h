@@ -11,11 +11,11 @@ namespace FarLight
 		int GetKeyCode() const;
 		virtual int GetCategoryFlags() const override;
 
-		virtual ~KeyboardKeyEvent();
+		virtual ~KeyboardKeyEvent() = default;
 
 	protected:
 		explicit KeyboardKeyEvent(int keyCode);
 
-		int keyboardKeyCode;
+		int keyCode;
 	};
 }

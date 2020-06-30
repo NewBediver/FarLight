@@ -27,7 +27,7 @@ namespace FarLight
 
 		bool IsInCategory(const EventCategory& eventCategory) const;
 
-		virtual ~Event();
+		virtual ~Event() = default;
 
 	protected:
 		bool isHandled = false;

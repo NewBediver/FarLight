@@ -11,7 +11,8 @@ namespace FarLight
 		: public Window
 	{
 	public:
-		WindowsWindow(const WindowProps& props);
+		WindowsWindow() = delete;
+		explicit WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow();
 
 		void OnUpdate() override;
@@ -26,6 +27,8 @@ namespace FarLight
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void ShutDown();
+
+		void SetGLFWCallbacks();
 
 		GLFWwindow* window;
 

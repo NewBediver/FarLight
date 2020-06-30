@@ -4,9 +4,8 @@
 
 namespace FarLight
 {
-	KeyboardKeyEvent::KeyboardKeyEvent(int keyCode) : keyboardKeyCode(keyCode) { }
+	KeyboardKeyEvent::KeyboardKeyEvent(int keyCode) :keyCode(keyCode) { }
 
-	inline int KeyboardKeyEvent::GetKeyCode() const { return keyboardKeyCode; }
+	inline int KeyboardKeyEvent::GetKeyCode() const { return keyCode; }
 	inline int KeyboardKeyEvent::GetCategoryFlags() const { return (KeyboardEventCategory | InputEventCategory); }
-	KeyboardKeyEvent::~KeyboardKeyEvent() { }
 }
