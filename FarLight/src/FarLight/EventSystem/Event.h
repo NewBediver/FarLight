@@ -16,8 +16,6 @@ namespace FarLight
 
 	class FARLIGHT_API Event
 	{
-		friend class EventDispatcher;
-
 	public:
 		virtual EventType GetType() const = 0;
 		virtual std::string GetName() const = 0;
@@ -25,13 +23,16 @@ namespace FarLight
 
 		virtual std::string ToString() const;
 
+		bool IsHandled() const;
+		void SetHandled(bool isHandled);
+
 		bool IsInCategory(const EventCategory& eventCategory) const;
 
 		virtual ~Event() = default;
 
-	protected:
-		bool isHandled = false;
+	private:
+		bool _isHandled = false;
 	};
 
-	extern std::ostream& operator<<(std::ostream& os, const Event& event);
+	inline std::ostream& operator<<(std::ostream& os, const Event& event) { return os << event.ToString(); }
 }

@@ -1,11 +1,13 @@
 #pragma once
 
-#include <FarLight.h>
+#include <FarLight/Application.h>
+
+using namespace FarLight;
 
 class Sandbox
-	: public FarLight::Application
+	: public Application
 {
 public:
-	Sandbox() = default;
+	Sandbox();
 	~Sandbox() = default;
 };

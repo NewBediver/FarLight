@@ -88,3 +88,30 @@ TEST_F(WindowClosedEventTest, IsInCategory)
 	EXPECT_EQ(e3->IsInCategory(EventCategory::MouseEventCategory), false);
 	EXPECT_EQ(e3->IsInCategory(EventCategory::MouseButtonEventCategory), false);
 }
+
+TEST_F(WindowClosedEventTest, Handle)
+{
+	EXPECT_EQ(e1->IsHandled(), false);
+	e1->SetHandled(true);
+	EXPECT_EQ(e1->IsHandled(), true);
+	e1->SetHandled(false);
+	EXPECT_EQ(e1->IsHandled(), false);
+	e1->SetHandled(true);
+	EXPECT_EQ(e1->IsHandled(), true);
+
+	EXPECT_EQ(e2->IsHandled(), false);
+	e2->SetHandled(true);
+	EXPECT_EQ(e2->IsHandled(), true);
+	e2->SetHandled(false);
+	EXPECT_EQ(e2->IsHandled(), false);
+	e2->SetHandled(true);
+	EXPECT_EQ(e2->IsHandled(), true);
+
+	EXPECT_EQ(e3->IsHandled(), false);
+	e3->SetHandled(true);
+	EXPECT_EQ(e3->IsHandled(), true);
+	e3->SetHandled(false);
+	EXPECT_EQ(e3->IsHandled(), false);
+	e3->SetHandled(true);
+	EXPECT_EQ(e3->IsHandled(), true);
+}

@@ -26,7 +26,6 @@ namespace FarLight
 		virtual std::string ToString() const override;
 
 	private:
-		uint width, height;
+		uint _width, _height;
 	};
 }
-

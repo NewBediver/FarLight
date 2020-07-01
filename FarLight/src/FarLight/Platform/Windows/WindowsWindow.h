@@ -30,15 +30,15 @@ namespace FarLight
 
 		void SetGLFWCallbacks();
 
-		GLFWwindow* window;
+		GLFWwindow* _window;
 
 		struct WindowData
 		{
-			std::string title;
-			uint width, height;
-			bool isVSync;
-			EventCallbackFunction callback;
-		} data;
+			std::string _title;
+			uint _width, _height;
+			bool _isVSync;
+			EventCallbackFunction _callback;
+		} _data;
 	};
 }
 

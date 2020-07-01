@@ -9,5 +9,3 @@ namespace FarLight
     inline std::string WindowClosedEvent::GetName() const { return "WindowClosed"; }
     inline int WindowClosedEvent::GetCategoryFlags() const { return EventCategory::ApplicationEventCategory; }
 }
-
-

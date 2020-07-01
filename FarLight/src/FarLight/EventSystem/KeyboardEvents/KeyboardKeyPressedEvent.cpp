@@ -4,17 +4,17 @@
 
 namespace FarLight
 {
-	KeyboardKeyPressedEvent::KeyboardKeyPressedEvent(int keyCode, int repeatCount)
-		: KeyboardKeyEvent(keyCode), repeatCount(repeatCount) { }
+	KeyboardKeyPressedEvent::KeyboardKeyPressedEvent(int keyCode, bool isRepeated)
+		: KeyboardKeyEvent(keyCode), _isRepeated(isRepeated) { }
 
 	EventType KeyboardKeyPressedEvent::GetStaticType() { return EventType::KeyboardKeyPressedEventType; }
 
-	inline int KeyboardKeyPressedEvent::GetRepeatCount() const { return repeatCount; }
+	inline bool KeyboardKeyPressedEvent::IsRepeated() const { return _isRepeated; }
 
 	std::string KeyboardKeyPressedEvent::ToString() const
 	{
 		std::stringstream ss;
-		ss << "KeyboardKeyPressedEvent: " << "(" << keyCode << ") " << repeatCount << " times.";
+		ss << std::boolalpha <<  "KeyboardKeyPressedEvent: " << "(" << _keyCode << "). " << "Is repeated: " << _isRepeated << ".";
 		return ss.str();
 	}
 

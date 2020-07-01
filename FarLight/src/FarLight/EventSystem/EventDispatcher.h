@@ -17,7 +17,7 @@ namespace FarLight
 		{
 			if (evt.GetType() == T::GetStaticType())
 			{
-				evt.isHandled = func(static_cast<T&>(evt));
+				evt.SetHandled(func(static_cast<const T&>(evt)));
 				return true;
 			}
 			return false;

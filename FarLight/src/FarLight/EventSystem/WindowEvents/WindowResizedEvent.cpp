@@ -6,12 +6,12 @@ namespace FarLight
 	using uint = unsigned int;
 
 	WindowResizedEvent::WindowResizedEvent(uint width, uint height)
-		: width(width), height(height) { }
+		: _width(width), _height(height) { }
 
 	EventType WindowResizedEvent::GetStaticType() { return EventType::WindowResizedEventType; }
 
-	inline uint WindowResizedEvent::GetWidth() const { return width; }
-	inline uint WindowResizedEvent::GetHeight() const { return height; }
+	inline uint WindowResizedEvent::GetWidth() const { return _width; }
+	inline uint WindowResizedEvent::GetHeight() const { return _height; }
 
 	inline EventType WindowResizedEvent::GetType() const { return GetStaticType(); }
 	inline std::string WindowResizedEvent::GetName() const { return "WindowResized"; }
@@ -20,7 +20,7 @@ namespace FarLight
 	std::string WindowResizedEvent::ToString() const
 	{
 		std::stringstream ss;
-		ss << "WindowResized: (" << width << ", " << height << ").";
+		ss << "WindowResized: (" << _width << ", " << _height << ").";
 		return ss.str();
 	}
 }

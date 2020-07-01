@@ -6,6 +6,9 @@
 #include "EventSystem/WindowEvents/WindowClosedEvent.h"
 #include "WindowSystem/Window.h"
 
+#include "LayerSystem/Layer.h"
+#include "LayerSystem/LayerStack.h"
+
 namespace FarLight
 {
 	class FARLIGHT_API Application
@@ -14,14 +17,17 @@ namespace FarLight
 		explicit Application();
 		virtual ~Application() = default;
 
-		void Run() const;
+		void Run();
 		void OnEvent(Event& e);
 
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
 	private:
 		bool OnWindowClosed(const WindowClosedEvent& e);
 
-		std::unique_ptr<Window> window;
-		bool isRunning = true;
+		std::unique_ptr<Window> _window;
+		bool _isRunning;
+		LayerStack _layerStack;
 	};
 
 	// To be defined in CLIENT

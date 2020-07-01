@@ -31,33 +31,33 @@ namespace FarLight
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(_window);
 	}
 
-	inline uint WindowsWindow::GetWidth() const { return data.width; }
-	inline uint WindowsWindow::GetHeight() const { return data.height; }
-	inline void WindowsWindow::SetEventCallback(const EventCallbackFunction& callback) { data.callback = callback; }
+	inline uint WindowsWindow::GetWidth() const { return _data._width; }
+	inline uint WindowsWindow::GetHeight() const { return _data._height; }
+	inline void WindowsWindow::SetEventCallback(const EventCallbackFunction& callback) { _data._callback = callback; }
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
 		if (enabled) glfwSwapInterval(1);
 		else glfwSwapInterval(0);
-		data.isVSync = enabled;
+		_data._isVSync = enabled;
 	}
 
 	bool WindowsWindow::IsVSync() const
 	{
-		return data.isVSync;
+		return _data._isVSync;
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
-		data.title = props.title;
-		data.height = props.height;
-		data.width = props.width;
+		_data._title = props._title;
+		_data._height = props._height;
+		_data._width = props._width;
 
 		// Disable before testing (Arise problems)
-		FL_CORE_INFO("Creating window {0} ({1}, {2})", props.title, props.width, props.height);
+		FL_CORE_INFO("Creating window {0} ({1}, {2})", props._title, props._width, props._height);
 
 		if (!isGLFWInitialized)
 		{
@@ -66,9 +66,9 @@ namespace FarLight
 			isGLFWInitialized = true;
 		}
 
-		window = glfwCreateWindow(static_cast<int>(props.width), static_cast<int>(props.height), data.title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(window);
-		glfwSetWindowUserPointer(window, &data);
+		_window = glfwCreateWindow(static_cast<int>(props._width), static_cast<int>(props._height), _data._title.c_str(), nullptr, nullptr);
+		glfwMakeContextCurrent(_window);
+		glfwSetWindowUserPointer(_window, &_data);
 		SetVSync(true);
 
 		SetGLFWCallbacks();
@@ -76,78 +76,78 @@ namespace FarLight
 
 	void WindowsWindow::ShutDown()
 	{
-		glfwDestroyWindow(window);
+		glfwDestroyWindow(_window);
 	}
 
 	void WindowsWindow::SetGLFWCallbacks()
 	{
 		#define GET_DATA(x) *static_cast<WindowData*>(glfwGetWindowUserPointer(x));
 
-		glfwSetWindowSizeCallback(window, [](GLFWwindow* win, int width, int height) {
+		glfwSetWindowSizeCallback(_window, [](GLFWwindow* win, int width, int height) {
 			WindowData& data = GET_DATA(win);
-			data.width = width;
-			data.height = height;
+			data._width = width;
+			data._height = height;
 			
-			data.callback(WindowResizedEvent(width, height));
+			data._callback(WindowResizedEvent(width, height));
 		});
 
-		glfwSetWindowCloseCallback(window, [](GLFWwindow* win) {
+		glfwSetWindowCloseCallback(_window, [](GLFWwindow* win) {
 			WindowData& data = GET_DATA(win);
 
-			data.callback(WindowClosedEvent());
+			data._callback(WindowClosedEvent());
 		});
 
-		glfwSetKeyCallback(window, [](GLFWwindow* win, int key, int scan, int action, int mods) {
+		glfwSetKeyCallback(_window, [](GLFWwindow* win, int key, int scan, int action, int mods) {
 			WindowData& data = GET_DATA(win);
 
 			switch (action)
 			{
 				case GLFW_PRESS:
 				{
-					data.callback(KeyboardKeyPressedEvent(key, 0));
+					data._callback(KeyboardKeyPressedEvent(key, 0));
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					data.callback(KeyboardKeyReleasedEvent(key));
+					data._callback(KeyboardKeyReleasedEvent(key));
 					break;
 				}
 				case GLFW_REPEAT:
 				{
-					data.callback(KeyboardKeyPressedEvent(key, 1));
+					data._callback(KeyboardKeyPressedEvent(key, 1));
 					break;
 				}
 			}
 		});
 
-		glfwSetMouseButtonCallback(window, [](GLFWwindow* win, int button, int action, int mods) {
+		glfwSetMouseButtonCallback(_window, [](GLFWwindow* win, int button, int action, int mods) {
 			WindowData& data = GET_DATA(win);
 
 			switch (action)
 			{
 				case GLFW_PRESS:
 				{
-					data.callback(MouseButtonPressedEvent(button));
+					data._callback(MouseButtonPressedEvent(button));
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					data.callback(MouseButtonReleasedEvent(button));
+					data._callback(MouseButtonReleasedEvent(button));
 					break;
 				}
 			}
 		});
 		
-		glfwSetScrollCallback(window, [](GLFWwindow* win, double xOffset, double yOffset) {
+		glfwSetScrollCallback(_window, [](GLFWwindow* win, double xOffset, double yOffset) {
 			WindowData& data = GET_DATA(win);
 
-			data.callback(MouseScrolledEvent(xOffset, yOffset));
+			data._callback(MouseScrolledEvent(xOffset, yOffset));
 		});
 
-		glfwSetCursorPosCallback(window, [](GLFWwindow* win, double xPos, double yPos) {
+		glfwSetCursorPosCallback(_window, [](GLFWwindow* win, double xPos, double yPos) {
 			WindowData& data = GET_DATA(win);
 
-			data.callback(MouseMovedEvent(xPos, yPos));
+			data._callback(MouseMovedEvent(xPos, yPos));
 		});
 	}
 }

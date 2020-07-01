@@ -21,6 +21,6 @@ namespace FarLight
 		virtual int GetCategoryFlags() const override;
 
 	private:
-		double xOffset, yOffset;
+		double _xOffset, _yOffset;
 	};
 }

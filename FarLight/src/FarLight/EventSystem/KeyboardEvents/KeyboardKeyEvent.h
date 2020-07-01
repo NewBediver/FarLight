@@ -16,6 +16,6 @@ namespace FarLight
 	protected:
 		explicit KeyboardKeyEvent(int keyCode);
 
-		int keyCode;
+		int _keyCode;
 	};
 }

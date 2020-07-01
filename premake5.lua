@@ -24,6 +24,8 @@ project "FarLight"
 	location "FarLight"
 	kind "SharedLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -51,8 +53,6 @@ project "FarLight"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "Off"
 		systemversion "latest"
 
 		defines
@@ -73,20 +73,25 @@ project "FarLight"
 			"FL_DEBUG",
 			"FL_ENABLE_ASSERTS"
 		}
-		symbols "On"
+		buildoptions "/MDd"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "FL_RELEASE"
-		optimize "On"
+		buildoptions "/MD"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "FL_DIST"
-		optimize "On"
+		buildoptions "/MD"
+		optimize "on"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -109,8 +114,6 @@ project "Sandbox"
 	}
 	
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "Off"
 		systemversion "latest"
 
 		defines
@@ -120,20 +123,25 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "FL_DEBUG"
-		symbols "On"
+		buildoptions "/MDd"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "FL_RELEASE"
-		optimize "On"
+		buildoptions "/MD"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "FL_DIST"
-		optimize "On"
+		buildoptions "/MD"
+		optimize "on"
 
 project "FarLightTests"
 	location "FarLightTests"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -159,8 +167,6 @@ project "FarLightTests"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "Off"
 		systemversion "latest"
 
 		defines
@@ -169,7 +175,9 @@ project "FarLightTests"
 		}
 
 	filter "configurations:Debug"
-		symbols "On"
+		buildoptions "/MDd"
+		symbols "on"
 
 	filter "configurations:Release"
-		optimize "On"
+		buildoptions "/MD"
+		optimize "on"

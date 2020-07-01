@@ -9,9 +9,9 @@ class KeyboardKeyPressedEventTest
 public:
 	void SetUp() override
 	{
-		e1 = new KeyboardKeyPressedEvent(10, 0);
-		e2 = new KeyboardKeyPressedEvent(0, 0);
-		e3 = new KeyboardKeyPressedEvent(7, 15);
+		e1 = new KeyboardKeyPressedEvent(10, false);
+		e2 = new KeyboardKeyPressedEvent(0, false);
+		e3 = new KeyboardKeyPressedEvent(7, true);
 	}
 
 	void TearDown() override
@@ -47,9 +47,9 @@ TEST_F(KeyboardKeyPressedEventTest, GetType)
 
 TEST_F(KeyboardKeyPressedEventTest, ToString)
 {
-	EXPECT_EQ(e1->ToString(), "KeyboardKeyPressedEvent: (10) 0 times.");
-	EXPECT_EQ(e2->ToString(), "KeyboardKeyPressedEvent: (0) 0 times.");
-	EXPECT_EQ(e3->ToString(), "KeyboardKeyPressedEvent: (7) 15 times.");
+	EXPECT_EQ(e1->ToString(), "KeyboardKeyPressedEvent: (10). Is repeated: false.");
+	EXPECT_EQ(e2->ToString(), "KeyboardKeyPressedEvent: (0). Is repeated: false.");
+	EXPECT_EQ(e3->ToString(), "KeyboardKeyPressedEvent: (7). Is repeated: true.");
 }
 
 TEST_F(KeyboardKeyPressedEventTest, GetKeyCode)
@@ -59,11 +59,11 @@ TEST_F(KeyboardKeyPressedEventTest, GetKeyCode)
 	EXPECT_EQ(e3->GetKeyCode(), 7);
 }
 
-TEST_F(KeyboardKeyPressedEventTest, GetRepeatCount)
+TEST_F(KeyboardKeyPressedEventTest, IsRepeated)
 {
-	EXPECT_EQ(e1->GetRepeatCount(), 0);
-	EXPECT_EQ(e2->GetRepeatCount(), 0);
-	EXPECT_EQ(e3->GetRepeatCount(), 15);
+	EXPECT_EQ(e1->IsRepeated(), false);
+	EXPECT_EQ(e2->IsRepeated(), false);
+	EXPECT_EQ(e3->IsRepeated(), true);
 }
 
 TEST_F(KeyboardKeyPressedEventTest, GetCategoryFlags)
@@ -98,4 +98,31 @@ TEST_F(KeyboardKeyPressedEventTest, IsInCategory)
 	EXPECT_EQ(e3->IsInCategory(EventCategory::KeyboardEventCategory), true);
 	EXPECT_EQ(e3->IsInCategory(EventCategory::MouseEventCategory), false);
 	EXPECT_EQ(e3->IsInCategory(EventCategory::MouseButtonEventCategory), false);
+}
+
+TEST_F(KeyboardKeyPressedEventTest, Handle)
+{
+	EXPECT_EQ(e1->IsHandled(), false);
+	e1->SetHandled(true);
+	EXPECT_EQ(e1->IsHandled(), true);
+	e1->SetHandled(false);
+	EXPECT_EQ(e1->IsHandled(), false);
+	e1->SetHandled(true);
+	EXPECT_EQ(e1->IsHandled(), true);
+	
+	EXPECT_EQ(e2->IsHandled(), false);
+	e2->SetHandled(true);
+	EXPECT_EQ(e2->IsHandled(), true);
+	e2->SetHandled(false);
+	EXPECT_EQ(e2->IsHandled(), false);
+	e2->SetHandled(true);
+	EXPECT_EQ(e2->IsHandled(), true);
+
+	EXPECT_EQ(e3->IsHandled(), false);
+	e3->SetHandled(true);
+	EXPECT_EQ(e3->IsHandled(), true);
+	e3->SetHandled(false);
+	EXPECT_EQ(e3->IsHandled(), false);
+	e3->SetHandled(true);
+	EXPECT_EQ(e3->IsHandled(), true);
 }

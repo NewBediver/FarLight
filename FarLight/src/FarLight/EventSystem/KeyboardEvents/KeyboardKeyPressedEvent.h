@@ -8,17 +8,17 @@ namespace FarLight
 		: public KeyboardKeyEvent
 	{
 	public:
-		explicit KeyboardKeyPressedEvent(int keyCode, int repeatCount);
+		explicit KeyboardKeyPressedEvent(int keyCode, bool isRepeated);
 
 		static EventType GetStaticType();
 
-		int GetRepeatCount() const;
+		bool IsRepeated() const;
 
 		virtual std::string ToString() const override;
 		virtual EventType GetType() const override;
 		virtual std::string GetName() const override;
 
 	private:
-		int repeatCount;
+		bool _isRepeated;
 	};
 }

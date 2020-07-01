@@ -31,19 +31,19 @@ public:
 
 TEST_F(WindowPropsTest, Constructor)
 {
-	EXPECT_EQ(p1->title, "FarLight Engine");
-	EXPECT_EQ(p1->width, 1280);
-	EXPECT_EQ(p1->height, 720);
+	EXPECT_EQ(p1->_title, "FarLight Engine");
+	EXPECT_EQ(p1->_width, 1280);
+	EXPECT_EQ(p1->_height, 720);
 
-	EXPECT_EQ(p2->title, "Testing1");
-	EXPECT_EQ(p2->width, 1280);
-	EXPECT_EQ(p2->height, 720);
+	EXPECT_EQ(p2->_title, "Testing1");
+	EXPECT_EQ(p2->_width, 1280);
+	EXPECT_EQ(p2->_height, 720);
 
-	EXPECT_EQ(p3->title, "Testing2");
-	EXPECT_EQ(p3->width, 15);
-	EXPECT_EQ(p3->height, 720);
+	EXPECT_EQ(p3->_title, "Testing2");
+	EXPECT_EQ(p3->_width, 15);
+	EXPECT_EQ(p3->_height, 720);
 
-	EXPECT_EQ(p4->title, "Testing3");
-	EXPECT_EQ(p4->width, 23);
-	EXPECT_EQ(p4->height, 46);
+	EXPECT_EQ(p4->_title, "Testing3");
+	EXPECT_EQ(p4->_width, 23);
+	EXPECT_EQ(p4->_height, 46);
 }

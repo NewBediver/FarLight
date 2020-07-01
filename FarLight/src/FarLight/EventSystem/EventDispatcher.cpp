@@ -5,6 +5,5 @@
 namespace FarLight
 {
 	EventDispatcher::EventDispatcher(Event& evt)
-		: evt(evt)
-	{ }
+		: evt(evt) { }
 }
