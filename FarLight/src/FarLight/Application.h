@@ -14,15 +14,25 @@ namespace FarLight
 	class FARLIGHT_API Application
 	{
 	public:
-		explicit Application();
-		virtual ~Application() = default;
-
 		void Run();
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
+
+		static Application& GetInstance();
+
+		Window& GetWindow();
+
 	private:
+		explicit Application();
+		Application(const Application&) = delete;
+		Application(Application&&) = delete;
+		Application& operator=(const Application&) = delete;
+		Application& operator=(Application&&) = delete;
+
+		static Application* _instance;
+
 		bool OnWindowClosed(const WindowClosedEvent& e);
 
 		std::unique_ptr<Window> _window;

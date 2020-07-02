@@ -6,6 +6,16 @@
 
 namespace FarLight
 {
+	Application* Application::_instance = nullptr;
+
+	inline Application& Application::GetInstance()
+	{
+		if (_instance == nullptr) _instance = new Application();
+		return *_instance;
+	}
+
+	inline Window& Application::GetWindow() { return *_window; }
+
 	Application::Application()
 		: _isRunning(true)
 	{

@@ -15,12 +15,14 @@ IncludeDir["GLFW"] = "FarLight/vendor/GLFW/include"
 IncludeDir["spdlog"] = "FarLight/vendor/spdlog/include"
 IncludeDir["GoogleTest"] = "FarLightTests/vendor/googletest/googletest/include"
 IncludeDir["Glad"] = "FarLight/vendor/Glad/include"
+IncludeDir["ImGui"] = "FarLight/vendor/ImGui"
 
 IncludeDir["FarLightSrc"] = "FarLight/src"
 
 include "FarLight/vendor/GLFW"
 include "FarLightTests/vendor/googletest"
 include "FarLight/vendor/Glad"
+include "FarLight/vendor/ImGui"
 
 project "FarLight"
 	location "FarLight"
@@ -46,13 +48,15 @@ project "FarLight"
 		"%{IncludeDir.FarLightSrc}",
 		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}"
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}"
 	}
 
 	links
 	{
 		"GLFW",
 		"Glad",
+		"ImGui",
 		"opengl32.lib"
 	}
 

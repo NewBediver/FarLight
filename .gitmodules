@@ -7,3 +7,6 @@
 [submodule "FarLight/vendor/GLFW"]
 	path = FarLight/vendor/GLFW
 	url = https://github.com/glfw/glfw
+[submodule "FarLight/vendor/ImGui"]
+	path = FarLight/vendor/ImGui
+	url = https://github.com/ocornut/imgui

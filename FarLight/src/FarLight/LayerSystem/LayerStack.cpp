@@ -18,17 +18,24 @@ namespace FarLight
 	{
 		_layers.emplace(_layers.begin() + _layerInsertIndex, layer);
 		++_layerInsertIndex;
+		layer->OnAttach();
 	}
 
-	inline void LayerStack::PushOverlay(Layer* overlay) { _layers.emplace_back(overlay); }
+	inline void LayerStack::PushOverlay(Layer* overlay)
+	{
+		_layers.emplace_back(overlay);
+		overlay->OnAttach();
+	}
 	
 	void LayerStack::PopLayer(Layer* layer)
 	{
+		layer->OnDetach();
 		DeleteLayerByThePointer(layer);
 	}
 
 	void LayerStack::PopOverlay(Layer* overlay)
 	{
+		overlay->OnDetach();
 		DeleteLayerByThePointer(overlay);
 	}
 
