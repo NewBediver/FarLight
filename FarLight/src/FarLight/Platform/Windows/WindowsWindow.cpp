@@ -59,7 +59,7 @@ namespace FarLight
 		_data._width = props._width;
 
 		// Disable before testing (Arise problems)
-		//FL_CORE_INFO("Creating window {0} ({1}, {2})", props._title, props._width, props._height);
+		FL_CORE_INFO("Creating window {0} ({1}, {2})", props._title, props._width, props._height);
 
 		if (!isGLFWInitialized)
 		{
