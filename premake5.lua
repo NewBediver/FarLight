@@ -14,11 +14,13 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "FarLight/vendor/GLFW/include"
 IncludeDir["spdlog"] = "FarLight/vendor/spdlog/include"
 IncludeDir["GoogleTest"] = "FarLightTests/vendor/googletest/googletest/include"
+IncludeDir["Glad"] = "FarLight/vendor/Glad/include"
 
 IncludeDir["FarLightSrc"] = "FarLight/src"
 
 include "FarLight/vendor/GLFW"
 include "FarLightTests/vendor/googletest"
+include "FarLight/vendor/Glad"
 
 project "FarLight"
 	location "FarLight"
@@ -43,12 +45,14 @@ project "FarLight"
 	{
 		"%{IncludeDir.FarLightSrc}",
 		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -58,7 +62,8 @@ project "FarLight"
 		defines
 		{
 			"FL_PLATFORM_WINDOWS",
-			"FL_BUILD_DLL"
+			"FL_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands

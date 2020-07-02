@@ -12,6 +12,8 @@
 
 #include "FarLight/Core.h"
 
+#include <glad/glad.h>
+
 namespace FarLight
 {
 	using uint = unsigned int;
@@ -57,7 +59,7 @@ namespace FarLight
 		_data._width = props._width;
 
 		// Disable before testing (Arise problems)
-		FL_CORE_INFO("Creating window {0} ({1}, {2})", props._title, props._width, props._height);
+		//FL_CORE_INFO("Creating window {0} ({1}, {2})", props._title, props._width, props._height);
 
 		if (!isGLFWInitialized)
 		{
@@ -68,6 +70,10 @@ namespace FarLight
 
 		_window = glfwCreateWindow(static_cast<int>(props._width), static_cast<int>(props._height), _data._title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(_window);
+
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		FL_CORE_ASSERT(status, "Failed to initialize Glad!");
+
 		glfwSetWindowUserPointer(_window, &_data);
 		SetVSync(true);
 

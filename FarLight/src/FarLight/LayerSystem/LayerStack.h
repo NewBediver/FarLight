@@ -24,6 +24,9 @@ namespace FarLight
 		std::vector<Layer*>::reverse_iterator LayerStack::rend();
 
 	private:
+		void DeleteLayerByThePointer(Layer* layer);
+		void UpdateLayerInsertIndex(std::vector<Layer*>::iterator it);
+
 		std::vector<Layer*> _layers;
 		int _layerInsertIndex;
 	};

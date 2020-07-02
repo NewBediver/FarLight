@@ -4,8 +4,6 @@
 #include "Core.h"
 #include "FarLight/EventSystem/EventDispatcher.h"
 
-#include "FarLight/EventSystem/KeyboardEvents/KeyboardKeyReleasedEvent.h"
-
 namespace FarLight
 {
 	Application::Application()

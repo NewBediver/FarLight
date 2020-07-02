@@ -24,22 +24,27 @@ namespace FarLight
 	
 	void LayerStack::PopLayer(Layer* layer)
 	{
-		auto it = std::find(_layers.begin(), _layers.end(), layer);
-		if (it != _layers.end())
-		{
-			_layers.erase(it);
-			if (_layerInsertIndex > 0) --_layerInsertIndex;
-		}
+		DeleteLayerByThePointer(layer);
 	}
 
 	void LayerStack::PopOverlay(Layer* overlay)
 	{
-		auto it = std::find(_layers.begin(), _layers.end(), overlay);
+		DeleteLayerByThePointer(overlay);
+	}
+
+	void LayerStack::DeleteLayerByThePointer(Layer* layer)
+	{
+		auto it = std::find(_layers.begin(), _layers.end(), layer);
 		if (it != _layers.end())
 		{
-			if (std::distance(_layers.begin(), it) < _layerInsertIndex) --_layerInsertIndex;
+			UpdateLayerInsertIndex(it);
 			_layers.erase(it);
 		}
+	}
+
+	inline void LayerStack::UpdateLayerInsertIndex(std::vector<Layer*>::iterator it)
+	{
+		if (std::distance(_layers.begin(), it) < _layerInsertIndex) --_layerInsertIndex;
 	}
 
 	inline std::vector<Layer*>::iterator LayerStack::begin() { return _layers.begin(); }
