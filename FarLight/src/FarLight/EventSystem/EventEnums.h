@@ -8,7 +8,7 @@ namespace FarLight
 	{
 		None = 0,
 		WindowClosedEventType, WindowResizedEventType, WindowFocusedEventType, WindowLostFocusEventType, WindowMovedEventType,
-		KeyboardKeyPressedEventType, KeyboardKeyReleasedEventType,
+		KeyboardKeyPressedEventType, KeyboardKeyReleasedEventType, KeyboardKeyTypedEventType,
 		MouseButtonPressedEventType, MouseButtonReleasedEventType, MouseMovedEventType, MouseScrolledEventType
 	};
 

@@ -12,7 +12,7 @@ namespace FarLight
 	std::string MouseButtonPressedEvent::ToString() const
 	{
 		std::stringstream ss;
-		ss << "MouseButtonPressed: " << "(" << _button << ").";
+		ss << "MouseButtonPressed: " << "(" << GetButton() << ").";
 		return ss.str();
 	}
 

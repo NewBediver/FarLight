@@ -5,6 +5,7 @@
 #include "FarLight/EventSystem/WindowEvents/WindowClosedEvent.h"
 #include "FarLight/EventSystem/KeyboardEvents/KeyboardKeyPressedEvent.h"
 #include "FarLight/EventSystem/KeyboardEvents/KeyboardKeyReleasedEvent.h"
+#include "FarLight/EventSystem/KeyboardEvents/KeyboardKeyTypedEvent.h"
 #include "FarLight/EventSystem/MouseEvents/MouseButtonPressedEvent.h"
 #include "FarLight/EventSystem/MouseEvents/MouseButtonReleasedEvent.h"
 #include "FarLight/EventSystem/MouseEvents/MouseMovedEvent.h"
@@ -124,6 +125,12 @@ namespace FarLight
 					break;
 				}
 			}
+		});
+
+		glfwSetCharCallback(_window, [](GLFWwindow* win, unsigned int code) {
+			WindowData& data = GET_DATA(win);
+
+			data._callback(KeyboardKeyTypedEvent(code));
 		});
 
 		glfwSetMouseButtonCallback(_window, [](GLFWwindow* win, int button, int action, int mods) {

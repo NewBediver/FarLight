@@ -16,6 +16,7 @@ namespace FarLight
 	protected:
 		explicit MouseButtonEvent(int button);
 
+	private:
 		int _button;
 	};
 }

@@ -20,17 +20,14 @@ namespace FarLight
 		: _isRunning(true)
 	{
 		_window = std::unique_ptr<Window>(Window::Create());
-		_window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+		_window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
 	}
 
 	void Application::Run()
 	{
 		while (_isRunning)
 		{
-			for (auto layer : _layerStack)
-			{
-				layer->OnUpdate();
-			}
+			for (auto layer : _layerStack) layer->OnUpdate();
 			_window->OnUpdate();
 		}
 	}
@@ -38,7 +35,7 @@ namespace FarLight
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowClosedEvent>(std::bind(&Application::OnWindowClosed, this, std::placeholders::_1));
+		dispatcher.Dispatch<WindowClosedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowClosed));
 
 		if (e.GetType() != EventType::WindowClosedEventType) FL_CORE_TRACE("{0}", e);
 		for (auto it = _layerStack.rbegin(); it != _layerStack.rend(); ++it)
@@ -49,7 +46,7 @@ namespace FarLight
 	}
 
 	inline void Application::PushLayer(Layer* layer) { _layerStack.PushLayer(layer); }
-	inline void Application::PushOverlay(Layer* layer) { _layerStack.PushLayer(layer); }
+	inline void Application::PushOverlay(Layer* overlay) { _layerStack.PushOverlay(overlay);}
 
 	bool Application::OnWindowClosed(const WindowClosedEvent& e)
 	{
