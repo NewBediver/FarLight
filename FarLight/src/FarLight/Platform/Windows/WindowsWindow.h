@@ -24,6 +24,8 @@ namespace FarLight
 		virtual void SetVSync(bool enabled) override;
 		virtual bool IsVSync() const override;
 
+		virtual void* GetNativeWindow() override;
+
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void ShutDown();

@@ -21,6 +21,11 @@ namespace FarLight
 
 	static bool isGLFWInitialized = false;
 
+	static void GLFWErrorCallback(int error, const char* description)
+	{
+		FL_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
+	}
+
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
 		Init(props);
@@ -48,10 +53,8 @@ namespace FarLight
 		_data._isVSync = enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const
-	{
-		return _data._isVSync;
-	}
+	inline bool WindowsWindow::IsVSync() const { return _data._isVSync; }
+	inline void* WindowsWindow::GetNativeWindow() { return _window; }
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
@@ -66,6 +69,8 @@ namespace FarLight
 		{
 			int success = glfwInit();
 			FL_CORE_ASSERT(success, "Could not initialize GLFW!");
+
+			glfwSetErrorCallback(GLFWErrorCallback);
 			isGLFWInitialized = true;
 		}
 

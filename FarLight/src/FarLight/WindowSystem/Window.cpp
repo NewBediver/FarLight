@@ -5,8 +5,8 @@
 
 namespace FarLight
 {
-	Window* Window::Create(const WindowProps& props)
+	inline std::unique_ptr<Window> Window::Create(const WindowProps& props)
 	{
-		return new WindowsWindow(props);
+		return std::make_unique<WindowsWindow>(props);
 	}
 }

@@ -24,6 +24,8 @@ namespace FarLight
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
-		static Window* Create(const WindowProps& props = WindowProps());
+		virtual void* GetNativeWindow() = 0;
+
+		static std::unique_ptr<Window> Create(const WindowProps& props = WindowProps());
 	};
 }

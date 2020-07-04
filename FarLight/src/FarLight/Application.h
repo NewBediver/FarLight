@@ -17,8 +17,8 @@ namespace FarLight
 		void Run();
 		void OnEvent(Event& e);
 
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* layer);
+		void PushLayer(std::shared_ptr<Layer> layer);
+		void PushOverlay(std::shared_ptr<Layer> layer);
 
 		static Application& GetInstance();
 

@@ -2,6 +2,7 @@
 #include "ImGuiLayer.h"
 
 #include "imgui.h"
+#include "glfwImGui.h"
 #include "imguiOpengl3.h"
 
 #include "FarLight/EventSystem/EventDispatcher.h"
@@ -9,6 +10,7 @@
 #include "FarLight/Application.h"
 
 #include <glad/glad.h>
+
 #include <GLFW/glfw3.h>
 
 namespace FarLight
@@ -48,12 +50,16 @@ namespace FarLight
 		io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
 		io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
 
+		GLFWwindow* win = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow().GetNativeWindow());
+
+		ImGui_ImplGlfw_InitForOpenGL(win, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
 		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
 
@@ -64,14 +70,15 @@ namespace FarLight
 		io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
 
 		double time = glfwGetTime();
-		io.DeltaTime = _time > 0.0 ? (time - _time) : (1.0 / 60.0);
+		io.DeltaTime = _time > 0.0f ? (time - _time) : (1.0f / 60.0f);
 		_time = time;
 
 		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
+		bool showDemo = true;
+		ImGui::ShowDemoWindow(&showDemo);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

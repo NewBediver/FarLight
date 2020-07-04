@@ -5,6 +5,6 @@
 FarLight::Application* FarLight::CreateApplication()
 {
 	FarLight::Application& app = FarLight::Application::GetInstance();
-	app.PushLayer(new ImGuiLayer());
+	app.PushLayer(std::make_shared<ImGuiLayer>());
 	return &app;
 }

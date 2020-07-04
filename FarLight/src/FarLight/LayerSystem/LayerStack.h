@@ -11,23 +11,22 @@ namespace FarLight
 	{
 	public:
 		explicit LayerStack();
-		~LayerStack();
 
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* overlay);
-		void PopLayer(Layer* layer);
-		void PopOverlay(Layer* overlay);
+		void PushLayer(std::shared_ptr<Layer> layer);
+		void PushOverlay(std::shared_ptr<Layer> overlay);
+		void PopLayer(std::shared_ptr<Layer> layer);
+		void PopOverlay(std::shared_ptr<Layer> overlay);
 
-		std::vector<Layer*>::iterator LayerStack::begin();
-		std::vector<Layer*>::iterator LayerStack::end();
-		std::vector<Layer*>::reverse_iterator LayerStack::rbegin();
-		std::vector<Layer*>::reverse_iterator LayerStack::rend();
+		std::vector<std::shared_ptr<Layer>>::iterator LayerStack::begin();
+		std::vector<std::shared_ptr<Layer>>::iterator LayerStack::end();
+		std::vector<std::shared_ptr<Layer>>::reverse_iterator LayerStack::rbegin();
+		std::vector<std::shared_ptr<Layer>>::reverse_iterator LayerStack::rend();
 
 	private:
-		void DeleteLayerByThePointer(Layer* layer);
-		void UpdateLayerInsertIndex(std::vector<Layer*>::iterator it);
+		void DeleteLayerByThePointer(std::shared_ptr<Layer> layer);
+		void UpdateLayerInsertIndex(std::vector<std::shared_ptr<Layer>>::iterator it);
 
-		std::vector<Layer*> _layers;
+		std::vector<std::shared_ptr<Layer>> _layers;
 		int _layerInsertIndex;
 	};
 }

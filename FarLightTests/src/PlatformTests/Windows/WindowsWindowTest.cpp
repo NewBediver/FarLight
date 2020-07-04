@@ -26,20 +26,16 @@ public:
 		delete w2;
 		delete w3;
 		delete w4;
-		delete w5;
-		delete w6;
-		delete w7;
-		delete w8;
 	}
 
 	WindowsWindow* w1;
 	WindowsWindow* w2;
 	WindowsWindow* w3;
 	WindowsWindow* w4;
-	Window* w5;
-	Window* w6;
-	Window* w7;
-	Window* w8;
+	std::unique_ptr<Window> w5;
+	std::unique_ptr<Window> w6;
+	std::unique_ptr<Window> w7;
+	std::unique_ptr<Window> w8;
 };
 
 TEST_F(WindowsWindowTest, GetWidth)

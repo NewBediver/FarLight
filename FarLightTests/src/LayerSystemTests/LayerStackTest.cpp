@@ -31,34 +31,24 @@ public:
 	void SetUp() override
 	{
 		ls1 = new LayerStack();
-		l1 = new TestLayerClass("Test1");
-		l2 = new TestLayerClass("Test2");
-		l3 = new TestLayerClass("Test3");
-		l4 = new TestLayerClass("Test4");
-		l5 = new TestLayerClass("Test5");
+		l1 = std::make_shared<TestLayerClass>("Test1");
+		l2 = std::make_shared<TestLayerClass>("Test2");
+		l3 = std::make_shared<TestLayerClass>("Test3");
+		l4 = std::make_shared<TestLayerClass>("Test4");
+		l5 = std::make_shared<TestLayerClass>("Test5");
 	}
 
 	void TearDown() override
 	{
-		ls1->PopOverlay(l1);
-		ls1->PopOverlay(l2);
-		ls1->PopOverlay(l3);
-		ls1->PopOverlay(l4);
-		ls1->PopOverlay(l5);
 		delete ls1;
-		delete l1;
-		delete l2;
-		delete l3;
-		delete l4;
-		delete l5;
 	}
 
 	LayerStack* ls1;
-	Layer* l1;
-	Layer* l2;
-	Layer* l3;
-	Layer* l4;
-	Layer* l5;
+	std::shared_ptr<Layer> l1;
+	std::shared_ptr<Layer> l2;
+	std::shared_ptr<Layer> l3;
+	std::shared_ptr<Layer> l4;
+	std::shared_ptr<Layer> l5;
 };
 
 TEST_F(LayerStackTest, PushLayers)

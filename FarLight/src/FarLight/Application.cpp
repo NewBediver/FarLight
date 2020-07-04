@@ -1,6 +1,8 @@
 #include "flpch.h"
 #include "Application.h"
 
+#include <glad/glad.h>
+
 #include "Core.h"
 #include "FarLight/EventSystem/EventDispatcher.h"
 
@@ -27,6 +29,9 @@ namespace FarLight
 	{
 		while (_isRunning)
 		{
+			glClearColor(0.45, 0.55, 0.60, 1.00);
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			for (auto layer : _layerStack) layer->OnUpdate();
 			_window->OnUpdate();
 		}
@@ -37,7 +42,7 @@ namespace FarLight
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowClosedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowClosed));
 
-		if (e.GetType() != EventType::WindowClosedEventType) FL_CORE_TRACE("{0}", e);
+		FL_CORE_TRACE("{0}", e);
 		for (auto it = _layerStack.rbegin(); it != _layerStack.rend(); ++it)
 		{
 			(*it)->OnEvent(e);
@@ -45,12 +50,11 @@ namespace FarLight
 		}
 	}
 
-	inline void Application::PushLayer(Layer* layer) { _layerStack.PushLayer(layer); }
-	inline void Application::PushOverlay(Layer* overlay) { _layerStack.PushOverlay(overlay);}
+	inline void Application::PushLayer(std::shared_ptr<Layer> layer) { _layerStack.PushLayer(layer); }
+	inline void Application::PushOverlay(std::shared_ptr<Layer> overlay) { _layerStack.PushOverlay(overlay);}
 
 	bool Application::OnWindowClosed(const WindowClosedEvent& e)
 	{
-		FL_CORE_INFO("{0}", e);
 		_isRunning = false;
 		return true;
 	}
