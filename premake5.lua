@@ -1,5 +1,6 @@
 workspace "FarLight"
 	architecture "x64"
+	startproject "Sandbox"
 
 	configurations
 	{
@@ -19,17 +20,19 @@ IncludeDir["ImGui"] = "FarLight/vendor/ImGui"
 
 IncludeDir["FarLightSrc"] = "FarLight/src"
 
-include "FarLight/vendor/GLFW"
-include "FarLightTests/vendor/googletest"
-include "FarLight/vendor/Glad"
-include "FarLight/vendor/ImGui"
+group "Dependencies"
+	include "FarLight/vendor/GLFW"
+	include "FarLightTests/vendor/googletest"
+	include "FarLight/vendor/Glad"
+	include "FarLight/vendor/ImGui"
+group ""
 
 project "FarLight"
 	location "FarLight"
 	kind "SharedLib"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -72,8 +75,8 @@ project "FarLight"
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox"),
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/FarLightTests")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox\""),
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/FarLightTests\"")
 		}
 
 	filter "configurations:Debug"
@@ -82,17 +85,17 @@ project "FarLight"
 			"FL_DEBUG",
 			"FL_ENABLE_ASSERTS"
 		}
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
 		defines "FL_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "on"
 
 	filter "configurations:Dist"
 		defines "FL_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "on"
 
 project "Sandbox"
@@ -100,7 +103,7 @@ project "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -132,17 +135,17 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "FL_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
 		defines "FL_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "on"
 
 	filter "configurations:Dist"
 		defines "FL_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "on"
 
 project "FarLightTests"
@@ -150,7 +153,7 @@ project "FarLightTests"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -184,9 +187,9 @@ project "FarLightTests"
 		}
 
 	filter "configurations:Debug"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "on"
