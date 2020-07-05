@@ -20,9 +20,9 @@ namespace FarLight
 		void PushLayer(std::shared_ptr<Layer> layer);
 		void PushOverlay(std::shared_ptr<Layer> layer);
 
-		static Application& GetInstance();
+		static Application* GetInstance();
 
-		Window& GetWindow();
+		std::unique_ptr<Window>& GetWindow();
 
 	private:
 		explicit Application();

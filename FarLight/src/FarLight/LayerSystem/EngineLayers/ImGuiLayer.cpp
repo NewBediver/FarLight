@@ -50,7 +50,7 @@ namespace FarLight
 		io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
 		io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
 
-		GLFWwindow* win = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow().GetNativeWindow());
+		GLFWwindow* win = static_cast<GLFWwindow*>(Application::GetInstance()->GetWindow()->GetNativeWindow());
 
 		ImGui_ImplGlfw_InitForOpenGL(win, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
@@ -66,8 +66,8 @@ namespace FarLight
 	void ImGuiLayer::OnUpdate()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		Application& app = Application::GetInstance();
-		io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
+		auto app = Application::GetInstance();
+		io.DisplaySize = ImVec2(app->GetWindow()->GetWidth(), app->GetWindow()->GetHeight());
 
 		double time = glfwGetTime();
 		io.DeltaTime = _time > 0.0f ? (time - _time) : (1.0f / 60.0f);

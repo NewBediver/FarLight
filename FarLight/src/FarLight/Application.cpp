@@ -6,17 +6,19 @@
 #include "Core.h"
 #include "FarLight/EventSystem/EventDispatcher.h"
 
+#include "InputSystem/Input.h"
+
 namespace FarLight
 {
 	Application* Application::_instance = nullptr;
 
-	inline Application& Application::GetInstance()
+	inline Application* Application::GetInstance()
 	{
 		if (_instance == nullptr) _instance = new Application();
-		return *_instance;
+		return _instance;
 	}
 
-	inline Window& Application::GetWindow() { return *_window; }
+	inline std::unique_ptr<Window>& Application::GetWindow() { return _window; }
 
 	Application::Application()
 		: _isRunning(true)
@@ -33,6 +35,7 @@ namespace FarLight
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (auto layer : _layerStack) layer->OnUpdate();
+
 			_window->OnUpdate();
 		}
 	}

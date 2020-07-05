@@ -1,7 +1,7 @@
 #include "flpch.h"
 #include "Window.h"
 
-#include "FarLight/Platform/Windows/WindowsWindow.h"
+#include "FarLight/Platform/Windows/WindowSystem/WindowsWindow.h"
 
 namespace FarLight
 {

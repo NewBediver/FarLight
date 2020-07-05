@@ -17,6 +17,7 @@ int main(int args, char** argv)
 	FL_INFO("Client application initialized.");
 
 	app->Run();
+
 	delete app;
 }
 
