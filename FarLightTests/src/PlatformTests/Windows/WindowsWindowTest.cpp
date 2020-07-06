@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <FarLight/Platform/Windows/WindowsWindow.h>
+#include <FarLight/Platform/Windows/WindowSystem/WindowsWindow.h>
 
 using namespace FarLight;
 
