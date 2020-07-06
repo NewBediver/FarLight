@@ -14,7 +14,6 @@ void InputLayer::OnUpdate()
 
 void InputLayer::OnEvent(Event& event)
 {
-	FL_INFO("ExampleLayer::Update");
 	if (event.GetType() == EventType::KeyboardKeyPressedEventType)
 	{
 		if (Input::IsKeyPressed(Input::GetFLKeyboardKeyCode(static_cast<KeyboardKeyTypedEvent&>(event).GetKeyCode())) && Input::GetFLKeyboardKeyCode(static_cast<KeyboardKeyTypedEvent&>(event).GetKeyCode()) == KeyboardKeyCodes::FL_KEY_TAB)

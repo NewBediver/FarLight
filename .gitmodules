@@ -10,3 +10,6 @@
 [submodule "FarLight/vendor/ImGui"]
 	path = FarLight/vendor/ImGui
 	url = https://github.com/ocornut/imgui
+[submodule "FarLight\\vendor\\glm"]
+	path = FarLight\\vendor\\glm
+	url = https://github.com/g-truc/glm
