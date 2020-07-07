@@ -8,6 +8,7 @@
 
 #include "LayerSystem/Layer.h"
 #include "LayerSystem/LayerStack.h"
+#include "FarLight/LayerSystem/EngineLayers/ImGuiLayer.h"
 
 namespace FarLight
 {
@@ -25,17 +26,20 @@ namespace FarLight
 		std::unique_ptr<Window>& GetWindow();
 
 	private:
+		static Application* _instance;
+
 		explicit Application();
 		Application(const Application&) = delete;
 		Application(Application&&) = delete;
 		Application& operator=(const Application&) = delete;
 		Application& operator=(Application&&) = delete;
 
-		static Application* _instance;
+		void Init();
 
 		bool OnWindowClosed(const WindowClosedEvent& e);
 
 		std::unique_ptr<Window> _window;
+		std::shared_ptr<ImGuiLayer> _userInterfaceLayer;
 		bool _isRunning;
 		LayerStack _layerStack;
 	};

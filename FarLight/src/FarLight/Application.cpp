@@ -24,17 +24,22 @@ namespace FarLight
 		: _isRunning(true)
 	{
 		_window = std::unique_ptr<Window>(Window::Create());
-		_window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
+		_userInterfaceLayer = std::make_unique<ImGuiLayer>();
 	}
 
 	void Application::Run()
 	{
+		Init();
 		while (_isRunning)
 		{
 			glClearColor(0.45, 0.55, 0.60, 1.00);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			for (auto layer : _layerStack) layer->OnUpdate();
+			for (auto& layer : _layerStack) layer->OnUpdate();
+
+			_userInterfaceLayer->Begin();
+			for (auto& layer : _layerStack) layer->OnUserInterfaceRender();
+			_userInterfaceLayer->End();
 
 			_window->OnUpdate();
 		}
@@ -55,6 +60,12 @@ namespace FarLight
 
 	inline void Application::PushLayer(std::shared_ptr<Layer> layer) { _layerStack.PushLayer(layer); }
 	inline void Application::PushOverlay(std::shared_ptr<Layer> overlay) { _layerStack.PushOverlay(overlay);}
+
+	void Application::Init()
+	{
+		_window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
+		_layerStack.PushOverlay(_userInterfaceLayer);
+	}
 
 	bool Application::OnWindowClosed(const WindowClosedEvent& e)
 	{

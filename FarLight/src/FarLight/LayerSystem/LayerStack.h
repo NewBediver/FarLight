@@ -27,6 +27,6 @@ namespace FarLight
 		void UpdateLayerInsertIndex(std::vector<std::shared_ptr<Layer>>::iterator it);
 
 		std::vector<std::shared_ptr<Layer>> _layers;
-		int _layerInsertIndex;
+		unsigned int _layerInsertIndex;
 	};
 }

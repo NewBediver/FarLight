@@ -13,9 +13,10 @@ namespace FarLight
 		explicit Layer(const std::string& name = "Layer");
 		virtual ~Layer() = default;
 
-		virtual void OnAttach() = 0;
-		virtual void OnDetach() = 0;
+		virtual void OnAttach() const = 0;
+		virtual void OnDetach() const = 0;
 		virtual void OnUpdate() = 0;
+		virtual void OnUserInterfaceRender() = 0;
 		virtual void OnEvent(Event& event) = 0;
 
 		const std::string& GetName() const;

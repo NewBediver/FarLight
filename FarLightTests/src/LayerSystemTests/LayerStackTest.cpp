@@ -18,10 +18,11 @@ public:
 
 	virtual ~TestLayerClass() = default;
 
-	virtual void OnAttach() override { }
-	virtual void OnDetach() override { }
+	virtual void OnAttach() const override { }
+	virtual void OnDetach() const override { }
 	virtual void OnUpdate() override { }
 	virtual void OnEvent(Event& event) override { }
+	virtual void OnUserInterfaceRender() override { }
 };
 
 class LayerStackTest

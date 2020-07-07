@@ -17,7 +17,6 @@ IncludeDir["spdlog"] = "FarLight/vendor/spdlog/include"
 IncludeDir["GoogleTest"] = "FarLightTests/vendor/googletest/googletest/include"
 IncludeDir["Glad"] = "FarLight/vendor/Glad/include"
 IncludeDir["ImGui"] = "FarLight/vendor/ImGui"
-IncludeDir["glm"] = "FarLight/vendor/glm"
 
 IncludeDir["FarLightSrc"] = "FarLight/src"
 
@@ -53,8 +52,7 @@ project "FarLight"
 		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.ImGui}"
 	}
 
 	links
@@ -119,8 +117,7 @@ project "Sandbox"
 	includedirs
 	{
 		"%{IncludeDir.FarLightSrc}",
-		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.spdlog}"
 	}
 
 	links
@@ -172,8 +169,7 @@ project "FarLightTests"
 		"%{IncludeDir.FarLightSrc}",
 		"%{IncludeDir.GoogleTest}",
 		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.GLFW}"
 	}
 
 	links

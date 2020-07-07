@@ -7,7 +7,7 @@
 		#define FARLIGHT_API __declspec(dllimport)
 	#endif
 #else
-	#error FarLight only support Windows!
+	#error FarLight only supports Windows!
 #endif
 
 #ifdef FL_DEBUG
