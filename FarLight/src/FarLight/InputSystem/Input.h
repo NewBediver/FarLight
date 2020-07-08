@@ -32,6 +32,6 @@ namespace FarLight
 		virtual MouseButtonCodes GetFLMouseButtonCodeImpl(int code) const = 0;
 
 	private:
-		static Input* _instance;
+		static std::shared_ptr<Input> _instance;
 	};
 }

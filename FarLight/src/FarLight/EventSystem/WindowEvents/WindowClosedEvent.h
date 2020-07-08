@@ -8,10 +8,10 @@ namespace FarLight
 		: public Event
 	{
 	public:
-		static EventType GetStaticType();
+		static EventType GetStaticType() { return EventType::WindowClosedEventType; }
 
-		virtual EventType GetType() const override;
-		virtual std::string GetName() const override;
-		virtual int GetCategoryFlags() const override;
+		virtual EventType WindowClosedEvent::GetType() const override { return GetStaticType(); }
+		virtual std::string WindowClosedEvent::GetName() const override { return "WindowClosed"; }
+		virtual int WindowClosedEvent::GetCategoryFlags() const override { return EventCategory::ApplicationEventCategory; }
 	};
 }

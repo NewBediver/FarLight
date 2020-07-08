@@ -4,14 +4,6 @@
 
 namespace FarLight
 {
-	MouseMovedEvent::MouseMovedEvent(double coordX, double coordY)
-		: _xPos(coordX), _yPos(coordY) { }
-
-	inline EventType MouseMovedEvent::GetStaticType() { return EventType::MouseMovedEventType; }
-
-	inline double MouseMovedEvent::GetX() const { return _xPos; }
-	inline double MouseMovedEvent::GetY() const { return _yPos; }
-	
 	std::string MouseMovedEvent::ToString() const
 	{
 		std::stringstream ss;
@@ -19,8 +11,4 @@ namespace FarLight
 		ss << std::fixed << "MouseMoved: (" << _xPos << ", " << _yPos << ").";
 		return ss.str();
 	}
-
-	inline EventType MouseMovedEvent::GetType() const { return GetStaticType(); }
-	inline std::string MouseMovedEvent::GetName() const { return "MouseMoved"; }
-	inline int MouseMovedEvent::GetCategoryFlags() const { return (MouseEventCategory | InputEventCategory); }
 }

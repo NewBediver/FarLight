@@ -21,12 +21,12 @@ namespace FarLight
 		virtual std::string GetName() const = 0;
 		virtual int GetCategoryFlags() const = 0;
 
-		virtual std::string ToString() const;
+		virtual std::string ToString() const { return GetName(); }
 
-		bool IsHandled() const;
-		void SetHandled(bool isHandled);
+		bool IsHandled() const { return _isHandled; }
+		void SetHandled(bool isHandled) { _isHandled = isHandled; }
 
-		bool IsInCategory(const EventCategory& eventCategory) const;
+		bool IsInCategory(const EventCategory& eventCategory) const { return (GetCategoryFlags() & eventCategory); }
 
 		virtual ~Event() = default;
 

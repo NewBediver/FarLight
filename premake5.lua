@@ -1,13 +1,13 @@
 workspace "FarLight"
-	architecture "x64"
-	startproject "Sandbox"
+    architecture "x64"
+    startproject "Sandbox"
 
-	configurations
-	{
-		"Debug",
-		"Release",
-		"Dist"
-	}
+    configurations
+    {
+        "Debug",
+        "Release",
+        "Dist"
+    }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -21,175 +21,170 @@ IncludeDir["ImGui"] = "FarLight/vendor/ImGui"
 IncludeDir["FarLightSrc"] = "FarLight/src"
 
 group "Dependencies"
-	include "FarLight/vendor/GLFW"
-	include "FarLightTests/vendor/googletest"
-	include "FarLight/vendor/Glad"
-	include "FarLight/vendor/ImGui"
+    include "FarLight/vendor/GLFW"
+    include "FarLightTests/vendor/googletest"
+    include "FarLight/vendor/Glad"
+    include "FarLight/vendor/ImGui"
 group ""
 
 project "FarLight"
-	location "FarLight"
-	kind "SharedLib"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "off"
+    location "FarLight"
+    kind "StaticLib"
+    language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "flpch.h"
-	pchsource "FarLight/src/flpch.cpp"
+    pchheader "flpch.h"
+    pchsource "FarLight/src/flpch.cpp"
 
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
+    files
+    {
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp"
+    }
 
-	includedirs
-	{
-		"%{IncludeDir.FarLightSrc}",
-		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
-	}
+    includedirs
+    {
+        "%{IncludeDir.FarLightSrc}",
+        "%{IncludeDir.spdlog}",
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.ImGui}"
+    }
 
-	links
-	{
-		"GLFW",
-		"Glad",
-		"ImGui",
-		"opengl32.lib"
-	}
+    links
+    {
+        "GLFW",
+        "Glad",
+        "ImGui",
+        "opengl32.lib"
+    }
 
-	filter "system:windows"
-		systemversion "latest"
+    filter "system:windows"
+        systemversion "latest"
 
-		defines
-		{
-			"FL_PLATFORM_WINDOWS",
-			"FL_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
-		}
+        defines
+        {
+            "FL_PLATFORM_WINDOWS",
+            "FL_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
+        }
 
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox\""),
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/FarLightTests\"")
-		}
+    filter "configurations:Debug"
+        defines 
+        {
+            "FL_DEBUG",
+            "FL_ENABLE_ASSERTS"
+        }
+        runtime "Debug"
+        symbols "on"
 
-	filter "configurations:Debug"
-		defines 
-		{
-			"FL_DEBUG",
-			"FL_ENABLE_ASSERTS"
-		}
-		runtime "Debug"
-		symbols "on"
+    filter "configurations:Release"
+        defines "FL_RELEASE"
+        runtime "Release"
+        optimize "on"
 
-	filter "configurations:Release"
-		defines "FL_RELEASE"
-		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		defines "FL_DIST"
-		runtime "Release"
-		optimize "on"
+    filter "configurations:Dist"
+        defines "FL_DIST"
+        runtime "Release"
+        optimize "on"
 
 project "Sandbox"
-	location "Sandbox"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "off"
+    location "Sandbox"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
+    files
+    {
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp"
+    }
 
-	includedirs
-	{
-		"%{IncludeDir.FarLightSrc}",
-		"%{IncludeDir.spdlog}"
-	}
+    includedirs
+    {
+        "%{IncludeDir.FarLightSrc}",
+        "%{IncludeDir.spdlog}",
+        "%{IncludeDir.ImGui}"
+    }
 
-	links
-	{
-		"FarLight"
-	}
-	
-	filter "system:windows"
-		systemversion "latest"
+    links
+    {
+        "FarLight"
+    }
+    
+    filter "system:windows"
+        systemversion "latest"
 
-		defines
-		{
-			"FL_PLATFORM_WINDOWS"
-		}
+        defines
+        {
+            "FL_PLATFORM_WINDOWS"
+        }
 
-	filter "configurations:Debug"
-		defines "FL_DEBUG"
-		runtime "Debug"
-		symbols "on"
+    filter "configurations:Debug"
+        defines "FL_DEBUG"
+        runtime "Debug"
+        symbols "on"
 
-	filter "configurations:Release"
-		defines "FL_RELEASE"
-		runtime "Release"
-		optimize "on"
+    filter "configurations:Release"
+        defines "FL_RELEASE"
+        runtime "Release"
+        optimize "on"
 
-	filter "configurations:Dist"
-		defines "FL_DIST"
-		runtime "Release"
-		optimize "on"
+    filter "configurations:Dist"
+        defines "FL_DIST"
+        runtime "Release"
+        optimize "on"
 
 project "FarLightTests"
-	location "FarLightTests"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "off"
+    location "FarLightTests"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
+    files
+    {
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp"
+    }
 
-	includedirs
-	{
-		"%{IncludeDir.FarLightSrc}",
-		"%{IncludeDir.GoogleTest}",
-		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.GLFW}"
-	}
+    includedirs
+    {
+        "%{IncludeDir.FarLightSrc}",
+        "%{IncludeDir.GoogleTest}",
+        "%{IncludeDir.spdlog}",
+        "%{IncludeDir.GLFW}"
+    }
 
-	links
-	{
-		"GoogleTestsCompilation",
-		"FarLight"
-	}
+    links
+    {
+        "GoogleTestsCompilation",
+        "FarLight"
+    }
 
-	filter "system:windows"
-		systemversion "latest"
+    filter "system:windows"
+        systemversion "latest"
 
-		defines
-		{
-			"FL_PLATFORM_WINDOWS"
-		}
+        defines
+        {
+            "FL_PLATFORM_WINDOWS"
+        }
 
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "on"
 
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "on"

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "FarLight/WindowSystem/Window.h"
 #include "FarLight/WindowSystem/WindowProps.h"
 
@@ -13,34 +12,32 @@ namespace FarLight
 	public:
 		WindowsWindow() = delete;
 		explicit WindowsWindow(const WindowProps& props);
-		virtual ~WindowsWindow();
 
-		void OnUpdate() override;
+		virtual void OnUpdate() override;
 
-		uint GetWidth() const override;
-		uint GetHeight() const override;
+		virtual unsigned int GetWidth() const override { return _data._width; }
+		virtual unsigned int GetHeight() const override { return _data._height; }
 
-		void SetEventCallback(const EventCallbackFunction& callback) override;
+		virtual void SetEventCallback(const EventCallbackFunction& callback) override { _data._callback = callback; }
+
 		virtual void SetVSync(bool enabled) override;
-		virtual bool IsVSync() const override;
+		virtual bool IsVSync() const override { return _data._isVSync; }
 
-		virtual void* GetNativeWindow() override;
+		virtual std::shared_ptr<void> GetNativeWindow() override { return _window; }
 
 	private:
-		virtual void Init(const WindowProps& props);
-		virtual void ShutDown();
+		void Init(const WindowProps& props);
 
 		void SetGLFWCallbacks();
 
-		GLFWwindow* _window;
+		std::shared_ptr<GLFWwindow> _window;
 
 		struct WindowData
 		{
 			std::string _title;
-			uint _width, _height;
+			unsigned int _width, _height;
 			bool _isVSync;
 			EventCallbackFunction _callback;
 		} _data;
 	};
 }
-

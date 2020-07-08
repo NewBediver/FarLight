@@ -17,8 +17,6 @@
 
 namespace FarLight
 {
-	using uint = unsigned int;
-
 	static bool isGLFWInitialized = false;
 
 	static void GLFWErrorCallback(int error, const char* description)
@@ -26,25 +24,21 @@ namespace FarLight
 		FL_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
+	std::shared_ptr<Window> Window::Create(const WindowProps& props)
+	{
+		return std::make_shared<WindowsWindow>(props);
+	}
+
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
 		Init(props);
 	}
 
-	WindowsWindow::~WindowsWindow()
-	{
-		ShutDown();
-	}
-
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(_window);
+		glfwSwapBuffers(_window.get());
 	}
-
-	inline uint WindowsWindow::GetWidth() const { return _data._width; }
-	inline uint WindowsWindow::GetHeight() const { return _data._height; }
-	inline void WindowsWindow::SetEventCallback(const EventCallbackFunction& callback) { _data._callback = callback; }
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
@@ -52,9 +46,6 @@ namespace FarLight
 		else glfwSwapInterval(0);
 		_data._isVSync = enabled;
 	}
-
-	inline bool WindowsWindow::IsVSync() const { return _data._isVSync; }
-	inline void* WindowsWindow::GetNativeWindow() { return _window; }
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
@@ -74,28 +65,23 @@ namespace FarLight
 			isGLFWInitialized = true;
 		}
 
-		_window = glfwCreateWindow(static_cast<int>(props._width), static_cast<int>(props._height), _data._title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(_window);
+		_window = std::shared_ptr<GLFWwindow>(glfwCreateWindow(static_cast<int>(props._width), static_cast<int>(props._height), _data._title.c_str(), nullptr, nullptr), glfwDestroyWindow);
+		glfwMakeContextCurrent(_window.get());
 
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		FL_CORE_ASSERT(status, "Failed to initialize Glad!");
 
-		glfwSetWindowUserPointer(_window, &_data);
+		glfwSetWindowUserPointer(_window.get(), &_data);
 		SetVSync(true);
 
 		SetGLFWCallbacks();
-	}
-
-	void WindowsWindow::ShutDown()
-	{
-		glfwDestroyWindow(_window);
 	}
 
 	void WindowsWindow::SetGLFWCallbacks()
 	{
 		#define GET_DATA(x) *static_cast<WindowData*>(glfwGetWindowUserPointer(x));
 
-		glfwSetWindowSizeCallback(_window, [](GLFWwindow* win, int width, int height) {
+		glfwSetWindowSizeCallback(_window.get(), [](GLFWwindow* win, int width, int height) {
 			WindowData& data = GET_DATA(win);
 			data._width = width;
 			data._height = height;
@@ -103,13 +89,13 @@ namespace FarLight
 			data._callback(WindowResizedEvent(width, height));
 		});
 
-		glfwSetWindowCloseCallback(_window, [](GLFWwindow* win) {
+		glfwSetWindowCloseCallback(_window.get(), [](GLFWwindow* win) {
 			WindowData& data = GET_DATA(win);
 
 			data._callback(WindowClosedEvent());
 		});
 
-		glfwSetKeyCallback(_window, [](GLFWwindow* win, int key, int scan, int action, int mods) {
+		glfwSetKeyCallback(_window.get(), [](GLFWwindow* win, int key, int scan, int action, int mods) {
 			WindowData& data = GET_DATA(win);
 
 			switch (action)
@@ -132,13 +118,13 @@ namespace FarLight
 			}
 		});
 
-		glfwSetCharCallback(_window, [](GLFWwindow* win, unsigned int code) {
+		glfwSetCharCallback(_window.get(), [](GLFWwindow* win, unsigned int code) {
 			WindowData& data = GET_DATA(win);
 
 			data._callback(KeyboardKeyTypedEvent(code));
 		});
 
-		glfwSetMouseButtonCallback(_window, [](GLFWwindow* win, int button, int action, int mods) {
+		glfwSetMouseButtonCallback(_window.get(), [](GLFWwindow* win, int button, int action, int mods) {
 			WindowData& data = GET_DATA(win);
 
 			switch (action)
@@ -156,13 +142,13 @@ namespace FarLight
 			}
 		});
 		
-		glfwSetScrollCallback(_window, [](GLFWwindow* win, double xOffset, double yOffset) {
+		glfwSetScrollCallback(_window.get(), [](GLFWwindow* win, double xOffset, double yOffset) {
 			WindowData& data = GET_DATA(win);
 
 			data._callback(MouseScrolledEvent(xOffset, yOffset));
 		});
 
-		glfwSetCursorPosCallback(_window, [](GLFWwindow* win, double xPos, double yPos) {
+		glfwSetCursorPosCallback(_window.get(), [](GLFWwindow* win, double xPos, double yPos) {
 			WindowData& data = GET_DATA(win);
 
 			data._callback(MouseMovedEvent(xPos, yPos));

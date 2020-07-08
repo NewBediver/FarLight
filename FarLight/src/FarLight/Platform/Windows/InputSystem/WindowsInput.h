@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FarLight/InputSystem/Input.h"
+#include "FarLight/Application.h"
 
 #include <GLFW/glfw3.h>
 
@@ -23,6 +24,6 @@ namespace FarLight
 		int GetKeyboardKeyFromGLFW(KeyboardKeyCodes code) const;
 		int GetMouseButtonFromGLFW(MouseButtonCodes code) const;
 
-		GLFWwindow* GetGLFWwindow() const;
+		GLFWwindow* GetGLFWwindow() const { return static_cast<GLFWwindow*>(Application::GetInstance()->GetWindow()->GetNativeWindow().get()); }
 	};
 }

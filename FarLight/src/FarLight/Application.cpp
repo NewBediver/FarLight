@@ -10,21 +10,19 @@
 
 namespace FarLight
 {
-	Application* Application::_instance = nullptr;
+	std::shared_ptr<Application> Application::_instance = nullptr;
 
-	inline Application* Application::GetInstance()
+	std::shared_ptr<Application> Application::GetInstance()
 	{
-		if (_instance == nullptr) _instance = new Application();
+		if (_instance == nullptr) _instance = std::shared_ptr<Application>(new Application());
 		return _instance;
 	}
-
-	inline std::unique_ptr<Window>& Application::GetWindow() { return _window; }
 
 	Application::Application()
 		: _isRunning(true)
 	{
-		_window = std::unique_ptr<Window>(Window::Create());
-		_userInterfaceLayer = std::make_unique<ImGuiLayer>();
+		_window = Window::Create();
+		_userInterfaceLayer = std::make_shared<ImGuiLayer>();
 	}
 
 	void Application::Run()
@@ -32,7 +30,7 @@ namespace FarLight
 		Init();
 		while (_isRunning)
 		{
-			glClearColor(0.45, 0.55, 0.60, 1.00);
+			glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (auto& layer : _layerStack) layer->OnUpdate();
@@ -57,9 +55,6 @@ namespace FarLight
 			if (e.IsHandled()) break;
 		}
 	}
-
-	inline void Application::PushLayer(std::shared_ptr<Layer> layer) { _layerStack.PushLayer(layer); }
-	inline void Application::PushOverlay(std::shared_ptr<Layer> overlay) { _layerStack.PushOverlay(overlay);}
 
 	void Application::Init()
 	{

@@ -8,13 +8,14 @@ namespace FarLight
 		: public MouseButtonEvent
 	{
 	public:
-		explicit MouseButtonPressedEvent(int button);
+		explicit MouseButtonPressedEvent(int button)
+			: MouseButtonEvent(button) { }
 
-		static EventType GetStaticType();
+		static EventType GetStaticType() { return EventType::MouseButtonPressedEventType; }
 
 		std::string ToString() const override;
 
-		virtual EventType GetType() const override;
-		virtual std::string GetName() const override;
+		virtual EventType MouseButtonPressedEvent::GetType() const override { return GetStaticType(); }
+		virtual std::string MouseButtonPressedEvent::GetName() const override { return "MouseButtonPressed"; }
 	};
 }

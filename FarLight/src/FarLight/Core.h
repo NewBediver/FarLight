@@ -1,11 +1,15 @@
 #pragma once
 
 #ifdef FL_PLATFORM_WINDOWS
+#if FL_DYNAMIC_LINK
 	#ifdef FL_BUILD_DLL
 		#define FARLIGHT_API __declspec(dllexport)
 	#else
 		#define FARLIGHT_API __declspec(dllimport)
 	#endif
+#else
+	#define FARLIGHT_API
+#endif
 #else
 	#error FarLight only supports Windows!
 #endif

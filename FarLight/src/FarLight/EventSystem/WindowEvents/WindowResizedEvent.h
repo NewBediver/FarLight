@@ -12,16 +12,17 @@ namespace FarLight
 		using uint = unsigned int;
 
 	public:
-		explicit WindowResizedEvent(uint width, uint height);
+		explicit WindowResizedEvent(uint width, uint height)
+			: _width(width), _height(height) { }
 
-		uint GetWidth() const;
-		uint GetHeight() const;
+		uint WindowResizedEvent::GetWidth() const { return _width; }
+		uint WindowResizedEvent::GetHeight() const { return _height; }
 
-		static EventType GetStaticType();
+		static EventType GetStaticType() { return EventType::WindowResizedEventType; }
 
-		virtual EventType GetType() const override;
-		virtual std::string GetName() const override;
-		virtual int GetCategoryFlags() const override;
+		virtual EventType WindowResizedEvent::GetType() const override { return GetStaticType(); }
+		virtual std::string WindowResizedEvent::GetName() const override { return "WindowResized"; }
+		virtual int WindowResizedEvent::GetCategoryFlags() const override { return EventCategory::ApplicationEventCategory; }
 
 		virtual std::string ToString() const override;
 

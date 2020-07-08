@@ -5,7 +5,7 @@
 
 namespace FarLight
 {
-    Input* Input::_instance = new WindowsInput();
+    std::shared_ptr<Input> Input::_instance = std::make_shared<WindowsInput>();
 
     bool WindowsInput::IsKeyPressedImpl(KeyboardKeyCodes code) const
     {
@@ -184,8 +184,6 @@ namespace FarLight
         }
         return MouseButtonCodes::FL_MOUSE_BUTTON_UNKNOWN;
     }
-    
-    inline GLFWwindow* WindowsInput::GetGLFWwindow() const { return static_cast<GLFWwindow*>(Application::GetInstance()->GetWindow()->GetNativeWindow()); }
 
     int WindowsInput::GetKeyboardKeyFromGLFW(KeyboardKeyCodes code) const
     {

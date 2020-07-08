@@ -6,7 +6,7 @@
 
 #ifdef FL_PLATFORM_WINDOWS
 
-extern FarLight::Application* FarLight::CreateApplication();
+extern std::shared_ptr<FarLight::Application> FarLight::CreateApplication();
 
 int main(int args, char** argv)
 {
@@ -17,8 +17,6 @@ int main(int args, char** argv)
 	FL_INFO("Client application initialized.");
 
 	app->Run();
-
-	delete app;
 }
 
 #endif

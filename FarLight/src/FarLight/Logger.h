@@ -12,12 +12,12 @@ namespace FarLight
 	public:
 		static void Init();
 
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger();
-		static std::shared_ptr<spdlog::logger>& GetClientLogger();
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return _CoreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return _ClientLogger; }
 		
 	private:
-		static std::shared_ptr<spdlog::logger> s_CoreLogger;
-		static std::shared_ptr<spdlog::logger> s_ClientLogger;
+		static std::shared_ptr<spdlog::logger> _CoreLogger;
+		static std::shared_ptr<spdlog::logger> _ClientLogger;
 	};
 }
 

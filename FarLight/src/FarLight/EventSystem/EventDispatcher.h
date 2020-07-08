@@ -10,7 +10,8 @@ namespace FarLight
 		using eventFunction = std::function<bool(const T&)>;
 
 	public:
-		explicit EventDispatcher(Event& evt);
+		explicit EventDispatcher(Event& evt)
+			: evt(evt) { }
 
 		template<typename T>
 		bool Dispatch(const eventFunction<T>& func)

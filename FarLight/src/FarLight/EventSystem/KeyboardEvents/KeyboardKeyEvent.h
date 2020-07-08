@@ -8,13 +8,14 @@ namespace FarLight
 		: public Event
 	{
 	public:
-		int GetKeyCode() const;
-		virtual int GetCategoryFlags() const override;
+		int GetKeyCode() const { return _keyCode; }
+		virtual int GetCategoryFlags() const override { return (KeyboardEventCategory | InputEventCategory); }
 
 		virtual ~KeyboardKeyEvent() = default;
 
 	protected:
-		explicit KeyboardKeyEvent(int keyCode);
+		explicit KeyboardKeyEvent(int keyCode)
+			: _keyCode(keyCode) { }
 
 	private:
 		int _keyCode;

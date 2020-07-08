@@ -12,9 +12,6 @@
 
 namespace FarLight
 {
-	ImGuiLayer::ImGuiLayer()
-		: Layer("ImGuiLayer"), _time(0.0) { }
-
 	void ImGuiLayer::OnAttach() const
 	{
 		// Setup Dear ImGui context
@@ -40,7 +37,7 @@ namespace FarLight
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
-		GLFWwindow* win = static_cast<GLFWwindow*>(Application::GetInstance()->GetWindow()->GetNativeWindow());
+		GLFWwindow* win = static_cast<GLFWwindow*>(Application::GetInstance()->GetWindow()->GetNativeWindow().get());
 
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(win, true);
@@ -58,7 +55,7 @@ namespace FarLight
 	void ImGuiLayer::OnUpdate()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		double time = glfwGetTime();
+		float time = static_cast<float>(glfwGetTime());
 		io.DeltaTime = _time > 0.0f ? (time - _time) : (1.0f / 60.0f);
 		_time = time;
 	}
@@ -75,7 +72,7 @@ namespace FarLight
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		auto app = Application::GetInstance();
-		io.DisplaySize = ImVec2(app->GetWindow()->GetWidth(), app->GetWindow()->GetHeight());
+		io.DisplaySize = ImVec2(static_cast<float>(app->GetWindow()->GetWidth()), static_cast<float>(app->GetWindow()->GetHeight()));
 
 		// Rendering
 		ImGui::Render();
@@ -98,6 +95,4 @@ namespace FarLight
 		static bool showDemo = true;
 		ImGui::ShowDemoWindow(&showDemo);
 	}
-	
-	void ImGuiLayer::OnEvent(Event& event) { }
 }

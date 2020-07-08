@@ -32,10 +32,10 @@ public:
 	WindowsWindow* w2;
 	WindowsWindow* w3;
 	WindowsWindow* w4;
-	std::unique_ptr<Window> w5;
-	std::unique_ptr<Window> w6;
-	std::unique_ptr<Window> w7;
-	std::unique_ptr<Window> w8;
+	std::shared_ptr<Window> w5;
+	std::shared_ptr<Window> w6;
+	std::shared_ptr<Window> w7;
+	std::shared_ptr<Window> w8;
 };
 
 TEST_F(WindowsWindowTest, GetWidth)
