@@ -2,6 +2,8 @@
 #include "FarLight/WindowSystem/Window.h"
 #include "FarLight/WindowSystem/WindowProps.h"
 
+#include "FarLight/Platform/Renderer/OpenGL/OpenGLContext.h"
+
 #include <GLFW/glfw3.h>
 
 namespace FarLight
@@ -31,6 +33,7 @@ namespace FarLight
 		void SetGLFWCallbacks();
 
 		std::shared_ptr<GLFWwindow> _window;
+		std::shared_ptr<OpenGLContext> _context;
 
 		struct WindowData
 		{

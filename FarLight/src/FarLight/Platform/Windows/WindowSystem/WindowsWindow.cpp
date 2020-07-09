@@ -37,7 +37,7 @@ namespace FarLight
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(_window.get());
+		_context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
@@ -66,10 +66,9 @@ namespace FarLight
 		}
 
 		_window = std::shared_ptr<GLFWwindow>(glfwCreateWindow(static_cast<int>(props._width), static_cast<int>(props._height), _data._title.c_str(), nullptr, nullptr), glfwDestroyWindow);
-		glfwMakeContextCurrent(_window.get());
-
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		FL_CORE_ASSERT(status, "Failed to initialize Glad!");
+		
+		_context = std::make_shared<OpenGLContext>(_window);
+		_context->Init();
 
 		glfwSetWindowUserPointer(_window.get(), &_data);
 		SetVSync(true);
