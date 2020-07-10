@@ -8,6 +8,8 @@
 #include "FarLight/LayerSystem/LayerStack.h"
 #include "FarLight/LayerSystem/EngineLayers/ImGuiLayer.h"
 
+#include "FarLight/Renderer/Shader.h"
+
 namespace FarLight
 {
 	class FARLIGHT_API Application
@@ -24,8 +26,6 @@ namespace FarLight
 		std::shared_ptr<Window> GetWindow() { return _window; }
 
 	private:
-		static std::shared_ptr<Application> _instance;
-
 		explicit Application();
 		Application(const Application&) = delete;
 		Application(Application&&) = delete;
@@ -33,8 +33,13 @@ namespace FarLight
 		Application& operator=(Application&&) = delete;
 
 		void Init();
-
 		bool OnWindowClosed(const WindowClosedEvent& e);
+
+		static std::shared_ptr<Application> _instance;
+
+		unsigned int _vertextArray, _vertexBuffer, _indexBuffer;
+
+		std::unique_ptr<Shader> _shader;
 
 		std::shared_ptr<Window> _window;
 		std::shared_ptr<ImGuiLayer> _userInterfaceLayer;
