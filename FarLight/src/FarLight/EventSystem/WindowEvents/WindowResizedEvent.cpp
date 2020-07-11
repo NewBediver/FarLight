@@ -1,4 +1,5 @@
 #include "flpch.h"
+
 #include "WindowResizedEvent.h"
 
 namespace FarLight

@@ -2,7 +2,7 @@
 #include "FarLight/WindowSystem/Window.h"
 #include "FarLight/WindowSystem/WindowProps.h"
 
-#include "FarLight/Platform/Renderer/OpenGL/OpenGLContext.h"
+#include "FarLight/Platform/Renderer/OpenGL/Context/OpenGLContext.h"
 
 #include <GLFW/glfw3.h>
 

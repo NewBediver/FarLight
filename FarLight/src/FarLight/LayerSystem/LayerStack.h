@@ -1,8 +1,5 @@
 #pragma once
 
-#include "flpch.h"
-
-#include "FarLight/Core.h"
 #include "Layer.h"
 
 namespace FarLight

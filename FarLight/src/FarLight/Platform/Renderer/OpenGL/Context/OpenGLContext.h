@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FarLight/Renderer/GraphicsContext.h"
+#include "FarLight/RenderSystem/GraphicsContext.h"
 
 #include <GLFW\glfw3.h>
 

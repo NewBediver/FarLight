@@ -11,8 +11,6 @@
 #include "FarLight/EventSystem/MouseEvents/MouseMovedEvent.h"
 #include "FarLight/EventSystem/MouseEvents/MouseScrolledEvent.h"
 
-#include "FarLight/Core.h"
-
 #include <glad/glad.h>
 
 namespace FarLight

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "flpch.h"
-
 #include "EventSystem/WindowEvents/WindowClosedEvent.h"
 #include "WindowSystem/Window.h"
 
 #include "FarLight/LayerSystem/LayerStack.h"
 #include "FarLight/LayerSystem/EngineLayers/ImGuiLayer.h"
 
-#include "FarLight/Renderer/Shader.h"
+#include "FarLight/RenderSystem/VertexBuffer/VertexBuffer.h"
+#include "FarLight/RenderSystem/IndexBuffer/IndexBuffer.h"
+#include "FarLight/RenderSystem/Shader/Shader.h"
 
 namespace FarLight
 {
@@ -37,8 +37,10 @@ namespace FarLight
 
 		static std::shared_ptr<Application> _instance;
 
-		unsigned int _vertextArray, _vertexBuffer, _indexBuffer;
+		unsigned int _vertextArray;
 
+		std::unique_ptr<VertexBuffer> _vertexBuffer;
+		std::unique_ptr<IndexBuffer> _indexBuffer;
 		std::unique_ptr<Shader> _shader;
 
 		std::shared_ptr<Window> _window;

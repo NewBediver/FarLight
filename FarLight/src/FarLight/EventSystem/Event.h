@@ -2,11 +2,26 @@
 
 #include "flpch.h"
 
-#include "FarLight/Core.h"
-#include "EventEnums.h"
-
 namespace FarLight
 {
+	enum class EventType
+	{
+		None = 0,
+		WindowClosedEventType, WindowResizedEventType, WindowFocusedEventType, WindowLostFocusEventType, WindowMovedEventType,
+		KeyboardKeyPressedEventType, KeyboardKeyReleasedEventType, KeyboardKeyTypedEventType,
+		MouseButtonPressedEventType, MouseButtonReleasedEventType, MouseMovedEventType, MouseScrolledEventType
+	};
+
+	enum EventCategory
+	{
+		None = 0,
+		ApplicationEventCategory = BIT(0),
+		InputEventCategory = BIT(1),
+		KeyboardEventCategory = BIT(2),
+		MouseEventCategory = BIT(3),
+		MouseButtonEventCategory = BIT(4)
+	};
+
 	/*
 	Simple blocking events.
 	Later some kind of Event Buffer will be created.

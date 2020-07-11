@@ -1,12 +1,12 @@
 #include "flpch.h"
-#include "Shader.h"
+#include "OpenGLShader.h"
 
 #include <glad/glad.h>
 
 namespace FarLight
 {
-	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
-		: _programId(0)
+	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+		: _rendererID(0)
 	{
 		// Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -80,8 +80,8 @@ namespace FarLight
 		// Vertex and fragment shaders are successfully compiled.
 		// Now time to link them together into a program.
 		// Get a program object.
-		_programId = glCreateProgram();
-		GLuint program = _programId;
+		_rendererID = glCreateProgram();
+		GLuint program = _rendererID;
 
 		// Attach our shaders to our program
 		glAttachShader(program, vertexShader);
@@ -122,17 +122,17 @@ namespace FarLight
 		glDetachShader(program, fragmentShader);
 	}
 
-	Shader::~Shader()
+	OpenGLShader::~OpenGLShader()
 	{
-		glDeleteProgram(_programId);
+		glDeleteProgram(_rendererID);
 	}
 
-	void Shader::Bind() const
+	void OpenGLShader::Bind() const
 	{
-		glUseProgram(_programId);
-	
+		glUseProgram(_rendererID);
+
 	}
-	void Shader::Unbind() const
+	void OpenGLShader::Unbind() const
 	{
 		glUseProgram(0);
 	}

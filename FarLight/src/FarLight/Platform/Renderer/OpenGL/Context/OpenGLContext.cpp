@@ -1,6 +1,8 @@
 #include "flpch.h"
 #include "OpenGLContext.h"
 
+#include "FarLight/Logger.h"
+
 #include <glad/glad.h>
 
 namespace FarLight
@@ -11,6 +13,7 @@ namespace FarLight
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		FL_CORE_ASSERT(status, "Failed to initialize Glad!");
 
+		// Comment before tests
 		FL_CORE_INFO("===== OpenGL Info =====");
 		FL_CORE_INFO("   Vendor: {0}", glGetString(GL_VENDOR));
 		FL_CORE_INFO("   Renderer: {0}", glGetString(GL_RENDERER));

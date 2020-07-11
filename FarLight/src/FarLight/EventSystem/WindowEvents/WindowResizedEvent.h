@@ -1,7 +1,5 @@
 #pragma once
 
-#include "flpch.h"
-
 #include "FarLight/EventSystem/Event.h"
 
 namespace FarLight
