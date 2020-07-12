@@ -14,7 +14,11 @@ namespace FarLight
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
+		virtual const BufferLayout& GetLayout() const override { return _layout; }
+		virtual void SetLayout(const BufferLayout& layout) override { _layout = layout; }
+
 	private:
 		unsigned int _rendererID;
+		BufferLayout _layout;
 	};
 }
