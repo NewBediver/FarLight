@@ -1,4 +1,5 @@
 #include "flpch.h"
+
 #include "IndexBuffer.h"
 
 #include "FarLight/RenderSystem/Renderer.h"
@@ -12,7 +13,7 @@ namespace FarLight
 		{
 			case RendererAPI::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 			case RendererAPI::OpenGL:  return std::make_unique<OpenGLIndexBuffer>(indicies, count);
-			}
+		}
 
 		FL_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;

@@ -6,9 +6,8 @@
 #include "FarLight/LayerSystem/LayerStack.h"
 #include "FarLight/LayerSystem/EngineLayers/ImGuiLayer.h"
 
-#include "FarLight/RenderSystem/VertexBuffer/VertexBuffer.h"
-#include "FarLight/RenderSystem/IndexBuffer/IndexBuffer.h"
 #include "FarLight/RenderSystem/Shader/Shader.h"
+#include "FarLight/RenderSystem/VertexArray/VertexArray.h"
 
 namespace FarLight
 {
@@ -39,9 +38,11 @@ namespace FarLight
 
 		unsigned int _vertextArray;
 
-		std::unique_ptr<VertexBuffer> _vertexBuffer;
-		std::unique_ptr<IndexBuffer> _indexBuffer;
-		std::unique_ptr<Shader> _shader;
+		std::shared_ptr<Shader> _shader;
+		std::shared_ptr<VertexArray> _vertexArray;
+
+		std::shared_ptr<Shader> _blueShader;
+		std::shared_ptr<VertexArray> _squareVertexArray;
 
 		std::shared_ptr<Window> _window;
 		std::shared_ptr<ImGuiLayer> _userInterfaceLayer;

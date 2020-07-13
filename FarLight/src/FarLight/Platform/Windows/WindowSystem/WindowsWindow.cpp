@@ -1,4 +1,5 @@
 #include "flpch.h"
+
 #include "WindowsWindow.h"
 
 #include "FarLight/EventSystem/WindowEvents/WindowResizedEvent.h"

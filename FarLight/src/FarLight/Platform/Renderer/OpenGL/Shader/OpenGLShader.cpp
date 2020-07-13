@@ -1,4 +1,5 @@
 #include "flpch.h"
+
 #include "OpenGLShader.h"
 
 #include <glad/glad.h>

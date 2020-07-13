@@ -1,6 +1,8 @@
 #pragma once
 
-#include "flpch.h"
+#include <iostream>
+
+#include "FarLight/Core.h"
 
 namespace FarLight
 {

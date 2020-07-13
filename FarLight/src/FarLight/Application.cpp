@@ -1,38 +1,16 @@
 #include "flpch.h"
-#include "Application.h"
 
-#include <glad/glad.h>
+#include "Application.h"
 
 #include "Core.h"
 #include "FarLight/EventSystem/EventDispatcher.h"
-
 #include "FarLight/RenderSystem/BufferLayout/BufferLayout.h"
-
 #include "InputSystem/Input.h"
+
+#include <glad/glad.h>
 
 namespace FarLight
 {
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-		case FarLight::ShaderDataType::Float:    return GL_FLOAT;
-		case FarLight::ShaderDataType::Float2:   return GL_FLOAT;
-		case FarLight::ShaderDataType::Float3:   return GL_FLOAT;
-		case FarLight::ShaderDataType::Float4:   return GL_FLOAT;
-		case FarLight::ShaderDataType::Mat3:     return GL_FLOAT;
-		case FarLight::ShaderDataType::Mat4:     return GL_FLOAT;
-		case FarLight::ShaderDataType::Int:      return GL_INT;
-		case FarLight::ShaderDataType::Int2:     return GL_INT;
-		case FarLight::ShaderDataType::Int3:     return GL_INT;
-		case FarLight::ShaderDataType::Int4:     return GL_INT;
-		case FarLight::ShaderDataType::Bool:     return GL_BOOL;
-		}
-
-		FL_CORE_ASSERT(false, "Unknown ShaderDataType!");
-		return 0;
-	}
-
 	std::shared_ptr<Application> Application::_instance = nullptr;
 
 	std::shared_ptr<Application> Application::GetInstance()
@@ -53,12 +31,16 @@ namespace FarLight
 		Init();
 		while (_isRunning)
 		{
-			glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+			glClearColor(0.2f, 0.2f, 0.2f, 1.00f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			
+			_blueShader->Bind();
+			_squareVertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, _squareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
 			_shader->Bind();
-			glBindVertexArray(_vertextArray);
-			glDrawElements(GL_TRIANGLES, _indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			_vertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, _vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (auto& layer : _layerStack) layer->OnUpdate();
 
@@ -88,8 +70,7 @@ namespace FarLight
 		_window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
 		_layerStack.PushOverlay(_userInterfaceLayer);
 
-		glGenVertexArrays(1, &_vertextArray);
-		glBindVertexArray(_vertextArray);
+		_vertexArray = VertexArray::Create();
 
 		float verticies[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -97,33 +78,36 @@ namespace FarLight
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		_vertexBuffer = VertexBuffer::Create(verticies, sizeof(verticies));
-
-		{
-			BufferLayout layout = {
-				{ ShaderDataType::Float3, "a_Position" },
-				{ ShaderDataType::Float4, "a_Color" }
-			};
-
-			_vertexBuffer->SetLayout(layout);
-		}
-
-		unsigned int index = 0;
-		const auto& layout = _vertexBuffer->GetLayout();
-		for (const auto& element : layout)
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index,
-				ShaderDataTypeCount(element.Type),
-				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE,
-				layout.GetStride(),
-				(const void*)element.Offset);
-			++index;
-		}
+		std::shared_ptr<VertexBuffer> vertexBuffer = VertexBuffer::Create(verticies, sizeof(verticies));
+		BufferLayout layout = {
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" }
+		};
+		vertexBuffer->SetLayout(layout);
+		_vertexArray->AddVertexBuffer(vertexBuffer);
 
 		unsigned int indices[3] = { 0, 1, 2 };
-		_indexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int));
+		std::shared_ptr<IndexBuffer> indexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int));
+		_vertexArray->SetIndexBuffer(indexBuffer);
+
+		_squareVertexArray = VertexArray::Create();
+
+		float squareVertices[3 * 4] = {
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f,
+			 0.75f,  0.75f, 0.0f,
+			-0.75f,  0.75f, 0.0f
+		};
+
+		std::shared_ptr<VertexBuffer> squareVertexBuffer = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+		squareVertexBuffer->SetLayout({
+			{ShaderDataType::Float3, "a_Position"}
+		});
+		_squareVertexArray->AddVertexBuffer(squareVertexBuffer);
+
+		unsigned int squareIndicies[6] = { 0, 1, 2, 2, 3, 0 };
+		std::shared_ptr<IndexBuffer> squareIndexBuffer = IndexBuffer::Create(squareIndicies, sizeof(squareIndicies) / sizeof(unsigned int));
+		_squareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
 		std::string vertexSrc = R"(
 			#version 330 core
@@ -158,6 +142,36 @@ namespace FarLight
 		)";
 
 		_shader = Shader::Create(vertexSrc, fragmentSrc);
+
+
+		std::string blueVertexSrc = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+
+			out vec3 v_Position;
+
+			void main()
+			{
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string blueFragmentSrc = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 a_Color;
+
+			in vec3 v_Position;
+
+			void main()
+			{
+				a_Color = vec4(0.2, 0.3, 0.8, 1.0);
+			}
+		)";
+
+		_blueShader = Shader::Create(blueVertexSrc, blueFragmentSrc);
 	}
 
 	bool Application::OnWindowClosed(const WindowClosedEvent& e)

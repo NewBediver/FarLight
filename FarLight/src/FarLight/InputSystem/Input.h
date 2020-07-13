@@ -1,7 +1,8 @@
 #pragma once
 
-#include "flpch.h"
+#include <memory>
 
+#include "FarLight/Core.h"
 #include "KeyboardKeyCodes.h"
 #include "MouseButtonCodes.h"
 

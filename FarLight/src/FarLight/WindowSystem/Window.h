@@ -1,7 +1,9 @@
 #pragma once
 
-#include "WindowProps.h"
+#include <memory>
+#include <functional>
 
+#include "WindowProps.h"
 #include "FarLight/EventSystem/Event.h"
 
 namespace FarLight

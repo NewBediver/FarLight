@@ -1,4 +1,5 @@
 #include "flpch.h"
+
 #include "OpenGLVertexBuffer.h"
 
 #include <glad/glad.h>

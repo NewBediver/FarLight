@@ -1,4 +1,5 @@
 #include "flpch.h"
+
 #include "OpenGLIndexBuffer.h"
 
 #include <glad/glad.h>

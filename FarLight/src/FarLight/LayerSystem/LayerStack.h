@@ -21,9 +21,6 @@ namespace FarLight
 		std::vector<std::shared_ptr<Layer>>::reverse_iterator LayerStack::rend() { return _layers.rend(); }
 
 	private:
-		void DeleteLayerByThePointer(std::shared_ptr<Layer> layer);
-		void UpdateLayerInsertIndex(std::vector<std::shared_ptr<Layer>>::iterator it);
-
 		std::vector<std::shared_ptr<Layer>> _layers;
 		unsigned int _layerInsertIndex;
 	};

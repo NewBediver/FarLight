@@ -1,4 +1,5 @@
 #include "flpch.h"
+
 #include "WindowsInput.h"
 
 #include "FarLight/Application.h"
