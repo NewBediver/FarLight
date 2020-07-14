@@ -1,21 +1,18 @@
 #pragma once
 
+#include "RendererAPI/RendererAPI.h"
+
 namespace FarLight
 {
-	enum class RendererAPI
-	{
-		None = 0,
-		OpenGL = 1
-	};
-
-
 	class FARLIGHT_API Renderer
 	{
 	public:
-		static RendererAPI GetAPI() { return _rendererAPI; }
-		static void SetAPI(RendererAPI api) { _rendererAPI = api; }
 
-	private:
-		static RendererAPI _rendererAPI;
+		static void BeginScene();
+		static void EndScene();
+
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	};
 }

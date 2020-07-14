@@ -11,8 +11,8 @@ namespace FarLight
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
-			case RendererAPI::OpenGL:  return std::make_unique<OpenGLVertexArray>();
+			case RendererAPI::API::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			case RendererAPI::API::OpenGL:  return std::make_unique<OpenGLVertexArray>();
 		}
 
 		FL_CORE_ASSERT(false, "Unknown RendererAPI!");

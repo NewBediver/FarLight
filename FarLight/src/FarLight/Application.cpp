@@ -2,12 +2,12 @@
 
 #include "Application.h"
 
-#include "Core.h"
 #include "FarLight/EventSystem/EventDispatcher.h"
-#include "FarLight/RenderSystem/BufferLayout/BufferLayout.h"
+
 #include "InputSystem/Input.h"
 
-#include <glad/glad.h>
+#include "FarLight/RenderSystem/Renderer.h"
+#include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
 
 namespace FarLight
 {
@@ -31,16 +31,18 @@ namespace FarLight
 		Init();
 		while (_isRunning)
 		{
-			glClearColor(0.2f, 0.2f, 0.2f, 1.00f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.00f });
+			RenderCommand::Clear();
 			
+			Renderer::BeginScene();
+
 			_blueShader->Bind();
-			_squareVertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, _squareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(_squareVertexArray);
 
 			_shader->Bind();
-			_vertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, _vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(_vertexArray);
+
+			Renderer::EndScene();
 
 			for (auto& layer : _layerStack) layer->OnUpdate();
 
@@ -57,7 +59,7 @@ namespace FarLight
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowClosedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowClosed));
 
-		//FL_CORE_TRACE("{0}", e);
+		FL_CORE_TRACE("{0}", e);
 		for (auto it = _layerStack.rbegin(); it != _layerStack.rend(); ++it)
 		{
 			(*it)->OnEvent(e);
