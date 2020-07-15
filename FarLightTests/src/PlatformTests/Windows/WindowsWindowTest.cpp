@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <FarLight/WindowSystem/WindowProps.h>
-#include <FarLight/Platform/Windows/WindowSystem/WindowsWindow.h>
+#include <Platform/Windows/WindowSystem/WindowsWindow.h>
 
 using namespace FarLight;
 

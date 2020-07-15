@@ -3,7 +3,7 @@
 #include "VertexBuffer.h"
 
 #include "FarLight/RenderSystem/Renderer.h"
-#include "FarLight/Platform/Renderer/OpenGL/VertexBuffer/OpenGLVertexBuffer.h"
+#include "Platform/Renderer/OpenGL/VertexBuffer/OpenGLVertexBuffer.h"
 
 namespace FarLight
 {

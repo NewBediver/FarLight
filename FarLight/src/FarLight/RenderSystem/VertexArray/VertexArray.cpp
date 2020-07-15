@@ -3,7 +3,7 @@
 #include "VertexArray.h"
 
 #include "FarLight/RenderSystem/Renderer.h"
-#include "FarLight/Platform/Renderer/OpenGL/VertexArray/OpenGLVertexArray.h"
+#include "Platform/Renderer/OpenGL/VertexArray/OpenGLVertexArray.h"
 
 namespace FarLight
 {

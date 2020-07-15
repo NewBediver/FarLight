@@ -6,7 +6,7 @@
 
 namespace FarLight
 {
-	struct BufferElement
+	struct FARLIGHT_API BufferElement
 	{
 		std::string Name;
 		ShaderDataType Type;
@@ -17,10 +17,9 @@ namespace FarLight
 		BufferElement() = default;
 		BufferElement(ShaderDataType type, std::string name, bool normalized = false)
 			: Type(type), Name(name), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized) { }
-
 	};
 
-	class BufferLayout
+	class FARLIGHT_API BufferLayout
 	{
 	public:
 		BufferLayout() = default;

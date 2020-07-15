@@ -7,14 +7,12 @@ namespace FarLight
 	class FARLIGHT_API WindowResizedEvent
 		: public Event
 	{
-		using uint = unsigned int;
-
 	public:
-		explicit WindowResizedEvent(uint width, uint height)
+		explicit WindowResizedEvent(unsigned int width, unsigned int height)
 			: _width(width), _height(height) { }
 
-		uint WindowResizedEvent::GetWidth() const { return _width; }
-		uint WindowResizedEvent::GetHeight() const { return _height; }
+		unsigned int WindowResizedEvent::GetWidth() const { return _width; }
+		unsigned int WindowResizedEvent::GetHeight() const { return _height; }
 
 		static EventType GetStaticType() { return EventType::WindowResizedEventType; }
 
@@ -25,6 +23,6 @@ namespace FarLight
 		virtual std::string ToString() const override;
 
 	private:
-		uint _width, _height;
+		unsigned int _width, _height;
 	};
 }

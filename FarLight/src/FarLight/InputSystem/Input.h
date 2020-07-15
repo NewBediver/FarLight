@@ -30,6 +30,8 @@ namespace FarLight
 		virtual KeyboardKeyCodes GetFLKeyboardKeyCodeImpl(int code) const = 0;
 		virtual MouseButtonCodes GetFLMouseButtonCodeImpl(int code) const = 0;
 
+		virtual ~Input() = default;
+
 	private:
 		static std::shared_ptr<Input> _instance;
 	};

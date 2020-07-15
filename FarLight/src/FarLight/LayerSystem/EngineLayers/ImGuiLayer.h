@@ -8,7 +8,7 @@ namespace FarLight
 		: public Layer
 	{
 	public:
-		ImGuiLayer()
+		explicit ImGuiLayer()
 			: Layer("ImGuiLayer"), _time(0.0) { }
 
 		virtual void OnAttach() const override;

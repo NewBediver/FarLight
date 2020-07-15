@@ -2,7 +2,7 @@
 
 #include "FarLight/WindowSystem/Window.h"
 #include "FarLight/WindowSystem/WindowProps.h"
-#include "FarLight/Platform/Renderer/OpenGL/Context/OpenGLContext.h"
+#include "Platform/Renderer/OpenGL/Context/OpenGLContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -12,7 +12,6 @@ namespace FarLight
 		: public Window
 	{
 	public:
-		WindowsWindow() = delete;
 		explicit WindowsWindow(const WindowProps& props);
 
 		virtual void OnUpdate() override;

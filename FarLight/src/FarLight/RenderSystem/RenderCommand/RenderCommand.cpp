@@ -2,7 +2,7 @@
 
 #include "RenderCommand.h"
 
-#include "FarLight/Platform/Renderer/OpenGL/RendererAPI/OpenGLRendererAPI.h"
+#include "Platform/Renderer/OpenGL/RendererAPI/OpenGLRendererAPI.h"
 
 namespace FarLight
 {

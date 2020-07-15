@@ -6,8 +6,6 @@
 
 namespace FarLight
 {
-    std::shared_ptr<Input> Input::_instance = std::make_shared<WindowsInput>();
-
     bool WindowsInput::IsKeyPressedImpl(KeyboardKeyCodes code) const
     {
         int key = GetKeyboardKeyFromGLFW(code);

@@ -7,7 +7,6 @@ namespace FarLight
 	class FARLIGHT_API Renderer
 	{
 	public:
-
 		static void BeginScene();
 		static void EndScene();
 

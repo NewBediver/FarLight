@@ -3,7 +3,7 @@
 #include "IndexBuffer.h"
 
 #include "FarLight/RenderSystem/Renderer.h"
-#include "FarLight/Platform/Renderer/OpenGL/IndexBuffer/OpenGLIndexBuffer.h"
+#include "Platform/Renderer/OpenGL/IndexBuffer/OpenGLIndexBuffer.h"
 
 namespace FarLight
 {
@@ -19,5 +19,3 @@ namespace FarLight
 		return nullptr;
 	}
 }
-
-

@@ -3,7 +3,7 @@
 #include "Shader.h"
 
 #include "FarLight/RenderSystem/Renderer.h"
-#include "FarLight/Platform/Renderer/OpenGL/Shader/OpenGLShader.h"
+#include "Platform/Renderer/OpenGL/Shader/OpenGLShader.h"
 
 namespace FarLight
 {

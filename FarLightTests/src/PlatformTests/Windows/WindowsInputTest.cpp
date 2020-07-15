@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <FarLight/Platform/Windows/InputSystem/WindowsInput.h>
+#include <Platform/Windows/InputSystem/WindowsInput.h>
 
 using namespace FarLight;
 
