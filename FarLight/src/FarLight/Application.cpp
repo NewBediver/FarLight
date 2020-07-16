@@ -20,7 +20,7 @@ namespace FarLight
 	}
 
 	Application::Application()
-		: _isRunning(true)
+		: _isRunning(true), _camera(-1.5f, 1.5f, -1.0f, 1.0f)
 	{
 		_window = Window::Create();
 		_userInterfaceLayer = std::make_shared<ImGuiLayer>();
@@ -34,13 +34,13 @@ namespace FarLight
 			RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.00f });
 			RenderCommand::Clear();
 			
-			Renderer::BeginScene();
+			_camera.SetPosition({ 0.5f, 0.5f, 0.0f });
+			_camera.SetZRotation(45.0f);
 
-			_blueShader->Bind();
-			Renderer::Submit(_squareVertexArray);
+			Renderer::BeginScene(_camera);
 
-			_shader->Bind();
-			Renderer::Submit(_vertexArray);
+			Renderer::Submit(_blueShader, _squareVertexArray);
+			Renderer::Submit(_shader, _vertexArray);
 
 			Renderer::EndScene();
 
@@ -117,6 +117,8 @@ namespace FarLight
 			layout(location = 0) in vec3 a_Position;
 			layout(location = 1) in vec4 a_Color;
 
+			uniform mat4 u_ViewProjection;
+
 			out vec3 v_Position;
 			out vec4 v_Color;
 
@@ -124,7 +126,7 @@ namespace FarLight
 			{
 				v_Position = a_Position;
 				v_Color = a_Color;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -151,12 +153,14 @@ namespace FarLight
 
 			layout(location = 0) in vec3 a_Position;
 
+			uniform mat4 u_ViewProjection;
+
 			out vec3 v_Position;
 
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 

@@ -9,6 +9,8 @@
 #include "FarLight/RenderSystem/Shader/Shader.h"
 #include "FarLight/RenderSystem/VertexArray/VertexArray.h"
 
+#include "FarLight/RenderSystem/Camera/OrthographicCamera.h"
+
 namespace FarLight
 {
 	class FARLIGHT_API Application
@@ -46,8 +48,10 @@ namespace FarLight
 
 		std::shared_ptr<Window> _window;
 		std::shared_ptr<ImGuiLayer> _userInterfaceLayer;
+
 		bool _isRunning;
 		LayerStack _layerStack;
+		OrthographicCamera _camera;
 	};
 
 	// To be defined in CLIENT

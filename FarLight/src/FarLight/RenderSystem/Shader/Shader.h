@@ -3,6 +3,8 @@
 #include "FarLight/Core.h"
 #include "FarLight/Logger.h"
 
+#include <glm/glm.hpp>
+
 namespace FarLight
 {
 	enum class ShaderDataType
@@ -63,6 +65,8 @@ namespace FarLight
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
+
+		virtual void UploadUnoformMat4(const std::string& name, const glm::mat4& matrix) const = 0;
 
 		static std::unique_ptr<Shader> Create(const std::string& vertexSrc, const std::string& fragmentSrc);
 	};
