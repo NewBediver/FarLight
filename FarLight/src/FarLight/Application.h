@@ -6,11 +6,6 @@
 #include "FarLight/LayerSystem/LayerStack.h"
 #include "FarLight/LayerSystem/EngineLayers/ImGuiLayer.h"
 
-#include "FarLight/RenderSystem/Shader/Shader.h"
-#include "FarLight/RenderSystem/VertexArray/VertexArray.h"
-
-#include "FarLight/RenderSystem/Camera/OrthographicCamera.h"
-
 namespace FarLight
 {
 	class FARLIGHT_API Application
@@ -33,25 +28,15 @@ namespace FarLight
 		Application& operator=(const Application&) = delete;
 		Application& operator=(Application&&) = delete;
 
-		void Init();
 		bool OnWindowClosed(const WindowClosedEvent& e);
 
 		static std::shared_ptr<Application> _instance;
-
-		unsigned int _vertextArray;
-
-		std::shared_ptr<Shader> _shader;
-		std::shared_ptr<VertexArray> _vertexArray;
-
-		std::shared_ptr<Shader> _blueShader;
-		std::shared_ptr<VertexArray> _squareVertexArray;
 
 		std::shared_ptr<Window> _window;
 		std::shared_ptr<ImGuiLayer> _userInterfaceLayer;
 
 		bool _isRunning;
 		LayerStack _layerStack;
-		OrthographicCamera _camera;
 	};
 
 	// To be defined in CLIENT

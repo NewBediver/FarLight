@@ -8,7 +8,6 @@
 #include "examples/imgui_impl_glfw.h"
 #include "examples/imgui_impl_opengl3.h"
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace FarLight
@@ -19,7 +18,7 @@ namespace FarLight
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
@@ -51,14 +50,6 @@ namespace FarLight
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
-	}
-
-	void ImGuiLayer::OnUpdate()
-	{
-		ImGuiIO& io = ImGui::GetIO();
-		float time = static_cast<float>(glfwGetTime());
-		io.DeltaTime = _time > 0.0f ? (time - _time) : (1.0f / 60.0f);
-		_time = time;
 	}
 
 	void ImGuiLayer::Begin() const
@@ -93,7 +84,7 @@ namespace FarLight
 
 	void ImGuiLayer::OnUserInterfaceRender()
 	{
-		static bool showDemo = true;
+		bool showDemo = true;
 		ImGui::ShowDemoWindow(&showDemo);
 	}
 }
