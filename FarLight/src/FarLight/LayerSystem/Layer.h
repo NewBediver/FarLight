@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FarLight/EventSystem/Event.h"
+#include "FarLight/Core/Timestep.h"
 
 namespace FarLight
 {
@@ -14,7 +15,7 @@ namespace FarLight
 
 		virtual void OnAttach() const = 0;
 		virtual void OnDetach() const = 0;
-		virtual void OnUpdate() = 0;
+		virtual void OnUpdate(const Timestep& timestamp) = 0;
 		virtual void OnUserInterfaceRender() = 0;
 		virtual void OnEvent(Event& event) = 0;
 

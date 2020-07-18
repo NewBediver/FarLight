@@ -2,12 +2,16 @@
 
 #include "Application.h"
 
+#include "FarLight/Core/Timestep.h"
+
 #include "FarLight/EventSystem/EventDispatcher.h"
 
 #include "InputSystem/Input.h"
 
 #include "FarLight/RenderSystem/Renderer.h"
 #include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
+
+#include <GLFW/glfw3.h>
 
 namespace FarLight
 {
@@ -20,7 +24,7 @@ namespace FarLight
 	}
 
 	Application::Application()
-		: _isRunning(true)
+		: _isRunning(true), _lastFrameTime(0.0f)
 	{
 		_window = Window::Create();
 		_userInterfaceLayer = std::make_shared<ImGuiLayer>();
@@ -33,7 +37,14 @@ namespace FarLight
 
 		while (_isRunning)
 		{
-			for (auto& layer : _layerStack) layer->OnUpdate();
+			FarLight::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
+			FarLight::RenderCommand::Clear();
+
+			float time = static_cast<float>(glfwGetTime());
+			Timestep ts(time - _lastFrameTime);
+			_lastFrameTime = time;
+
+			for (auto& layer : _layerStack) layer->OnUpdate(ts);
 
 			_userInterfaceLayer->Begin();
 			for (auto& layer : _layerStack) layer->OnUserInterfaceRender();

@@ -37,6 +37,8 @@ namespace FarLight
 
 		bool _isRunning;
 		LayerStack _layerStack;
+
+		float _lastFrameTime;
 	};
 
 	// To be defined in CLIENT

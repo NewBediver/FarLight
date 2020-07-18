@@ -3,6 +3,8 @@
 // For use by FarLight applications
 #include "FarLight/Application.h"
 
+#include "FarLight/Core/Timestep.h"
+
 //---Logger---------------------------
 #include "FarLight/Logger.h"
 //------------------------------------

@@ -12,12 +12,12 @@ namespace FarLight
 
 		virtual void OnAttach() const override;
 		virtual void OnDetach() const override;
-		virtual void OnUpdate() override;
+		virtual void OnUpdate(const Timestep& timestamp) override;
 		virtual void OnUserInterfaceRender() override;
 		virtual void OnEvent(Event& event) override;
 
 	private:
-		void HandleInput();
+		void HandleInput(const Timestep& timestamp);
 
 		std::shared_ptr<Shader> _shader;
 		std::shared_ptr<VertexArray> _vertexArray;
@@ -32,5 +32,8 @@ namespace FarLight
 
 		float _cameraRotationSpeed;
 		float _cameraRotation;
+
+		float _squareMovementSpeed;
+		glm::vec3 _squarePosition;
 	};
 }

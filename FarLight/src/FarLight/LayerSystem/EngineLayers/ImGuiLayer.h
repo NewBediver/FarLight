@@ -13,7 +13,7 @@ namespace FarLight
 
 		virtual void OnAttach() const override;
 		virtual void OnDetach() const override;
-		virtual void OnUpdate() override { };
+		virtual void OnUpdate(const Timestep& timestamp) override { };
 		virtual void OnUserInterfaceRender() override;
 		virtual void OnEvent(Event& event) override { }
 

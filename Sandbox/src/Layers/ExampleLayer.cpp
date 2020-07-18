@@ -1,12 +1,17 @@
 #include "ExampleLayer.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 FarLight::ExampleLayer::ExampleLayer()
 	: Layer("ExampleLayer")
 	, _camera(-1.5f, 1.5f, -1.0f, 1.0f)
-	, _cameraMovementSpeed(0.01f)
+	, _cameraMovementSpeed(5.0f)
 	, _cameraPosition(0.0f)
-	, _cameraRotationSpeed(1.0f)
+	, _cameraRotationSpeed(90.0f)
 	, _cameraRotation(0.0f)
+	, _squareMovementSpeed(2.5f)
+	, _squarePosition(0.0f)
 {
 	_vertexArray = VertexArray::Create();
 
@@ -31,10 +36,10 @@ FarLight::ExampleLayer::ExampleLayer()
 	_squareVertexArray = VertexArray::Create();
 
 	float squareVertices[3 * 4] = {
-		-0.75f, -0.75f, 0.0f,
-		 0.75f, -0.75f, 0.0f,
-		 0.75f,  0.75f, 0.0f,
-		-0.75f,  0.75f, 0.0f
+		-0.5f, -0.5f, 0.0f,
+		 0.5f, -0.5f, 0.0f,
+		 0.5f,  0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f
 	};
 
 	std::shared_ptr<VertexBuffer> squareVertexBuffer = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
@@ -90,13 +95,14 @@ FarLight::ExampleLayer::ExampleLayer()
 			layout(location = 0) in vec3 a_Position;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transformation;
 
 			out vec3 v_Position;
 
 			void main()
 			{
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transformation * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -124,19 +130,24 @@ void FarLight::ExampleLayer::OnDetach() const
 {
 }
 
-void FarLight::ExampleLayer::OnUpdate()
+void FarLight::ExampleLayer::OnUpdate(const Timestep& timestamp)
 {
-	HandleInput();
-
-	FarLight::RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.00f });
-	FarLight::RenderCommand::Clear();
+	HandleInput(timestamp);
 
 	_camera.SetPosition(_cameraPosition);
-	_camera.SetZRotation(_cameraRotation);
+	_camera.SetZRotation(_cameraRotation);	
 
 	FarLight::Renderer::BeginScene(_camera);
 
-	FarLight::Renderer::Submit(_blueShader, _squareVertexArray);
+	for (int y = -5; y < 5; ++y) {
+		for (int x = -5; x < 5; ++x) {
+			glm::mat4 squareTrans = glm::mat4(1.0f);
+			squareTrans = glm::translate(squareTrans, glm::vec3(x * 0.11f + _squarePosition.x, y * 0.11f + _squarePosition.y, 0.0f));
+			squareTrans = glm::scale(squareTrans, glm::vec3(0.1f));
+			FarLight::Renderer::Submit(_blueShader, _squareVertexArray, squareTrans);
+		}
+	}
+	
 	FarLight::Renderer::Submit(_shader, _vertexArray);
 
 	FarLight::Renderer::EndScene();
@@ -150,20 +161,32 @@ void FarLight::ExampleLayer::OnEvent(Event& event)
 {
 }
 
-void FarLight::ExampleLayer::HandleInput()
+void FarLight::ExampleLayer::HandleInput(const Timestep& timestamp)
 {
+	FL_TRACE("Delta time: {0} s. ({1} ms.)", timestamp.GetSeconds(), timestamp.GetMilliseconds());
+
 	if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_LEFT))
-		_cameraPosition.x += _cameraMovementSpeed;
+		_cameraPosition.x -= _cameraMovementSpeed * timestamp;
 	else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_RIGHT))
-		_cameraPosition.x -= _cameraMovementSpeed;
+		_cameraPosition.x += _cameraMovementSpeed * timestamp;
 
 	if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_DOWN))
-		_cameraPosition.y += _cameraMovementSpeed;
+		_cameraPosition.y -= _cameraMovementSpeed * timestamp;
 	else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_UP))
-		_cameraPosition.y -= _cameraMovementSpeed;
+		_cameraPosition.y += _cameraMovementSpeed * timestamp;
 
 	if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_Q))
-		_cameraRotation -= _cameraRotationSpeed;
+		_cameraRotation += _cameraRotationSpeed * timestamp;
 	else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_E))
-		_cameraRotation += _cameraRotationSpeed;
+		_cameraRotation -= _cameraRotationSpeed * timestamp;
+
+	if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_D))
+		_squarePosition.x += _squareMovementSpeed * timestamp;
+	else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_A))
+		_squarePosition.x -= _squareMovementSpeed * timestamp;
+
+	if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_W))
+		_squarePosition.y += _squareMovementSpeed * timestamp;
+	else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_S))
+		_squarePosition.y -= _squareMovementSpeed * timestamp;
 }
