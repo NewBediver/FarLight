@@ -82,9 +82,5 @@ namespace FarLight
 		}
 	}
 
-	void ImGuiLayer::OnUserInterfaceRender()
-	{
-		bool showDemo = true;
-		ImGui::ShowDemoWindow(&showDemo);
-	}
+	void ImGuiLayer::OnUserInterfaceRender() { }
 }

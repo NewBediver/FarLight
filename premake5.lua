@@ -115,6 +115,7 @@ project "Sandbox"
         "%{IncludeDir.FarLightSrc}",
         "%{IncludeDir.spdlog}",
         "%{IncludeDir.ImGui}",
+        "%{IncludeDir.Glad}",
         "%{IncludeDir.glm}"
     }
 

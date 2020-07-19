@@ -1,8 +1,9 @@
 #include "flpch.h"
 
 #include "Renderer.h"
-
 #include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
+
+#include "Platform/Renderer/OpenGL/Shader/OpenGLShader.h"
 
 namespace FarLight
 {
@@ -18,8 +19,8 @@ namespace FarLight
 	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transformation)
 	{
 		shader->Bind();
-		shader->UploadUnoformMat4("u_ViewProjection", _sceneData->ViewProjectionMatrix);
-		shader->UploadUnoformMat4("u_Transformation", transformation);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", _sceneData->ViewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Transformation", transformation);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);

@@ -35,5 +35,6 @@ namespace FarLight
 
 		float _squareMovementSpeed;
 		glm::vec3 _squarePosition;
+		glm::vec3 _squareColor;
 	};
 }

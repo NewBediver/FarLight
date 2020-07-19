@@ -2,7 +2,6 @@
 
 #include "OpenGLShader.h"
 
-#include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace FarLight
@@ -139,9 +138,44 @@ namespace FarLight
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::UploadUnoformMat4(const std::string& name, const glm::mat4& matrix) const
+	void OpenGLShader::UploadUniformInt(const std::string& name, int i1) const
 	{
-		int location = glGetUniformLocation(_rendererID, name.c_str());
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		glUniform1i(GetUniformLocation(name), i1);
+	}
+
+	void OpenGLShader::UploadUniformFloat(const std::string& name, float f1) const
+	{
+		glUniform1f(GetUniformLocation(name), f1);
+	}
+
+	void OpenGLShader::UploadUniformFloat2(const std::string& name, float f1, float f2) const
+	{
+		glUniform2f(GetUniformLocation(name), f1, f2);
+	}
+
+	void OpenGLShader::UploadUniformFloat3(const std::string& name, float f1, float f2, float f3) const
+	{
+		glUniform3f(GetUniformLocation(name), f1, f2, f3);
+	}
+
+	void OpenGLShader::UploadUniformFloat4(const std::string& name, float f1, float f2, float f3, float f4) const
+	{
+		glUniform4f(GetUniformLocation(name), f1, f2, f3, f4);
+	}
+
+	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix) const
+	{
+		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
+	}
+	void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix) const
+	{
+		glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
+	}
+
+	GLint OpenGLShader::GetUniformLocation(const std::string& name) const
+	{
+		if (_uniformLocation.find(name) == _uniformLocation.end())
+			_uniformLocation[name] = glGetUniformLocation(_rendererID, name.c_str());
+		return _uniformLocation[name];
 	}
 }

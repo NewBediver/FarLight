@@ -10,17 +10,17 @@ namespace FarLight
 	{
 		switch (type)
 		{
-		case FarLight::ShaderDataType::Float:    return GL_FLOAT;
-		case FarLight::ShaderDataType::Float2:   return GL_FLOAT;
-		case FarLight::ShaderDataType::Float3:   return GL_FLOAT;
-		case FarLight::ShaderDataType::Float4:   return GL_FLOAT;
-		case FarLight::ShaderDataType::Mat3:     return GL_FLOAT;
-		case FarLight::ShaderDataType::Mat4:     return GL_FLOAT;
-		case FarLight::ShaderDataType::Int:      return GL_INT;
-		case FarLight::ShaderDataType::Int2:     return GL_INT;
-		case FarLight::ShaderDataType::Int3:     return GL_INT;
-		case FarLight::ShaderDataType::Int4:     return GL_INT;
-		case FarLight::ShaderDataType::Bool:     return GL_BOOL;
+			case FarLight::ShaderDataType::Float:    return GL_FLOAT;
+			case FarLight::ShaderDataType::Float2:   return GL_FLOAT;
+			case FarLight::ShaderDataType::Float3:   return GL_FLOAT;
+			case FarLight::ShaderDataType::Float4:   return GL_FLOAT;
+			case FarLight::ShaderDataType::Mat3:     return GL_FLOAT;
+			case FarLight::ShaderDataType::Mat4:     return GL_FLOAT;
+			case FarLight::ShaderDataType::Int:      return GL_INT;
+			case FarLight::ShaderDataType::Int2:     return GL_INT;
+			case FarLight::ShaderDataType::Int3:     return GL_INT;
+			case FarLight::ShaderDataType::Int4:     return GL_INT;
+			case FarLight::ShaderDataType::Bool:     return GL_BOOL;
 		}
 
 		FL_CORE_ASSERT(false, "Unknown ShaderDataType!");

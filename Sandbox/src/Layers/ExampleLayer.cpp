@@ -1,7 +1,14 @@
 #include "ExampleLayer.h"
 
+#include <memory>
+
+#include "Platform/Renderer/OpenGL/Shader/OpenGLShader.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <imgui.h>
 
 FarLight::ExampleLayer::ExampleLayer()
 	: Layer("ExampleLayer")
@@ -12,6 +19,7 @@ FarLight::ExampleLayer::ExampleLayer()
 	, _cameraRotation(0.0f)
 	, _squareMovementSpeed(2.5f)
 	, _squarePosition(0.0f)
+	, _squareColor(0.0f, 0.5f, 0.5f)
 {
 	_vertexArray = VertexArray::Create();
 
@@ -45,7 +53,7 @@ FarLight::ExampleLayer::ExampleLayer()
 	std::shared_ptr<VertexBuffer> squareVertexBuffer = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 	squareVertexBuffer->SetLayout({
 		{ShaderDataType::Float3, "a_Position"}
-		});
+	});
 	_squareVertexArray->AddVertexBuffer(squareVertexBuffer);
 
 	unsigned int squareIndicies[6] = { 0, 1, 2, 2, 3, 0 };
@@ -113,9 +121,11 @@ FarLight::ExampleLayer::ExampleLayer()
 
 			in vec3 v_Position;
 
+			uniform vec3 u_Color;
+
 			void main()
 			{
-				a_Color = vec4(0.2, 0.3, 0.8, 1.0);
+				a_Color = vec4(u_Color, 1.0);
 			}
 		)";
 
@@ -139,6 +149,9 @@ void FarLight::ExampleLayer::OnUpdate(const Timestep& timestamp)
 
 	FarLight::Renderer::BeginScene(_camera);
 
+	_blueShader->Bind();
+	std::dynamic_pointer_cast<OpenGLShader>(_blueShader)->UploadUniformFloat3("u_Color", _squareColor.r, _squareColor.g, _squareColor.b);
+
 	for (int y = -5; y < 5; ++y) {
 		for (int x = -5; x < 5; ++x) {
 			glm::mat4 squareTrans = glm::mat4(1.0f);
@@ -155,6 +168,9 @@ void FarLight::ExampleLayer::OnUpdate(const Timestep& timestamp)
 
 void FarLight::ExampleLayer::OnUserInterfaceRender()
 {
+	ImGui::Begin("Squares color");
+	ImGui::ColorEdit3("Color", glm::value_ptr(_squareColor));
+	ImGui::End();
 }
 
 void FarLight::ExampleLayer::OnEvent(Event& event)
@@ -163,7 +179,7 @@ void FarLight::ExampleLayer::OnEvent(Event& event)
 
 void FarLight::ExampleLayer::HandleInput(const Timestep& timestamp)
 {
-	FL_TRACE("Delta time: {0} s. ({1} ms.)", timestamp.GetSeconds(), timestamp.GetMilliseconds());
+	//FL_TRACE("Delta time: {0} s. ({1} ms.)", timestamp.GetSeconds(), timestamp.GetMilliseconds());
 
 	if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_LEFT))
 		_cameraPosition.x -= _cameraMovementSpeed * timestamp;
