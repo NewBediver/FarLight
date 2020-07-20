@@ -12,7 +12,7 @@
 
 FarLight::ExampleLayer::ExampleLayer()
 	: Layer("ExampleLayer")
-	, _camera(-1.5f, 1.5f, -1.0f, 1.0f)
+	, _camera(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 100.0f)
 	, _cameraMovementSpeed(5.0f)
 	, _cameraPosition(0.0f)
 	, _cameraRotationSpeed(90.0f)

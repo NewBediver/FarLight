@@ -7,7 +7,7 @@ namespace FarLight
 	class FARLIGHT_API OrthographicCamera
 	{
 	public:
-		explicit OrthographicCamera(float left, float right, float bottom, float top);
+		explicit OrthographicCamera(float left, float right, float bottom, float top, float nearZone, float farZone);
 
 		const glm::vec3& GetPosition() const { return _position; }
 		void SetPosition(const glm::vec3& position);
