@@ -7,12 +7,12 @@
 
 namespace FarLight
 {
-	std::unique_ptr<IndexBuffer> IndexBuffer::Create(unsigned int* indicies, unsigned int count)
+	Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* indicies, const unsigned int count)
 	{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
-			case RendererAPI::API::OpenGL:  return std::make_unique<OpenGLIndexBuffer>(indicies, count);
+			case RendererAPI::API::OpenGL:  return Ref<OpenGLIndexBuffer>(new OpenGLIndexBuffer(indicies, count));
 		}
 
 		FL_CORE_ASSERT(false, "Unknown RendererAPI!");

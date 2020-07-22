@@ -47,7 +47,7 @@ namespace FarLight
 		glBindVertexArray(0);
 	}
 
-	void FarLight::OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer)
+	void FarLight::OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& buffer)
 	{
 		FL_CORE_ASSERT(buffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
@@ -56,22 +56,22 @@ namespace FarLight
 
 		unsigned int index = 0;
 		const auto& layout = buffer->GetLayout();
-		for (const auto& element : layout)
+		for (auto& element = layout.cbegin(); element != layout.cend(); ++element)
 		{
 			glEnableVertexAttribArray(index);
 			glVertexAttribPointer(index,
-				ShaderDataTypeCount(element.Type),
-				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE,
+				ShaderDataTypeCount(element->Type),
+				ShaderDataTypeToOpenGLBaseType(element->Type),
+				element->Normalized ? GL_TRUE : GL_FALSE,
 				layout.GetStride(),
-				(const void*)element.Offset);
+				reinterpret_cast<const void*>(element->Offset));
 			++index;
 		}
 
 		_vertexBuffers.push_back(buffer);
 	}
 
-	void FarLight::OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& buffer)
+	void FarLight::OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& buffer)
 	{
 		glBindVertexArray(_rendererID);
 		buffer->Bind();

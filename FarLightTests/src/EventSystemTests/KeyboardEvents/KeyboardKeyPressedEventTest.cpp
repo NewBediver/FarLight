@@ -33,11 +33,6 @@ TEST_F(KeyboardKeyPressedEventTest, GetName)
 	EXPECT_EQ(e3->GetName(), "KeyboardKeyPressed");
 }
 
-TEST_F(KeyboardKeyPressedEventTest, GetStaticType)
-{
-	EXPECT_EQ(KeyboardKeyPressedEvent::GetStaticType(), EventType::KeyboardKeyPressedEventType);
-}
-
 TEST_F(KeyboardKeyPressedEventTest, GetType)
 {
 	EXPECT_EQ(e1->GetType(), EventType::KeyboardKeyPressedEventType);
@@ -47,9 +42,9 @@ TEST_F(KeyboardKeyPressedEventTest, GetType)
 
 TEST_F(KeyboardKeyPressedEventTest, ToString)
 {
-	EXPECT_EQ(e1->ToString(), "KeyboardKeyPressedEvent: (10). Is repeated: false.");
-	EXPECT_EQ(e2->ToString(), "KeyboardKeyPressedEvent: (0). Is repeated: false.");
-	EXPECT_EQ(e3->ToString(), "KeyboardKeyPressedEvent: (7). Is repeated: true.");
+	EXPECT_EQ(e1->ToString(), "KeyboardKeyPressed: (10). Is repeated: false.");
+	EXPECT_EQ(e2->ToString(), "KeyboardKeyPressed: (0). Is repeated: false.");
+	EXPECT_EQ(e3->ToString(), "KeyboardKeyPressed: (7). Is repeated: true.");
 }
 
 TEST_F(KeyboardKeyPressedEventTest, GetKeyCode)

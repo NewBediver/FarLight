@@ -1,10 +1,12 @@
+#include <Farlight.h>
+
 #include <FarLight/EntryPoint.h>
 
 #include "Layers/ExampleLayer.h"
 
-std::shared_ptr<FarLight::Application> FarLight::CreateApplication()
+const FarLight::Scope<FarLight::Application>& FarLight::CreateApplication()
 {
-	auto app = FarLight::Application::GetInstance();
-	app->PushLayer(std::make_shared<ExampleLayer>());
+	const auto& app = FarLight::Application::GetInstance();
+	app->PushLayer(Ref<ExampleLayer>(new ExampleLayer()));
 	return app;
 }

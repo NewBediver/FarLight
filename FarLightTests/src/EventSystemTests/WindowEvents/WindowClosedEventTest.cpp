@@ -33,11 +33,6 @@ TEST_F(WindowClosedEventTest, GetName)
 	EXPECT_EQ(e3->GetName(), "WindowClosed");
 }
 
-TEST_F(WindowClosedEventTest, GetStaticType)
-{
-	EXPECT_EQ(WindowClosedEvent::GetStaticType(), EventType::WindowClosedEventType);
-}
-
 TEST_F(WindowClosedEventTest, GetType)
 {
 	EXPECT_EQ(e1->GetType(), EventType::WindowClosedEventType);

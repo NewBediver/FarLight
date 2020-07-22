@@ -33,11 +33,6 @@ TEST_F(MouseButtonReleasedEventTest, GetName)
 	EXPECT_EQ(e3->GetName(), "MouseButtonReleased");
 }
 
-TEST_F(MouseButtonReleasedEventTest, GetStaticType)
-{
-	EXPECT_EQ(MouseButtonReleasedEvent::GetStaticType(), EventType::MouseButtonReleasedEventType);
-}
-
 TEST_F(MouseButtonReleasedEventTest, GetType)
 {
 	EXPECT_EQ(e1->GetType(), EventType::MouseButtonReleasedEventType);

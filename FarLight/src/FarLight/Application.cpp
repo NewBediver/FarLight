@@ -15,11 +15,11 @@
 
 namespace FarLight
 {
-	std::shared_ptr<Application> Application::_instance = nullptr;
+	Scope<Application> Application::_instance = nullptr;
 
-	std::shared_ptr<Application> Application::GetInstance()
+	const Scope<Application>& Application::GetInstance()
 	{
-		if (_instance == nullptr) _instance = std::shared_ptr<Application>(new Application());
+		if (_instance == nullptr) _instance = Scope<Application>(new Application());
 		return _instance;
 	}
 
@@ -27,7 +27,7 @@ namespace FarLight
 		: _isRunning(true), _lastFrameTime(0.0f)
 	{
 		_window = Window::Create();
-		_userInterfaceLayer = std::make_shared<ImGuiLayer>();
+		_userInterfaceLayer = Ref<ImGuiLayer>(new ImGuiLayer());
 	}
 
 	void Application::Run()
@@ -44,10 +44,12 @@ namespace FarLight
 			Timestep ts(time - _lastFrameTime);
 			_lastFrameTime = time;
 
-			for (auto& layer : _layerStack) layer->OnUpdate(ts);
+			for (auto& layer = _layerStack.cbegin(); layer != _layerStack.cend(); ++layer)
+				(*layer)->OnUpdate(ts);
 
 			_userInterfaceLayer->Begin();
-			for (auto& layer : _layerStack) layer->OnUserInterfaceRender();
+			for (auto& layer = _layerStack.cbegin(); layer != _layerStack.cend(); ++layer)
+				(*layer)->OnUserInterfaceRender();
 			_userInterfaceLayer->End();
 
 			_window->OnUpdate();
@@ -59,8 +61,8 @@ namespace FarLight
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowClosedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowClosed));
 
-		//FL_CORE_TRACE("{0}", e);
-		for (auto it = _layerStack.rbegin(); it != _layerStack.rend(); ++it)
+		FL_CORE_TRACE("{0}", e);
+		for (auto it = _layerStack.crbegin(); it != _layerStack.crend(); ++it)
 		{
 			(*it)->OnEvent(e);
 			if (e.IsHandled()) break;

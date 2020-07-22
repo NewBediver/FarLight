@@ -33,11 +33,6 @@ TEST_F(MouseScrolledEventTest, GetName)
 	EXPECT_EQ(e3->GetName(), "MouseScrolled");
 }
 
-TEST_F(MouseScrolledEventTest, GetStaticType)
-{
-	EXPECT_EQ(MouseScrolledEvent::GetStaticType(), EventType::MouseScrolledEventType);
-}
-
 TEST_F(MouseScrolledEventTest, GetType)
 {
 	EXPECT_EQ(e1->GetType(), EventType::MouseScrolledEventType);

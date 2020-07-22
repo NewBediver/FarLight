@@ -7,12 +7,12 @@
 
 namespace FarLight
 {
-	std::unique_ptr<Shader> Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
+	Ref<Shader> Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
-			case RendererAPI::API::OpenGL:  return std::make_unique<OpenGLShader>(vertexSrc, fragmentSrc);
+			case RendererAPI::API::OpenGL:  return Ref<OpenGLShader>(new OpenGLShader(vertexSrc, fragmentSrc));
 		}
 
 		FL_CORE_ASSERT(false, "Unknown RendererAPI!");

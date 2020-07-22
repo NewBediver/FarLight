@@ -6,7 +6,7 @@
 
 namespace FarLight
 {
-	OpenGLIndexBuffer::OpenGLIndexBuffer(unsigned int* indicies, unsigned int count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* indicies, const unsigned int count)
 		: _rendererID(0), _count(count)
 	{
 		glCreateBuffers(1, &_rendererID);

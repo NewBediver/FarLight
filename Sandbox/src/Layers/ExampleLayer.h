@@ -2,39 +2,30 @@
 
 #include <FarLight.h>
 
-namespace FarLight
+class ExampleLayer
+	: public FarLight::Layer
 {
-	class ExampleLayer
-		: public Layer
-	{
-	public:
-		ExampleLayer();
+public:
+	ExampleLayer();
 
-		virtual void OnAttach() const override;
-		virtual void OnDetach() const override;
-		virtual void OnUpdate(const Timestep& timestamp) override;
-		virtual void OnUserInterfaceRender() override;
-		virtual void OnEvent(Event& event) override;
+	virtual void OnAttach() const override;
+	virtual void OnDetach() const override;
+	virtual void OnUpdate(const FarLight::Timestep& timestamp) override;
+	virtual void OnUserInterfaceRender() override;
+	virtual void OnEvent(FarLight::Event& event) override;
 
-	private:
-		void HandleInput(const Timestep& timestamp);
+private:
+	void HandleInput(const FarLight::Timestep& timestamp);
 
-		std::shared_ptr<Shader> _shader;
-		std::shared_ptr<VertexArray> _vertexArray;
+	FarLight::Ref<FarLight::Shader> _shader;
+	FarLight::Ref<FarLight::VertexArray> _vertexArray;
 
-		std::shared_ptr<Shader> _blueShader;
-		std::shared_ptr<VertexArray> _squareVertexArray;
+	FarLight::Ref<FarLight::Shader> _blueShader;
+	FarLight::Ref<FarLight::VertexArray> _squareVertexArray;
 
-		OrthographicCamera _camera;
+	FarLight::OrthographicCamera _camera;
 
-		float _cameraMovementSpeed;
-		glm::vec3 _cameraPosition;
-
-		float _cameraRotationSpeed;
-		float _cameraRotation;
-
-		float _squareMovementSpeed;
-		glm::vec3 _squarePosition;
-		glm::vec3 _squareColor;
-	};
-}
+	float _squareMovementSpeed;
+	glm::vec3 _squarePosition;
+	glm::vec3 _squareColor;
+};

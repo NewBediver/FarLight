@@ -21,7 +21,7 @@ namespace FarLight
 		FL_CORE_INFO("=======================");
 	}
 
-	void OpenGLContext::SwapBuffers()
+	void OpenGLContext::SwapBuffers() const
 	{
 		glfwSwapBuffers(_windowHandle.get());
 	}

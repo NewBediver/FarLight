@@ -33,11 +33,6 @@ TEST_F(WindowResizedEventTest, GetName)
 	EXPECT_EQ(e3->GetName(), "WindowResized");
 }
 
-TEST_F(WindowResizedEventTest, GetStaticType)
-{
-	EXPECT_EQ(WindowResizedEvent::GetStaticType(), EventType::WindowResizedEventType);
-}
-
 TEST_F(WindowResizedEventTest, GetType)
 {
 	EXPECT_EQ(e1->GetType(), EventType::WindowResizedEventType);

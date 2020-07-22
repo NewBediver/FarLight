@@ -10,13 +10,13 @@ namespace FarLight
 		: public GraphicsContext
 	{
 	public:
-		OpenGLContext(std::shared_ptr<GLFWwindow> windowHandle)
+		OpenGLContext(const Ref<GLFWwindow>& windowHandle)
 			: _windowHandle(windowHandle) { }
 
 		virtual void Init() override;
-		virtual void SwapBuffers() override;
+		virtual void SwapBuffers() const override;
 
 	private:
-		std::shared_ptr<GLFWwindow> _windowHandle;
+		Ref<GLFWwindow> _windowHandle;
 	};
 }

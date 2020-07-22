@@ -33,11 +33,6 @@ TEST_F(KeyboardKeyReleasedEventTest, GetName)
 	EXPECT_EQ(e3->GetName(), "KeyboardKeyReleased");
 }
 
-TEST_F(KeyboardKeyReleasedEventTest, GetStaticType)
-{
-	EXPECT_EQ(KeyboardKeyReleasedEvent::GetStaticType(), EventType::KeyboardKeyReleasedEventType);
-}
-
 TEST_F(KeyboardKeyReleasedEventTest, GetType)
 {
 	EXPECT_EQ(e1->GetType(), EventType::KeyboardKeyReleasedEventType);
@@ -47,9 +42,9 @@ TEST_F(KeyboardKeyReleasedEventTest, GetType)
 
 TEST_F(KeyboardKeyReleasedEventTest, ToString)
 {
-	EXPECT_EQ(e1->ToString(), "KeyboardKeyReleasedEvent: (10).");
-	EXPECT_EQ(e2->ToString(), "KeyboardKeyReleasedEvent: (0).");
-	EXPECT_EQ(e3->ToString(), "KeyboardKeyReleasedEvent: (7).");
+	EXPECT_EQ(e1->ToString(), "KeyboardKeyReleased: (10).");
+	EXPECT_EQ(e2->ToString(), "KeyboardKeyReleased: (0).");
+	EXPECT_EQ(e3->ToString(), "KeyboardKeyReleased: (7).");
 }
 
 TEST_F(KeyboardKeyReleasedEventTest, GetKeyCode)

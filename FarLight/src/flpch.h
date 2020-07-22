@@ -6,6 +6,7 @@
 #include <ostream>
 #include <istream>
 #include <sstream>
+#include <fstream>
 
 #include <memory>
 #include <functional>

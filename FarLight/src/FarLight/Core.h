@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef FL_PLATFORM_WINDOWS
 #if FL_DYNAMIC_LINK
 	#ifdef FL_BUILD_DLL
@@ -29,3 +31,12 @@
 #define BIT(x) (1 << x)
 
 #define FL_BIND_EVENT_FUNC(func) std::bind(&func, this, std::placeholders::_1)
+
+namespace FarLight
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}

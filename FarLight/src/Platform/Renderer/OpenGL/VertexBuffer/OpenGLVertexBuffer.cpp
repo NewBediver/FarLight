@@ -6,8 +6,8 @@
 
 namespace FarLight
 {
-	OpenGLVertexBuffer::OpenGLVertexBuffer(float* verticies, unsigned int size)
-		: _rendererID(0)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(const float* verticies, const unsigned int size, const BufferLayout& layout)
+		: _rendererID(0), _layout(layout)
 	{
 		glCreateBuffers(1, &_rendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);

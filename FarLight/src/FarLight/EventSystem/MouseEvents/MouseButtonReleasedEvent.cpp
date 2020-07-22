@@ -4,10 +4,10 @@
 
 namespace FarLight
 {
-	std::string MouseButtonReleasedEvent::ToString() const
+	const std::string MouseButtonReleasedEvent::ToString() const
 	{
 		std::stringstream ss;
-		ss << "MouseButtonReleased: " << "(" << GetButton() << ").";
+		ss << GetName() << ": " << "(" << GetButton() << ").";
 		return ss.str();
 	}
 }

@@ -11,8 +11,6 @@ namespace FarLight
 		explicit Layer(const std::string& name = "Layer")
 			: _name(name) { }
 
-		virtual ~Layer() = default;
-
 		virtual void OnAttach() const = 0;
 		virtual void OnDetach() const = 0;
 		virtual void OnUpdate(const Timestep& timestamp) = 0;
@@ -20,6 +18,8 @@ namespace FarLight
 		virtual void OnEvent(Event& event) = 0;
 
 		const std::string& GetName() const { return _name; }
+
+		virtual ~Layer() = default;
 
 	private:
 		std::string _name;

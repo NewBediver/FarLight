@@ -7,13 +7,13 @@ class ExampleTestInput
 	: public Input
 {
 protected:
-	virtual bool IsKeyPressedImpl(KeyboardKeyCodes code) const override { return code == KeyboardKeyCodes::FL_KEY_ENTER; }
-	virtual bool IsMouseButtonPressedImpl(MouseButtonCodes code) const override { return code == MouseButtonCodes::FL_MOUSE_BUTTON_LEFT; }
-	virtual std::pair<double, double> GetMousePositionImpl() const override { return { 0.5, 10.35 }; }
-	virtual double GetMouseXImpl() const override { return GetMousePositionImpl().first; }
-	virtual double GetMouseYImpl() const override { return GetMousePositionImpl().second; }
+	virtual const bool IsKeyPressedImpl(const KeyboardKeyCodes code) const override { return code == KeyboardKeyCodes::FL_KEY_ENTER; }
+	virtual const bool IsMouseButtonPressedImpl(const MouseButtonCodes code) const override { return code == MouseButtonCodes::FL_MOUSE_BUTTON_LEFT; }
+	virtual const std::pair<double, double> GetMousePositionImpl() const override { return { 0.5, 10.35 }; }
+	virtual const double GetMouseXImpl() const override { return GetMousePositionImpl().first; }
+	virtual const double GetMouseYImpl() const override { return GetMousePositionImpl().second; }
 
-	virtual KeyboardKeyCodes GetFLKeyboardKeyCodeImpl(int code) const override
+	virtual const KeyboardKeyCodes GetFLKeyboardKeyCodeImpl(const int code) const override
 	{
 		switch (code)
 		{
@@ -141,7 +141,7 @@ protected:
 		return KeyboardKeyCodes::FL_KEY_UNKNOWN;
 	}
 
-	virtual MouseButtonCodes GetFLMouseButtonCodeImpl(int code) const override
+	virtual const MouseButtonCodes GetFLMouseButtonCodeImpl(const int code) const override
 	{
 		switch (code)
 		{
@@ -162,7 +162,7 @@ protected:
 	}
 };
 
-std::shared_ptr<Input> Input::_instance = std::make_shared<ExampleTestInput>();
+Scope<Input> Input::_instance = Scope<ExampleTestInput>(new ExampleTestInput());
 
 class InputTest
 	: public ::testing::Test

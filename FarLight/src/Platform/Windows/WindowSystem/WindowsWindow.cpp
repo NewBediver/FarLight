@@ -59,9 +59,9 @@ namespace FarLight
 			isGLFWInitialized = true;
 		}
 
-		_window = std::shared_ptr<GLFWwindow>(glfwCreateWindow(static_cast<int>(props._width), static_cast<int>(props._height), _data._title.c_str(), nullptr, nullptr), glfwDestroyWindow);
+		_window = Ref<GLFWwindow>(glfwCreateWindow(static_cast<int>(props._width), static_cast<int>(props._height), _data._title.c_str(), nullptr, nullptr), glfwDestroyWindow);
 		
-		_context = std::make_shared<OpenGLContext>(_window);
+		_context = Scope<OpenGLContext>(new OpenGLContext(_window));
 		_context->Init();
 
 		glfwSetWindowUserPointer(_window.get(), &_data);

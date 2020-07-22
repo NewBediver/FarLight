@@ -4,20 +4,20 @@
 
 namespace FarLight
 {
-	void LayerStack::PushLayer(std::shared_ptr<Layer> layer)
+	void LayerStack::PushLayer(const Ref<Layer>& layer)
 	{
 		_layers.emplace(_layers.begin() + _layerInsertIndex, layer);
 		++_layerInsertIndex;
 		layer->OnAttach();
 	}
 
-	void LayerStack::PushOverlay(std::shared_ptr<Layer> overlay)
+	void LayerStack::PushOverlay(const Ref<Layer>& overlay)
 	{
 		_layers.emplace_back(overlay);
 		overlay->OnAttach();
 	}
 	
-	void LayerStack::PopLayer(std::shared_ptr<Layer> layer)
+	void LayerStack::PopLayer(const Ref<Layer>& layer)
 	{
 		auto it = std::find(_layers.begin(), _layers.begin() + _layerInsertIndex, layer);
 		if (it != _layers.begin() + _layerInsertIndex)
@@ -28,7 +28,7 @@ namespace FarLight
 		}
 	}
 
-	void LayerStack::PopOverlay(std::shared_ptr<Layer> overlay)
+	void LayerStack::PopOverlay(const Ref<Layer>& overlay)
 	{
 		auto it = std::find(_layers.begin() + _layerInsertIndex, _layers.end(), overlay);
 		if (it != _layers.end())

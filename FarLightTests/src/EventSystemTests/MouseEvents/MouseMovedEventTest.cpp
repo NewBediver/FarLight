@@ -33,11 +33,6 @@ TEST_F(MouseMovedEventTest, GetName)
 	EXPECT_EQ(e3->GetName(), "MouseMoved");
 }
 
-TEST_F(MouseMovedEventTest, GetStaticType)
-{
-	EXPECT_EQ(MouseMovedEvent::GetStaticType(), EventType::MouseMovedEventType);
-}
-
 TEST_F(MouseMovedEventTest, GetType)
 {
 	EXPECT_EQ(e1->GetType(), EventType::MouseMovedEventType);

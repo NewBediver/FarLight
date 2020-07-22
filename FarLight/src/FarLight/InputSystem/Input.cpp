@@ -5,5 +5,5 @@
 
 namespace FarLight
 {
-	std::shared_ptr<Input> Input::_instance = std::make_shared<WindowsInput>();
+	Scope<Input> Input::_instance = Scope<WindowsInput>(new WindowsInput());
 }

@@ -2,15 +2,19 @@
 
 // For use by FarLight applications
 #include "FarLight/Application.h"
+#include "FarLight/Core.h"
 
 #include "FarLight/Core/Timestep.h"
 
 //---Logger---------------------------
 #include "FarLight/Logger.h"
 //------------------------------------
+//---Event-System---------------------
+#include "FarLight/EventSystem/Event.h"
+#include "FarLight/EventSystem/EventDispatcher.h"
+//------------------------------------
 //---Layer-System---------------------
 #include "FarLight/LayerSystem/Layer.h"
-#include "FarLight/LayerSystem/EngineLayers/ImGuiLayer.h"
 //------------------------------------
 //---Input-System---------------------
 #include "FarLight/InputSystem/Input.h"

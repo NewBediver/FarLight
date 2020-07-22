@@ -4,10 +4,10 @@
 
 namespace FarLight
 {
-    std::string KeyboardKeyTypedEvent::ToString() const
+    const std::string KeyboardKeyTypedEvent::ToString() const
     {
         std::stringstream ss;
-        ss << "KeyboardKeyTypedEvent: " << "(" << GetKeyCode() << ").";
+        ss << GetName() << ": " << "(" << GetKeyCode() << ").";
         return ss.str();
     }
 }

@@ -63,7 +63,7 @@ namespace FarLight
 	void ImGuiLayer::End() const
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		auto app = Application::GetInstance();
+		const auto& app = Application::GetInstance();
 		io.DisplaySize = ImVec2(static_cast<float>(app->GetWindow()->GetWidth()), static_cast<float>(app->GetWindow()->GetHeight()));
 
 		// Rendering

@@ -8,18 +8,15 @@ namespace FarLight
         public Event
     {
     public:
-        explicit MouseMovedEvent(double xPos, double yPos)
-            : _xPos(xPos), _yPos(yPos) { }
-       
-        static EventType GetStaticType() { return EventType::MouseMovedEventType; }
+        explicit MouseMovedEvent(const double xPos, const double yPos)
+            : Event("MouseMoved", EventType::MouseMovedEventType, MouseEventCategory | InputEventCategory)
+            , _xPos(xPos)
+            , _yPos(yPos) { }
 
-        double MouseMovedEvent::GetX() const { return _xPos; }
-        double MouseMovedEvent::GetY() const { return _yPos; }
-        std::string ToString() const override;
+        const double MouseMovedEvent::GetX() const { return _xPos; }
+        const double MouseMovedEvent::GetY() const { return _yPos; }
 
-        virtual EventType MouseMovedEvent::GetType() const override { return GetStaticType(); }
-        virtual std::string MouseMovedEvent::GetName() const override { return "MouseMoved"; }
-        virtual int MouseMovedEvent::GetCategoryFlags() const override { return (MouseEventCategory | InputEventCategory); }
+        virtual const std::string ToString() const override;
 
     private:
         double _xPos, _yPos;

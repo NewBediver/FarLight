@@ -8,13 +8,10 @@ namespace FarLight
 		: public KeyboardKeyEvent
 	{
 	public:
-		explicit KeyboardKeyReleasedEvent(int keyCode)
-			: KeyboardKeyEvent(keyCode) { }
+		explicit KeyboardKeyReleasedEvent(const int keyCode)
+			: KeyboardKeyEvent(keyCode, "KeyboardKeyReleased"
+			, EventType::KeyboardKeyReleasedEventType) { }
 
-		static EventType GetStaticType() { return EventType::KeyboardKeyReleasedEventType; }
-
-		virtual std::string ToString() const override;
-		virtual EventType GetType() const override { return GetStaticType(); }
-		virtual std::string GetName() const override { return "KeyboardKeyReleased"; }
+		virtual const std::string ToString() const override;
 	};
 }

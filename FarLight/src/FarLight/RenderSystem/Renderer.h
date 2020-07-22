@@ -11,19 +11,26 @@ namespace FarLight
 	class FARLIGHT_API Renderer
 	{
 	public:
-		static void BeginScene(OrthographicCamera& camera);
+		static void BeginScene(const OrthographicCamera& camera);
 		static void EndScene();
 
-		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transformation = glm::mat4(0.0f));
+		static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transformation = glm::mat4(0.0f));
 
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
 	private:
+		Renderer() = delete;
+		Renderer(const Renderer&) = delete;
+		Renderer(Renderer&&) = delete;
+		Renderer& operator=(const Renderer&) = delete;
+		Renderer& operator=(Renderer&&) = delete;
+
 		struct SceneData
 		{
-			glm::mat4 ViewProjectionMatrix;
+			glm::mat4 ViewMatrix;
+			glm::mat4 ProjectionMatrix;
 		};
 
-		static std::unique_ptr<SceneData> _sceneData;
+		static Scope<SceneData> _sceneData;
 	};
 }

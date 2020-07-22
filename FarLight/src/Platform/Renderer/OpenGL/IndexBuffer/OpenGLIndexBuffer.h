@@ -8,13 +8,14 @@ namespace FarLight
 		: public IndexBuffer
 	{
 	public:
-		OpenGLIndexBuffer(unsigned int* indicies, unsigned int count);
-		virtual ~OpenGLIndexBuffer();
+		OpenGLIndexBuffer(const unsigned int* indicies, const unsigned int count);
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
-		virtual unsigned int GetCount() const override { return _count; }
+		virtual const unsigned int GetCount() const override { return _count; }
+
+		virtual ~OpenGLIndexBuffer();
 
 	private:
 		unsigned int _rendererID;

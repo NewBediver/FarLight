@@ -6,5 +6,5 @@
 
 namespace FarLight
 {
-	std::shared_ptr<RendererAPI> RenderCommand::_rendererAPI = std::make_shared<OpenGLRendererAPI>();
+	Scope<RendererAPI> RenderCommand::_rendererAPI = Scope<OpenGLRendererAPI>(new OpenGLRendererAPI());
 }

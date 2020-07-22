@@ -4,11 +4,11 @@
 
 namespace FarLight
 {
-	std::string MouseScrolledEvent::ToString() const
+	const std::string MouseScrolledEvent::ToString() const
 	{
 		std::stringstream ss;
 		ss.precision(3);
-		ss << std::fixed << "MouseScrolled: (" << _xOffset << ", " << _yOffset << ").";
+		ss << std::fixed << GetName() << ": " << "(" << _xOffset << ", " << _yOffset << ").";
 		return ss.str();
 	}
 }

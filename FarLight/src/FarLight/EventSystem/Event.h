@@ -34,21 +34,27 @@ namespace FarLight
 	class FARLIGHT_API Event
 	{
 	public:
-		virtual EventType GetType() const = 0;
-		virtual std::string GetName() const = 0;
-		virtual int GetCategoryFlags() const = 0;
+		Event(const std::string& name, const EventType type, const int category)
+			: _name(name), _type(type), _category(category), _isHandled(false) { }
 
-		virtual std::string ToString() const { return GetName(); }
+		virtual const EventType GetType() const { return _type; };
+		virtual const std::string& GetName() const { return _name; }
+		virtual const int GetCategoryFlags() const { return _category; };
 
-		bool IsHandled() const { return _isHandled; }
-		void SetHandled(bool isHandled) { _isHandled = isHandled; }
+		virtual const std::string ToString() const { return GetName(); }
 
-		bool IsInCategory(const EventCategory& eventCategory) const { return (GetCategoryFlags() & eventCategory); }
+		const bool IsHandled() const { return _isHandled; }
+		void SetHandled(const bool isHandled) { _isHandled = isHandled; }
 
-		virtual ~Event() = default;
+		const bool IsInCategory(const EventCategory& eventCategory) const { return (GetCategoryFlags() & eventCategory); }
+
+		virtual ~Event() = 0 { };
 
 	private:
-		bool _isHandled = false;
+		std::string _name;
+		EventType _type;
+		int _category;
+		bool _isHandled;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Event& event) { return os << event.ToString(); }

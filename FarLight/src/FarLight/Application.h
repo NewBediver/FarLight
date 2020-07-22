@@ -14,12 +14,12 @@ namespace FarLight
 		void Run();
 		void OnEvent(Event& e);
 
-		void PushLayer(std::shared_ptr<Layer> layer) { _layerStack.PushLayer(layer); }
-		void PushOverlay(std::shared_ptr<Layer> overlay) { _layerStack.PushOverlay(overlay); }
+		void PushLayer(const Ref<Layer>& layer) { _layerStack.PushLayer(layer); }
+		void PushOverlay(const Ref<Layer>& overlay) { _layerStack.PushOverlay(overlay); }
 
-		static std::shared_ptr<Application> GetInstance();
+		static const Scope<Application>& GetInstance();
 
-		std::shared_ptr<Window> GetWindow() { return _window; }
+		Ref<Window> GetWindow() { return _window; }
 
 	private:
 		explicit Application();
@@ -30,10 +30,10 @@ namespace FarLight
 
 		bool OnWindowClosed(const WindowClosedEvent& e);
 
-		static std::shared_ptr<Application> _instance;
+		static Scope<Application> _instance;
 
-		std::shared_ptr<Window> _window;
-		std::shared_ptr<ImGuiLayer> _userInterfaceLayer;
+		Ref<Window> _window;
+		Ref<ImGuiLayer> _userInterfaceLayer;
 
 		bool _isRunning;
 		LayerStack _layerStack;
@@ -42,5 +42,5 @@ namespace FarLight
 	};
 
 	// To be defined in CLIENT
-	std::shared_ptr<Application> CreateApplication();
+	const Scope<Application>& CreateApplication();
 }

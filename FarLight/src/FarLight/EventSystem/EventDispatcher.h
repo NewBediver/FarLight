@@ -2,29 +2,42 @@
 
 #include "Event.h"
 
+#include "KeyboardEvents/KeyboardKeyPressedEvent.h"
+#include "KeyboardEvents/KeyboardKeyReleasedEvent.h"
+#include "KeyboardEvents/KeyboardKeyTypedEvent.h"
+
+#include "MouseEvents/MouseButtonPressedEvent.h"
+#include "MouseEvents/MouseButtonReleasedEvent.h"
+#include "MouseEvents/MouseMovedEvent.h"
+#include "MouseEvents/MouseScrolledEvent.h"
+
+#include "WindowEvents/WindowClosedEvent.h"
+#include "WindowEvents/WindowResizedEvent.h"
+
 namespace FarLight
 {
 	class EventDispatcher
 	{
-		template<typename T>
-		using eventFunction = std::function<bool(const T&)>;
-
 	public:
 		explicit EventDispatcher(Event& evt)
-			: evt(evt) { }
+			: _event(evt) { }
 
 		template<typename T>
-		bool Dispatch(const eventFunction<T>& func)
+		const bool Dispatch(const std::function<const bool(const T&)>& func)
 		{
-			if (evt.GetType() == T::GetStaticType())
+			try
 			{
-				evt.SetHandled(func(static_cast<const T&>(evt)));
+				T& evt = dynamic_cast<T&>(_event);
+				_event.SetHandled(func(evt));
 				return true;
 			}
-			return false;
+			catch (const std::bad_cast&)
+			{
+				return false;
+			}
 		}
 
 	private:
-		Event& evt;
+		Event& _event;
 	};
 }
