@@ -23,6 +23,7 @@ namespace FarLight
 
 	private:
 		unsigned int _rendererID;
+		unsigned int _vertexBufferIndex;
 		std::vector<Ref<VertexBuffer>> _vertexBuffers;
 		Ref<IndexBuffer> _indexBuffer;
 	};

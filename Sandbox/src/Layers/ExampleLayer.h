@@ -23,6 +23,9 @@ private:
 	FarLight::Ref<FarLight::Shader> _blueShader;
 	FarLight::Ref<FarLight::VertexArray> _squareVertexArray;
 
+	FarLight::Ref<FarLight::Shader> _textureShader;
+	FarLight::Ref<FarLight::Texture2D> _texture;
+
 	FarLight::OrthographicCamera _camera;
 
 	float _squareMovementSpeed;

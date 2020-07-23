@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "flpch.h"
 
 #include "OpenGLVertexArray.h"
@@ -28,6 +31,7 @@ namespace FarLight
 	}
 
 	FarLight::OpenGLVertexArray::OpenGLVertexArray()
+		: _vertexBufferIndex(0), _rendererID(0)
 	{
 		glCreateVertexArrays(1, &_rendererID);
 	}
@@ -54,18 +58,17 @@ namespace FarLight
 		glBindVertexArray(_rendererID);
 		buffer->Bind();
 
-		unsigned int index = 0;
 		const auto& layout = buffer->GetLayout();
 		for (auto& element = layout.cbegin(); element != layout.cend(); ++element)
 		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index,
+			glEnableVertexAttribArray(_vertexBufferIndex);
+			glVertexAttribPointer(_vertexBufferIndex,
 				ShaderDataTypeCount(element->Type),
 				ShaderDataTypeToOpenGLBaseType(element->Type),
 				element->Normalized ? GL_TRUE : GL_FALSE,
 				layout.GetStride(),
-				reinterpret_cast<const void*>(element->Offset));
-			++index;
+				reinterpret_cast<const void*>(static_cast<long long>(element->Offset)));
+			++_vertexBufferIndex;
 		}
 
 		_vertexBuffers.push_back(buffer);

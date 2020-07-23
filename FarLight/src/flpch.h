@@ -1,5 +1,7 @@
 #pragma once
 
+#define STB_IMAGE_IMPLEMENTATION
+
 #include "FarLight/Logger.h"
 
 #include <iostream>
@@ -23,3 +25,4 @@
 #ifdef FL_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif
+

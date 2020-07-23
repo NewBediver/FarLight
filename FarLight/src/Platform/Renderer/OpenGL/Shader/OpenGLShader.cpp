@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "flpch.h"
 
 #include "OpenGLShader.h"
@@ -87,9 +90,10 @@ namespace FarLight
 			shaderFile.close();
 			code = shaderStream.str();
 		}
-		catch (std::ifstream::failure e)
+		catch (const std::ifstream::failure& e)
 		{
 			FL_CORE_ERROR("Shader program retrieving error: {0}", path);
+			FL_CORE_ERROR("Error massage: {0}", e.what());
 			FL_CORE_ASSERT(false, "Critical error in shader retrieving!");
 		}
 		return code;

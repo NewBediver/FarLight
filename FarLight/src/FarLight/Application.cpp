@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "flpch.h"
 
 #include "Application.h"
@@ -61,7 +64,7 @@ namespace FarLight
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowClosedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowClosed));
 
-		FL_CORE_TRACE("{0}", e);
+		//FL_CORE_TRACE("{0}", e);
 		for (auto it = _layerStack.crbegin(); it != _layerStack.crend(); ++it)
 		{
 			(*it)->OnEvent(e);

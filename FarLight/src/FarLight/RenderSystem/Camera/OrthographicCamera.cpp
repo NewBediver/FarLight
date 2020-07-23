@@ -1,3 +1,6 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+
 #include "flpch.h"
 
 #include "OrthographicCamera.h"
@@ -60,7 +63,7 @@ namespace FarLight
 		RecalculateCameraVectors();
 	}
 
-	const glm::mat4& OrthographicCamera::GetViewMatrix() const
+	const glm::mat4 OrthographicCamera::GetViewMatrix() const
 	{
 		return glm::lookAt(_position, _position + _cameraFront, _cameraUp);
 	}

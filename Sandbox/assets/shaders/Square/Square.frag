@@ -1,10 +1,10 @@
 #version 330 core
 
-layout(location = 0) out vec4 a_Color;
-
 in vec3 v_Position;
 
 uniform vec3 u_Color;
+
+out vec4 a_Color;
 
 void main()
 {

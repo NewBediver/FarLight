@@ -32,7 +32,7 @@ namespace FarLight
 		void ProcessCameraRotation(const float angle);
 
 		const glm::mat4& GetProjectionMatrix() const { return _projectionMatrix; }
-		const glm::mat4& GetViewMatrix() const;
+		const glm::mat4 GetViewMatrix() const;
 
 	private:
 		void RecalculateCameraVectors();
