@@ -24,7 +24,7 @@ private:
 	FarLight::Ref<FarLight::VertexArray> _squareVertexArray;
 
 	FarLight::Ref<FarLight::Shader> _textureShader;
-	FarLight::Ref<FarLight::Texture2D> _texture;
+	FarLight::Ref<FarLight::Texture2D> _texture, _shovelKnightTexture;
 
 	FarLight::OrthographicCamera _camera;
 

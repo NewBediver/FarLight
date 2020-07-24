@@ -23,6 +23,12 @@ namespace FarLight
 		virtual ~Input() = default;
 
 	protected:
+		Input() = default;
+		Input(const Input&) = delete;
+		Input(Input&&) = delete;
+		Input& operator=(const Input&) = delete;
+		Input& operator=(Input&&) = delete;
+
 		virtual const bool IsKeyPressedImpl(const KeyboardKeyCodes code) const = 0;
 		virtual const bool IsMouseButtonPressedImpl(const MouseButtonCodes code) const = 0;
 		virtual const std::pair<double, double> GetMousePositionImpl() const = 0;

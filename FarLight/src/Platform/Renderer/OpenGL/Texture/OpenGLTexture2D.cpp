@@ -13,39 +13,61 @@ namespace FarLight
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
 		: _width(0), _height(0), _channels(0), _rendererID(0)
 	{
-		glGenTextures(1, &_rendererID);
-		glBindTexture(GL_TEXTURE_2D, _rendererID);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
 		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
-		if (data)
-		{
-			_width = width;
-			_height = height;
-			_channels = channels;
+		FL_CORE_ASSERT(data, "Failed to load texture2D image!");
 
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
+		GLenum internalFormat = 0, dataFormat = 0;
+		switch (channels)
 		{
-			FL_CORE_ASSERT(false, "Failed to load texture2D image!");
+			case 1:
+			{
+				internalFormat = GL_R8;
+				dataFormat = GL_R;
+				break;
+			}
+			case 2:
+			{
+				internalFormat = GL_RG8;
+				dataFormat = GL_RG;
+				break;
+			}
+			case 3:
+			{
+				internalFormat = GL_RGB8;
+				dataFormat = GL_RGB;
+				break;
+			}
+			case 4:
+			{
+				internalFormat = GL_RGBA8;
+				dataFormat = GL_RGBA;
+				break;
+			}
 		}
+
+		FL_CORE_ASSERT(internalFormat && dataFormat, "Texture format is not supported!");
+
+		_width = width;
+		_height = height;
+		_channels = channels;
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &_rendererID);
+		glTextureStorage2D(_rendererID, 1, internalFormat, _width, _height);
+
+		glTextureParameteri(_rendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(_rendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTextureSubImage2D(_rendererID, 0, 0, 0, _width, _height, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		stbi_image_free(data);
 	}
 
 	void OpenGLTexture2D::Bind(const unsigned int slot) const
 	{
-		glActiveTexture(slot);
-		glBindTexture(GL_TEXTURE_2D, _rendererID);
+		glBindTextureUnit(slot, _rendererID);
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D()

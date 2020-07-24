@@ -12,7 +12,7 @@
 
 ExampleLayer::ExampleLayer()
 	: Layer("ExampleLayer")
-	, _camera(-1.0f, 1.0f * 1280.0f / 720.0f, -1.0f, 1.0f * 1280.0f / 720.0f, 0.0f, 100.0f)
+	, _camera(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 100.0f)
 	, _squareMovementSpeed(2.5f)
 	, _squarePosition(0.0f)
 	, _squareColor(0.0f, 0.5f, 0.5f)
@@ -60,7 +60,8 @@ ExampleLayer::ExampleLayer()
 	_blueShader = FarLight::Shader::Create("assets/shaders/Square/Square.vert", "assets/shaders/Square/Square.frag");
 	_textureShader = FarLight::Shader::Create("assets/shaders/Texture/Texture.vert", "assets/shaders/Texture/Texture.frag");
 
-	_texture = FarLight::Texture2D::Create("assets/textures/container.jpg");
+	_texture = FarLight::Texture2D::Create("assets/textures/Box.png");
+	_shovelKnightTexture = FarLight::Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
 
 	std::dynamic_pointer_cast<FarLight::OpenGLShader>(_textureShader)->Bind();
 	std::dynamic_pointer_cast<FarLight::OpenGLShader>(_textureShader)->UploadUniformInt("u_Texture", 0);
@@ -92,7 +93,9 @@ void ExampleLayer::OnUpdate(const FarLight::Timestep& timestamp)
 		}
 	}*/
 	
-	_texture->Bind(GL_TEXTURE0);
+	_texture->Bind(0);
+	FarLight::Renderer::Submit(_textureShader, _squareVertexArray);
+	_shovelKnightTexture->Bind(0);
 	FarLight::Renderer::Submit(_textureShader, _squareVertexArray);
 
 	//FL_TRACE("Camera position: {0} {1} {2}", _camera.GetPosition().x, _camera.GetPosition().y, _camera.GetPosition().z);
@@ -128,9 +131,9 @@ void ExampleLayer::HandleInput(const FarLight::Timestep& timestamp)
 		_camera.ProcessCameraMovement(FarLight::OrthographicCamera::MovementDirection::Up, static_cast<float>(timestamp));
 
 	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_Q))
-		_camera.ProcessCameraRotation(-static_cast<float>(timestamp));
-	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_E))
 		_camera.ProcessCameraRotation(static_cast<float>(timestamp));
+	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_E))
+		_camera.ProcessCameraRotation(-static_cast<float>(timestamp));
 
 	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_D))
 		_squarePosition.x += _squareMovementSpeed * static_cast<float>(timestamp);

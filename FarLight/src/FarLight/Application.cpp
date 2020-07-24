@@ -31,6 +31,8 @@ namespace FarLight
 	{
 		_window = Window::Create();
 		_userInterfaceLayer = Ref<ImGuiLayer>(new ImGuiLayer());
+
+		Renderer::Init();
 	}
 
 	void Application::Run()

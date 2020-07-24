@@ -22,8 +22,8 @@ namespace FarLight
 		explicit EventDispatcher(Event& evt)
 			: _event(evt) { }
 
-		template<typename T>
-		const bool Dispatch(const std::function<const bool(const T&)>& func)
+		template<typename T, typename F>
+		const bool Dispatch(const F& func)
 		{
 			try
 			{
