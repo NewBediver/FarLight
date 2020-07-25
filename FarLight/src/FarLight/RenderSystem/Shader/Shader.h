@@ -1,7 +1,7 @@
 #pragma once
 
-#include "FarLight/Core.h"
-#include "FarLight/Logger.h"
+#include "FarLight/Core/Core.h"
+#include "FarLight/LogSystem/Logger.h"
 
 #include <glm/glm.hpp>
 

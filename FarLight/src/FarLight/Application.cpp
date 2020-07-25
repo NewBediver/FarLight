@@ -30,7 +30,7 @@ namespace FarLight
 		: _isRunning(true), _lastFrameTime(0.0f)
 	{
 		_window = Window::Create();
-		_userInterfaceLayer = Ref<ImGuiLayer>(new ImGuiLayer());
+		_userInterfaceLayer = std::make_shared<ImGuiLayer>();
 
 		Renderer::Init();
 	}

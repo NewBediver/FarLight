@@ -16,7 +16,7 @@
 
 namespace FarLight
 {
-	class EventDispatcher
+	class FARLIGHT_API EventDispatcher
 	{
 	public:
 		explicit EventDispatcher(Event& evt)

@@ -4,7 +4,7 @@
 #include "flpch.h"
 
 #include "OpenGLContext.h"
-#include "FarLight/Logger.h"
+#include "FarLight/LogSystem/Logger.h"
 
 #include <glad/glad.h>
 

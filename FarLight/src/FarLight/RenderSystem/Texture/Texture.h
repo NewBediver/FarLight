@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FarLight/Core.h"
+#include "FarLight/Core/Core.h"
 
 namespace FarLight
 {

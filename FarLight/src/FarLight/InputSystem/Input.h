@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "FarLight/Core.h"
+#include "FarLight/Core/Core.h"
 #include "KeyboardKeyCodes.h"
 #include "MouseButtonCodes.h"
 

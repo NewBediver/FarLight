@@ -2,7 +2,7 @@
 
 #include "Texture.h"
 
-#include "FarLight/Core.h"
+#include "FarLight/Core/Core.h"
 
 #include <string>
 

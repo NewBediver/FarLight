@@ -17,14 +17,11 @@ public:
 private:
 	void HandleInput(const FarLight::Timestep& timestamp);
 
-	FarLight::Ref<FarLight::Shader> _shader;
+	FarLight::Library<FarLight::Shader> _shaderLib;
+	FarLight::Library<FarLight::Texture> _textureLib;
+
 	FarLight::Ref<FarLight::VertexArray> _vertexArray;
-
-	FarLight::Ref<FarLight::Shader> _blueShader;
 	FarLight::Ref<FarLight::VertexArray> _squareVertexArray;
-
-	FarLight::Ref<FarLight::Shader> _textureShader;
-	FarLight::Ref<FarLight::Texture2D> _texture, _shovelKnightTexture;
 
 	FarLight::OrthographicCamera _camera;
 

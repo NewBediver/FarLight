@@ -9,5 +9,5 @@
 
 namespace FarLight
 {
-	Scope<RendererAPI> RenderCommand::_rendererAPI = Scope<OpenGLRendererAPI>(new OpenGLRendererAPI());
+	Scope<RendererAPI> RenderCommand::_rendererAPI = std::make_unique<OpenGLRendererAPI>();
 }

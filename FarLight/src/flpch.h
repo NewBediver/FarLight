@@ -2,7 +2,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "FarLight/Logger.h"
+#include "FarLight/LogSystem/Logger.h"
 
 #include <iostream>
 #include <ostream>

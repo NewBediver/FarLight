@@ -10,7 +10,7 @@
 
 namespace FarLight
 {
-	Scope<Renderer::SceneData> Renderer::_sceneData = Scope<Renderer::SceneData>(new Renderer::SceneData());
+	Scope<Renderer::SceneData> Renderer::_sceneData = std::make_unique<Renderer::SceneData>();
 
 	void Renderer::BeginScene(const OrthographicCamera& camera)
 	{

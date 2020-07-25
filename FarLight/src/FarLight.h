@@ -2,12 +2,14 @@
 
 // For use by FarLight applications
 #include "FarLight/Application.h"
-#include "FarLight/Core.h"
 
+//---Core-----------------------------
+#include "FarLight/Core/Core.h"
+#include "FarLight/Core/Library.h"
 #include "FarLight/Core/Timestep.h"
-
-//---Logger---------------------------
-#include "FarLight/Logger.h"
+//------------------------------------
+//---Log-System-----------------------
+#include "FarLight/LogSystem/Logger.h"
 //------------------------------------
 //---Event-System---------------------
 #include "FarLight/EventSystem/Event.h"

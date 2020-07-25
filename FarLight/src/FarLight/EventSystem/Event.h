@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "FarLight/Core.h"
+#include "FarLight/Core/Core.h"
 
 namespace FarLight
 {

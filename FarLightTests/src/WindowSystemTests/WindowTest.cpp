@@ -12,12 +12,12 @@ public:
 		: isVSync(true) { }
 
 	virtual void OnUpdate() override { }
-	virtual unsigned int GetWidth() const override { return 14; }
-	virtual unsigned int GetHeight() const override { return 27; }
+	virtual const unsigned int GetWidth() const override { return 14; }
+	virtual const unsigned int GetHeight() const override { return 27; }
 	virtual void SetEventCallback(const EventCallbackFunction& callback) override { }
 	virtual void SetVSync(bool enabled) override { isVSync = enabled; }
-	virtual bool IsVSync() const override { return isVSync; }
-	virtual std::shared_ptr<void> GetNativeWindow() override { return std::shared_ptr<void>(); }
+	virtual const bool IsVSync() const override { return isVSync; }
+	virtual std::shared_ptr<void> GetNativeWindow() const override { return std::shared_ptr<void>(); }
 
 private:
 	bool isVSync = true;
