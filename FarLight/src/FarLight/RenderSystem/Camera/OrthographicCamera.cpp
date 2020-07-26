@@ -15,13 +15,18 @@ namespace FarLight
 		, _cameraFront(0.0f, 0.0f, -1.0f)
 		, _cameraRight(1.0f, 0.0f, 0.0f)
 		, _cameraUp(0.0f, 1.0f, 0.0f)
-		, _movementSpeed(5.0f)
-		, _rotationSpeed(90.0f)
 		, _roll(0.0f)
-		, _viewMatrix(1.0f)
+		, _pitch(0.0f)
+		, _yaw(-90.0f)
+		, _viewMatrix(glm::lookAt(_position, _position + _cameraFront, _cameraUp))
 		, _projectionMatrix(glm::ortho(left, right, bottom, top, nearZone, farZone))
-		, _viewProjectionMatrix(_projectionMatrix)
 	{ }
+
+	void OrthographicCamera::SetPosition(const glm::vec3& position)
+	{
+		_position = position;
+		RecalculateCameraVectors();
+	}
 
 	void OrthographicCamera::SetRoll(const float roll)
 	{
@@ -29,43 +34,27 @@ namespace FarLight
 		RecalculateCameraVectors();
 	}
 
-	void OrthographicCamera::ProcessCameraMovement(const MovementDirection direction, const float delta)
+	void OrthographicCamera::SetFrontDirection(const glm::vec3& frontDir)
 	{
-		float velocity = _movementSpeed * delta;
-		switch (direction)
-		{
-			case MovementDirection::Up:
-			{
-				_position += _cameraUp * velocity;
-				break;
-			}
-			case MovementDirection::Down:
-			{
-				_position -= _cameraUp * velocity;
-				break;
-			}
-			case MovementDirection::Right:
-			{
-				_position += _cameraRight * velocity;
-				break;
-			}
-			case MovementDirection::Left:
-			{
-				_position -= _cameraRight * velocity;
-				break;
-			}
-		}
-	}
-
-	void OrthographicCamera::ProcessCameraRotation(const float delta)
-	{
-		_roll += _rotationSpeed * delta;
+		_cameraFront = frontDir;
 		RecalculateCameraVectors();
 	}
 
-	const glm::mat4 OrthographicCamera::GetViewMatrix() const
+	void OrthographicCamera::SetRightDirection(const glm::vec3& rightDir)
 	{
-		return glm::lookAt(_position, _position + _cameraFront, _cameraUp);
+		_cameraRight = rightDir;
+		RecalculateCameraVectors();
+	}
+
+	void OrthographicCamera::SetUpDirection(const glm::vec3& upDir)
+	{
+		_cameraUp = upDir;
+		RecalculateCameraVectors();
+	}
+
+	void OrthographicCamera::SetProjectionMatrix(const float left, const float right, const float bottom, const float top, const float nearZone, const float farZone)
+	{
+		_projectionMatrix = glm::ortho(left, right, bottom, top, nearZone, farZone);
 	}
 
 	void OrthographicCamera::RecalculateCameraVectors()
@@ -74,5 +63,6 @@ namespace FarLight
 		glm::vec3 cameraRight = glm::vec3(cos(glm::radians(_roll)), sin(glm::radians(_roll)), 0.0f);
 		_cameraUp = glm::normalize(cameraUp);
 		_cameraRight = glm::normalize(cameraRight);
+		_viewMatrix = glm::lookAt(_position, _position + _cameraFront, _cameraUp);
 	}
 }

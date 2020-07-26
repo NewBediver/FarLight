@@ -1,6 +1,6 @@
 #include <Farlight.h>
 
-#include <FarLight/EntryPoint.h>
+#include <FarLight/Core/EntryPoint.h>
 
 #include "Layers/ExampleLayer.h"
 

@@ -82,7 +82,6 @@ namespace FarLight
 			data._width = width;
 			data._height = height;
 			
-			glViewport(0, 0, data._width, data._height);
 			data._callback(WindowResizedEvent(width, height));
 		});
 

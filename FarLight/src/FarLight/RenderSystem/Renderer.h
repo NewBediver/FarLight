@@ -2,7 +2,7 @@
 
 #include "RendererAPI/RendererAPI.h"
 
-#include "FarLight/RenderSystem/Camera/OrthographicCamera.h"
+#include "FarLight/RenderSystem/Camera/Camera.h"
 
 #include <glm/glm.hpp>
 
@@ -11,7 +11,7 @@ namespace FarLight
 	class FARLIGHT_API Renderer
 	{
 	public:
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const Camera& camera);
 		static void EndScene();
 
 		static void Init();

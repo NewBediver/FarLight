@@ -1,8 +1,8 @@
 #pragma once
 
-#include "FarLight/Core/Core.h"
+#include "Core.h"
 #include "FarLight/LogSystem/Logger.h"
-#include "Application.h"
+#include "FarLight/Application.h"
 
 #ifdef FL_PLATFORM_WINDOWS
 

@@ -23,7 +23,7 @@ private:
 	FarLight::Ref<FarLight::VertexArray> _vertexArray;
 	FarLight::Ref<FarLight::VertexArray> _squareVertexArray;
 
-	FarLight::OrthographicCamera _camera;
+	FarLight::OrthographicCameraController _cameraController;
 
 	float _squareMovementSpeed;
 	glm::vec3 _squarePosition;

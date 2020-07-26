@@ -12,7 +12,7 @@
 
 ExampleLayer::ExampleLayer()
 	: Layer("ExampleLayer")
-	, _camera(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 100.0f)
+	, _cameraController(1280.0f / 720.0f)
 	, _squareMovementSpeed(2.5f)
 	, _squarePosition(0.0f)
 	, _squareColor(0.0f, 0.5f, 0.5f)
@@ -77,9 +77,10 @@ void ExampleLayer::OnDetach() const
 
 void ExampleLayer::OnUpdate(const FarLight::Timestep& timestamp)
 {
+	_cameraController.OnUpdate(timestamp);
 	HandleInput(timestamp);
 
-	FarLight::Renderer::BeginScene(_camera);
+	FarLight::Renderer::BeginScene(_cameraController.GetCamera());
 
 	_shaderLib.Get("Square")->Bind();
 	std::dynamic_pointer_cast<FarLight::OpenGLShader>(_shaderLib.Get("Square"))->UploadUniformFloat3("u_Color", _squareColor.r, _squareColor.g, _squareColor.b);
@@ -114,34 +115,19 @@ void ExampleLayer::OnUserInterfaceRender()
 
 void ExampleLayer::OnEvent(FarLight::Event& event)
 {
+	_cameraController.OnEvent(event);
 }
 
 void ExampleLayer::HandleInput(const FarLight::Timestep& timestamp)
 {
 	//FL_TRACE("Delta time: {0} s. ({1} ms.)", timestamp.GetSeconds(), timestamp.GetMilliseconds());
-
-	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_LEFT))
-		_camera.ProcessCameraMovement(FarLight::OrthographicCamera::MovementDirection::Left, static_cast<float>(timestamp));
-	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_RIGHT))
-		_camera.ProcessCameraMovement(FarLight::OrthographicCamera::MovementDirection::Right, static_cast<float>(timestamp));
-
-	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_DOWN))
-		_camera.ProcessCameraMovement(FarLight::OrthographicCamera::MovementDirection::Down, static_cast<float>(timestamp));
-	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_UP))
-		_camera.ProcessCameraMovement(FarLight::OrthographicCamera::MovementDirection::Up, static_cast<float>(timestamp));
-
-	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_Q))
-		_camera.ProcessCameraRotation(static_cast<float>(timestamp));
-	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_E))
-		_camera.ProcessCameraRotation(-static_cast<float>(timestamp));
-
-	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_D))
+	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_RIGHT))
 		_squarePosition.x += _squareMovementSpeed * static_cast<float>(timestamp);
-	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_A))
+	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_LEFT))
 		_squarePosition.x -= _squareMovementSpeed * static_cast<float>(timestamp);
 
-	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_W))
+	if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_UP))
 		_squarePosition.y += _squareMovementSpeed * static_cast<float>(timestamp);
-	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_S))
+	else if (FarLight::Input::IsKeyPressed(FarLight::KeyboardKeyCodes::FL_KEY_DOWN))
 		_squarePosition.y -= _squareMovementSpeed * static_cast<float>(timestamp);
 }
