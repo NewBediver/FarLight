@@ -8,5 +8,5 @@
 
 namespace FarLight
 {
-	Scope<Input> Input::_instance = std::make_unique<WindowsInput>();
+	Scope<Input> Input::_instance = CreateScope<WindowsInput>();
 }

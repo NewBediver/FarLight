@@ -10,7 +10,7 @@
 
 namespace FarLight
 {
-	Scope<Renderer::SceneData> Renderer::_sceneData = std::make_unique<Renderer::SceneData>();
+	Scope<Renderer::SceneData> Renderer::_sceneData = CreateScope<Renderer::SceneData>();
 	
 	void Renderer::BeginScene(const Camera& camera)
 	{
@@ -23,6 +23,11 @@ namespace FarLight
 	void Renderer::Init()
 	{
 		RenderCommand::Init();
+	}
+
+	void Renderer::SetViewport(const unsigned int width, const unsigned int height)
+	{
+		RenderCommand::SetViewport(0, 0, width, height);
 	}
 
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transformation)

@@ -15,6 +15,7 @@ namespace FarLight
 		static void EndScene();
 
 		static void Init();
+		static void SetViewport(const unsigned int width, const unsigned int height);
 
 		static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transformation = glm::mat4(1.0f));
 

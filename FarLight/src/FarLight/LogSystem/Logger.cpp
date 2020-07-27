@@ -5,6 +5,8 @@
 
 #include "Logger.h"
 
+#include <spdlog/sinks/stdout_color_sinks.h>
+
 namespace FarLight
 {
 	std::shared_ptr<spdlog::logger> Logger::_CoreLogger;
@@ -13,7 +15,6 @@ namespace FarLight
 	void Logger::Init()
 	{
 		spdlog::set_pattern("%^[%T] [%l] [%n] : %v%$");
-
 		_CoreLogger = spdlog::stdout_color_mt("FarLight");
 		_CoreLogger->set_level(spdlog::level::trace);
 

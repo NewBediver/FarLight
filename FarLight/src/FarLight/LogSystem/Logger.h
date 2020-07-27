@@ -1,9 +1,9 @@
 #pragma once
 
 #include "FarLight/Core/Core.h"
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/stdout_sinks.h"
-#include "spdlog/fmt/ostr.h"
+
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
 
 namespace FarLight
 {

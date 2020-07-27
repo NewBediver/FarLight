@@ -2,8 +2,8 @@
 
 #include <unordered_map>
 
-#include "FarLight/LogSystem/Logger.h"
 #include "Core.h"
+#include "FarLight/LogSystem/Logger.h"
 
 namespace FarLight
 {

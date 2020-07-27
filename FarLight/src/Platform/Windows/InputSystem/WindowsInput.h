@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FarLight/InputSystem/Input.h"
-#include "FarLight/Application.h"
+#include "FarLight/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

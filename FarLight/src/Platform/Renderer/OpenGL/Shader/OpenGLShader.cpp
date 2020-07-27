@@ -150,7 +150,10 @@ namespace FarLight
 		}
 
 		glDetachShader(program, vertexShaderID);
+		glDeleteShader(vertexShaderID);
+
 		glDetachShader(program, fragmentShaderID);
+		glDeleteShader(fragmentShaderID);
 
 		return program;
 	}

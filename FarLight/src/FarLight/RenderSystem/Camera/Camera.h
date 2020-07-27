@@ -36,5 +36,7 @@ namespace FarLight
 		virtual void SetProjectionMatrix(const float left, const float right, const float up, const float down, const float nearZone, const float farZone) = 0;
 
 		virtual const glm::mat4& GetViewMatrix() const = 0;
+
+		virtual ~Camera() = default;
 	};
 }

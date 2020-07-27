@@ -5,7 +5,7 @@
 
 #include "ImGuiLayer.h"
 
-#include "FarLight/Application.h"
+#include "FarLight/Core/Application.h"
 
 #include "imgui.h"
 #include "examples/imgui_impl_glfw.h"

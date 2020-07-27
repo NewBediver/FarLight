@@ -10,6 +10,6 @@ namespace FarLight
 {
 	Ref<Window> Window::Create(const WindowProps& props)
 	{
-		return std::make_shared<WindowsWindow>(props);
+		return CreateRef<WindowsWindow>(props);
 	}
 }

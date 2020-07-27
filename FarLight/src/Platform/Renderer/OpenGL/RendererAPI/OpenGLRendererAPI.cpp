@@ -20,6 +20,11 @@ namespace FarLight
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
+	void OpenGLRendererAPI::SetViewport(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height) const
+	{
+		glViewport(x, y, width, height);
+	}
+
 	void OpenGLRendererAPI::Clear() const
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

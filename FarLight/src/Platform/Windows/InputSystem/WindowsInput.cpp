@@ -5,7 +5,7 @@
 
 #include "WindowsInput.h"
 
-#include "FarLight/Application.h"
+#include "FarLight/Core/Application.h"
 
 namespace FarLight
 {

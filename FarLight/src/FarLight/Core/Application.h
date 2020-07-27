@@ -1,7 +1,8 @@
 #pragma once
 
-#include "EventSystem/WindowEvents/WindowClosedEvent.h"
-#include "WindowSystem/Window.h"
+#include "FarLight/EventSystem/WindowEvents/WindowClosedEvent.h"
+#include "FarLight/EventSystem/WindowEvents/WindowResizedEvent.h"
+#include "FarLight/WindowSystem/Window.h"
 
 #include "FarLight/LayerSystem/LayerStack.h"
 #include "FarLight/LayerSystem/EngineLayers/ImGuiLayer.h"
@@ -28,7 +29,8 @@ namespace FarLight
 		Application& operator=(const Application&) = delete;
 		Application& operator=(Application&&) = delete;
 
-		bool OnWindowClosed(const WindowClosedEvent& e);
+		const bool OnWindowClosed(const WindowClosedEvent& e);
+		const bool OnWindowResized(const WindowResizedEvent& e);
 
 		static Scope<Application> _instance;
 
@@ -36,6 +38,8 @@ namespace FarLight
 		Ref<ImGuiLayer> _userInterfaceLayer;
 
 		bool _isRunning;
+		bool _isMinimized;
+
 		LayerStack _layerStack;
 
 		float _lastFrameTime;

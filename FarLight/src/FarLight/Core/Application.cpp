@@ -5,11 +5,11 @@
 
 #include "Application.h"
 
-#include "FarLight/Core/Timestep.h"
+#include "Timestep.h"
 
 #include "FarLight/EventSystem/EventDispatcher.h"
 
-#include "InputSystem/Input.h"
+#include "FarLight/InputSystem/Input.h"
 
 #include "FarLight/RenderSystem/Renderer.h"
 #include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
@@ -27,10 +27,12 @@ namespace FarLight
 	}
 
 	Application::Application()
-		: _isRunning(true), _lastFrameTime(0.0f)
+		: _isRunning(true)
+		, _isMinimized(false)
+		, _lastFrameTime(0.0f)
 	{
 		_window = Window::Create();
-		_userInterfaceLayer = std::make_shared<ImGuiLayer>();
+		_userInterfaceLayer = CreateRef<ImGuiLayer>();
 
 		Renderer::Init();
 	}
@@ -42,15 +44,18 @@ namespace FarLight
 
 		while (_isRunning)
 		{
-			FarLight::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
-			FarLight::RenderCommand::Clear();
+			RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
+			RenderCommand::Clear();
 
 			float time = static_cast<float>(glfwGetTime());
 			Timestep ts(time - _lastFrameTime);
 			_lastFrameTime = time;
 
-			for (auto& layer = _layerStack.cbegin(); layer != _layerStack.cend(); ++layer)
-				(*layer)->OnUpdate(ts);
+			if (!_isMinimized)
+			{
+				for (auto& layer = _layerStack.cbegin(); layer != _layerStack.cend(); ++layer)
+					(*layer)->OnUpdate(ts);
+			}
 
 			_userInterfaceLayer->Begin();
 			for (auto& layer = _layerStack.cbegin(); layer != _layerStack.cend(); ++layer)
@@ -65,6 +70,7 @@ namespace FarLight
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowClosedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowClosed));
+		dispatcher.Dispatch<WindowResizedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowResized));
 
 		//FL_CORE_TRACE("{0}", e);
 		for (auto it = _layerStack.crbegin(); it != _layerStack.crend(); ++it)
@@ -74,9 +80,18 @@ namespace FarLight
 		}
 	}
 
-	bool Application::OnWindowClosed(const WindowClosedEvent& e)
+	const bool Application::OnWindowClosed(const WindowClosedEvent& e)
 	{
 		_isRunning = false;
 		return true;
 	}
+
+	const bool Application::OnWindowResized(const WindowResizedEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0) _isMinimized = true;
+		else _isMinimized = false;
+		Renderer::SetViewport(e.GetWidth(), e.GetHeight());
+		return false;
+	}
+
 }

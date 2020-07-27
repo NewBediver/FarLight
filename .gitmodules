@@ -1,18 +1,24 @@
 [submodule "FarLight/vendor/spdlog"]
 	path = FarLight/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+	branch = v1.x
 [submodule "FarLightTests/vendor/googletest"]
 	path = FarLightTests/vendor/googletest
 	url = https://github.com/google/googletest
+	branch = master
 [submodule "FarLight/vendor/GLFW"]
 	path = FarLight/vendor/GLFW
 	url = https://github.com/glfw/glfw
+	branch = master
 [submodule "FarLight/vendor/ImGui"]
 	path = FarLight/vendor/ImGui
 	url = https://github.com/ocornut/imgui
+	branch = docking
 [submodule "FarLight/vendor/glm"]
 	path = FarLight/vendor/glm
 	url = https://github.com/g-truc/glm
-[submodule "FarLight\\vendor\\stb"]
-	path = FarLight\\vendor\\stb
+	branch = master
+[submodule "FarLight/vendor/stb"]
+	path = FarLight/vendor/stb
 	url = https://github.com/nothings/stb
+	branch = master
