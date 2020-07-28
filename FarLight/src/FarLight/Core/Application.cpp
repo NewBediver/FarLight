@@ -44,9 +44,6 @@ namespace FarLight
 
 		while (_isRunning)
 		{
-			RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
-			RenderCommand::Clear();
-
 			float time = static_cast<float>(glfwGetTime());
 			Timestep ts(time - _lastFrameTime);
 			_lastFrameTime = time;

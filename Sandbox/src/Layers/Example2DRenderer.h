@@ -2,11 +2,13 @@
 
 #include <FarLight.h>
 
-class ExampleLayer
+#include <glm/glm.hpp>
+
+class Example2DRenderer
 	: public FarLight::Layer
 {
 public:
-	explicit ExampleLayer();
+	explicit Example2DRenderer();
 
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
@@ -15,17 +17,10 @@ public:
 	virtual void OnEvent(FarLight::Event& event) override;
 
 private:
-	void HandleInput(const FarLight::Timestep& timestamp);
-
-	FarLight::Library<FarLight::Shader> _shaderLib;
-	FarLight::Library<FarLight::Texture> _textureLib;
-
+	FarLight::Ref<FarLight::Shader> _shader;
 	FarLight::Ref<FarLight::VertexArray> _vertexArray;
-	FarLight::Ref<FarLight::VertexArray> _squareVertexArray;
 
 	FarLight::OrthographicCameraController _cameraController;
 
-	float _squareMovementSpeed;
-	glm::vec3 _squarePosition;
-	glm::vec4 _squareColor;
+	glm::vec4 _color;
 };

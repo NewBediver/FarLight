@@ -15,7 +15,7 @@
 
 namespace FarLight
 {
-	void ImGuiLayer::OnAttach() const
+	void ImGuiLayer::OnAttach()
 	{
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
@@ -47,7 +47,7 @@ namespace FarLight
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
-	void ImGuiLayer::OnDetach() const
+	void ImGuiLayer::OnDetach()
 	{
 		// Cleanup
 		ImGui_ImplOpenGL3_Shutdown();

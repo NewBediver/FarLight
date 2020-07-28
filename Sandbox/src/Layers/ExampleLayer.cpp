@@ -15,7 +15,7 @@ ExampleLayer::ExampleLayer()
 	, _cameraController(1280.0f / 720.0f)
 	, _squareMovementSpeed(2.5f)
 	, _squarePosition(0.0f)
-	, _squareColor(0.0f, 0.5f, 0.5f)
+	, _squareColor(0.0f, 0.5f, 0.5f, 1.0f)
 {
 	_vertexArray = FarLight::VertexArray::Create();
 
@@ -67,11 +67,11 @@ ExampleLayer::ExampleLayer()
 	std::dynamic_pointer_cast<FarLight::OpenGLShader>(_shaderLib.Get("Texture"))->UploadUniformInt("u_Texture", 0);
 }
 
-void ExampleLayer::OnAttach() const
+void ExampleLayer::OnAttach()
 {
 }
 
-void ExampleLayer::OnDetach() const
+void ExampleLayer::OnDetach()
 {
 }
 
@@ -80,10 +80,13 @@ void ExampleLayer::OnUpdate(const FarLight::Timestep& timestamp)
 	_cameraController.OnUpdate(timestamp);
 	HandleInput(timestamp);
 
+	FarLight::RenderCommand::SetClearColor({ 0.2f, 0.3f, 0.3f, 1.0f });
+	FarLight::RenderCommand::Clear();
+
 	FarLight::Renderer::BeginScene(_cameraController.GetCamera());
 
 	_shaderLib.Get("Square")->Bind();
-	std::dynamic_pointer_cast<FarLight::OpenGLShader>(_shaderLib.Get("Square"))->UploadUniformFloat3("u_Color", _squareColor.r, _squareColor.g, _squareColor.b);
+	std::dynamic_pointer_cast<FarLight::OpenGLShader>(_shaderLib.Get("Square"))->UploadUniformFloat4("u_Color", _squareColor.r, _squareColor.g, _squareColor.b, _squareColor.a);
 
 	/*for (int y = -5; y < 5; ++y) {
 		for (int x = -5; x < 5; ++x) {

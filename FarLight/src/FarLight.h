@@ -33,6 +33,3 @@
 #include "FarLight/RenderSystem/IndexBuffer/IndexBuffer.h"
 #include "FarLight/RenderSystem/VertexArray/VertexArray.h"
 //------------------------------------
-//---Entry-Point----------------------
-//#include "FarLight/EntryPoint.h"
-//------------------------------------
