@@ -24,7 +24,7 @@
 #include "FarLight/InputSystem/MouseButtonCodes.h"
 //------------------------------------
 //---Render-System--------------------
-#include "FarLight/RenderSystem/Renderer.h"
+#include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 #include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
 #include "FarLight/RenderSystem/Camera/OrthographicCameraController.h"
 #include "FarLight/RenderSystem/Shader/Shader.h"

@@ -11,8 +11,7 @@
 
 #include "FarLight/InputSystem/Input.h"
 
-#include "FarLight/RenderSystem/Renderer.h"
-#include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
+#include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 
 #include <GLFW/glfw3.h>
 
@@ -33,14 +32,14 @@ namespace FarLight
 	{
 		_window = Window::Create();
 		_userInterfaceLayer = CreateRef<ImGuiLayer>();
-
-		Renderer::Init();
 	}
 
 	void Application::Run()
 	{
 		_window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
 		_layerStack.PushOverlay(_userInterfaceLayer);
+
+		Renderer2D::Init();
 
 		while (_isRunning)
 		{
@@ -61,6 +60,8 @@ namespace FarLight
 
 			_window->OnUpdate();
 		}
+
+		Renderer2D::Shutdown();
 	}
 
 	void Application::OnEvent(Event& e)
@@ -87,7 +88,7 @@ namespace FarLight
 	{
 		if (e.GetWidth() == 0 || e.GetHeight() == 0) _isMinimized = true;
 		else _isMinimized = false;
-		Renderer::SetViewport(e.GetWidth(), e.GetHeight());
+		Renderer2D::SetViewport(e.GetWidth(), e.GetHeight());
 		return false;
 	}
 

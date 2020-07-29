@@ -45,6 +45,8 @@ namespace FarLight
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(win, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
+
+		FL_CORE_INFO("User Interface Layer (Dear ImGui) established.");
 	}
 
 	void ImGuiLayer::OnDetach()
@@ -53,6 +55,8 @@ namespace FarLight
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
+
+		FL_CORE_INFO("User Interface Layer (Dear ImGui) terminated.");
 	}
 
 	void ImGuiLayer::Begin() const

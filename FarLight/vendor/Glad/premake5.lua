@@ -22,6 +22,11 @@ project "Glad"
         pic "on"
         systemversion "latest"
 
+    defines 
+    {
+        "_CRT_SECURE_NO_WARNINGS"
+    }
+
     filter "system:windows"
         systemversion "latest"
 

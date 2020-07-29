@@ -17,15 +17,15 @@ namespace FarLight
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
-		void UploadUniformInt(const std::string& name, const int i1) const;
+		virtual void SetInt(const std::string& name, const int i1) const override;
 
-		void UploadUniformFloat(const std::string& name, const float f1) const;
-		void UploadUniformFloat2(const std::string& name, const float f1, const float f2) const;
-		void UploadUniformFloat3(const std::string& name, const float f1, const float f2, const float f3) const;
-		void UploadUniformFloat4(const std::string& name, const float f1, const float f2, const float f3, const float f4) const;
+		virtual void SetFloat(const std::string& name, const float f1) const override;
+		virtual void SetFloat2(const std::string& name, const float f1, const float f2) const override;
+		virtual void SetFloat3(const std::string& name, const float f1, const float f2, const float f3) const override;
+		virtual void SetFloat4(const std::string& name, const float f1, const float f2, const float f3, const float f4) const override;
 
-		void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) const;
-		void UploadUniformMat3(const std::string& name, const glm::mat3& matrix) const;
+		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) const override;
+		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) const override;
 
 		virtual ~OpenGLShader();
 

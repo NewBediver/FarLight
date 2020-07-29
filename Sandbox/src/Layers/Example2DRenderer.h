@@ -17,10 +17,9 @@ public:
 	virtual void OnEvent(FarLight::Event& event) override;
 
 private:
-	FarLight::Ref<FarLight::Shader> _shader;
-	FarLight::Ref<FarLight::VertexArray> _vertexArray;
-
 	FarLight::OrthographicCameraController _cameraController;
 
+	glm::vec2 _position;
+	glm::vec2 _size;
 	glm::vec4 _color;
 };

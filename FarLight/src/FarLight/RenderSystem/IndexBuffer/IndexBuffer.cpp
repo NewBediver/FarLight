@@ -5,14 +5,14 @@
 
 #include "IndexBuffer.h"
 
-#include "FarLight/RenderSystem/Renderer.h"
+#include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 #include "Platform/Renderer/OpenGL/IndexBuffer/OpenGLIndexBuffer.h"
 
 namespace FarLight
 {
 	Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* indicies, const unsigned int count)
 	{
-		switch (Renderer::GetAPI())
+		switch (Renderer2D::GetAPI())
 		{
 			case RendererAPI::API::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 			case RendererAPI::API::OpenGL:  return CreateRef<OpenGLIndexBuffer>(indicies, count);

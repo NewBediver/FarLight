@@ -5,14 +5,14 @@
 
 #include "VertexBuffer.h"
 
-#include "FarLight/RenderSystem/Renderer.h"
+#include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 #include "Platform/Renderer/OpenGL/VertexBuffer/OpenGLVertexBuffer.h"
 
 namespace FarLight
 {
 	Ref<VertexBuffer> VertexBuffer::Create(const float* verticies, const unsigned int size, const BufferLayout& layout)
 	{
-		switch (Renderer::GetAPI())
+		switch (Renderer2D::GetAPI())
 		{
 			case RendererAPI::API::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
 			case RendererAPI::API::OpenGL:  return CreateRef<OpenGLVertexBuffer>(verticies, size, layout);
