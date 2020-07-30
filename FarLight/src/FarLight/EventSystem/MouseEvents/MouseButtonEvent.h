@@ -4,20 +4,21 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API MouseButtonEvent
+	class MouseButtonEvent
 		: public Event
 	{
 	public:
-		const int GetButton() const { return _button; }
+		int GetButton() const { return m_Button; }
 
 		virtual ~MouseButtonEvent() = 0 { };
 
 	protected:
-		explicit MouseButtonEvent(const int button, const std::string& name, const EventType type)
+		explicit MouseButtonEvent(int button, const std::string& name, EventType type)
 			: Event(name, type, InputEventCategory | MouseEventCategory | MouseButtonEventCategory)
-			, _button(button) { }
+			, m_Button(button) 
+		{ }
 
 	private:
-		int _button;
+		int m_Button;
 	};
 }

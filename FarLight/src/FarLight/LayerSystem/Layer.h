@@ -5,11 +5,12 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API Layer
+	class Layer
 	{
 	public:
 		explicit Layer(const std::string& name = "Layer")
-			: _name(name) { }
+			: m_Name(name)
+		{ }
 
 		virtual void OnAttach() = 0;
 		virtual void OnDetach() = 0;
@@ -17,11 +18,11 @@ namespace FarLight
 		virtual void OnUserInterfaceRender() = 0;
 		virtual void OnEvent(Event& event) = 0;
 
-		const std::string& GetName() const { return _name; }
+		const std::string& GetName() const { return m_Name; }
 
 		virtual ~Layer() = default;
 
 	private:
-		std::string _name;
+		std::string m_Name;
 	};
 }

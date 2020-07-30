@@ -4,21 +4,22 @@
 
 namespace FarLight
 {
-    class FARLIGHT_API MouseMovedEvent :
+    class MouseMovedEvent :
         public Event
     {
     public:
-        explicit MouseMovedEvent(const double xPos, const double yPos)
+        explicit MouseMovedEvent(double xPosition, double yPosition)
             : Event("MouseMoved", EventType::MouseMovedEventType, MouseEventCategory | InputEventCategory)
-            , _xPos(xPos)
-            , _yPos(yPos) { }
+            , m_XPosition(xPosition)
+            , m_YPosition(yPosition)
+        { }
 
-        const double MouseMovedEvent::GetX() const { return _xPos; }
-        const double MouseMovedEvent::GetY() const { return _yPos; }
+        double MouseMovedEvent::GetX() const { return m_XPosition; }
+        double MouseMovedEvent::GetY() const { return m_YPosition; }
 
-        virtual const std::string ToString() const override;
+        virtual std::string ToString() const override;
 
     private:
-        double _xPos, _yPos;
+        double m_XPosition, m_YPosition;
     };
 }

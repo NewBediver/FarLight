@@ -2,26 +2,29 @@
 
 #include "Layer.h"
 
+#include "FarLight/Core/Core.h"
+
 namespace FarLight
 {
-	class FARLIGHT_API LayerStack
+	class LayerStack
 	{
 	public:
 		explicit LayerStack()
-			: _layerInsertIndex(0) { }
+			: m_LayerInsertIndex(0)
+		{ }
 
 		void PushLayer(const Ref<Layer>& layer);
 		void PushOverlay(const Ref<Layer>& overlay);
 		void PopLayer(const Ref<Layer>& layer);
 		void PopOverlay(const Ref<Layer>& overlay);
 
-		std::vector<Ref<Layer>>::const_iterator cbegin() const { return _layers.cbegin(); }
-		std::vector<Ref<Layer>>::const_iterator cend() const { return _layers.cend(); }
-		std::vector<Ref<Layer>>::const_reverse_iterator crbegin() const { return _layers.crbegin(); }
-		std::vector<Ref<Layer>>::const_reverse_iterator crend() const { return _layers.crend(); }
+		std::vector<Ref<Layer>>::const_iterator cbegin() const { return m_Layers.cbegin(); }
+		std::vector<Ref<Layer>>::const_iterator cend() const { return m_Layers.cend(); }
+		std::vector<Ref<Layer>>::const_reverse_iterator crbegin() const { return m_Layers.crbegin(); }
+		std::vector<Ref<Layer>>::const_reverse_iterator crend() const { return m_Layers.crend(); }
 
 	private:
-		std::vector<Ref<Layer>> _layers;
-		unsigned int _layerInsertIndex;
+		std::vector<Ref<Layer>> m_Layers;
+		unsigned int m_LayerInsertIndex;
 	};
 }

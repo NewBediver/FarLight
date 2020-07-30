@@ -8,7 +8,7 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API WindowsWindow
+	class WindowsWindow
 		: public Window
 	{
 	public:
@@ -16,30 +16,30 @@ namespace FarLight
 
 		virtual void OnUpdate() override;
 
-		virtual const unsigned int GetWidth() const override { return _data._width; }
-		virtual const unsigned int GetHeight() const override { return _data._height; }
+		virtual unsigned int GetWidth() const override { return m_Data.m_Width; }
+		virtual unsigned int GetHeight() const override { return m_Data.m_Height; }
 
-		virtual void SetEventCallback(const EventCallbackFunction& callback) override { _data._callback = callback; }
+		virtual void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.m_Callback = callback; }
 
 		virtual void SetVSync(bool enabled) override;
-		virtual const bool IsVSync() const override { return _data._isVSync; }
+		virtual bool IsVSync() const override { return m_Data.m_IsVSync; }
 
-		virtual Ref<void> GetNativeWindow() const override { return _window; }
+		virtual Ref<void> GetNativeWindow() const override { return m_Window; }
 
 	private:
 		void Init(const WindowProps& props);
 
 		void SetGLFWCallbacks();
 
-		Ref<GLFWwindow> _window;
-		Scope<OpenGLContext> _context;
+		Ref<GLFWwindow> m_Window;
+		Scope<OpenGLContext> m_Context;
 
 		struct WindowData
 		{
-			std::string _title;
-			unsigned int _width = 800, _height = 600;
-			bool _isVSync = false;
-			EventCallbackFunction _callback;
-		} _data;
+			std::string m_Title;
+			unsigned int m_Width = 800, m_Height = 600;
+			bool m_IsVSync = false;
+			EventCallbackFunction m_Callback;
+		} m_Data;
 	};
 }

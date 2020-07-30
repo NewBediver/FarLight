@@ -1,26 +1,31 @@
 #pragma once
 
+#include "Core.h"
+
+#include "FarLight/EventSystem/Event.h"
 #include "FarLight/EventSystem/WindowEvents/WindowClosedEvent.h"
 #include "FarLight/EventSystem/WindowEvents/WindowResizedEvent.h"
+
 #include "FarLight/WindowSystem/Window.h"
 
+#include "FarLight/LayerSystem/Layer.h"
 #include "FarLight/LayerSystem/LayerStack.h"
 #include "FarLight/LayerSystem/EngineLayers/ImGuiLayer.h"
 
 namespace FarLight
 {
-	class FARLIGHT_API Application
+	class Application
 	{
 	public:
 		void Run();
 		void OnEvent(Event& e);
 
-		void PushLayer(const Ref<Layer>& layer) { _layerStack.PushLayer(layer); }
-		void PushOverlay(const Ref<Layer>& overlay) { _layerStack.PushOverlay(overlay); }
+		void PushLayer(const Ref<Layer>& layer) { m_LayerStack.PushLayer(layer); }
+		void PushOverlay(const Ref<Layer>& overlay) { m_LayerStack.PushOverlay(overlay); }
+
+		const Ref<Window>& GetWindow() const { return m_Window; }
 
 		static const Scope<Application>& GetInstance();
-
-		Ref<Window> GetWindow() { return _window; }
 
 	private:
 		explicit Application();
@@ -29,20 +34,20 @@ namespace FarLight
 		Application& operator=(const Application&) = delete;
 		Application& operator=(Application&&) = delete;
 
-		const bool OnWindowClosed(const WindowClosedEvent& e);
-		const bool OnWindowResized(const WindowResizedEvent& e);
+		bool OnWindowClosed(const WindowClosedEvent& e);
+		bool OnWindowResized(const WindowResizedEvent& e);
 
-		static Scope<Application> _instance;
+		Ref<Window> m_Window;
+		Ref<ImGuiLayer> m_UserInterfaceLayer;
 
-		Ref<Window> _window;
-		Ref<ImGuiLayer> _userInterfaceLayer;
+		bool m_IsRunning;
+		bool m_IsMinimized;
 
-		bool _isRunning;
-		bool _isMinimized;
+		LayerStack m_LayerStack;
 
-		LayerStack _layerStack;
+		float m_LastFrameTime;
 
-		float _lastFrameTime;
+		static Scope<Application> s_Instance;
 	};
 
 	// To be defined in CLIENT

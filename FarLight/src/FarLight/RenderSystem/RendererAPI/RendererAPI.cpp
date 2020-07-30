@@ -7,5 +7,5 @@
 
 namespace FarLight
 {
-	RendererAPI::API RendererAPI::_api = RendererAPI::API::OpenGL;
+	RendererAPI::API RendererAPI::s_Api = RendererAPI::API::OpenGL;
 }

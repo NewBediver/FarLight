@@ -9,22 +9,23 @@
 
 namespace FarLight
 {
-	OpenGLVertexBuffer::OpenGLVertexBuffer(const float* verticies, const unsigned int size, const BufferLayout& layout)
-		: _rendererID(0), _layout(layout)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(const float* vertices, unsigned int size, const BufferLayout& layout)
+		: m_RendererID(0)
+		, m_Layout(layout)
 	{
-		glCreateBuffers(1, &_rendererID);
-		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);
-		glBufferData(GL_ARRAY_BUFFER, size, verticies, GL_STATIC_DRAW);
+		glCreateBuffers(1, &m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-		glDeleteBuffers(1, &_rendererID);
+		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Bind() const
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Unbind() const

@@ -9,16 +9,16 @@
 
 namespace FarLight
 {
-	std::shared_ptr<spdlog::logger> Logger::_CoreLogger;
-	std::shared_ptr<spdlog::logger> Logger::_ClientLogger;
+	std::shared_ptr<spdlog::logger> Logger::s_CoreLogger = nullptr;
+	std::shared_ptr<spdlog::logger> Logger::s_ClientLogger = nullptr;
 
 	void Logger::Init()
 	{
 		spdlog::set_pattern("%^[%T] [%l] [%n] : %v%$");
-		_CoreLogger = spdlog::stdout_color_mt("FarLight");
-		_CoreLogger->set_level(spdlog::level::trace);
+		s_CoreLogger = spdlog::stdout_color_mt("FarLight");
+		s_CoreLogger->set_level(spdlog::level::trace);
 
-		_ClientLogger = spdlog::stdout_color_mt("Application");
-		_ClientLogger->set_level(spdlog::level::trace);
+		s_ClientLogger = spdlog::stdout_color_mt("Application");
+		s_ClientLogger->set_level(spdlog::level::trace);
 	}
 }

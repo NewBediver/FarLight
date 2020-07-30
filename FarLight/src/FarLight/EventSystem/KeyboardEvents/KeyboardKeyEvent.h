@@ -4,19 +4,20 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API KeyboardKeyEvent
+	class KeyboardKeyEvent
 		: public Event
 	{
 	public:
-		const int GetKeyCode() const { return _keyCode; }
+		int GetKeyCode() const { return m_KeyCode; }
 
 		virtual ~KeyboardKeyEvent() = 0 { };
 
 	protected:
-		explicit KeyboardKeyEvent(const int keyCode, const std::string& name, const EventType type)
-			: Event(name, type, KeyboardEventCategory | InputEventCategory), _keyCode(keyCode) { }
+		explicit KeyboardKeyEvent(int keyCode, const std::string& name, EventType type)
+			: Event(name, type, KeyboardEventCategory | InputEventCategory), m_KeyCode(keyCode)
+		{ }
 
 	private:
-		int _keyCode;
+		int m_KeyCode;
 	};
 }

@@ -34,23 +34,23 @@ namespace FarLight
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		_context->SwapBuffers();
+		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
 		if (enabled) glfwSwapInterval(1);
 		else glfwSwapInterval(0);
-		_data._isVSync = enabled;
+		m_Data.m_IsVSync = enabled;
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
-		_data._title = props._title;
-		_data._height = props._height;
-		_data._width = props._width;
+		m_Data.m_Title = props.m_Title;
+		m_Data.m_Height = props.m_Height;
+		m_Data.m_Width = props.m_Width;
 
-		FL_CORE_INFO("Creating window {0} ({1}, {2})", props._title, props._width, props._height);
+		FL_CORE_INFO("Creating window {0} ({1}, {2})", props.m_Title, props.m_Height, props.m_Width);
 
 		if (!isGLFWInitialized)
 		{
@@ -61,12 +61,12 @@ namespace FarLight
 			isGLFWInitialized = true;
 		}
 
-		_window = Ref<GLFWwindow>(glfwCreateWindow(static_cast<int>(props._width), static_cast<int>(props._height), _data._title.c_str(), nullptr, nullptr), glfwDestroyWindow);
+		m_Window = Ref<GLFWwindow>(glfwCreateWindow(static_cast<int>(props.m_Width), static_cast<int>(props.m_Height), m_Data.m_Title.c_str(), nullptr, nullptr), glfwDestroyWindow);
 		
-		_context = CreateScope<OpenGLContext>(_window);
-		_context->Init();
+		m_Context = CreateScope<OpenGLContext>(m_Window);
+		m_Context->Init();
 
-		glfwSetWindowUserPointer(_window.get(), &_data);
+		glfwSetWindowUserPointer(m_Window.get(), &m_Data);
 		SetVSync(true);
 
 		SetGLFWCallbacks();
@@ -76,77 +76,77 @@ namespace FarLight
 	{
 		#define GET_DATA(x) *static_cast<WindowData*>(glfwGetWindowUserPointer(x));
 
-		glfwSetWindowSizeCallback(_window.get(), [](GLFWwindow* win, int width, int height) {
+		glfwSetWindowSizeCallback(m_Window.get(), [](GLFWwindow* win, int width, int height) {
 			WindowData& data = GET_DATA(win);
-			data._width = width;
-			data._height = height;
+			data.m_Width = width;
+			data.m_Height = height;
 			
-			data._callback(WindowResizedEvent(width, height));
+			data.m_Callback(WindowResizedEvent(width, height));
 		});
 
-		glfwSetWindowCloseCallback(_window.get(), [](GLFWwindow* win) {
+		glfwSetWindowCloseCallback(m_Window.get(), [](GLFWwindow* win) {
 			WindowData& data = GET_DATA(win);
 
-			data._callback(WindowClosedEvent());
+			data.m_Callback(WindowClosedEvent());
 		});
 
-		glfwSetKeyCallback(_window.get(), [](GLFWwindow* win, int key, int scan, int action, int mods) {
+		glfwSetKeyCallback(m_Window.get(), [](GLFWwindow* win, int key, int scan, int action, int mods) {
 			WindowData& data = GET_DATA(win);
 
 			switch (action)
 			{
 				case GLFW_PRESS:
 				{
-					data._callback(KeyboardKeyPressedEvent(key, 0));
+					data.m_Callback(KeyboardKeyPressedEvent(key, 0));
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					data._callback(KeyboardKeyReleasedEvent(key));
+					data.m_Callback(KeyboardKeyReleasedEvent(key));
 					break;
 				}
 				case GLFW_REPEAT:
 				{
-					data._callback(KeyboardKeyPressedEvent(key, 1));
+					data.m_Callback(KeyboardKeyPressedEvent(key, 1));
 					break;
 				}
 			}
 		});
 
-		glfwSetCharCallback(_window.get(), [](GLFWwindow* win, unsigned int code) {
+		glfwSetCharCallback(m_Window.get(), [](GLFWwindow* win, unsigned int code) {
 			WindowData& data = GET_DATA(win);
 
-			data._callback(KeyboardKeyTypedEvent(code));
+			data.m_Callback(KeyboardKeyTypedEvent(code));
 		});
 
-		glfwSetMouseButtonCallback(_window.get(), [](GLFWwindow* win, int button, int action, int mods) {
+		glfwSetMouseButtonCallback(m_Window.get(), [](GLFWwindow* win, int button, int action, int mods) {
 			WindowData& data = GET_DATA(win);
 
 			switch (action)
 			{
 				case GLFW_PRESS:
 				{
-					data._callback(MouseButtonPressedEvent(button));
+					data.m_Callback(MouseButtonPressedEvent(button));
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					data._callback(MouseButtonReleasedEvent(button));
+					data.m_Callback(MouseButtonReleasedEvent(button));
 					break;
 				}
 			}
 		});
 		
-		glfwSetScrollCallback(_window.get(), [](GLFWwindow* win, double xOffset, double yOffset) {
+		glfwSetScrollCallback(m_Window.get(), [](GLFWwindow* win, double xOffset, double yOffset) {
 			WindowData& data = GET_DATA(win);
 
-			data._callback(MouseScrolledEvent(xOffset, yOffset));
+			data.m_Callback(MouseScrolledEvent(xOffset, yOffset));
 		});
 
-		glfwSetCursorPosCallback(_window.get(), [](GLFWwindow* win, double xPos, double yPos) {
+		glfwSetCursorPosCallback(m_Window.get(), [](GLFWwindow* win, double xPos, double yPos) {
 			WindowData& data = GET_DATA(win);
 
-			data._callback(MouseMovedEvent(xPos, yPos));
+			data.m_Callback(MouseMovedEvent(xPos, yPos));
 		});
 	}
 }

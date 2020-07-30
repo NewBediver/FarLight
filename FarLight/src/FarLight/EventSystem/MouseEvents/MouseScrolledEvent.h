@@ -4,21 +4,22 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API MouseScrolledEvent
+	class MouseScrolledEvent
 		: public Event
 	{
 	public:
-		explicit MouseScrolledEvent(const double xOffset, const double yOffset)
+		explicit MouseScrolledEvent(double xOffset, double yOffset)
 			: Event("MouseScrolled", EventType::MouseScrolledEventType, MouseEventCategory | InputEventCategory)
-			, _xOffset(xOffset)
-			, _yOffset(yOffset) { }
+			, m_XOffset(xOffset)
+			, m_YOffset(yOffset)
+		{ }
 
-		const double MouseScrolledEvent::GetXOffset() const { return _xOffset; }
-		const double MouseScrolledEvent::GetYOffset() const { return _yOffset; }
+		double MouseScrolledEvent::GetXOffset() const { return m_XOffset; }
+		double MouseScrolledEvent::GetYOffset() const { return m_YOffset; }
 
-		virtual const std::string ToString() const override;
+		virtual std::string ToString() const override;
 
 	private:
-		double _xOffset, _yOffset;
+		double m_XOffset, m_YOffset;
 	};
 }

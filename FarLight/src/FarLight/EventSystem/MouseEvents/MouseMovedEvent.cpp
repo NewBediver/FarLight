@@ -7,11 +7,11 @@
 
 namespace FarLight
 {
-	const std::string MouseMovedEvent::ToString() const
+	std::string MouseMovedEvent::ToString() const
 	{
 		std::stringstream ss;
 		ss.precision(3);
-		ss << std::fixed << GetName() << ": " << "(" << _xPos << ", " << _yPos << ").";
+		ss << std::fixed << GetName() << ": " << "(" << GetX() << ", " << GetY() << ").";
 		return ss.str();
 	}
 }

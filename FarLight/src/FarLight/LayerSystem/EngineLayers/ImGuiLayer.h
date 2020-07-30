@@ -4,17 +4,18 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API ImGuiLayer
+	class ImGuiLayer
 		: public Layer
 	{
 	public:
 		explicit ImGuiLayer()
-			: Layer("ImGuiLayer") { }
+			: Layer("ImGuiLayer")
+		{ }
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnUpdate(const Timestep& timestamp) override { };
-		virtual void OnUserInterfaceRender() override;
+		virtual void OnUserInterfaceRender() override { };
 		virtual void OnEvent(Event& event) override { }
 
 		void Begin() const;

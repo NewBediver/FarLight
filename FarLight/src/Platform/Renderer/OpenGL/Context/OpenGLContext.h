@@ -6,17 +6,18 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API OpenGLContext
+	class OpenGLContext
 		: public GraphicsContext
 	{
 	public:
-		OpenGLContext(const Ref<GLFWwindow>& windowHandle)
-			: _windowHandle(windowHandle) { }
+		explicit OpenGLContext(const Ref<GLFWwindow>& windowHandle)
+			: m_WindowHandle(windowHandle)
+		{ }
 
 		virtual void Init() override;
 		virtual void SwapBuffers() const override;
 
 	private:
-		Ref<GLFWwindow> _windowHandle;
+		Ref<GLFWwindow> m_WindowHandle;
 	};
 }

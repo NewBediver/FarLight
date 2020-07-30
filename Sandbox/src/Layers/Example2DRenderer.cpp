@@ -9,10 +9,7 @@
 
 Example2DRenderer::Example2DRenderer()
 	: Layer("Example2DRenderer")
-	, _cameraController(1280.0f / 720.0f)
-	, _position(0.0f, 0.0f)
-	, _size(1.0f, 1.0f)
-	, _color(0.25f, 0.25f, 0.5f, 1.0f)
+	, m_CameraController(1280.0f / 720.0f)
 { }
 
 void Example2DRenderer::OnAttach()
@@ -27,34 +24,26 @@ void Example2DRenderer::OnDetach()
 
 void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp)
 {
-	_cameraController.OnUpdate(timestamp);
+	m_CameraController.OnUpdate(timestamp);
 
 	FarLight::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 	FarLight::RenderCommand::Clear();
 
-	FarLight::Renderer2D::BeginScene(_cameraController.GetCamera());
+	FarLight::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	FarLight::Renderer2D::DrawQuad(_position, _size, _color);
+	FarLight::Renderer2D::DrawQuad({1.0f, 1.0f, 0.0f}, {1.3f, 0.6f}, {0.8f, 0.2f, 0.3f, 1.0f});
+	FarLight::Renderer2D::DrawQuad({ -1.0f, 0.3f}, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f });
+	FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f}, { 10.0f, 10.0f }, FarLight::Texture2D::Create("assets/textures/Box.png"));
 
 	FarLight::Renderer2D::EndScene();
 }
 
 void Example2DRenderer::OnUserInterfaceRender()
 {
-	ImGui::Begin("Squares color");
-	ImGui::ColorEdit4("Color", glm::value_ptr(_color));
-	ImGui::End();
 
-	ImGui::Begin("Square size");
-	ImGui::SliderFloat2("Width/Height", glm::value_ptr(_size), 0.0f, 10.0f);
-	ImGui::End();
-
-	ImGui::Begin("Square position");
-	ImGui::InputFloat2("x/y", glm::value_ptr(_position), 3);
-	ImGui::End();
 }
 
 void Example2DRenderer::OnEvent(FarLight::Event& event)
 {
-	_cameraController.OnEvent(event);
+	m_CameraController.OnEvent(event);
 }

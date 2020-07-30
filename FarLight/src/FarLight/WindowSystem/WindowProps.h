@@ -4,13 +4,16 @@
 
 namespace FarLight
 {
-	struct FARLIGHT_API WindowProps
+	struct WindowProps
 	{
-		std::string _title;
-		unsigned int _width;
-		unsigned int _height;
+		std::string m_Title;
+		unsigned int m_Width;
+		unsigned int m_Height;
 
-		explicit WindowProps(const std::string& title = "FarLight Engine", const unsigned int width = 1280, const unsigned int height = 720)
-			: _title(title), _width(width), _height(height) { }
+		explicit WindowProps(const std::string& title = "FarLight Engine", unsigned int width = 1280, unsigned int height = 720)
+			: m_Title(title)
+			, m_Width(width)
+			, m_Height(height)
+		{ }
 	};
 }

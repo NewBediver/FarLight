@@ -4,7 +4,7 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API VertexBuffer
+	class VertexBuffer
 	{
 	public:
 		virtual void Bind() const = 0;
@@ -15,6 +15,6 @@ namespace FarLight
 
 		virtual ~VertexBuffer() = default;
 
-		static Ref<VertexBuffer> Create(const float* vetricies, const unsigned int size, const BufferLayout& layout);
+		static Ref<VertexBuffer> Create(const float* vertices, unsigned int size, const BufferLayout& layout);
 	};
 }

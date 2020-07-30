@@ -58,18 +58,18 @@ namespace FarLight
 		return 0;
 	}
 
-	class FARLIGHT_API Shader
+	class Shader
 	{
 	public:
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		virtual void SetInt(const std::string& name, const int i1) const = 0;
+		virtual void SetInt(const std::string& name, int i1) const = 0;
 
-		virtual void SetFloat(const std::string& name, const float f1) const = 0;
-		virtual void SetFloat2(const std::string& name, const float f1, const float f2) const = 0;
-		virtual void SetFloat3(const std::string& name, const float f1, const float f2, const float f3) const = 0;
-		virtual void SetFloat4(const std::string& name, const float f1, const float f2, const float f3, const float f4) const = 0;
+		virtual void SetFloat(const std::string& name, float f1) const = 0;
+		virtual void SetFloat2(const std::string& name, float f1, float f2) const = 0;
+		virtual void SetFloat3(const std::string& name, float f1, float f2, float f3) const = 0;
+		virtual void SetFloat4(const std::string& name, float f1, float f2, float f3, float f4) const = 0;
 
 		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) const = 0;
 		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) const = 0;

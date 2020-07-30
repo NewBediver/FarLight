@@ -9,35 +9,35 @@ namespace FarLight
 {
 	void LayerStack::PushLayer(const Ref<Layer>& layer)
 	{
-		_layers.emplace(_layers.begin() + _layerInsertIndex, layer);
-		++_layerInsertIndex;
+		m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
+		++m_LayerInsertIndex;
 		layer->OnAttach();
 	}
 
 	void LayerStack::PushOverlay(const Ref<Layer>& overlay)
 	{
-		_layers.emplace_back(overlay);
+		m_Layers.emplace_back(overlay);
 		overlay->OnAttach();
 	}
 	
 	void LayerStack::PopLayer(const Ref<Layer>& layer)
 	{
-		auto it = std::find(_layers.begin(), _layers.begin() + _layerInsertIndex, layer);
-		if (it != _layers.begin() + _layerInsertIndex)
+		auto it = std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer);
+		if (it != m_Layers.begin() + m_LayerInsertIndex)
 		{
 			(*it)->OnDetach();
-			_layers.erase(it);
-			--_layerInsertIndex;
+			m_Layers.erase(it);
+			--m_LayerInsertIndex;
 		}
 	}
 
 	void LayerStack::PopOverlay(const Ref<Layer>& overlay)
 	{
-		auto it = std::find(_layers.begin() + _layerInsertIndex, _layers.end(), overlay);
-		if (it != _layers.end())
+		auto it = std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), overlay);
+		if (it != m_Layers.end())
 		{
 			(*it)->OnDetach();
-			_layers.erase(it);
+			m_Layers.erase(it);
 		}
 	}
 }

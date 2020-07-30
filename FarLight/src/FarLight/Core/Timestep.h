@@ -1,21 +1,20 @@
 #pragma once
 
-#include "Core.h"
-
 namespace FarLight
 {
-	class FARLIGHT_API Timestep
+	class Timestep
 	{
 	public:
-		explicit Timestep(const float time = 0.0f)
-			: _time(time) { }
+		explicit Timestep(float time = 0.0f)
+			: m_Time(time)
+		{ }
 
-		explicit operator float() const { return _time; }
+		explicit operator float() const { return m_Time; }
 
-		const float GetSeconds() const { return _time; }
-		const float GetMilliseconds() const { return _time * 1000.0f; }
+		float GetSeconds() const { return m_Time; }
+		float GetMilliseconds() const { return m_Time * 1000.0f; }
 
 	private:
-		float _time;
+		float m_Time;
 	};
 }

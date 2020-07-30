@@ -13,6 +13,9 @@ namespace FarLight
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
 	}
 
 	void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) const
@@ -20,7 +23,7 @@ namespace FarLight
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
-	void OpenGLRendererAPI::SetViewport(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height) const
+	void OpenGLRendererAPI::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) const
 	{
 		glViewport(x, y, width, height);
 	}

@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API VertexArray
+	class VertexArray
 	{
 	public:
 		virtual void Bind() const = 0;

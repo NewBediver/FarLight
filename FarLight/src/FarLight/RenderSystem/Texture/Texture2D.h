@@ -6,7 +6,7 @@
 
 #include <string>
 
-namespace FARLIGHT_API FarLight
+namespace  FarLight
 {
 	class Texture2D
 		: public Texture

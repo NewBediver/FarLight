@@ -8,20 +8,16 @@
 namespace FarLight
 {
 	BufferLayout::BufferLayout(const std::initializer_list<BufferElement>& elements)
-		: _elements(elements), _stride(0)
-	{
-		CalculateOffsetAndStride();
-	}
-
-	void BufferLayout::CalculateOffsetAndStride()
+		: m_Elements(elements)
+		, m_Stride(0)
 	{
 		unsigned int offset = 0;
-		_stride = 0;
-		for (auto& element : _elements)
+		m_Stride = 0;
+		for (auto& element : m_Elements)
 		{
-			element.Offset = offset;
-			offset += element.Size;
-			_stride += element.Size;
+			element.m_Offset = offset;
+			offset += element.m_Size;
+			m_Stride += element.m_Size;
 		}
 	}
 }

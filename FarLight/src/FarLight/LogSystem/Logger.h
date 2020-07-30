@@ -7,17 +7,17 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API Logger
+	class  Logger
 	{
 	public:
 		static void Init();
 
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return _CoreLogger; }
-		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return _ClientLogger; }
+		static const std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+		static const std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
 		
 	private:
-		static std::shared_ptr<spdlog::logger> _CoreLogger;
-		static std::shared_ptr<spdlog::logger> _ClientLogger;
+		static std::shared_ptr<spdlog::logger> s_CoreLogger;
+		static std::shared_ptr<spdlog::logger> s_ClientLogger;
 	};
 }
 

@@ -4,14 +4,14 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API RenderCommand
+	class RenderCommand
 	{
 	public:
-		static void Init() { _rendererAPI->Init(); }
-		static void SetClearColor(const glm::vec4& color) { _rendererAPI->SetClearColor(color); }
-		static void SetViewport(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height) { _rendererAPI->SetViewport(x, y, width, height); }
-		static void DrawIndexed(const Ref<VertexArray>& vertexArray) { _rendererAPI->DrawIndexed(vertexArray); }
-		static void Clear() { _rendererAPI->Clear(); }
+		static void Init() { s_RendererAPI->Init(); }
+		static void SetClearColor(const glm::vec4& color) { s_RendererAPI->SetClearColor(color); }
+		static void SetViewport(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height) { s_RendererAPI->SetViewport(x, y, width, height); }
+		static void DrawIndexed(const Ref<VertexArray>& vertexArray) { s_RendererAPI->DrawIndexed(vertexArray); }
+		static void Clear() { s_RendererAPI->Clear(); }
 
 	private:
 		RenderCommand() = delete;
@@ -20,6 +20,6 @@ namespace FarLight
 		RenderCommand& operator=(const RenderCommand&) = delete;
 		RenderCommand& operator=(RenderCommand&&) = delete;
 
-		static Scope<RendererAPI> _rendererAPI;
+		static Scope<RendererAPI> s_RendererAPI;
 	};
 }

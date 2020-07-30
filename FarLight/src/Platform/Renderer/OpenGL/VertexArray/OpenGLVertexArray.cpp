@@ -31,19 +31,20 @@ namespace FarLight
 	}
 
 	FarLight::OpenGLVertexArray::OpenGLVertexArray()
-		: _vertexBufferIndex(0), _rendererID(0)
+		: m_RendererID(0)
+		, m_VertexBufferIndex(0)
 	{
-		glCreateVertexArrays(1, &_rendererID);
+		glCreateVertexArrays(1, &m_RendererID);
 	}
 
 	FarLight::OpenGLVertexArray::~OpenGLVertexArray()
 	{
-		glDeleteVertexArrays(1, &_rendererID);
+		glDeleteVertexArrays(1, &m_RendererID);
 	}
 
 	void FarLight::OpenGLVertexArray::Bind() const
 	{
-		glBindVertexArray(_rendererID);
+		glBindVertexArray(m_RendererID);
 	}
 
 	void FarLight::OpenGLVertexArray::Unbind() const
@@ -55,30 +56,30 @@ namespace FarLight
 	{
 		FL_CORE_ASSERT(buffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
-		glBindVertexArray(_rendererID);
+		glBindVertexArray(m_RendererID);
 		buffer->Bind();
 
 		const auto& layout = buffer->GetLayout();
 		for (auto& element = layout.cbegin(); element != layout.cend(); ++element)
 		{
-			glEnableVertexAttribArray(_vertexBufferIndex);
-			glVertexAttribPointer(_vertexBufferIndex,
-				ShaderDataTypeCount(element->Type),
-				ShaderDataTypeToOpenGLBaseType(element->Type),
-				element->Normalized ? GL_TRUE : GL_FALSE,
+			glEnableVertexAttribArray(m_VertexBufferIndex);
+			glVertexAttribPointer(m_VertexBufferIndex,
+				ShaderDataTypeCount(element->m_Type),
+				ShaderDataTypeToOpenGLBaseType(element->m_Type),
+				element->m_Normalized ? GL_TRUE : GL_FALSE,
 				layout.GetStride(),
-				reinterpret_cast<const void*>(static_cast<long long>(element->Offset)));
-			++_vertexBufferIndex;
+				reinterpret_cast<const void*>(static_cast<long long>(element->m_Offset)));
+			++m_VertexBufferIndex;
 		}
 
-		_vertexBuffers.push_back(buffer);
+		m_VertexBuffers.push_back(buffer);
 	}
 
 	void FarLight::OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& buffer)
 	{
-		glBindVertexArray(_rendererID);
+		glBindVertexArray(m_RendererID);
 		buffer->Bind();
 
-		_indexBuffer = buffer;
+		m_IndexBuffer = buffer;
 	}
 }

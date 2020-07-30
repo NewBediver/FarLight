@@ -4,19 +4,20 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API KeyboardKeyPressedEvent
+	class KeyboardKeyPressedEvent
 		: public KeyboardKeyEvent
 	{
 	public:
-		explicit KeyboardKeyPressedEvent(const int keyCode, const bool isRepeated)
+		explicit KeyboardKeyPressedEvent(int keyCode, bool isRepeated)
 			: KeyboardKeyEvent(keyCode, "KeyboardKeyPressed", EventType::KeyboardKeyPressedEventType)
-			, _isRepeated(isRepeated) { }
+			, m_IsRepeated(isRepeated)
+		{ }
 
-		const bool IsRepeated() const { return _isRepeated; }
+		bool IsRepeated() const { return m_IsRepeated; }
 
-		virtual const std::string ToString() const override;
+		virtual std::string ToString() const override;
 
 	private:
-		bool _isRepeated;
+		bool m_IsRepeated;
 	};
 }

@@ -17,9 +17,5 @@ public:
 	virtual void OnEvent(FarLight::Event& event) override;
 
 private:
-	FarLight::OrthographicCameraController _cameraController;
-
-	glm::vec2 _position;
-	glm::vec2 _size;
-	glm::vec4 _color;
+	FarLight::OrthographicCameraController m_CameraController;
 };

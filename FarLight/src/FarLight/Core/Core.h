@@ -43,21 +43,6 @@
 	#error "Unknown platform!"
 #endif // End of platform detection
 
-// DLL support
-#ifdef FL_PLATFORM_WINDOWS
-	#if FL_DYNAMIC_LINK
-		#ifdef FL_BUILD_DLL
-			#define FARLIGHT_API __declspec(dllexport)
-		#else
-			#define FARLIGHT_API __declspec(dllimport)
-		#endif
-	#else
-		#define FARLIGHT_API
-	#endif
-#else
-	#error "FarLight only supports Windows!"
-#endif // End of DLL support
-
 #ifdef FL_DEBUG
 	#define FL_ENABLE_ASSERTS
 #endif
@@ -71,7 +56,6 @@
 #endif
 
 #define BIT(x) (1 << (x))
-
 #define FL_BIND_EVENT_FUNC(func) std::bind(&func, this, std::placeholders::_1)
 
 namespace FarLight

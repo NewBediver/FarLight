@@ -9,22 +9,23 @@
 
 namespace FarLight
 {
-	OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* indicies, const unsigned int count)
-		: _rendererID(0), _count(count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* indicies, unsigned int count)
+		: m_RendererID(0)
+		, m_Count(count)
 	{
-		glCreateBuffers(1, &_rendererID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rendererID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, _count * sizeof(unsigned int), indicies, GL_STATIC_DRAW);
+		glCreateBuffers(1, &m_RendererID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned int), indicies, GL_STATIC_DRAW);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
-		glDeleteBuffers(1, &_rendererID);
+		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Bind() const
 	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rendererID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Unbind() const

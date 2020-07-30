@@ -5,11 +5,12 @@
 
 #include "ImGuiLayer.h"
 
+#include "FarLight/Core/Core.h"
 #include "FarLight/Core/Application.h"
 
-#include "imgui.h"
-#include "examples/imgui_impl_glfw.h"
-#include "examples/imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <examples/imgui_impl_glfw.h>
+#include <examples/imgui_impl_opengl3.h>
 
 #include <GLFW/glfw3.h>
 
@@ -88,6 +89,4 @@ namespace FarLight
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}
-
-	void ImGuiLayer::OnUserInterfaceRender() { }
 }

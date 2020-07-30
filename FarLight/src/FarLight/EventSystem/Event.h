@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "FarLight/Core/Core.h"
+#include <FarLight/Core/Core.h>
 
 namespace FarLight
 {
@@ -31,30 +31,34 @@ namespace FarLight
 
 	// TODO: Event buffer
 
-	class FARLIGHT_API Event
+	class Event
 	{
 	public:
-		Event(const std::string& name, const EventType type, const int category)
-			: _name(name), _type(type), _category(category), _isHandled(false) { }
+		explicit Event(const std::string& name, EventType type, int category)
+			: m_Name(name)
+			, m_Type(type)
+			, m_Category(category)
+			, m_IsHandled(false)
+		{ }
 
-		virtual const EventType GetType() const { return _type; };
-		virtual const std::string& GetName() const { return _name; }
-		virtual const int GetCategoryFlags() const { return _category; };
+		virtual EventType GetType() const { return m_Type; };
+		virtual const std::string& GetName() const { return m_Name; }
+		virtual int GetCategoryFlags() const { return m_Category; };
 
-		virtual const std::string ToString() const { return GetName(); }
+		virtual std::string ToString() const { return GetName(); }
 
-		const bool IsHandled() const { return _isHandled; }
-		void SetHandled(const bool isHandled) { _isHandled = isHandled; }
+		bool IsHandled() const { return m_IsHandled; }
+		void SetHandled(bool isHandled) { m_IsHandled = isHandled; }
 
-		const bool IsInCategory(const EventCategory& eventCategory) const { return (GetCategoryFlags() & eventCategory); }
+		bool IsInCategory(EventCategory eventCategory) const { return (GetCategoryFlags() & eventCategory); }
 
 		virtual ~Event() = 0 { };
 
 	private:
-		std::string _name;
-		EventType _type;
-		int _category;
-		bool _isHandled;
+		std::string m_Name;
+		EventType m_Type;
+		int m_Category;
+		bool m_IsHandled;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Event& event) { return os << event.ToString(); }

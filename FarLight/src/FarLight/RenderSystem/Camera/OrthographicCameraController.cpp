@@ -9,19 +9,19 @@
 
 namespace FarLight
 {
-	OrthographicCameraController::OrthographicCameraController(const float aspectRatio)
-		: _aspectRatio(aspectRatio)
-		, _zoomLevel(1.0f)
-		, _movementSpeed(5.0f)
-		, _rotationSpeed(180.0f)
-		, _sensitivity(0.5f)
-		, _camera(-aspectRatio, aspectRatio, -1.0f, 1.0f)
-		, _forwardCode(KeyboardKeyCodes::FL_KEY_W)
-		, _backwardCode(KeyboardKeyCodes::FL_KEY_S)
-		, _leftCode(KeyboardKeyCodes::FL_KEY_A)
-		, _rightCode(KeyboardKeyCodes::FL_KEY_D)
-		, _clockwiseCode(KeyboardKeyCodes::FL_KEY_E)
-		, _counterclockwiseCode(KeyboardKeyCodes::FL_KEY_Q)
+	OrthographicCameraController::OrthographicCameraController(float aspectRatio)
+		: m_AspectRatio(aspectRatio)
+		, m_ZoomLevel(1.0f)
+		, m_MovementSpeed(5.0f)
+		, m_RotationSpeed(180.0f)
+		, m_Sensitivity(0.5f)
+		, m_Camera(-aspectRatio, aspectRatio, -1.0f, 1.0f)
+		, m_ForwardCode(KeyboardKeyCodes::FL_KEY_W)
+		, m_BackwardCode(KeyboardKeyCodes::FL_KEY_S)
+		, m_LeftCode(KeyboardKeyCodes::FL_KEY_A)
+		, m_RightCode(KeyboardKeyCodes::FL_KEY_D)
+		, m_ClockwiseCode(KeyboardKeyCodes::FL_KEY_E)
+		, m_CounterclockwiseCode(KeyboardKeyCodes::FL_KEY_Q)
 	{ }
 
 	void OrthographicCameraController::OnUpdate(const Timestep& ts)
@@ -39,40 +39,40 @@ namespace FarLight
 
 	void OrthographicCameraController::HandleMovement(const Timestep& ts)
 	{
-		float velocity = _movementSpeed * static_cast<float>(ts);
-		if (Input::IsKeyPressed(_forwardCode))
-			_camera.SetPosition(_camera.GetPosition() + _camera.GetUpDirection() * velocity);
-		else if (Input::IsKeyPressed(_backwardCode))
-			_camera.SetPosition(_camera.GetPosition() - _camera.GetUpDirection() * velocity);
+		float velocity = m_MovementSpeed * static_cast<float>(ts);
+		if (Input::IsKeyPressed(m_ForwardCode))
+			m_Camera.SetPosition(m_Camera.GetPosition() + m_Camera.GetUpDirection() * velocity);
+		else if (Input::IsKeyPressed(m_BackwardCode))
+			m_Camera.SetPosition(m_Camera.GetPosition() - m_Camera.GetUpDirection() * velocity);
 
-		if (Input::IsKeyPressed(_rightCode))
-			_camera.SetPosition(_camera.GetPosition() + _camera.GetRightDirection() * velocity);
-		else if (Input::IsKeyPressed(_leftCode))
-			_camera.SetPosition(_camera.GetPosition() - _camera.GetRightDirection() * velocity);
+		if (Input::IsKeyPressed(m_RightCode))
+			m_Camera.SetPosition(m_Camera.GetPosition() + m_Camera.GetRightDirection() * velocity);
+		else if (Input::IsKeyPressed(m_LeftCode))
+			m_Camera.SetPosition(m_Camera.GetPosition() - m_Camera.GetRightDirection() * velocity);
 	}
 
 	void OrthographicCameraController::HandleRotation(const Timestep& ts)
 	{
-		float velocity = _rotationSpeed * static_cast<float>(ts);
-		if (Input::IsKeyPressed(_clockwiseCode))
-			_camera.SetRoll(_camera.GetRoll() - velocity);
-		else if (Input::IsKeyPressed(_counterclockwiseCode))
-			_camera.SetRoll(_camera.GetRoll() + velocity);
+		float velocity = m_RotationSpeed * static_cast<float>(ts);
+		if (Input::IsKeyPressed(m_ClockwiseCode))
+			m_Camera.SetRoll(m_Camera.GetRoll() - velocity);
+		else if (Input::IsKeyPressed(m_CounterclockwiseCode))
+			m_Camera.SetRoll(m_Camera.GetRoll() + velocity);
 	}
 
 	const bool OrthographicCameraController::OnMouseScrolledEvent(const MouseScrolledEvent& e)
 	{
-		_zoomLevel -= static_cast<float>(e.GetYOffset()) * _sensitivity;
-		_zoomLevel = std::max(_zoomLevel, 0.25f);
-		_camera.SetProjectionMatrix(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
-		_movementSpeed = 5.0f * _zoomLevel;
+		m_ZoomLevel -= static_cast<float>(e.GetYOffset()) * m_Sensitivity;
+		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
+		m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_MovementSpeed = 5.0f * m_ZoomLevel;
 		return false;
 	}
 
 	const bool OrthographicCameraController::OnWindowResizedEvent(const WindowResizedEvent& e)
 	{
-		_aspectRatio = static_cast<float>(e.GetWidth()) / static_cast<float>(e.GetHeight());
-		_camera.SetProjectionMatrix(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
+		m_AspectRatio = static_cast<float>(e.GetWidth()) / static_cast<float>(e.GetHeight());
+		m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}
 }

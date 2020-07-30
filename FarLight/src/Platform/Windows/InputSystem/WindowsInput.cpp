@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-    const bool WindowsInput::IsKeyPressedImpl(const KeyboardKeyCodes code) const
+    bool WindowsInput::IsKeyPressedImpl(KeyboardKeyCodes code) const
     {
         int key = GetKeyboardKeyFromGLFW(code);
         auto window = GetGLFWwindow();
@@ -17,7 +17,7 @@ namespace FarLight
         return status == GLFW_PRESS || status == GLFW_REPEAT;
     }
 
-    const bool WindowsInput::IsMouseButtonPressedImpl(const MouseButtonCodes code) const
+    bool WindowsInput::IsMouseButtonPressedImpl(MouseButtonCodes code) const
     {
         int key = GetMouseButtonFromGLFW(code);
         auto window = GetGLFWwindow();
@@ -25,7 +25,7 @@ namespace FarLight
         return status == GLFW_PRESS;
     }
 
-    const std::pair<double, double> WindowsInput::GetMousePositionImpl() const
+    std::pair<double, double> WindowsInput::GetMousePositionImpl() const
     {
         auto window = GetGLFWwindow();
         double x, y;
@@ -33,17 +33,17 @@ namespace FarLight
         return { x, y };
     }
 
-    const double WindowsInput::GetMouseXImpl() const
+    double WindowsInput::GetMouseXImpl() const
     {
         return GetMousePositionImpl().first;
     }
 
-    const double WindowsInput::GetMouseYImpl() const
+    double WindowsInput::GetMouseYImpl() const
     {
         return GetMousePositionImpl().second;
     }
 
-    const KeyboardKeyCodes WindowsInput::GetFLKeyboardKeyCodeImpl(const int code) const
+    KeyboardKeyCodes WindowsInput::GetFLKeyboardKeyCodeImpl(int code) const
     {
         switch (code)
         {
@@ -171,7 +171,7 @@ namespace FarLight
         return KeyboardKeyCodes::FL_KEY_UNKNOWN;
     }
 
-    const MouseButtonCodes WindowsInput::GetFLMouseButtonCodeImpl(const int code) const
+    MouseButtonCodes WindowsInput::GetFLMouseButtonCodeImpl(int code) const
     {
         switch (code)
         {
@@ -187,7 +187,7 @@ namespace FarLight
         return MouseButtonCodes::FL_MOUSE_BUTTON_UNKNOWN;
     }
 
-    const int WindowsInput::GetKeyboardKeyFromGLFW(const KeyboardKeyCodes code) const
+    int WindowsInput::GetKeyboardKeyFromGLFW(KeyboardKeyCodes code) const
     {
         switch (code)
         {
@@ -315,7 +315,7 @@ namespace FarLight
         return GLFW_KEY_UNKNOWN;
     }
 
-    const int WindowsInput::GetMouseButtonFromGLFW(const MouseButtonCodes code) const
+    int WindowsInput::GetMouseButtonFromGLFW(MouseButtonCodes code) const
     {
         switch (code)
         {

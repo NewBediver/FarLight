@@ -4,11 +4,12 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API WindowClosedEvent
+	class WindowClosedEvent
 		: public Event
 	{
 	public:
-		WindowClosedEvent()
-			: Event("WindowClosed", EventType::WindowClosedEventType, ApplicationEventCategory) { }
+		explicit WindowClosedEvent()
+			: Event("WindowClosed", EventType::WindowClosedEventType, ApplicationEventCategory)
+		{ }
 	};
 }

@@ -9,45 +9,55 @@
 
 namespace FarLight
 {
-	Scope<Renderer2D::Renderer2DStorage> Renderer2D::_storage = nullptr;
+	Scope<Renderer2D::Renderer2DStorage> Renderer2D::s_Storage = nullptr;
 
 	void Renderer2D::Init()
 	{
 		RenderCommand::Init();
 		FL_CORE_INFO("Renderer2D initialized.");
 
-		_storage = CreateScope<Renderer2DStorage>();
-		_storage->m_VertexArray = FarLight::VertexArray::Create();
+		s_Storage = CreateScope<Renderer2DStorage>();
+		s_Storage->m_VertexArray = FarLight::VertexArray::Create();
 
-		float squareVertices[3 * 4] = {
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f,
-			-0.5f, -0.5f, 0.0f
+		float squareVertices[4*5] = {
+			// position             // textures
+			 0.5f, -0.5f,  0.0f,    1.0f, 0.0f,
+			 0.5f,  0.5f,  0.0f,    1.0f, 1.0f,
+			-0.5f,  0.5f,  0.0f,    0.0f, 1.0f,
+			-0.5f, -0.5f,  0.0f,    0.0f, 0.0f
 		};
 
 		FarLight::BufferLayout squareLayout = {
-			{ FarLight::ShaderDataType::Float3, "a_Position" }
+			{ FarLight::ShaderDataType::Float3, "a_Position" },
+			{ FarLight::ShaderDataType::Float2, "a_TexCoord" }
 		};
-		_storage->m_VertexArray->AddVertexBuffer(FarLight::VertexBuffer::Create(squareVertices, sizeof(squareVertices), squareLayout));
+		s_Storage->m_VertexArray->AddVertexBuffer(FarLight::VertexBuffer::Create(squareVertices, sizeof(squareVertices), squareLayout));
 
-		unsigned int squareIndicies[6] = { 0, 1, 2, 2, 3, 0 };
-		_storage->m_VertexArray->SetIndexBuffer(FarLight::IndexBuffer::Create(squareIndicies, sizeof(squareIndicies) / sizeof(unsigned int)));
+		unsigned int squareIndicies[2*3] = { 0, 1, 2, 2, 3, 0 };
+		s_Storage->m_VertexArray->SetIndexBuffer(FarLight::IndexBuffer::Create(squareIndicies, sizeof(squareVertices) / sizeof(squareVertices[0])));
 
-		_storage->m_Shader = FarLight::Shader::Create("assets/shaders/Square/Square.vert", "assets/shaders/Square/Square.frag");
+		s_Storage->m_Shader = FarLight::Shader::Create("assets/shaders/Square/Square.vert", "assets/shaders/Square/Square.frag");
+
+		s_Storage->m_TextureShader = FarLight::Shader::Create("assets/shaders/Texture/Texture.vert", "assets/shaders/Texture/Texture.frag");
+		s_Storage->m_TextureShader->Bind();
+		s_Storage->m_TextureShader->SetInt("u_Texture", 0);
 	}
 
 	void Renderer2D::Shutdown()
 	{
-		_storage.reset();
+		s_Storage.reset();
 		FL_CORE_INFO("Renderer2D terminated.");
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		_storage->m_Shader->Bind();
-		_storage->m_Shader->SetMat4("u_Projection", camera.GetProjectionMatrix());
-		_storage->m_Shader->SetMat4("u_View", camera.GetViewMatrix());
+		s_Storage->m_Shader->Bind();
+		s_Storage->m_Shader->SetMat4("u_Projection", camera.GetProjectionMatrix());
+		s_Storage->m_Shader->SetMat4("u_View", camera.GetViewMatrix());
+
+		s_Storage->m_TextureShader->Bind();
+		s_Storage->m_TextureShader->SetMat4("u_Projection", camera.GetProjectionMatrix());
+		s_Storage->m_TextureShader->SetMat4("u_View", camera.GetViewMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -62,11 +72,28 @@ namespace FarLight
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		_storage->m_Shader->Bind();
-		_storage->m_Shader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		_storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
+		s_Storage->m_Shader->Bind();
+		s_Storage->m_Shader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
+		s_Storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
 
-		_storage->m_VertexArray->Bind();
-		RenderCommand::DrawIndexed(_storage->m_VertexArray);
+		s_Storage->m_VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
 	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	{
+		s_Storage->m_TextureShader->Bind();
+		s_Storage->m_TextureShader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
+
+		texture->Bind(0);
+
+		s_Storage->m_VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+	}
+
 }

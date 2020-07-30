@@ -11,7 +11,10 @@
 namespace FarLight
 {
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
-		: _width(0), _height(0), _channels(0), _rendererID(0)
+		: m_Width(0)
+		, m_Height(0)
+		, m_Channels(0)
+		, m_RendererID(0)
 	{
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
@@ -48,30 +51,30 @@ namespace FarLight
 			}
 		}
 
-		FL_CORE_ASSERT(internalFormat && dataFormat, "Texture format is not supported!");
+		FL_CORE_ASSERT(internalFormat & dataFormat, "Texture format is not supported!");
 
-		_width = width;
-		_height = height;
-		_channels = channels;
+		m_Width = width;
+		m_Height = height;
+		m_Channels = channels;
 
-		glCreateTextures(GL_TEXTURE_2D, 1, &_rendererID);
-		glTextureStorage2D(_rendererID, 1, internalFormat, _width, _height);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
 
-		glTextureParameteri(_rendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(_rendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glTextureSubImage2D(_rendererID, 0, 0, 0, _width, _height, dataFormat, GL_UNSIGNED_BYTE, data);
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		stbi_image_free(data);
 	}
 
-	void OpenGLTexture2D::Bind(const unsigned int slot) const
+	void OpenGLTexture2D::Bind(unsigned int slot) const
 	{
-		glBindTextureUnit(slot, _rendererID);
+		glBindTextureUnit(slot, m_RendererID);
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
-		glDeleteTextures(1, &_rendererID);
+		glDeleteTextures(1, &m_RendererID);
 	}
 }

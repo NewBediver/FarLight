@@ -10,7 +10,7 @@
 namespace FarLight
 {
 	OpenGLShader::OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath)
-		: _rendererID(0)
+		: m_RendererID(0)
 	{
 		std::string vertexCode = RetrieveShaderCodeFromFile(vertexPath);
 		std::string fragmentCode = RetrieveShaderCodeFromFile(fragmentPath);
@@ -18,17 +18,17 @@ namespace FarLight
 		GLuint vertexShader = CreateCompileShader(vertexCode, GL_VERTEX_SHADER);
 		GLuint fragmentShader = CreateCompileShader(fragmentCode, GL_FRAGMENT_SHADER);
 
-		_rendererID = LinkShaders(vertexShader, fragmentShader);
+		m_RendererID = LinkShaders(vertexShader, fragmentShader);
 	}
 
 	OpenGLShader::~OpenGLShader()
 	{
-		glDeleteProgram(_rendererID);
+		glDeleteProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Bind() const
 	{
-		glUseProgram(_rendererID);
+		glUseProgram(m_RendererID);
 
 	}
 	void OpenGLShader::Unbind() const
@@ -36,27 +36,27 @@ namespace FarLight
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::SetInt(const std::string& name, const int i1) const
+	void OpenGLShader::SetInt(const std::string& name, int i1) const
 	{
 		glUniform1i(GetUniformLocation(name), i1);
 	}
 
-	void OpenGLShader::SetFloat(const std::string& name, const float f1) const
+	void OpenGLShader::SetFloat(const std::string& name, float f1) const
 	{
 		glUniform1f(GetUniformLocation(name), f1);
 	}
 
-	void OpenGLShader::SetFloat2(const std::string& name, const float f1, const float f2) const
+	void OpenGLShader::SetFloat2(const std::string& name, float f1, float f2) const
 	{
 		glUniform2f(GetUniformLocation(name), f1, f2);
 	}
 
-	void OpenGLShader::SetFloat3(const std::string& name, const float f1, const float f2, const float f3) const
+	void OpenGLShader::SetFloat3(const std::string& name, float f1, float f2, float f3) const
 	{
 		glUniform3f(GetUniformLocation(name), f1, f2, f3);
 	}
 
-	void OpenGLShader::SetFloat4(const std::string& name, const float f1, const float f2, const float f3, const float f4) const
+	void OpenGLShader::SetFloat4(const std::string& name, float f1, float f2, float f3, float f4) const
 	{
 		glUniform4f(GetUniformLocation(name), f1, f2, f3, f4);
 	}
@@ -71,14 +71,14 @@ namespace FarLight
 		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	const GLint OpenGLShader::GetUniformLocation(const std::string& name) const
+	GLint OpenGLShader::GetUniformLocation(const std::string& name) const
 	{
-		if (_uniformLocation.find(name) == _uniformLocation.end())
-			_uniformLocation[name] = glGetUniformLocation(_rendererID, name.c_str());
-		return _uniformLocation[name];
+		if (m_UniformLocation.find(name) == m_UniformLocation.end())
+			m_UniformLocation[name] = glGetUniformLocation(m_RendererID, name.c_str());
+		return m_UniformLocation[name];
 	}
 
-	const std::string OpenGLShader::RetrieveShaderCodeFromFile(const std::string& path) const
+	std::string OpenGLShader::RetrieveShaderCodeFromFile(const std::string& path) const
 	{
 		std::string code;
 		std::ifstream shaderFile;
@@ -100,7 +100,7 @@ namespace FarLight
 		return code;
 	}
 
-	const GLuint OpenGLShader::CreateCompileShader(const std::string& code, const GLuint shaderType) const
+	GLuint OpenGLShader::CreateCompileShader(const std::string& code, const GLuint shaderType) const
 	{
 		GLuint shader = glCreateShader(shaderType);
 
@@ -125,7 +125,7 @@ namespace FarLight
 		return shader;
 	}
 
-	const GLuint OpenGLShader::LinkShaders(GLuint vertexShaderID, GLuint fragmentShaderID) const
+	GLuint OpenGLShader::LinkShaders(GLuint vertexShaderID, GLuint fragmentShaderID) const
 	{
 		GLuint program = glCreateProgram();
 
@@ -158,7 +158,8 @@ namespace FarLight
 
 		return program;
 	}
-	const std::vector<GLchar> OpenGLShader::GetErrorMessageFromGlad(const GLuint program) const
+
+	std::vector<GLchar> OpenGLShader::GetErrorMessageFromGlad(GLuint program) const
 	{
 		GLint maxLength = 0;
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);

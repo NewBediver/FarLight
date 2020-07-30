@@ -4,14 +4,14 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API KeyboardKeyReleasedEvent
+	class KeyboardKeyReleasedEvent
 		: public KeyboardKeyEvent
 	{
 	public:
-		explicit KeyboardKeyReleasedEvent(const int keyCode)
-			: KeyboardKeyEvent(keyCode, "KeyboardKeyReleased"
-			, EventType::KeyboardKeyReleasedEventType) { }
+		explicit KeyboardKeyReleasedEvent(int keyCode)
+			: KeyboardKeyEvent(keyCode, "KeyboardKeyReleased", EventType::KeyboardKeyReleasedEventType)
+		{ }
 
-		virtual const std::string ToString() const override;
+		virtual std::string ToString() const override;
 	};
 }

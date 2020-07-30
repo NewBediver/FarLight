@@ -4,20 +4,20 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API OpenGLTexture2D
+	class OpenGLTexture2D
 		: public Texture2D
 	{
 	public:
 		explicit OpenGLTexture2D(const std::string& path);
 
-		virtual const unsigned int GetWidth() const override { return _width; }
-		virtual const unsigned int GetHeight() const override { return _height; }
-		virtual void Bind(const unsigned int slot) const override;
+		virtual unsigned int GetWidth() const override { return m_Width; }
+		virtual unsigned int GetHeight() const override { return m_Height; }
+		virtual void Bind(unsigned int slot) const override;
 
 		virtual ~OpenGLTexture2D();
 
 	private:
-		unsigned int _width, _height, _channels;
-		unsigned int _rendererID;
+		unsigned int m_Width, m_Height, m_Channels;
+		unsigned int m_RendererID;
 	};
 }

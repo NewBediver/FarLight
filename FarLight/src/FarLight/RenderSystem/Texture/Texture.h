@@ -4,13 +4,13 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API Texture
+	class Texture
 	{
 	public:
-		virtual const unsigned int GetWidth() const = 0;
-		virtual const unsigned int GetHeight() const = 0;
+		virtual unsigned int GetWidth() const = 0;
+		virtual unsigned int GetHeight() const = 0;
 
-		virtual void Bind(const unsigned int slot) const = 0;
+		virtual void Bind(unsigned int slot) const = 0;
 
 		virtual ~Texture() = default;
 	};

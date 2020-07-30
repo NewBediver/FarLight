@@ -12,12 +12,12 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API OrthographicCameraController
+	class OrthographicCameraController
 	{
 	public:
-		OrthographicCameraController(const float aspectRation);
+		OrthographicCameraController(float aspectRation);
 
-		const OrthographicCamera& GetCamera() const { return _camera; }
+		const OrthographicCamera& GetCamera() const { return m_Camera; }
 
 		void OnUpdate(const Timestep& ts);
 		void OnEvent(Event& e);
@@ -29,20 +29,20 @@ namespace FarLight
 		const bool OnMouseScrolledEvent(const MouseScrolledEvent& e);
 		const bool OnWindowResizedEvent(const WindowResizedEvent& e);
 
-		OrthographicCamera _camera;
+		OrthographicCamera m_Camera;
 
-		float _aspectRatio;
+		float m_AspectRatio;
 
-		float _movementSpeed;
-		float _rotationSpeed;
-		float _zoomLevel;
-		float _sensitivity;
+		float m_MovementSpeed;
+		float m_RotationSpeed;
+		float m_ZoomLevel;
+		float m_Sensitivity;
 
-		KeyboardKeyCodes _forwardCode;
-		KeyboardKeyCodes _backwardCode;
-		KeyboardKeyCodes _rightCode;
-		KeyboardKeyCodes _leftCode;
-		KeyboardKeyCodes _clockwiseCode;
-		KeyboardKeyCodes _counterclockwiseCode;
+		KeyboardKeyCodes m_ForwardCode;
+		KeyboardKeyCodes m_BackwardCode;
+		KeyboardKeyCodes m_RightCode;
+		KeyboardKeyCodes m_LeftCode;
+		KeyboardKeyCodes m_ClockwiseCode;
+		KeyboardKeyCodes m_CounterclockwiseCode;
 	};
 }

@@ -9,11 +9,13 @@
 #include "FarLight/RenderSystem/Shader/Shader.h"
 #include "FarLight/RenderSystem/Camera/OrthographicCamera.h"
 
+#include "FarLight/RenderSystem/Texture/Texture2D.h"
+
 #include <glm/glm.hpp>
 
 namespace FarLight
 {
-	class FARLIGHT_API Renderer2D
+	class Renderer2D
 	{
 	public:
 		static void Init();
@@ -24,8 +26,10 @@ namespace FarLight
 
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture);
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture);
 
-		static void SetViewport(const unsigned int width, const unsigned int height) { RenderCommand::SetViewport(0, 0, width, height); }
+		static void SetViewport(unsigned int width, unsigned int height) { RenderCommand::SetViewport(0, 0, width, height); }
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
 	private:
@@ -39,8 +43,9 @@ namespace FarLight
 		{
 			Ref<VertexArray> m_VertexArray;
 			Ref<Shader> m_Shader;
+			Ref<Shader> m_TextureShader;
 		};
 
-		static Scope<Renderer2DStorage> _storage;
+		static Scope<Renderer2DStorage> s_Storage;
 	};
 }

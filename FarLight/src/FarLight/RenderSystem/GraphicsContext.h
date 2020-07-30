@@ -2,7 +2,7 @@
 
 namespace FarLight
 {
-	class FARLIGHT_API GraphicsContext
+	class GraphicsContext
 	{
 	public:
 		virtual void Init() = 0;

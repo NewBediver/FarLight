@@ -4,61 +4,57 @@
 #include "flpch.h"
 
 #include "Application.h"
-
-#include "Timestep.h"
-
+#include "FarLight/Core/Timestep.h"
 #include "FarLight/EventSystem/EventDispatcher.h"
-
 #include "FarLight/InputSystem/Input.h"
-
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 
 #include <GLFW/glfw3.h>
 
 namespace FarLight
 {
-	Scope<Application> Application::_instance = nullptr;
+	Scope<Application> Application::s_Instance = nullptr;
 
 	const Scope<Application>& Application::GetInstance()
 	{
-		if (_instance == nullptr) _instance = Scope<Application>(new Application());
-		return _instance;
+		if (s_Instance == nullptr) s_Instance = Scope<Application>(new Application());
+		return s_Instance;
 	}
 
 	Application::Application()
-		: _isRunning(true)
-		, _isMinimized(false)
-		, _lastFrameTime(0.0f)
+		: m_IsRunning(true)
+		, m_IsMinimized(false)
+		, m_LastFrameTime(0.0f)
 	{
-		_window = Window::Create();
-		_userInterfaceLayer = CreateRef<ImGuiLayer>();
+		m_Window = Window::Create();
+		m_UserInterfaceLayer = CreateRef<ImGuiLayer>();
 	}
 
 	void Application::Run()
 	{
-		_window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
-		_layerStack.PushOverlay(_userInterfaceLayer);
+		m_Window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
+		m_LayerStack.PushOverlay(m_UserInterfaceLayer);
 
 		Renderer2D::Init();
 
-		while (_isRunning)
+		while (m_IsRunning)
 		{
 			float time = static_cast<float>(glfwGetTime());
-			Timestep ts(time - _lastFrameTime);
-			_lastFrameTime = time;
+			Timestep ts(time - m_LastFrameTime);
+			m_LastFrameTime = time;
 
-			if (!_isMinimized)
+			if (!m_IsMinimized)
 			{
-				for (auto& layer = _layerStack.cbegin(); layer != _layerStack.cend(); ++layer)
+				for (auto& layer = m_LayerStack.cbegin(); layer != m_LayerStack.cend(); ++layer)
 					(*layer)->OnUpdate(ts);
 			}
 
-			_userInterfaceLayer->Begin();
-			for (auto& layer = _layerStack.cbegin(); layer != _layerStack.cend(); ++layer)
+			m_UserInterfaceLayer->Begin();
+			for (auto& layer = m_LayerStack.cbegin(); layer != m_LayerStack.cend(); ++layer)
 				(*layer)->OnUserInterfaceRender();
-			_userInterfaceLayer->End();
+			m_UserInterfaceLayer->End();
 
-			_window->OnUpdate();
+			m_Window->OnUpdate();
 		}
 
 		Renderer2D::Shutdown();
@@ -71,23 +67,23 @@ namespace FarLight
 		dispatcher.Dispatch<WindowResizedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowResized));
 
 		//FL_CORE_TRACE("{0}", e);
-		for (auto it = _layerStack.crbegin(); it != _layerStack.crend(); ++it)
+		for (auto layer = m_LayerStack.crbegin(); layer != m_LayerStack.crend(); ++layer)
 		{
-			(*it)->OnEvent(e);
+			(*layer)->OnEvent(e);
 			if (e.IsHandled()) break;
 		}
 	}
 
-	const bool Application::OnWindowClosed(const WindowClosedEvent& e)
+	bool Application::OnWindowClosed(const WindowClosedEvent& e)
 	{
-		_isRunning = false;
+		m_IsRunning = false;
 		return true;
 	}
 
-	const bool Application::OnWindowResized(const WindowResizedEvent& e)
+	bool Application::OnWindowResized(const WindowResizedEvent& e)
 	{
-		if (e.GetWidth() == 0 || e.GetHeight() == 0) _isMinimized = true;
-		else _isMinimized = false;
+		if (e.GetWidth() == 0 || e.GetHeight() == 0) m_IsMinimized = true;
+		else m_IsMinimized = false;
 		Renderer2D::SetViewport(e.GetWidth(), e.GetHeight());
 		return false;
 	}

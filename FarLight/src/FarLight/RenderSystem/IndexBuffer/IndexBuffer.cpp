@@ -10,7 +10,7 @@
 
 namespace FarLight
 {
-	Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* indicies, const unsigned int count)
+	Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* indicies, unsigned int count)
 	{
 		switch (Renderer2D::GetAPI())
 		{

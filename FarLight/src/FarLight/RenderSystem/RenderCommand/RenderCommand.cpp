@@ -9,5 +9,5 @@
 
 namespace FarLight
 {
-	Scope<RendererAPI> RenderCommand::_rendererAPI = CreateScope<OpenGLRendererAPI>();
+	Scope<RendererAPI> RenderCommand::s_RendererAPI = CreateScope<OpenGLRendererAPI>();
 }
