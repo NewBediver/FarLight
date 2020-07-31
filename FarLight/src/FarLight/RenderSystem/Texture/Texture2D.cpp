@@ -20,4 +20,16 @@ namespace FarLight
 		FL_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
+
+	Ref<Texture2D> Texture2D::Create(unsigned int width, unsigned int height, const glm::vec4& pixelColor)
+	{
+		switch (Renderer2D::GetAPI())
+		{
+			case RendererAPI::API::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			case RendererAPI::API::OpenGL:  return CreateRef<OpenGLTexture2D>(width, height, pixelColor);
+		}
+
+		FL_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
 }

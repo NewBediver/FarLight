@@ -24,10 +24,13 @@ namespace FarLight
 		static void BeginScene(const OrthographicCamera& camera);
 		static void EndScene();
 
+		// Quad draw calls
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture);
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color);
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color);
 
 		static void SetViewport(unsigned int width, unsigned int height) { RenderCommand::SetViewport(0, 0, width, height); }
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
@@ -43,7 +46,7 @@ namespace FarLight
 		{
 			Ref<VertexArray> m_VertexArray;
 			Ref<Shader> m_Shader;
-			Ref<Shader> m_TextureShader;
+			Ref<Texture2D> m_Texture;
 		};
 
 		static Scope<Renderer2DStorage> s_Storage;

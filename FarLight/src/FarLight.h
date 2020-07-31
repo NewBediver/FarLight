@@ -33,3 +33,6 @@
 #include "FarLight/RenderSystem/IndexBuffer/IndexBuffer.h"
 #include "FarLight/RenderSystem/VertexArray/VertexArray.h"
 //------------------------------------
+//---Profiling------------------------
+#include "FarLight/Profiling/CPUTimer.h"
+//------------------------------------

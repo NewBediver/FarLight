@@ -17,5 +17,15 @@ public:
 	virtual void OnEvent(FarLight::Event& event) override;
 
 private:
+	void LogTimerData(const std::string& name, float duration);
+
 	FarLight::OrthographicCameraController m_CameraController;
+
+	FarLight::Ref<FarLight::Texture2D> m_Texture;
+	FarLight::Ref<FarLight::Texture2D> m_ShovelKnightTexture;
+
+	FarLight::CPUTimer m_Timer;
+	FarLight::CPUTimer m_TotalTimer;
+
+	std::unordered_map<std::string, float> m_CPUProfilerData;
 };
