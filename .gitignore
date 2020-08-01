@@ -3,6 +3,9 @@
 **/bin-int/
 !vendor/*
 
+# Json profiling files
+**.json
+
 # FarLight files
 *.log
 **imgui.ini

@@ -3,12 +3,17 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "FarLight/LogSystem/Logger.h"
+#include "FarLight/Profiling/Instrumentor.h"
 
 #include <iostream>
 #include <ostream>
 #include <istream>
 #include <sstream>
 #include <fstream>
+#include <iomanip>
+
+#include <chrono>
+#include <thread>
 
 #include <memory>
 #include <functional>

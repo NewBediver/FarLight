@@ -77,7 +77,6 @@ project "FarLight"
 
         defines
         {
-            "FL_BUILD_DLL",
             "GLFW_INCLUDE_NONE"
         }
 

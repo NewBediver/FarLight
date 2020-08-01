@@ -34,5 +34,6 @@
 #include "FarLight/RenderSystem/VertexArray/VertexArray.h"
 //------------------------------------
 //---Profiling------------------------
-#include "FarLight/Profiling/CPUTimer.h"
+#include "FarLight/Profiling/Instrumentor.h"
+#include "FarLight/Profiling/InstrumentationTimer.h"
 //------------------------------------

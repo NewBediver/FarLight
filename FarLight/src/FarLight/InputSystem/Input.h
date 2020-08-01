@@ -19,6 +19,8 @@ namespace FarLight
 		static KeyboardKeyCodes GetFLKeyboardKeyCode(int code) { return s_Instance->GetFLKeyboardKeyCodeImpl(code); }
 		static MouseButtonCodes GetFLMouseButtonCode(int code) { return s_Instance->GetFLMouseButtonCodeImpl(code); }
 
+		static Scope<Input> Create();
+
 		virtual ~Input() = default;
 
 	protected:
