@@ -12,6 +12,8 @@ namespace FarLight
 {
 	void OpenGLContext::Init()
 	{
+		FL_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle.get());
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		FL_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -35,6 +37,8 @@ namespace FarLight
 
 	void OpenGLContext::SwapBuffers() const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle.get());
 	}
 }

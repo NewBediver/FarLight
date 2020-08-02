@@ -4,6 +4,7 @@
 
 #include "FarLight/Core/Core.h"
 #include "FarLight/LogSystem/Logger.h"
+#include "FarLight/Profiling/Instrumentor.h"
 
 namespace FarLight
 {
@@ -13,24 +14,32 @@ namespace FarLight
 	public:
 		void Add(const std::string& name, const Ref<T>& entity)
 		{
+			FL_PROFILE_FUNCTION();
+
 			FL_CORE_ASSERT(!IsExist(name), "Library already contains the desired entity!");
 			m_EntityMap[name] = entity;
 		}
 
 		void Erase(const std::string& name, const Ref<T>& entity)
 		{
+			FL_PROFILE_FUNCTION();
+
 			auto it = m_EntityMap.find(name);
 			if (it != m_EntityMap.end()) m_EntityMap.erase(it);
 		}
 
 		const Ref<T>& Get(const std::string& name) const
 		{
+			FL_PROFILE_FUNCTION();
+
 			FL_CORE_ASSERT(IsExist(name), "Library doesn't contains the desired entity!");
 			return m_EntityMap.find(name)->second;
 		}
 
 		bool IsExist(const std::string& name) const
 		{
+			FL_PROFILE_FUNCTION();
+
 			return m_EntityMap.find(name) != m_EntityMap.end();
 		}
 

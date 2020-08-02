@@ -7,17 +7,20 @@
 
 namespace FarLight
 {
-	FarLight::Scope<FarLight::Instrumentor> Instrumentor::s_Instance = nullptr;
-
-	const FarLight::Scope<FarLight::Instrumentor>& Instrumentor::GetInstance()
+	Instrumentor& Instrumentor::GetInstance()
 	{
-		if (s_Instance == nullptr) s_Instance.reset(new Instrumentor());
+		static Instrumentor s_Instance;
 		return s_Instance;
 	}
 
 	Instrumentor::Instrumentor()
 		: m_CurrentSession(nullptr)
 	{ }
+
+	Instrumentor::~Instrumentor()
+	{
+		EndSession();
+	}
 
 	void Instrumentor::BeginSession(const std::string& name, const std::string& filepath)
 	{

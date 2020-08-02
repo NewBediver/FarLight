@@ -18,6 +18,8 @@ namespace FarLight
 {
 	void ImGuiLayer::OnAttach()
 	{
+		FL_PROFILE_FUNCTION();
+
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -52,6 +54,8 @@ namespace FarLight
 
 	void ImGuiLayer::OnDetach()
 	{
+		FL_PROFILE_FUNCTION();
+
 		// Cleanup
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
@@ -62,6 +66,8 @@ namespace FarLight
 
 	void ImGuiLayer::Begin() const
 	{
+		FL_PROFILE_FUNCTION();
+
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -70,6 +76,8 @@ namespace FarLight
 
 	void ImGuiLayer::End() const
 	{
+		FL_PROFILE_FUNCTION();
+
 		ImGuiIO& io = ImGui::GetIO();
 		const auto& app = Application::GetInstance();
 		io.DisplaySize = ImVec2(static_cast<float>(app->GetWindow()->GetWidth()), static_cast<float>(app->GetWindow()->GetHeight()));

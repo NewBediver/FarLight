@@ -17,9 +17,17 @@ namespace FarLight
 		, m_InternalFormat(0)
 		, m_DataFormat(0)
 	{
+		FL_PROFILE_FUNCTION();
+
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		stbi_uc* data = nullptr;
+
+		{
+			FL_PROFILE_SCOPE("stbi_load data");
+
+			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		}
 
 		FL_CORE_ASSERT(data, "Failed to load texture2D image!");
 
@@ -79,6 +87,8 @@ namespace FarLight
 		, m_InternalFormat(GL_RGBA8)
 		, m_DataFormat(GL_RGBA)
 	{
+		FL_PROFILE_FUNCTION();
+
 		FL_CORE_ASSERT(m_Width > 0 && m_Height > 0, "Wrong Texture2D dimensions!");
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
@@ -96,23 +106,31 @@ namespace FarLight
 		SetData(&colors.front(), sizeof(color) * m_Width * m_Height);
 	}
 
+	OpenGLTexture2D::~OpenGLTexture2D()
+	{
+		FL_PROFILE_FUNCTION();
+
+		glDeleteTextures(1, &m_RendererID);
+	}
+
 	void OpenGLTexture2D::Bind(unsigned int slot) const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
 	void OpenGLTexture2D::Unbind(unsigned int slot) const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glBindTextureUnit(slot, 0);
 	}
 
 	void OpenGLTexture2D::SetData(void* data, unsigned int size) const
 	{
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
-	}
+		FL_PROFILE_FUNCTION();
 
-	OpenGLTexture2D::~OpenGLTexture2D()
-	{
-		glDeleteTextures(1, &m_RendererID);
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
 	}
 }

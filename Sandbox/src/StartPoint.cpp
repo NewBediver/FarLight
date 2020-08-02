@@ -4,9 +4,9 @@
 
 #include "Layers/Example2DRenderer.h"
 
-const FarLight::Scope<FarLight::Application>& FarLight::CreateApplication()
+FarLight::Application* FarLight::CreateApplication()
 {
-	const auto& app = FarLight::Application::GetInstance();
-	app->PushLayer(CreateScope<Example2DRenderer>());
+	Application* app = FarLight::Application::GetInstance();
+	app->PushLayer(FarLight::CreateScope<Example2DRenderer>());
 	return app;
 }

@@ -5,6 +5,7 @@
 #include <chrono>
 
 #include "FarLight/Core/Core.h"
+#include "InstrumentationTimer.h"
 
 namespace FarLight
 {
@@ -22,7 +23,9 @@ namespace FarLight
 		void BeginSession(const std::string& name, const std::string& filepath = "results.json");
 		void EndSession();
 
-		static const Scope<Instrumentor>& GetInstance();
+		~Instrumentor();
+
+		static Instrumentor& GetInstance();
 
 	private:
 		Instrumentor();
@@ -42,7 +45,7 @@ namespace FarLight
 		{
 			std::string m_Name;
 
-			InstrumentationSession(const std::string& name)
+			explicit InstrumentationSession(const std::string& name)
 				: m_Name(name)
 			{ }
 		};
@@ -51,15 +54,13 @@ namespace FarLight
 		std::ofstream m_OutputStream;
 		std::mutex m_Mutex;
 
-		static Scope<Instrumentor> s_Instance;
-
 		friend class InstrumentationTimer;
 	};
 }
 
 #if FL_PROFILE
-	#define FL_PROFILE_BEGIN_SESSION(name, filepath) ::FarLight::Instrumentor::GetInstance()->BeginSession(name, filepath)
-	#define FL_PROFILE_END_SESSION() ::FarLight::Instrumentor::GetInstance()->EndSession()
+	#define FL_PROFILE_BEGIN_SESSION(name, filepath) ::FarLight::Instrumentor::GetInstance().BeginSession(name, filepath)
+	#define FL_PROFILE_END_SESSION() ::FarLight::Instrumentor::GetInstance().EndSession()
 	#define FL_PROFILE_SCOPE(name) ::FarLight::InstrumentationTimer timer##__LINE__(name);
 	#define FL_PROFILE_FUNCTION() FL_PROFILE_SCOPE(FL_FUNC_SIG)
 #else

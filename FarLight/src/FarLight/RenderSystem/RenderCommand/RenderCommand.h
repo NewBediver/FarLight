@@ -7,11 +7,11 @@ namespace FarLight
 	class RenderCommand
 	{
 	public:
-		static void Init() { s_RendererAPI->Init(); }
-		static void SetClearColor(const glm::vec4& color) { s_RendererAPI->SetClearColor(color); }
-		static void SetViewport(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height) { s_RendererAPI->SetViewport(x, y, width, height); }
-		static void DrawIndexed(const Ref<VertexArray>& vertexArray) { s_RendererAPI->DrawIndexed(vertexArray); }
-		static void Clear() { s_RendererAPI->Clear(); }
+		static void Init();
+		static void SetClearColor(const glm::vec4& color);
+		static void SetViewport(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height);
+		static void DrawIndexed(const Ref<VertexArray>& vertexArray);
+		static void Clear();
 
 	private:
 		RenderCommand() = delete;

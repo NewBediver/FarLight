@@ -13,6 +13,8 @@ namespace FarLight
 
 	void Renderer2D::Init()
 	{
+		FL_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		FL_CORE_INFO("Renderer2D initialized.");
 
@@ -43,12 +45,16 @@ namespace FarLight
 
 	void Renderer2D::Shutdown()
 	{
+		FL_PROFILE_FUNCTION();
+
 		s_Storage.reset();
 		FL_CORE_INFO("Renderer2D terminated.");
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
+		FL_PROFILE_FUNCTION();
+
 		auto* ptr = &s_Storage->m_Shader;
 		(*ptr)->Bind();
 		(*ptr)->SetMat4("u_Projection", camera.GetProjectionMatrix());
@@ -58,7 +64,7 @@ namespace FarLight
 
 	void Renderer2D::EndScene()
 	{
-
+		FL_PROFILE_FUNCTION();
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -68,6 +74,8 @@ namespace FarLight
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
+		FL_PROFILE_FUNCTION();
+
 		s_Storage->m_Shader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
 		s_Storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
 
@@ -86,6 +94,8 @@ namespace FarLight
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
 	{
+		FL_PROFILE_FUNCTION();
+
 		s_Storage->m_Shader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
 		s_Storage->m_Shader->SetFloat4("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -104,6 +114,8 @@ namespace FarLight
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color)
 	{
+		FL_PROFILE_FUNCTION();
+
 		s_Storage->m_Shader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
 		s_Storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
 

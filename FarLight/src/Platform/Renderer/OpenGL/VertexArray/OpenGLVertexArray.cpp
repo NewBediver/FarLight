@@ -34,26 +34,36 @@ namespace FarLight
 		: m_RendererID(0)
 		, m_VertexBufferIndex(0)
 	{
+		FL_PROFILE_FUNCTION();
+
 		glCreateVertexArrays(1, &m_RendererID);
 	}
 
 	FarLight::OpenGLVertexArray::~OpenGLVertexArray()
 	{
+		FL_PROFILE_FUNCTION();
+
 		glDeleteVertexArrays(1, &m_RendererID);
 	}
 
 	void FarLight::OpenGLVertexArray::Bind() const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererID);
 	}
 
 	void FarLight::OpenGLVertexArray::Unbind() const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glBindVertexArray(0);
 	}
 
 	void FarLight::OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& buffer)
 	{
+		FL_PROFILE_FUNCTION();
+
 		FL_CORE_ASSERT(buffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
 		glBindVertexArray(m_RendererID);
@@ -77,6 +87,8 @@ namespace FarLight
 
 	void FarLight::OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& buffer)
 	{
+		FL_PROFILE_FUNCTION();
+
 		glBindVertexArray(m_RendererID);
 		buffer->Bind();
 

@@ -75,7 +75,7 @@
 	#elif defined(__cplusplus) && (__cplusplus >= 201103)
 		#define FL_FUNC_SIG __func__
 	#else
-		#define FL_FUNC_SIG "HZ_FUNC_SIG unknown!"
+		#define FL_FUNC_SIG "FL_FUNC_SIG unknown!"
 	#endif
 #endif
 

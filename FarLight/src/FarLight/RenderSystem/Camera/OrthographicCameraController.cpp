@@ -26,12 +26,16 @@ namespace FarLight
 
 	void OrthographicCameraController::OnUpdate(const Timestep& ts)
 	{
+		FL_PROFILE_FUNCTION();
+
 		HandleMovement(ts);
 		HandleRotation(ts);
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
+		FL_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(FL_BIND_EVENT_FUNC(OrthographicCameraController::OnMouseScrolledEvent));
 		dispatcher.Dispatch<WindowResizedEvent>(FL_BIND_EVENT_FUNC(OrthographicCameraController::OnWindowResizedEvent));
@@ -39,6 +43,8 @@ namespace FarLight
 
 	void OrthographicCameraController::HandleMovement(const Timestep& ts)
 	{
+		FL_PROFILE_FUNCTION();
+
 		float velocity = m_MovementSpeed * static_cast<float>(ts);
 		if (Input::IsKeyPressed(m_ForwardCode))
 			m_Camera.SetPosition(m_Camera.GetPosition() + m_Camera.GetUpDirection() * velocity);
@@ -53,6 +59,8 @@ namespace FarLight
 
 	void OrthographicCameraController::HandleRotation(const Timestep& ts)
 	{
+		FL_PROFILE_FUNCTION();
+
 		float velocity = m_RotationSpeed * static_cast<float>(ts);
 		if (Input::IsKeyPressed(m_ClockwiseCode))
 			m_Camera.SetRoll(m_Camera.GetRoll() - velocity);
@@ -62,6 +70,8 @@ namespace FarLight
 
 	const bool OrthographicCameraController::OnMouseScrolledEvent(const MouseScrolledEvent& e)
 	{
+		FL_PROFILE_FUNCTION();
+
 		m_ZoomLevel -= static_cast<float>(e.GetYOffset()) * m_Sensitivity;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
 		m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -71,6 +81,8 @@ namespace FarLight
 
 	const bool OrthographicCameraController::OnWindowResizedEvent(const WindowResizedEvent& e)
 	{
+		FL_PROFILE_FUNCTION();
+
 		m_AspectRatio = static_cast<float>(e.GetWidth()) / static_cast<float>(e.GetHeight());
 		m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

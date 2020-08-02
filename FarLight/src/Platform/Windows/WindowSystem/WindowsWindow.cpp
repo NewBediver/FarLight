@@ -33,12 +33,16 @@ namespace FarLight
 
 	void WindowsWindow::OnUpdate()
 	{
+		FL_PROFILE_FUNCTION();
+
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
 	{
+		FL_PROFILE_FUNCTION();
+
 		if (enabled) glfwSwapInterval(1);
 		else glfwSwapInterval(0);
 		m_Data.m_IsVSync = enabled;
@@ -46,6 +50,8 @@ namespace FarLight
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
+		FL_PROFILE_FUNCTION();
+
 		m_Data.m_Title = props.m_Title;
 		m_Data.m_Height = props.m_Height;
 		m_Data.m_Width = props.m_Width;
@@ -54,14 +60,22 @@ namespace FarLight
 
 		if (!isGLFWInitialized)
 		{
-			int success = glfwInit();
-			FL_CORE_ASSERT(success, "Could not initialize GLFW!");
+			{
+				FL_PROFILE_SCOPE("glfwInit");
 
+				int success = glfwInit();
+				FL_CORE_ASSERT(success, "Could not initialize GLFW!");
+			}
+			
 			glfwSetErrorCallback(GLFWErrorCallback);
 			isGLFWInitialized = true;
 		}
 
-		m_Window = Ref<GLFWwindow>(glfwCreateWindow(static_cast<int>(props.m_Width), static_cast<int>(props.m_Height), m_Data.m_Title.c_str(), nullptr, nullptr), glfwDestroyWindow);
+		{
+			FL_PROFILE_SCOPE("glfwCreateWindow");
+
+			m_Window = Ref<GLFWwindow>(glfwCreateWindow(static_cast<int>(props.m_Width), static_cast<int>(props.m_Height), m_Data.m_Title.c_str(), nullptr, nullptr), glfwDestroyWindow);
+		}
 		
 		m_Context = CreateScope<OpenGLContext>(m_Window);
 		m_Context->Init();
@@ -74,9 +88,13 @@ namespace FarLight
 
 	void WindowsWindow::SetGLFWCallbacks()
 	{
+		FL_PROFILE_FUNCTION();
+
 		#define GET_DATA(x) *static_cast<WindowData*>(glfwGetWindowUserPointer(x));
 
 		glfwSetWindowSizeCallback(m_Window.get(), [](GLFWwindow* win, int width, int height) {
+			FL_PROFILE_FUNCTION();
+
 			WindowData& data = GET_DATA(win);
 			data.m_Width = width;
 			data.m_Height = height;
@@ -85,12 +103,16 @@ namespace FarLight
 		});
 
 		glfwSetWindowCloseCallback(m_Window.get(), [](GLFWwindow* win) {
+			FL_PROFILE_FUNCTION();
+
 			WindowData& data = GET_DATA(win);
 
 			data.m_Callback(WindowClosedEvent());
 		});
 
 		glfwSetKeyCallback(m_Window.get(), [](GLFWwindow* win, int key, int scan, int action, int mods) {
+			FL_PROFILE_FUNCTION();
+
 			WindowData& data = GET_DATA(win);
 
 			switch (action)
@@ -114,12 +136,16 @@ namespace FarLight
 		});
 
 		glfwSetCharCallback(m_Window.get(), [](GLFWwindow* win, unsigned int code) {
+			FL_PROFILE_FUNCTION();
+
 			WindowData& data = GET_DATA(win);
 
 			data.m_Callback(KeyboardKeyTypedEvent(code));
 		});
 
 		glfwSetMouseButtonCallback(m_Window.get(), [](GLFWwindow* win, int button, int action, int mods) {
+			FL_PROFILE_FUNCTION();
+
 			WindowData& data = GET_DATA(win);
 
 			switch (action)
@@ -138,12 +164,16 @@ namespace FarLight
 		});
 		
 		glfwSetScrollCallback(m_Window.get(), [](GLFWwindow* win, double xOffset, double yOffset) {
+			FL_PROFILE_FUNCTION();
+
 			WindowData& data = GET_DATA(win);
 
 			data.m_Callback(MouseScrolledEvent(xOffset, yOffset));
 		});
 
 		glfwSetCursorPosCallback(m_Window.get(), [](GLFWwindow* win, double xPos, double yPos) {
+			FL_PROFILE_FUNCTION();
+
 			WindowData& data = GET_DATA(win);
 
 			data.m_Callback(MouseMovedEvent(xPos, yPos));

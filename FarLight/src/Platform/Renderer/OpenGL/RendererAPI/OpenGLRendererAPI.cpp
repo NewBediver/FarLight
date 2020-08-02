@@ -11,6 +11,8 @@ namespace FarLight
 {
 	void OpenGLRendererAPI::Init() const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -20,21 +22,29 @@ namespace FarLight
 
 	void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
 	void OpenGLRendererAPI::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glViewport(x, y, width, height);
 	}
 
 	void OpenGLRendererAPI::Clear() const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray) const
 	{
+		FL_PROFILE_FUNCTION();
+
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }

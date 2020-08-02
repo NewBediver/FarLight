@@ -25,7 +25,9 @@ namespace FarLight
 
 		const Ref<Window>& GetWindow() const { return m_Window; }
 
-		static const Scope<Application>& GetInstance();
+		Application::~Application();
+
+		static Application* GetInstance();
 
 	private:
 		explicit Application();
@@ -46,10 +48,8 @@ namespace FarLight
 		LayerStack m_LayerStack;
 
 		float m_LastFrameTime;
-
-		static Scope<Application> s_Instance;
 	};
 
 	// To be defined in CLIENT
-	const Scope<Application>& CreateApplication();
+	Application* CreateApplication();
 }

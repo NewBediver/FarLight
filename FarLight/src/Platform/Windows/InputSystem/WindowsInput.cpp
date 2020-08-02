@@ -11,6 +11,8 @@ namespace FarLight
 {
     bool WindowsInput::IsKeyPressedImpl(KeyboardKeyCodes code) const
     {
+        FL_PROFILE_FUNCTION();
+
         int key = GetKeyboardKeyFromGLFW(code);
         auto window = GetGLFWwindow();
         int status = glfwGetKey(window, key);
@@ -19,6 +21,8 @@ namespace FarLight
 
     bool WindowsInput::IsMouseButtonPressedImpl(MouseButtonCodes code) const
     {
+        FL_PROFILE_FUNCTION();
+
         int key = GetMouseButtonFromGLFW(code);
         auto window = GetGLFWwindow();
         int status = glfwGetMouseButton(window, key);
@@ -27,6 +31,8 @@ namespace FarLight
 
     std::pair<double, double> WindowsInput::GetMousePositionImpl() const
     {
+        FL_PROFILE_FUNCTION();
+
         auto window = GetGLFWwindow();
         double x, y;
         glfwGetCursorPos(window, &x, &y);

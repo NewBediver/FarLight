@@ -54,11 +54,15 @@ namespace FarLight
 
 	void OrthographicCamera::SetProjectionMatrix(float left, float right, float bottom, float top, float nearZone, float farZone)
 	{
+		FL_PROFILE_FUNCTION();
+
 		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, nearZone, farZone);
 	}
 
 	void OrthographicCamera::RecalculateCameraVectors()
 	{
+		FL_PROFILE_FUNCTION();
+
 		glm::vec3 cameraUp = glm::vec3(-sin(glm::radians(m_Roll)), cos(glm::radians(m_Roll)), 0.0f);
 		glm::vec3 cameraRight = glm::vec3(cos(glm::radians(m_Roll)), sin(glm::radians(m_Roll)), 0.0f);
 		m_CameraUp = glm::normalize(cameraUp);
