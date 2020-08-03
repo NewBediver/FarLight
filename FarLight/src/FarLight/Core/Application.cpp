@@ -13,9 +13,9 @@
 
 namespace FarLight
 {
-	Application* Application::GetInstance()
+	Application& Application::GetInstance()
 	{
-		static Application* s_Instance = new Application();
+		static Application s_Instance;
 		return s_Instance;
 	}
 
@@ -25,6 +25,7 @@ namespace FarLight
 		, m_LastFrameTime(0.0f)
 	{
 		FL_PROFILE_FUNCTION();
+		FL_CORE_INFO("[Application] object instantiated.");
 
 		m_Window = Window::Create();
 		m_Window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
@@ -34,9 +35,12 @@ namespace FarLight
 
 	Application::~Application()
 	{
-		FL_PROFILE_FUNCTION();
+		FL_PROFILE_BEGIN_SESSION("Termination", "FarLightProfile-Termination.json");
 
 		Renderer2D::Shutdown();
+
+		FL_PROFILE_END_SESSION();
+		FL_CORE_INFO("[Application] object destroyed.");
 	}
 
 	void Application::Run()
@@ -46,11 +50,12 @@ namespace FarLight
 		m_UserInterfaceLayer = CreateRef<ImGuiLayer>();
 		m_LayerStack.PushOverlay(m_UserInterfaceLayer);
 
+		FL_CORE_INFO("Program execution entered the [Main Loop].");
+		while (m_IsRunning)
 		{
-			FL_PROFILE_SCOPE("Main loop");
-
-			while (m_IsRunning)
 			{
+				FL_PROFILE_SCOPE("Main loop");
+
 				float time = static_cast<float>(glfwGetTime());
 				Timestep ts(time - m_LastFrameTime);
 				m_LastFrameTime = time;
@@ -64,7 +69,6 @@ namespace FarLight
 							(*layer)->OnUpdate(ts);
 					}
 				}
-
 				{
 					FL_PROFILE_SCOPE("UserIntarface OnUpdate");
 
@@ -77,11 +81,13 @@ namespace FarLight
 				m_Window->OnUpdate();
 			}
 		}
+		FL_CORE_INFO("Program execution left the [Main Loop].");
 	}
 
 	void Application::OnEvent(Event& e)
 	{
 		FL_PROFILE_FUNCTION();
+		FL_CORE_INFO("Event arised [{0}]", e.ToString());
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowClosedEvent>(FL_BIND_EVENT_FUNC(Application::OnWindowClosed));
@@ -90,7 +96,6 @@ namespace FarLight
 		{
 			FL_PROFILE_SCOPE("Events dispatching loop");
 
-			//FL_CORE_TRACE("{0}", e);
 			for (auto layer = m_LayerStack.crbegin(); layer != m_LayerStack.crend(); ++layer)
 			{
 				(*layer)->OnEvent(e);

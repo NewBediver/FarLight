@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-#include <FarLight/Core/Core.h>
+#include "FarLight/Core/Core.h"
+#include "FarLight/LogSystem/Logger.h"
 
 namespace FarLight
 {
@@ -39,7 +40,9 @@ namespace FarLight
 			, m_Type(type)
 			, m_Category(category)
 			, m_IsHandled(false)
-		{ }
+		{
+			FL_CORE_INFO("Event [{0}] created.", this->ToString());
+		}
 
 		virtual EventType GetType() const { return m_Type; };
 		virtual const std::string& GetName() const { return m_Name; }
@@ -52,7 +55,10 @@ namespace FarLight
 
 		bool IsInCategory(EventCategory eventCategory) const { return (GetCategoryFlags() & eventCategory); }
 
-		virtual ~Event() = 0 { };
+		virtual ~Event() = 0
+		{
+			FL_CORE_INFO("Event [{0}] destroyed.", this->ToString());
+		};
 
 	private:
 		std::string m_Name;

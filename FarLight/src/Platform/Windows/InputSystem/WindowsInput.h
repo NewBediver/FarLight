@@ -24,6 +24,6 @@ namespace FarLight
 		int GetKeyboardKeyFromGLFW(KeyboardKeyCodes code) const;
 		int GetMouseButtonFromGLFW(MouseButtonCodes code) const;
 
-		GLFWwindow* GetGLFWwindow() const { return static_cast<GLFWwindow*>(Application::GetInstance()->GetWindow()->GetNativeWindow().get()); }
+		GLFWwindow* GetGLFWwindow() const { return static_cast<GLFWwindow*>(Application::GetInstance().GetWindow()->GetNativeWindow().get()); }
 	};
 }

@@ -10,6 +10,11 @@ namespace FarLight
 	class Input
 	{
 	public:
+		Input(const Input&) = delete;
+		Input(Input&&) = delete;
+		Input& operator=(const Input&) = delete;
+		Input& operator=(Input&&) = delete;
+
 		static bool IsKeyPressed(KeyboardKeyCodes code) { return s_Instance->IsKeyPressedImpl(code); }
 		static bool IsMouseButtonPressed(MouseButtonCodes code) { return s_Instance->IsMouseButtonPressedImpl(code); }
 		static std::pair<double, double> GetMousePosition() { return s_Instance->GetMousePositionImpl(); }
@@ -25,10 +30,6 @@ namespace FarLight
 
 	protected:
 		Input() = default;
-		Input(const Input&) = delete;
-		Input(Input&&) = delete;
-		Input& operator=(const Input&) = delete;
-		Input& operator=(Input&&) = delete;
 
 		virtual bool IsKeyPressedImpl(KeyboardKeyCodes code) const = 0;
 		virtual bool IsMouseButtonPressedImpl(MouseButtonCodes code) const = 0;

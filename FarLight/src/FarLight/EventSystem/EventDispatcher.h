@@ -34,6 +34,7 @@ namespace FarLight
 
 			if (typeid(T) == typeid(m_Event))
 			{
+				FL_CORE_INFO("Event [{0}] dispatched.", m_Event.ToString());
 				m_Event.SetHandled(func(static_cast<const T&>(m_Event)));
 				return true;
 			}

@@ -17,6 +17,11 @@ namespace FarLight
 	class Application
 	{
 	public:
+		Application(const Application&) = delete;
+		Application(Application&&) = delete;
+		Application& operator=(const Application&) = delete;
+		Application& operator=(Application&&) = delete;
+
 		void Run();
 		void OnEvent(Event& e);
 
@@ -27,14 +32,10 @@ namespace FarLight
 
 		Application::~Application();
 
-		static Application* GetInstance();
+		static Application& GetInstance();
 
 	private:
 		explicit Application();
-		Application(const Application&) = delete;
-		Application(Application&&) = delete;
-		Application& operator=(const Application&) = delete;
-		Application& operator=(Application&&) = delete;
 
 		bool OnWindowClosed(const WindowClosedEvent& e);
 		bool OnWindowResized(const WindowResizedEvent& e);
@@ -51,5 +52,5 @@ namespace FarLight
 	};
 
 	// To be defined in CLIENT
-	Application* CreateApplication();
+	Application& CreateApplication();
 }

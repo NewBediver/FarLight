@@ -7,25 +7,19 @@
 
 #ifdef FL_PLATFORM_WINDOWS
 
-extern FarLight::Application* FarLight::CreateApplication();
+extern FarLight::Application& FarLight::CreateApplication();
 
 int main(int args, char** argv)
 {
-	FarLight::Logger::Init();
-	FL_CORE_INFO("Logger initialized.");
-
 	FL_PROFILE_BEGIN_SESSION("Startup", "FarLightProfile-Startup.json");
-	const auto& app = FarLight::CreateApplication();
-	FL_INFO("Client application initialized.");
+	FarLight::Logger::Init();
+	FL_CORE_INFO("[Logger] initialized.");
+	auto& app = FarLight::CreateApplication();
 	FL_PROFILE_END_SESSION();
 
 	FL_PROFILE_BEGIN_SESSION("Runtime", "FarLightProfile-Runtime.json");
-	app->Run();
-	FL_PROFILE_END_SESSION();
-
-	FL_PROFILE_BEGIN_SESSION("Termination", "FarLightProfile-Termination.json");
-	delete app;
-	FL_PROFILE_END_SESSION();
+	app.Run();
+	FL_PROFILE_END_SESSION();	
 }
 
 #endif

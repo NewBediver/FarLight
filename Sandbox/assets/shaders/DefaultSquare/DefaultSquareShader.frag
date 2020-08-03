@@ -3,11 +3,12 @@
 in vec2 v_TextureCoordinates;
 
 uniform vec4 u_Color;
+uniform float u_TilingFactor;
 uniform sampler2D u_Texture;
 
 out vec4 f_Color;
 
 void main()
 {
-	f_Color = texture(u_Texture, v_TextureCoordinates) * u_Color;
+	f_Color = texture(u_Texture, v_TextureCoordinates * u_TilingFactor) * u_Color;
 }

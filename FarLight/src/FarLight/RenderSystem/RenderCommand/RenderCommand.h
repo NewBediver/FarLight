@@ -7,6 +7,12 @@ namespace FarLight
 	class RenderCommand
 	{
 	public:
+		RenderCommand() = delete;
+		RenderCommand(const RenderCommand&) = delete;
+		RenderCommand(RenderCommand&&) = delete;
+		RenderCommand& operator=(const RenderCommand&) = delete;
+		RenderCommand& operator=(RenderCommand&&) = delete;
+
 		static void Init();
 		static void SetClearColor(const glm::vec4& color);
 		static void SetViewport(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height);
@@ -14,12 +20,6 @@ namespace FarLight
 		static void Clear();
 
 	private:
-		RenderCommand() = delete;
-		RenderCommand(const RenderCommand&) = delete;
-		RenderCommand(RenderCommand&&) = delete;
-		RenderCommand& operator=(const RenderCommand&) = delete;
-		RenderCommand& operator=(RenderCommand&&) = delete;
-
 		static Scope<RendererAPI> s_RendererAPI;
 	};
 }

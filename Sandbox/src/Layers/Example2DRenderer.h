@@ -21,4 +21,6 @@ private:
 
 	FarLight::Ref<FarLight::Texture2D> m_Texture;
 	FarLight::Ref<FarLight::Texture2D> m_ShovelKnightTexture;
+
+	float m_Rotation;
 };

@@ -18,8 +18,6 @@ namespace FarLight
 {
 	void ImGuiLayer::OnAttach()
 	{
-		FL_PROFILE_FUNCTION();
-
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -43,25 +41,19 @@ namespace FarLight
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
-		GLFWwindow* win = static_cast<GLFWwindow*>(Application::GetInstance()->GetWindow()->GetNativeWindow().get());
+		GLFWwindow* win = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow()->GetNativeWindow().get());
 
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(win, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
-
-		FL_CORE_INFO("User Interface Layer (Dear ImGui) established.");
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
-		FL_PROFILE_FUNCTION();
-
 		// Cleanup
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
-
-		FL_CORE_INFO("User Interface Layer (Dear ImGui) terminated.");
 	}
 
 	void ImGuiLayer::Begin() const
@@ -80,7 +72,7 @@ namespace FarLight
 
 		ImGuiIO& io = ImGui::GetIO();
 		const auto& app = Application::GetInstance();
-		io.DisplaySize = ImVec2(static_cast<float>(app->GetWindow()->GetWidth()), static_cast<float>(app->GetWindow()->GetHeight()));
+		io.DisplaySize = ImVec2(static_cast<float>(app.GetWindow()->GetWidth()), static_cast<float>(app.GetWindow()->GetHeight()));
 
 		// Rendering
 		ImGui::Render();

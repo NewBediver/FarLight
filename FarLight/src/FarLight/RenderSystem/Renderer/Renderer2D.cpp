@@ -16,7 +16,7 @@ namespace FarLight
 		FL_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
-		FL_CORE_INFO("Renderer2D initialized.");
+		FL_CORE_INFO("[Renderer2D] initialized.");
 
 		s_Storage = CreateScope<Renderer2DStorage>();
 		s_Storage->m_VertexArray = FarLight::VertexArray::Create();
@@ -48,7 +48,7 @@ namespace FarLight
 		FL_PROFILE_FUNCTION();
 
 		s_Storage.reset();
-		FL_CORE_INFO("Renderer2D terminated.");
+		FL_CORE_INFO("[Renderer2D] terminated.");
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
@@ -57,8 +57,8 @@ namespace FarLight
 
 		auto* ptr = &s_Storage->m_Shader;
 		(*ptr)->Bind();
-		(*ptr)->SetMat4("u_Projection", camera.GetProjectionMatrix());
-		(*ptr)->SetMat4("u_View", camera.GetViewMatrix());
+		(*ptr)->SetMat4("u_Transformation.Projection", camera.GetProjectionMatrix());
+		(*ptr)->SetMat4("u_Transformation.View", camera.GetViewMatrix());
 		(*ptr)->SetInt("u_Texture", 0);
 	}
 
@@ -76,8 +76,10 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
+		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
 		s_Storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
+		s_Storage->m_Shader->SetFloat("u_TilingFactor", 1.0f);
 
 		s_Storage->m_Texture->Bind(0);
 
@@ -87,17 +89,42 @@ namespace FarLight
 		s_Storage->m_Texture->Unbind(0);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture);
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, color);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color)
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		s_Storage->m_Shader->SetFloat4("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
+		s_Storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
+		s_Storage->m_Shader->SetFloat("u_TilingFactor", 1.0f);
+
+		s_Storage->m_Texture->Bind(0);
+
+		s_Storage->m_VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+
+		s_Storage->m_Texture->Unbind(0);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
+	{
+		FL_PROFILE_FUNCTION();
+
+		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
+		s_Storage->m_Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
+		s_Storage->m_Shader->SetFloat("u_TilingFactor", 1.0f);
 
 		texture->Bind(0);
 
@@ -107,17 +134,66 @@ namespace FarLight
 		texture->Unbind(0);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture, color);
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, texture, tintColor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& color)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		s_Storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
+		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
+		s_Storage->m_Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
+		s_Storage->m_Shader->SetFloat("u_TilingFactor", 1.0f);
+
+		texture->Bind(0);
+
+		s_Storage->m_VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+
+		texture->Unbind(0);
+	}
+
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		FL_PROFILE_FUNCTION();
+
+		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
+		s_Storage->m_Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
+		s_Storage->m_Shader->SetFloat("u_TilingFactor", tilingFactor);
+
+		texture->Bind(0);
+
+		s_Storage->m_VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+
+		texture->Unbind(0);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, texture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	{
+		FL_PROFILE_FUNCTION();
+
+		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
+			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
+		s_Storage->m_Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
+		s_Storage->m_Shader->SetFloat("u_TilingFactor", tilingFactor);
 
 		texture->Bind(0);
 

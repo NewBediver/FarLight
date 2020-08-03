@@ -14,6 +14,7 @@
 Example2DRenderer::Example2DRenderer()
 	: Layer("Example2DRenderer")
 	, m_CameraController(1280.0f / 720.0f)
+	, m_Rotation(0.0f)
 { }
 
 void Example2DRenderer::OnAttach()
@@ -31,15 +32,17 @@ void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp)
 {
 	m_CameraController.OnUpdate(timestamp);
 	
+	m_Rotation += static_cast<float>(timestamp);
+
 	FarLight::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 	FarLight::RenderCommand::Clear();
 
 	FarLight::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	FarLight::Renderer2D::DrawQuad({ 1.0f, 1.0f, 0.0f }, { 1.3f, 0.6f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-	FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture);
+	FarLight::Renderer2D::DrawRotatedQuad({ 1.0f, 1.0f, 0.0f }, { 1.3f, 0.6f }, m_Rotation, { 0.8f, 0.2f, 0.3f, 1.0f });
+	FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 0.5f);
 	FarLight::Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f });
-	FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, m_ShovelKnightTexture, { 0.3f, 0.8f, 0.2f, 1.0f });
+	FarLight::Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2, { 0.3f, 0.8f, 0.2f, 1.0f });
 
 	FarLight::Renderer2D::EndScene();
 }

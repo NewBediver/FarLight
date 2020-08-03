@@ -14,6 +14,8 @@ namespace FarLight
 		m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
 		++m_LayerInsertIndex;
 		layer->OnAttach();
+
+		FL_CORE_INFO("Layer [{0}] pushed and attached.", layer->GetName());
 	}
 
 	void LayerStack::PushOverlay(const Ref<Layer>& overlay)
@@ -22,6 +24,8 @@ namespace FarLight
 
 		m_Layers.emplace_back(overlay);
 		overlay->OnAttach();
+
+		FL_CORE_INFO("Overlay [{0}] pushed and attached.", overlay->GetName());
 	}
 	
 	void LayerStack::PopLayer(const Ref<Layer>& layer)
@@ -34,6 +38,7 @@ namespace FarLight
 			(*it)->OnDetach();
 			m_Layers.erase(it);
 			--m_LayerInsertIndex;
+			FL_CORE_INFO("Layer [{0}] detached and popped.", layer->GetName());
 		}
 	}
 
@@ -46,6 +51,7 @@ namespace FarLight
 		{
 			(*it)->OnDetach();
 			m_Layers.erase(it);
+			FL_CORE_INFO("Overlay [{0}] detached and popped.", overlay->GetName());
 		}
 	}
 }

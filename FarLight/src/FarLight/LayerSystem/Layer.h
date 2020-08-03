@@ -10,7 +10,9 @@ namespace FarLight
 	public:
 		explicit Layer(const std::string& name = "Layer")
 			: m_Name(name)
-		{ }
+		{
+			FL_CORE_INFO("Layer [{0}] created.", this->GetName());
+		}
 
 		virtual void OnAttach() = 0;
 		virtual void OnDetach() = 0;
@@ -20,7 +22,10 @@ namespace FarLight
 
 		const std::string& GetName() const { return m_Name; }
 
-		virtual ~Layer() = default;
+		virtual ~Layer()
+		{
+			FL_CORE_INFO("Layer [{0}] destroyed.", this->GetName());
+		}
 
 	private:
 		std::string m_Name;
