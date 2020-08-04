@@ -22,6 +22,8 @@ namespace FarLight
 
 		virtual void SetData(void* data, unsigned int size) const override;
 
+		unsigned int GetID() const override { return m_RendererID; }
+
 		virtual ~OpenGLTexture2D();
 
 	private:

@@ -15,6 +15,8 @@ namespace FarLight
 
 		virtual void SetData(void* data, unsigned int size) const = 0;
 
+		virtual unsigned int GetID() const = 0;
+
 		virtual ~Texture() = default;
 	};
 }

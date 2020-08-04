@@ -18,6 +18,12 @@ namespace FarLight
 	class Renderer2D
 	{
 	public:
+		Renderer2D() = delete;
+		Renderer2D(const Renderer2D&) = delete;
+		Renderer2D(Renderer2D&&) = delete;
+		Renderer2D& operator=(const Renderer2D&) = delete;
+		Renderer2D& operator=(Renderer2D&&) = delete;
+
 		static void Init();
 		static void Shutdown();
 
@@ -45,17 +51,11 @@ namespace FarLight
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
 	private:
-		Renderer2D() = delete;
-		Renderer2D(const Renderer2D&) = delete;
-		Renderer2D(Renderer2D&&) = delete;
-		Renderer2D& operator=(const Renderer2D&) = delete;
-		Renderer2D& operator=(Renderer2D&&) = delete;
-
 		struct Renderer2DStorage
 		{
-			Ref<VertexArray> m_VertexArray;
-			Ref<Shader> m_Shader;
-			Ref<Texture2D> m_Texture;
+			Ref<VertexArray> VertexArray;
+			Ref<Shader> Shader;
+			Ref<Texture2D> Texture;
 		};
 
 		static Scope<Renderer2DStorage> s_Storage;

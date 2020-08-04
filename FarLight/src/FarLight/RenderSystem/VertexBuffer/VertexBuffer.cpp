@@ -21,4 +21,17 @@ namespace FarLight
 		FL_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
+
+	Ref<VertexBuffer> VertexBuffer::Create(unsigned int size, const BufferLayout& layout)
+	{
+		switch (Renderer2D::GetAPI())
+		{
+			case RendererAPI::API::None:    FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+			case RendererAPI::API::OpenGL:  return CreateRef<OpenGLVertexBuffer>(size, layout);
+		}
+
+		FL_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
+
 }

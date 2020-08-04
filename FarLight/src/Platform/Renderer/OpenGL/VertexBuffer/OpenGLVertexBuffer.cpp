@@ -5,19 +5,39 @@
 
 #include "OpenGLVertexBuffer.h"
 
-#include <glad/glad.h>
-
 namespace FarLight
 {
 	OpenGLVertexBuffer::OpenGLVertexBuffer(const float* vertices, unsigned int size, const BufferLayout& layout)
 		: m_RendererID(0)
 		, m_Layout(layout)
+		, m_UsageType(GL_STATIC_DRAW)
 	{
 		FL_PROFILE_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size, vertices, m_UsageType);
+	}
+
+	OpenGLVertexBuffer::OpenGLVertexBuffer(unsigned int size, const BufferLayout& layout)
+		: m_RendererID(0)
+		, m_Layout(layout)
+		, m_UsageType(GL_DYNAMIC_DRAW)
+	{
+		FL_PROFILE_FUNCTION();
+
+		glCreateBuffers(1, &m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+	}
+
+	void OpenGLVertexBuffer::AddSubData(const float* vertices, unsigned int size, unsigned int offset)
+	{
+		FL_PROFILE_FUNCTION();
+		FL_CORE_ASSERT(m_UsageType == GL_DYNAMIC_DRAW, "Cannot add sub data to non-dynamic vertex array!");
+
+		Bind();
+		glBufferSubData(GL_ARRAY_BUFFER, offset, size, vertices);
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()

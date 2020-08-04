@@ -13,8 +13,11 @@ namespace FarLight
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
+		virtual void AddSubData(const float* vertices, unsigned int size, unsigned int offset) = 0;
+
 		virtual ~VertexBuffer() = default;
 
 		static Ref<VertexBuffer> Create(const float* vertices, unsigned int size, const BufferLayout& layout);
+		static Ref<VertexBuffer> Create(unsigned int size, const BufferLayout& layout);
 	};
 }

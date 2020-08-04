@@ -19,7 +19,7 @@ namespace FarLight
 		FL_CORE_INFO("[Renderer2D] initialized.");
 
 		s_Storage = CreateScope<Renderer2DStorage>();
-		s_Storage->m_VertexArray = FarLight::VertexArray::Create();
+		s_Storage->VertexArray = FarLight::VertexArray::Create();
 
 		float squareVertices[4*5] = {
 			// position             // textures
@@ -33,14 +33,14 @@ namespace FarLight
 			{ FarLight::ShaderDataType::Float3, "a_Position" },
 			{ FarLight::ShaderDataType::Float2, "a_TextureCoordinates" }
 		};
-		s_Storage->m_VertexArray->AddVertexBuffer(FarLight::VertexBuffer::Create(squareVertices, sizeof(squareVertices), squareLayout));
+		s_Storage->VertexArray->AddVertexBuffer(FarLight::VertexBuffer::Create(squareVertices, sizeof(squareVertices), squareLayout));
 
 		unsigned int squareIndicies[2*3] = { 0, 1, 2, 2, 3, 0 };
-		s_Storage->m_VertexArray->SetIndexBuffer(FarLight::IndexBuffer::Create(squareIndicies, sizeof(squareVertices) / sizeof(squareVertices[0])));
+		s_Storage->VertexArray->SetIndexBuffer(FarLight::IndexBuffer::Create(squareIndicies, sizeof(squareVertices) / sizeof(squareVertices[0])));
 
-		s_Storage->m_Shader = FarLight::Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag");
+		s_Storage->Shader = FarLight::Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag");
 
-		s_Storage->m_Texture = FarLight::Texture2D::Create(1, 1);
+		s_Storage->Texture = FarLight::Texture2D::Create(1, 1);
 	}
 
 	void Renderer2D::Shutdown()
@@ -55,7 +55,7 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		auto* ptr = &s_Storage->m_Shader;
+		auto* ptr = &s_Storage->Shader;
 		(*ptr)->Bind();
 		(*ptr)->SetMat4("u_Transformation.Projection", camera.GetProjectionMatrix());
 		(*ptr)->SetMat4("u_Transformation.View", camera.GetViewMatrix());
@@ -76,17 +76,17 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+		s_Storage->Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		s_Storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
-		s_Storage->m_Shader->SetFloat("u_TilingFactor", 1.0f);
+		s_Storage->Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
+		s_Storage->Shader->SetFloat("u_TilingFactor", 1.0f);
 
-		s_Storage->m_Texture->Bind(0);
+		s_Storage->Texture->Bind(0);
 
-		s_Storage->m_VertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+		s_Storage->VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->VertexArray);
 
-		s_Storage->m_Texture->Unbind(0);
+		s_Storage->Texture->Unbind(0);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color)
@@ -98,18 +98,18 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+		s_Storage->Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		s_Storage->m_Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
-		s_Storage->m_Shader->SetFloat("u_TilingFactor", 1.0f);
+		s_Storage->Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
+		s_Storage->Shader->SetFloat("u_TilingFactor", 1.0f);
 
-		s_Storage->m_Texture->Bind(0);
+		s_Storage->Texture->Bind(0);
 
-		s_Storage->m_VertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+		s_Storage->VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->VertexArray);
 
-		s_Storage->m_Texture->Unbind(0);
+		s_Storage->Texture->Unbind(0);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
@@ -121,15 +121,15 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+		s_Storage->Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		s_Storage->m_Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
-		s_Storage->m_Shader->SetFloat("u_TilingFactor", 1.0f);
+		s_Storage->Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
+		s_Storage->Shader->SetFloat("u_TilingFactor", 1.0f);
 
 		texture->Bind(0);
 
-		s_Storage->m_VertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+		s_Storage->VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->VertexArray);
 
 		texture->Unbind(0);
 	}
@@ -143,16 +143,16 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+		s_Storage->Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		s_Storage->m_Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
-		s_Storage->m_Shader->SetFloat("u_TilingFactor", 1.0f);
+		s_Storage->Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
+		s_Storage->Shader->SetFloat("u_TilingFactor", 1.0f);
 
 		texture->Bind(0);
 
-		s_Storage->m_VertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+		s_Storage->VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->VertexArray);
 
 		texture->Unbind(0);
 	}
@@ -167,15 +167,15 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+		s_Storage->Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		s_Storage->m_Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
-		s_Storage->m_Shader->SetFloat("u_TilingFactor", tilingFactor);
+		s_Storage->Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
+		s_Storage->Shader->SetFloat("u_TilingFactor", tilingFactor);
 
 		texture->Bind(0);
 
-		s_Storage->m_VertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+		s_Storage->VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->VertexArray);
 
 		texture->Unbind(0);
 	}
@@ -189,16 +189,16 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->m_Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+		s_Storage->Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
-		s_Storage->m_Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
-		s_Storage->m_Shader->SetFloat("u_TilingFactor", tilingFactor);
+		s_Storage->Shader->SetFloat4("u_Color", tintColor.r, tintColor.g, tintColor.b, tintColor.a);
+		s_Storage->Shader->SetFloat("u_TilingFactor", tilingFactor);
 
 		texture->Bind(0);
 
-		s_Storage->m_VertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Storage->m_VertexArray);
+		s_Storage->VertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Storage->VertexArray);
 
 		texture->Unbind(0);
 	}

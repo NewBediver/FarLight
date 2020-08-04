@@ -5,7 +5,6 @@
 //---Core-----------------------------
 #include "FarLight/Core/Core.h"
 #include "FarLight/Core/Application.h"
-#include "FarLight/Core/Library.h"
 #include "FarLight/Core/Timestep.h"
 //------------------------------------
 //---Log-System-----------------------
