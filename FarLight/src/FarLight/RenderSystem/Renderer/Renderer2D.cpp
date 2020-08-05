@@ -10,6 +10,7 @@
 namespace FarLight
 {
 	Scope<Renderer2D::Renderer2DStorage> Renderer2D::s_Storage = nullptr;
+	Scope<Batch> Renderer2D::s_Batch = nullptr;
 
 	void Renderer2D::Init()
 	{
@@ -18,8 +19,16 @@ namespace FarLight
 		RenderCommand::Init();
 		FL_CORE_INFO("[Renderer2D] initialized.");
 
+		BufferLayout squareLayout = {
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" },
+			{ ShaderDataType::Float2, "a_TextureCoordinates" }
+		};
+
+		s_Batch = CreateScope<Batch>(1000, 1500, squareLayout);
+
 		s_Storage = CreateScope<Renderer2DStorage>();
-		s_Storage->VertexArray = FarLight::VertexArray::Create();
+		/*s_Storage->VertexArray = FarLight::VertexArray::Create();
 
 		float squareVertices[4*5] = {
 			// position             // textures
@@ -36,7 +45,7 @@ namespace FarLight
 		s_Storage->VertexArray->AddVertexBuffer(FarLight::VertexBuffer::Create(squareVertices, sizeof(squareVertices), squareLayout));
 
 		unsigned int squareIndicies[2*3] = { 0, 1, 2, 2, 3, 0 };
-		s_Storage->VertexArray->SetIndexBuffer(FarLight::IndexBuffer::Create(squareIndicies, sizeof(squareVertices) / sizeof(squareVertices[0])));
+		s_Storage->VertexArray->SetIndexBuffer(FarLight::IndexBuffer::Create(squareIndicies, sizeof(squareVertices) / sizeof(squareVertices[0])));*/
 
 		s_Storage->Shader = FarLight::Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag");
 
@@ -65,6 +74,9 @@ namespace FarLight
 	void Renderer2D::EndScene()
 	{
 		FL_PROFILE_FUNCTION();
+
+		s_Batch->Render();
+		s_Batch->Clear();
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -76,7 +88,24 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_Storage->Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
+		float squareVertices[4 * 9] =
+		{
+			// position             // color                               // textures
+			 0.5f, -0.5f,  0.0f,    color.r, color.g, color.b, color.a,    1.0f, 0.0f,
+			 0.5f,  0.5f,  0.0f,    color.r, color.g, color.b, color.a,    1.0f, 1.0f,
+			-0.5f,  0.5f,  0.0f,    color.r, color.g, color.b, color.a,    0.0f, 1.0f,
+			-0.5f, -0.5f,  0.0f,    color.r, color.g, color.b, color.a,    0.0f, 0.0f
+		};
+
+		unsigned int squareIndices[2 * 3] =
+		{
+			0, 1, 2,
+			2, 3, 0
+		};
+
+		s_Batch->AddData(4, squareVertices, 6, squareIndices);
+
+		/*s_Storage->Shader->SetMat4("u_Transformation.Model", glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f)));
 		s_Storage->Shader->SetFloat4("u_Color", color.r, color.g, color.b, color.a);
 		s_Storage->Shader->SetFloat("u_TilingFactor", 1.0f);
@@ -86,7 +115,7 @@ namespace FarLight
 		s_Storage->VertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Storage->VertexArray);
 
-		s_Storage->Texture->Unbind(0);
+		s_Storage->Texture->Unbind(0);*/
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color)

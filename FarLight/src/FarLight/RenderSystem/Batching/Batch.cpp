@@ -11,7 +11,7 @@
 
 namespace FarLight
 {
-	Batch::Batch(unsigned maxVertices, unsigned maxIndices)
+	Batch::Batch(unsigned maxVertices, unsigned maxIndices, const BufferLayout& layout)
 		: m_MaxVertices(maxVertices)
 		, m_UsedVertices(0)
 		, m_MaxIndices(maxIndices)
@@ -19,29 +19,27 @@ namespace FarLight
 		, m_VAO(nullptr)
 		, m_VBO(nullptr)
 		, m_EBO(nullptr)
-		, m_Configuration(GL_TRIANGLES, 0, 0)
+		, m_Configuration(GL_TRIANGLES, 0, Texture2D::Create(1, 1), layout)
 	{
 		FL_CORE_ASSERT(m_MaxVertices >= 1000 && m_MaxIndices >= 1000, "Batch is too small. Choose a number >= 1000.");
 
 		m_VAO = VertexArray::Create();
 
-		BufferLayout layout = {
-			{ FarLight::ShaderDataType::Float3, "a_Position" },
-			{ FarLight::ShaderDataType::Float4, "a_Color" },
-			{ FarLight::ShaderDataType::Float2, "a_TextureCoordinates" }
-		};
-		m_VBO = VertexBuffer::Create(m_MaxVertices * sizeof(GuiVertex), layout);
+		m_VBO = VertexBuffer::Create(m_MaxVertices * m_Configuration.Layout.GetSize(), layout);
 		m_EBO = IndexBuffer::Create(maxIndices);
+
+		m_VAO->AddVertexBuffer(m_VBO);
+		m_VAO->SetIndexBuffer(m_EBO);
 	}
 
 	void Batch::AddData(unsigned numVertices, const float* verticesData, unsigned numIndices, const unsigned* indicesData)
 	{
 		FL_CORE_ASSERT(IsEnoughSlots(numVertices, numIndices), "Current batch doesn't have enought slots for current data!");
 
-		m_VBO->AddSubData(verticesData, numVertices * sizeof(GuiVertex), m_UsedVertices);
+		m_VBO->AddSubData(verticesData, numVertices * m_Configuration.Layout.GetSize(), m_UsedVertices);
 		m_UsedVertices += numVertices;
 
-		m_EBO->AddSubData(indicesData, numIndices, m_UsedVertices);
+		m_EBO->AddSubData(indicesData, numIndices, m_UsedIndices);
 		m_UsedIndices += numIndices;
 	}
 
@@ -49,10 +47,12 @@ namespace FarLight
 	{
 		if (m_UsedIndices == 0 || m_UsedVertices == 0) return;
 		RenderCommand::DrawIndexed(m_VAO);
-		
+	}
+
+	void Batch::Clear()
+	{
 		m_EBO->SetCount(0);
 		m_UsedIndices = 0;
 		m_UsedVertices = 0;
-		m_Configuration.Priority = 0;
 	}
 }

@@ -11,6 +11,8 @@
 
 #include "FarLight/RenderSystem/Texture/Texture2D.h"
 
+#include "FarLight/RenderSystem/Batching/Batch.h"
+
 #include <glm/glm.hpp>
 
 namespace FarLight
@@ -46,7 +48,6 @@ namespace FarLight
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f));
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f));
 
-
 		static void SetViewport(unsigned int width, unsigned int height) { RenderCommand::SetViewport(0, 0, width, height); }
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
@@ -59,5 +60,6 @@ namespace FarLight
 		};
 
 		static Scope<Renderer2DStorage> s_Storage;
+		static Scope<Batch> s_Batch;
 	};
 }

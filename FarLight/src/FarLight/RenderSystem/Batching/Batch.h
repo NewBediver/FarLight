@@ -14,15 +14,17 @@ namespace FarLight
 	{
 		unsigned RenderType;
 		int Priority;
+		BufferLayout Layout;
 		Ref<Texture2D> Texture;
 		glm::mat4 Model;
 		glm::mat4 View;
 		glm::mat4 Projection;
 
-		BatchConfiguration(unsigned renderType, int priority, const Ref<Texture2D>& texture)
+		BatchConfiguration(unsigned renderType, int priority, const Ref<Texture2D>& texture, const BufferLayout& layout)
 			: RenderType(renderType)
 			, Priority(priority)
 			, Texture(texture)
+			, Layout(layout)
 			, Model(glm::mat4(1.0f))
 			, View(glm::mat4(1.0f))
 			, Projection(glm::mat4(1.0f))
@@ -33,34 +35,17 @@ namespace FarLight
 			return RenderType == other.RenderType
 				&& Priority == other.Priority
 				&& Texture->GetID() == other.Texture->GetID()
+				&& Layout == other.Layout
 				&& Model == other.Model
 				&& View == other.View
 				&& Projection == other.Projection;
 		}
-
-		bool operator!=(const BatchConfiguration& other) const
-		{
-			return !(*this == other);
-		}
-	};
-
-	struct GuiVertex
-	{
-		glm::vec3 Position;
-		glm::vec4 Color;
-		glm::vec2 Texture;
-
-		GuiVertex(glm::vec3 position, glm::vec4 color, glm::vec2 texture)
-			: Position(position)
-			, Color(color)
-			, Texture(texture)
-		{ }
 	};
 
 	class Batch
 	{
 	public:
-		Batch(unsigned maxVertices, unsigned maxIndices);
+		Batch(unsigned maxVertices, unsigned maxIndices, const BufferLayout& layout);
 
 		bool IsBatchConfiguration(const BatchConfiguration& config) const { return config == m_Configuration; }
 		bool IsEmpty() const { return m_UsedVertices == 0; }
@@ -70,7 +55,9 @@ namespace FarLight
 		const BatchConfiguration& GetConfiguration() const { return m_Configuration; }
 
 		void AddData(unsigned numVertices, const float* verticesData, unsigned numIndices, const unsigned* indicesData);
+
 		void Render();
+		void Clear();
 
 	private:
 		unsigned m_MaxVertices;

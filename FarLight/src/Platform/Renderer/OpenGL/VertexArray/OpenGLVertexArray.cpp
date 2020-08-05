@@ -74,11 +74,11 @@ namespace FarLight
 		{
 			glEnableVertexAttribArray(m_VertexBufferIndex);
 			glVertexAttribPointer(m_VertexBufferIndex,
-				ShaderDataTypeCount(element->m_Type),
-				ShaderDataTypeToOpenGLBaseType(element->m_Type),
-				element->m_Normalized ? GL_TRUE : GL_FALSE,
+				ShaderDataTypeCount(element->Type),
+				ShaderDataTypeToOpenGLBaseType(element->Type),
+				element->Normalized ? GL_TRUE : GL_FALSE,
 				layout.GetStride(),
-				reinterpret_cast<const void*>(static_cast<long long>(element->m_Offset)));
+				reinterpret_cast<const void*>(static_cast<long long>(element->Offset)));
 			++m_VertexBufferIndex;
 		}
 

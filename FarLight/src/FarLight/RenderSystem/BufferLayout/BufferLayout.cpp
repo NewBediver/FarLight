@@ -15,9 +15,9 @@ namespace FarLight
 		m_Stride = 0;
 		for (auto& element : m_Elements)
 		{
-			element.m_Offset = offset;
-			offset += element.m_Size;
-			m_Stride += element.m_Size;
+			element.Offset = offset;
+			offset += element.Size;
+			m_Stride += element.Size;
 		}
 	}
 }
