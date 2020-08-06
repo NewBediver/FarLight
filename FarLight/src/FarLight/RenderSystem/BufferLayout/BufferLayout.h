@@ -37,7 +37,6 @@ namespace FarLight
 
 		unsigned int GetStride() const { return m_Stride; }
 		unsigned int GetSize() const { return m_Elements.size(); }
-		unsigned int GetDataSize() const { return GetStride(); }
 		const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 
 		std::vector<BufferElement>::const_iterator cbegin() const { return m_Elements.cbegin(); }

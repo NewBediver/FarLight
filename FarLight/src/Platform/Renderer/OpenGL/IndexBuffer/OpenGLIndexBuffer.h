@@ -18,10 +18,13 @@ namespace FarLight
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
-		virtual void AddSubData(const unsigned int* vertices, unsigned int size, unsigned int offset) override;
+		virtual void AddSubData(const unsigned int* indices, unsigned int size) override;
 
 		virtual unsigned int GetCount() const override { return m_Count; }
 		virtual void SetCount(unsigned int count) override { m_Count = count; }
+
+		virtual unsigned int GetID() const override { return m_RendererID; }
+		virtual unsigned int GetUsageType() const override { return m_UsageType; }
 
 		virtual ~OpenGLIndexBuffer();
 

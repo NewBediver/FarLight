@@ -64,6 +64,8 @@ namespace FarLight
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
+		virtual unsigned int GetID() const = 0;
+
 		virtual void SetInt(const std::string& name, int i1) const = 0;
 
 		virtual void SetFloat(const std::string& name, float f1) const = 0;

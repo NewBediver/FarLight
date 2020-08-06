@@ -13,6 +13,8 @@ namespace FarLight
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
+		virtual unsigned int GetID() const override { return m_RendererID; }
+
 		virtual void AddVertexBuffer(const Ref<VertexBuffer>& buffer) override;
 		virtual void SetIndexBuffer(const Ref<IndexBuffer>& buffer) override;
 

@@ -52,14 +52,17 @@ namespace FarLight
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
 	private:
-		struct Renderer2DStorage
+
+		struct QuadVertexData
 		{
-			Ref<VertexArray> VertexArray;
-			Ref<Shader> Shader;
-			Ref<Texture2D> Texture;
+			glm::vec4 PosLowerRight;
+			glm::vec4 PosUpperRight;
+			glm::vec4 PosUpperLeft;
+			glm::vec4 PosLowerLeft;
+			unsigned Indices[6];
 		};
 
-		static Scope<Renderer2DStorage> s_Storage;
 		static Scope<Batch> s_Batch;
+		static Scope<QuadVertexData> s_QuadData;
 	};
 }
