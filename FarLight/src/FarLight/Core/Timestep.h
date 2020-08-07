@@ -2,7 +2,7 @@
 
 namespace FarLight
 {
-	class Timestep
+	class Timestep final
 	{
 	public:
 		explicit Timestep(float time = 0.0f)

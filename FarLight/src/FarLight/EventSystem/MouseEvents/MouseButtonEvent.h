@@ -8,9 +8,9 @@ namespace FarLight
 		: public Event
 	{
 	public:
-		int GetButton() const { return m_Button; }
-
 		virtual ~MouseButtonEvent() = 0 { };
+
+		int GetButton() const { return m_Button; }
 
 	protected:
 		explicit MouseButtonEvent(int button, const std::string& name, EventType type)

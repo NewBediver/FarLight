@@ -10,17 +10,17 @@
 	#include "Platform/Windows/InputSystem/WindowsInput.h"
 #endif
 
-namespace FarLight {
-
-	Scope<Input> Input::s_Instance = Input::Create();
-
-	Scope<Input> Input::Create()
+namespace FarLight
+{
+	const Scope<Input>& Input::GetInstance()
 	{
-	#ifdef FL_PLATFORM_WINDOWS
-		return CreateScope<WindowsInput>();
-	#else
-		FL_CORE_ASSERT(false, "Unknown platform!");
-		return nullptr;
-	#endif
+		#ifdef FL_PLATFORM_WINDOWS
+			static Scope<Input> s_Instance = CreateScope<WindowsInput>();
+			return s_Instance;
+		#else
+			FL_CORE_ASSERT(false, "Unknown platform!");
+			static Scope<Input> s_Instance = nullptr;
+			return s_Instance;
+		#endif
 	}
 }

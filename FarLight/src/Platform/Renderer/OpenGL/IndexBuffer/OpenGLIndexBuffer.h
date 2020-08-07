@@ -8,29 +8,30 @@
 
 namespace FarLight
 {
-	class OpenGLIndexBuffer
+	class OpenGLIndexBuffer final
 		: public IndexBuffer
 	{
 	public:
-		explicit OpenGLIndexBuffer(const unsigned int* indicies, unsigned int count);
-		explicit OpenGLIndexBuffer(unsigned int count);
+		explicit OpenGLIndexBuffer(const void* indicies, unsigned count);
+		explicit OpenGLIndexBuffer(unsigned count);
+
+		virtual ~OpenGLIndexBuffer();
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
-		virtual void AddSubData(const unsigned int* indices, unsigned int size) override;
+		virtual unsigned GetID() const override { return m_RendererID; }
 
-		virtual unsigned int GetCount() const override { return m_Count; }
-		virtual void SetCount(unsigned int count) override { m_Count = count; }
+		virtual void AddSubData(const void* indices, unsigned size) override;
 
-		virtual unsigned int GetID() const override { return m_RendererID; }
-		virtual unsigned int GetUsageType() const override { return m_UsageType; }
+		virtual unsigned GetCount() const override { return m_Count; }
+		virtual void SetCount(unsigned count) override { m_Count = count; }
 
-		virtual ~OpenGLIndexBuffer();
+		virtual unsigned GetUsageType() const override { return m_UsageType; }
 
 	private:
-		unsigned int m_RendererID;
-		unsigned int m_Count;
+		unsigned m_RendererID;
+		unsigned m_Count;
 		GLenum m_UsageType;
 	};
 }

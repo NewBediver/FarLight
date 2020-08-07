@@ -4,13 +4,13 @@
 
 namespace FarLight
 {
-	class OpenGLRendererAPI
+	class OpenGLRendererAPI final
 		: public RendererAPI
 	{
 	public:
 		virtual void Init() const override;
 		virtual void SetClearColor(const glm::vec4& color) const override;
-		virtual void SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) const override;
+		virtual void SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) const override;
 		virtual void Clear() const override;
 
 		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) const override;

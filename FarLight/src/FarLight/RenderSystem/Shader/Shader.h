@@ -16,7 +16,7 @@ namespace FarLight
 		Bool
 	};
 
-	static unsigned int ShaderDataTypeSize(ShaderDataType type)
+	static unsigned ShaderDataTypeSize(ShaderDataType type)
 	{
 		switch (type)
 		{
@@ -37,7 +37,7 @@ namespace FarLight
 		return 0;
 	}
 
-	static unsigned int ShaderDataTypeCount(ShaderDataType type)
+	static unsigned ShaderDataTypeCount(ShaderDataType type)
 	{
 		switch (type)
 		{
@@ -61,10 +61,14 @@ namespace FarLight
 	class Shader
 	{
 	public:
+		static Ref<Shader> Create(const std::string& vertexSrc, const std::string& fragmentSrc);
+
+		virtual ~Shader() = default;
+
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		virtual unsigned int GetID() const = 0;
+		virtual unsigned GetID() const = 0;
 
 		virtual void SetInt(const std::string& name, int i1) const = 0;
 
@@ -75,9 +79,5 @@ namespace FarLight
 
 		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) const = 0;
 		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) const = 0;
-
-		virtual ~Shader() = default;
-
-		static Ref<Shader> Create(const std::string& vertexSrc, const std::string& fragmentSrc);
 	};
 }

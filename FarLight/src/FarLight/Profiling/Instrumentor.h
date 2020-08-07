@@ -9,30 +9,31 @@
 
 namespace FarLight
 {
-	struct ProfileResult
+	struct ProfileResult final
 	{
-		std::string m_Name;
-		std::chrono::duration<double, std::micro> m_Start;
-		std::chrono::microseconds m_Duration;
-		std::thread::id m_ThreadId;
+		std::string Name;
+		std::chrono::duration<double, std::micro> Start;
+		std::chrono::microseconds Duration;
+		std::thread::id ThreadId;
 	};
 
-	class Instrumentor
+	class Instrumentor final
 	{
 	public:
-		void BeginSession(const std::string& name, const std::string& filepath = "results.json");
-		void EndSession();
-
-		~Instrumentor();
-
 		static Instrumentor& GetInstance();
 
-	private:
-		Instrumentor();
 		Instrumentor(const Instrumentor&) = delete;
 		Instrumentor(Instrumentor&&) = delete;
 		Instrumentor& operator=(const Instrumentor&) = delete;
 		Instrumentor& operator=(Instrumentor&&) = delete;
+
+		~Instrumentor();
+
+		void BeginSession(const std::string& name, const std::string& filepath = "results.json");
+		void EndSession();
+
+	private:
+		explicit Instrumentor();
 
 		void WriteProfile(const ProfileResult& result);
 
@@ -41,12 +42,12 @@ namespace FarLight
 
 		void InternalEndSession();
 
-		struct InstrumentationSession
+		struct InstrumentationSession final
 		{
-			std::string m_Name;
+			std::string Name;
 
 			explicit InstrumentationSession(const std::string& name)
-				: m_Name(name)
+				: Name(name)
 			{ }
 		};
 		

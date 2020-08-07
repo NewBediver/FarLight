@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	OpenGLIndexBuffer::OpenGLIndexBuffer(const unsigned int* indicies, unsigned int count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(const void* indicies, unsigned count)
 		: m_RendererID(0)
 		, m_Count(count)
 		, m_UsageType(GL_STATIC_DRAW)
@@ -16,10 +16,10 @@ namespace FarLight
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned int), indicies, m_UsageType);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned), indicies, m_UsageType);
 	}
 
-	OpenGLIndexBuffer::OpenGLIndexBuffer(unsigned int count)
+	OpenGLIndexBuffer::OpenGLIndexBuffer(unsigned count)
 		: m_RendererID(0)
 		, m_Count(count)
 		, m_UsageType(GL_DYNAMIC_DRAW)
@@ -28,7 +28,7 @@ namespace FarLight
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned int), nullptr, m_UsageType);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned), nullptr, m_UsageType);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
@@ -52,13 +52,13 @@ namespace FarLight
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
-	void OpenGLIndexBuffer::AddSubData(const unsigned int* indices, unsigned int count)
+	void OpenGLIndexBuffer::AddSubData(const void* indices, unsigned count)
 	{
 		FL_PROFILE_FUNCTION();
 		FL_CORE_ASSERT(m_UsageType == GL_DYNAMIC_DRAW, "Cannot add sub data to non-dynamic index array!");
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned int), count * sizeof(unsigned int), indices);
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned), count * sizeof(unsigned), indices);
 		m_Count += count;
 	}
 }

@@ -4,7 +4,7 @@
 
 namespace FarLight
 {
-	class ImGuiLayer
+	class ImGuiLayer final
 		: public Layer
 	{
 	public:

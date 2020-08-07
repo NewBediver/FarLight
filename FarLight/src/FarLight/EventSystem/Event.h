@@ -35,14 +35,10 @@ namespace FarLight
 	class Event
 	{
 	public:
-		explicit Event(const std::string& name, EventType type, int category)
-			: m_Name(name)
-			, m_Type(type)
-			, m_Category(category)
-			, m_IsHandled(false)
+		virtual ~Event() = 0
 		{
-			FL_CORE_INFO("Event [{0}] created.", this->ToString());
-		}
+			FL_CORE_INFO("Event [{0}] destroyed.", this->ToString());
+		};
 
 		virtual EventType GetType() const { return m_Type; };
 		virtual const std::string& GetName() const { return m_Name; }
@@ -55,10 +51,15 @@ namespace FarLight
 
 		bool IsInCategory(EventCategory eventCategory) const { return (GetCategoryFlags() & eventCategory); }
 
-		virtual ~Event() = 0
+	protected:
+		explicit Event(const std::string& name, EventType type, int category)
+			: m_Name(name)
+			, m_Type(type)
+			, m_Category(category)
+			, m_IsHandled(false)
 		{
-			FL_CORE_INFO("Event [{0}] destroyed.", this->ToString());
-		};
+			FL_CORE_INFO("Event [{0}] created.", this->ToString());
+		}
 
 	private:
 		std::string m_Name;

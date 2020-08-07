@@ -12,29 +12,29 @@ namespace FarLight
 		: public VertexBuffer
 	{
 	public:
-		explicit OpenGLVertexBuffer(const float* vertices, unsigned int size, const BufferLayout& layout);
-		explicit OpenGLVertexBuffer(unsigned int size, const BufferLayout& layout);
+		explicit OpenGLVertexBuffer(const void* vertices, unsigned size, const BufferLayout& layout);
+		explicit OpenGLVertexBuffer(unsigned size, const BufferLayout& layout);
+
+		virtual ~OpenGLVertexBuffer();
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
-		virtual unsigned int GetID() const override { return m_RendererID; }
+		virtual unsigned GetID() const override { return m_RendererID; }
 
 		virtual const BufferLayout& GetLayout() const override { return m_Layout; }
 		virtual void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
 
-		virtual unsigned int GetOffset() const override { return m_Offset; }
-		virtual void SetOffset(unsigned int offset) override { m_Offset = offset; }
+		virtual unsigned GetOffset() const override { return m_Offset; }
+		virtual void SetOffset(unsigned offset) override { m_Offset = offset; }
 
-		virtual unsigned int GetUsageType() const override { return m_UsageType; }
+		virtual unsigned GetUsageType() const override { return m_UsageType; }
 
-		virtual void AddSubData(const float* vertices, unsigned int size) override;
-
-		virtual ~OpenGLVertexBuffer();
+		virtual void AddSubData(const void* vertices, unsigned size) override;
 
 	private:
-		unsigned int m_RendererID;
-		unsigned int m_Offset;
+		unsigned m_RendererID;
+		unsigned m_Offset;
 		BufferLayout m_Layout;
 		GLenum m_UsageType;
 	};

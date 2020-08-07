@@ -6,11 +6,11 @@
 
 namespace FarLight
 {
-	class OrthographicCamera
+	class OrthographicCamera final
 		: public Camera
 	{
 	public:
-		OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float nearZone = -1.0f, float farZone = 100.0f);
+		OrthographicCamera(float left, float right, float bottom, float top, float nearZone = -1.0f, float farZone = 100.0f);
 
 		virtual const glm::vec3& GetPosition() const override { return m_Position; }
 		virtual void SetPosition(const glm::vec3& position) override;

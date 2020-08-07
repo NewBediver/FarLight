@@ -27,7 +27,7 @@ namespace FarLight
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
-	void OpenGLRendererAPI::SetViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) const
+	void OpenGLRendererAPI::SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) const
 	{
 		FL_PROFILE_FUNCTION();
 

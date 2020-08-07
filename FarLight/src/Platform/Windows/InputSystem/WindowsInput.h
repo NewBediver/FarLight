@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	class WindowsInput
+	class WindowsInput final
 		: public Input
 	{
 	public:

@@ -8,7 +8,7 @@
 
 namespace FarLight
 {
-	class WindowsWindow
+	class WindowsWindow final
 		: public Window
 	{
 	public:
@@ -16,13 +16,13 @@ namespace FarLight
 
 		virtual void OnUpdate() override;
 
-		virtual unsigned int GetWidth() const override { return m_Data.m_Width; }
-		virtual unsigned int GetHeight() const override { return m_Data.m_Height; }
+		virtual unsigned GetWidth() const override { return m_Data.Width; }
+		virtual unsigned GetHeight() const override { return m_Data.Height; }
 
-		virtual void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.m_Callback = callback; }
+		virtual void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.Callback = callback; }
 
 		virtual void SetVSync(bool enabled) override;
-		virtual bool IsVSync() const override { return m_Data.m_IsVSync; }
+		virtual bool IsVSync() const override { return m_Data.IsVSync; }
 
 		virtual Ref<void> GetNativeWindow() const override { return m_Window; }
 
@@ -34,12 +34,12 @@ namespace FarLight
 		Ref<GLFWwindow> m_Window;
 		Scope<OpenGLContext> m_Context;
 
-		struct WindowData
+		struct WindowData final
 		{
-			std::string m_Title;
-			unsigned int m_Width = 800, m_Height = 600;
-			bool m_IsVSync = false;
-			EventCallbackFunction m_Callback;
+			std::string Title;
+			unsigned Width = 800, Height = 600;
+			bool IsVSync = false;
+			EventCallbackFunction Callback;
 		} m_Data;
 	};
 }

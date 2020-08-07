@@ -14,9 +14,9 @@ namespace  FarLight
 		: public Texture
 	{
 	public:
-		virtual ~Texture2D() = default;
-
 		static Ref<Texture2D> Create(const std::string& path);
-		static Ref<Texture2D> Create(unsigned int width, unsigned int height, const glm::vec4& pixelColor = glm::vec4(1.0f));
+		static Ref<Texture2D> Create(unsigned width, unsigned height, const glm::vec4& pixelColor = glm::vec4(1.0f));
+
+		virtual ~Texture2D() = default;
 	};
 }

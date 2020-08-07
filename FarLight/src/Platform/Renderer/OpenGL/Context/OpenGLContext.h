@@ -6,7 +6,7 @@
 
 namespace FarLight
 {
-	class OpenGLContext
+	class OpenGLContext final
 		: public GraphicsContext
 	{
 	public:

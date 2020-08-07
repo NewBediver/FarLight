@@ -6,10 +6,11 @@
 
 namespace FarLight
 {
-	class InstrumentationTimer
+	class InstrumentationTimer final
 	{
 	public:
 		explicit InstrumentationTimer(const std::string& name);
+
 		~InstrumentationTimer();
 
 	private:

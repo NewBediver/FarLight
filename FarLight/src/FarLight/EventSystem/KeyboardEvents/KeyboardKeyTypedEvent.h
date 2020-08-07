@@ -4,7 +4,7 @@
 
 namespace FarLight
 {
-	class KeyboardKeyTypedEvent
+	class KeyboardKeyTypedEvent final
 		: public KeyboardKeyEvent
 	{
 	public:

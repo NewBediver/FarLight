@@ -26,7 +26,7 @@ namespace FarLight
 	{
 		std::lock_guard lock(m_Mutex);
 		if (m_CurrentSession) {
-			if (Logger::GetCoreLogger()) FL_CORE_ERROR("Instrumentor::BeginSession('{0}') when session '{1}' already open.", name, m_CurrentSession->m_Name);
+			if (Logger::GetCoreLogger()) FL_CORE_ERROR("Instrumentor::BeginSession('{0}') when session '{1}' already open.", name, m_CurrentSession->Name);
 			InternalEndSession();
 		}
 		m_OutputStream.open(filepath);
@@ -49,18 +49,18 @@ namespace FarLight
 	{
 		std::stringstream json;
 
-		std::string name = result.m_Name;
+		std::string name = result.Name;
 		std::replace(name.begin(), name.end(), '"', '\'');
 
 		json << std::setprecision(3) << std::fixed;
 		json << ",{";
 		json << "\"cat\":\"function\",";
-		json << "\"dur\":" << (result.m_Duration.count()) << ',';
+		json << "\"dur\":" << (result.Duration.count()) << ',';
 		json << "\"name\":\"" << name << "\",";
 		json << "\"ph\":\"X\",";
 		json << "\"pid\":0,";
-		json << "\"tid\":" << result.m_ThreadId << ",";
-		json << "\"ts\":" << result.m_Start.count();
+		json << "\"tid\":" << result.ThreadId << ",";
+		json << "\"ts\":" << result.Start.count();
 		json << "}";
 
 		std::lock_guard lock(m_Mutex);
@@ -82,7 +82,8 @@ namespace FarLight
 		m_OutputStream.flush();
 	}
 
-	void Instrumentor::InternalEndSession() {
+	void Instrumentor::InternalEndSession()
+	{
 		if (m_CurrentSession) {
 			WriteFooter();
 			m_OutputStream.close();

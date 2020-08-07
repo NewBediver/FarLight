@@ -12,7 +12,7 @@
 
 namespace FarLight
 {
-	class OrthographicCameraController
+	class OrthographicCameraController final
 	{
 	public:
 		OrthographicCameraController(float aspectRation);

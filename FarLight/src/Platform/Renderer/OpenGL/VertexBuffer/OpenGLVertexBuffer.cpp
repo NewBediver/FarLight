@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	OpenGLVertexBuffer::OpenGLVertexBuffer(const float* vertices, unsigned int size, const BufferLayout& layout)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(const void* vertices, unsigned size, const BufferLayout& layout)
 		: m_RendererID(0)
 		, m_Offset(0)
 		, m_Layout(layout)
@@ -20,7 +20,7 @@ namespace FarLight
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, m_UsageType);
 	}
 
-	OpenGLVertexBuffer::OpenGLVertexBuffer(unsigned int size, const BufferLayout& layout)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(unsigned size, const BufferLayout& layout)
 		: m_RendererID(0)
 		, m_Offset(0)
 		, m_Layout(layout)
@@ -33,7 +33,7 @@ namespace FarLight
 		glBufferData(GL_ARRAY_BUFFER, size, nullptr, m_UsageType);
 	}
 
-	void OpenGLVertexBuffer::AddSubData(const float* vertices, unsigned int size)
+	void OpenGLVertexBuffer::AddSubData(const void* vertices, unsigned size)
 	{
 		FL_PROFILE_FUNCTION();
 		FL_CORE_ASSERT(m_UsageType == GL_DYNAMIC_DRAW, "Cannot add sub data to non-dynamic vertex array!");

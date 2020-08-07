@@ -73,13 +73,15 @@ namespace FarLight
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		SetData(data, sizeof(data));
 
 		stbi_image_free(data);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(unsigned int width, unsigned int height, const glm::vec4& pixelColor)
+	OpenGLTexture2D::OpenGLTexture2D(unsigned width, unsigned height, const glm::vec4& pixelColor)
 		: m_RendererID(0)
 		, m_Width(width)
 		, m_Height(height)
@@ -96,12 +98,14 @@ namespace FarLight
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-		unsigned int color = static_cast<unsigned int>(pixelColor.r * 255.0f)
-			+ (static_cast<unsigned int>(pixelColor.g * 255.0f) << 8)
-			+ (static_cast<unsigned int>(pixelColor.b * 255.0f) << 16)
-			+ (static_cast<unsigned int>(pixelColor.a * 255.0f) << 24);
-		std::vector<unsigned int> colors(width * height, color);
+		unsigned color = static_cast<unsigned>(pixelColor.r * 255.0f)
+			+ (static_cast<unsigned>(pixelColor.g * 255.0f) << 8)
+			+ (static_cast<unsigned>(pixelColor.b * 255.0f) << 16)
+			+ (static_cast<unsigned>(pixelColor.a * 255.0f) << 24);
+		std::vector<unsigned> colors(width * height, color);
 
 		SetData(&colors.front(), sizeof(color) * m_Width * m_Height);
 	}
@@ -113,21 +117,21 @@ namespace FarLight
 		glDeleteTextures(1, &m_RendererID);
 	}
 
-	void OpenGLTexture2D::Bind(unsigned int slot) const
+	void OpenGLTexture2D::Bind(unsigned slot) const
 	{
 		FL_PROFILE_FUNCTION();
 
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
-	void OpenGLTexture2D::Unbind(unsigned int slot) const
+	void OpenGLTexture2D::Unbind(unsigned slot) const
 	{
 		FL_PROFILE_FUNCTION();
 
 		glBindTextureUnit(slot, 0);
 	}
 
-	void OpenGLTexture2D::SetData(void* data, unsigned int size) const
+	void OpenGLTexture2D::SetData(const void* data, unsigned size) const
 	{
 		FL_PROFILE_FUNCTION();
 

@@ -11,6 +11,8 @@ namespace FarLight
 	class Camera
 	{
 	public:
+		virtual ~Camera() = default;
+
 		virtual const glm::vec3& GetPosition() const = 0;
 		virtual void SetPosition(const glm::vec3& position) = 0;
 
@@ -36,7 +38,5 @@ namespace FarLight
 		virtual void SetProjectionMatrix(float left, float right, float up, float down, float nearZone, float farZone) = 0;
 
 		virtual const glm::mat4& GetViewMatrix() const = 0;
-
-		virtual ~Camera() = default;
 	};
 }

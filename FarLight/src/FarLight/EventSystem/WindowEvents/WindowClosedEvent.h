@@ -4,7 +4,7 @@
 
 namespace FarLight
 {
-	class WindowClosedEvent
+	class WindowClosedEvent final
 		: public Event
 	{
 	public:

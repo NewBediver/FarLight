@@ -21,7 +21,7 @@ namespace FarLight
 		return nullptr;
 	}
 
-	Ref<Texture2D> Texture2D::Create(unsigned int width, unsigned int height, const glm::vec4& pixelColor)
+	Ref<Texture2D> Texture2D::Create(unsigned width, unsigned height, const glm::vec4& pixelColor)
 	{
 		switch (Renderer2D::GetAPI())
 		{

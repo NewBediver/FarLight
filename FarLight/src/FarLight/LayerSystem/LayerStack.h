@@ -6,7 +6,7 @@
 
 namespace FarLight
 {
-	class LayerStack
+	class LayerStack final
 	{
 	public:
 		explicit LayerStack()
@@ -25,6 +25,6 @@ namespace FarLight
 
 	private:
 		std::vector<Ref<Layer>> m_Layers;
-		unsigned int m_LayerInsertIndex;
+		unsigned m_LayerInsertIndex;
 	};
 }

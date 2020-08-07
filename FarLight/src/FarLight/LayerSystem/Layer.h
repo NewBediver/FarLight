@@ -14,6 +14,11 @@ namespace FarLight
 			FL_CORE_INFO("Layer [{0}] created.", this->GetName());
 		}
 
+		virtual ~Layer()
+		{
+			FL_CORE_INFO("Layer [{0}] destroyed.", this->GetName());
+		}
+
 		virtual void OnAttach() = 0;
 		virtual void OnDetach() = 0;
 		virtual void OnUpdate(const Timestep& timestamp) = 0;
@@ -21,11 +26,6 @@ namespace FarLight
 		virtual void OnEvent(Event& event) = 0;
 
 		const std::string& GetName() const { return m_Name; }
-
-		virtual ~Layer()
-		{
-			FL_CORE_INFO("Layer [{0}] destroyed.", this->GetName());
-		}
 
 	private:
 		std::string m_Name;

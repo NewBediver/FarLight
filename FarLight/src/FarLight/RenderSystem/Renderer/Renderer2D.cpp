@@ -94,7 +94,7 @@ namespace FarLight
 			posLowerLeft.x,  posLowerLeft.y,  posLowerLeft.z,     color.r, color.g, color.b, color.a,    0.0f, 0.0f
 		};
 
-		unsigned int squareIndices[6];
+		unsigned squareIndices[6];
 		for (int i = 0; i < 6; ++i) squareIndices[i] = s_QuadData->Indices[i];
 
 		s_Batch->AddData(4, squareVertices, 6, squareIndices);
@@ -127,7 +127,7 @@ namespace FarLight
 			posLowerLeft.x,  posLowerLeft.y,  posLowerLeft.z,     color.r, color.g, color.b, color.a,    0.0f, 0.0f
 		};
 
-		unsigned int squareIndices[6];
+		unsigned squareIndices[6];
 		for (int i = 0; i < 6; ++i) squareIndices[i] = s_QuadData->Indices[i];
 
 		s_Batch->AddData(4, squareVertices, 6, squareIndices);

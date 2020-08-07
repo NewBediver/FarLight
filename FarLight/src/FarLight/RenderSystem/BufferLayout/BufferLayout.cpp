@@ -11,7 +11,7 @@ namespace FarLight
 		: m_Elements(elements)
 		, m_Stride(0)
 	{
-		unsigned int offset = 0;
+		unsigned offset = 0;
 		m_Stride = 0;
 		for (auto& element : m_Elements)
 		{

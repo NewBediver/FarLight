@@ -14,13 +14,17 @@
 
 namespace FarLight
 {
-	class Application
+	class Application final
 	{
 	public:
+		static Application& GetInstance();
+
 		Application(const Application&) = delete;
 		Application(Application&&) = delete;
 		Application& operator=(const Application&) = delete;
 		Application& operator=(Application&&) = delete;
+
+		~Application();
 
 		void Run();
 		void OnEvent(Event& e);
@@ -29,10 +33,6 @@ namespace FarLight
 		void PushOverlay(const Ref<Layer>& overlay) { m_LayerStack.PushOverlay(overlay); }
 
 		const Ref<Window>& GetWindow() const { return m_Window; }
-
-		Application::~Application();
-
-		static Application& GetInstance();
 
 	private:
 		explicit Application();

@@ -40,7 +40,7 @@ namespace FarLight
 		m_VAO->Bind();
 
 		int offset = m_UsedVertices;
-		for (int i = 0; i < numIndices; ++i) indicesData[i] += offset;
+		for (unsigned i = 0; i < numIndices; ++i) indicesData[i] += offset;
 
 		m_VBO->AddSubData(verticesData, numVertices * m_Configuration.Layout.GetStride());
 		m_UsedVertices += numVertices;

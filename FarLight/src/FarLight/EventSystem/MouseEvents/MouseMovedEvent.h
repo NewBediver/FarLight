@@ -4,8 +4,8 @@
 
 namespace FarLight
 {
-    class MouseMovedEvent :
-        public Event
+    class MouseMovedEvent final
+        : public Event
     {
     public:
         explicit MouseMovedEvent(double xPosition, double yPosition)

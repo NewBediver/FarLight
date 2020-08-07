@@ -4,7 +4,7 @@
 
 namespace FarLight
 {
-	class MouseScrolledEvent
+	class MouseScrolledEvent final
 		: public Event
 	{
 	public:

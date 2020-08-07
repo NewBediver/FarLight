@@ -96,7 +96,7 @@ namespace FarLight
 		{
 			FL_PROFILE_SCOPE("Events dispatching loop");
 
-			for (auto layer = m_LayerStack.crbegin(); layer != m_LayerStack.crend(); ++layer)
+			for (auto& layer = m_LayerStack.crbegin(); layer != m_LayerStack.crend(); ++layer)
 			{
 				(*layer)->OnEvent(e);
 				if (e.IsHandled()) break;

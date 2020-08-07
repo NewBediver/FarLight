@@ -14,12 +14,11 @@ namespace FarLight
 {
 	Ref<Window> Window::Create(const WindowProps& props)
 	{
-	#ifdef FL_PLATFORM_WINDOWS
-		FL_CORE_INFO("Windows window {0}x{1} created.", props.m_Width, props.m_Height);
-		return CreateRef<WindowsWindow>(props);
-	#else
-		FL_CORE_ASSERT(false, "Unknown platform!");
-		return nullptr;
-	#endif
+		#ifdef FL_PLATFORM_WINDOWS
+			return CreateRef<WindowsWindow>(props);
+		#else
+			FL_CORE_ASSERT(false, "Unknown platform!");
+			return nullptr;
+		#endif
 	}
 }

@@ -8,16 +8,18 @@
 
 namespace FarLight
 {
-	class OpenGLShader
+	class OpenGLShader final
 		: public Shader
 	{
 	public:
 		explicit OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath);
 
+		virtual ~OpenGLShader();
+
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
-		virtual unsigned int GetID() const override { return m_RendererID; }
+		virtual unsigned GetID() const override { return m_RendererID; }
 
 		virtual void SetInt(const std::string& name, int i1) const override;
 
@@ -29,8 +31,6 @@ namespace FarLight
 		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) const override;
 		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) const override;
 
-		virtual ~OpenGLShader();
-
 	private:
 		GLint GetUniformLocation(const std::string& name) const;
 
@@ -39,7 +39,7 @@ namespace FarLight
 		GLuint LinkShaders(GLuint vertexShaderID, GLuint fragmentShaderID) const;
 		std::vector<GLchar> GetErrorMessageFromGlad(GLuint program) const;
 
-		unsigned int m_RendererID;
+		unsigned m_RendererID;
 		mutable std::unordered_map<std::string, GLint> m_UniformLocation;
 	};
 }

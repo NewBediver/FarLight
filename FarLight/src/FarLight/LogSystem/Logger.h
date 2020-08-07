@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	class  Logger
+	class Logger final
 	{
 	public:
 		static void Init();
