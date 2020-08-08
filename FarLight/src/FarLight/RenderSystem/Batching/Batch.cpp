@@ -11,42 +11,44 @@
 
 namespace FarLight
 {
-	Batch::Batch(unsigned maxVertices, unsigned maxIndices, const BufferLayout& layout, const Ref<Shader>& shader, const Ref<Texture2D> texture)
+	Batch::Batch(const BufferLayout& layout, const Ref<Shader>& shader, const Ref<Texture2D> texture, unsigned maxVertices, unsigned maxIndies)
 		: m_MaxVertices(maxVertices)
 		, m_UsedVertices(0)
-		, m_MaxIndices(maxIndices)
+		, m_MaxIndices(maxIndies)
 		, m_UsedIndices(0)
-		, m_VAO(nullptr)
-		, m_VBO(nullptr)
-		, m_EBO(nullptr)
-		, m_Configuration(layout, shader, texture)
+		, m_VAO(VertexArray::Create())
+		, m_VBO(VertexBuffer::Create(maxVertices * layout.GetStride(), layout))
+		, m_EBO(IndexBuffer::Create(maxIndies))
+		, m_Configuration(layout, shader, texture, 0)
 	{
 		FL_CORE_ASSERT(m_MaxVertices >= 1000 && m_MaxIndices >= 1000, "Batch is too small. Choose a number >= 1000.");
 
-		m_VAO = VertexArray::Create();
 		m_VAO->Bind();
-
-		m_VBO = VertexBuffer::Create(m_MaxVertices * m_Configuration.Layout.GetStride(), layout);
-		m_EBO = IndexBuffer::Create(maxIndices);
 
 		m_VAO->AddVertexBuffer(m_VBO);
 		m_VAO->SetIndexBuffer(m_EBO);
 	}
 
-	void Batch::AddData(unsigned numVertices, const float* verticesData, unsigned numIndices, unsigned* indicesData)
+	void Batch::AddData(unsigned numVertices, const float* verticesData, unsigned numIndices, const unsigned* indicesData)
 	{
 		FL_CORE_ASSERT(IsEnoughSlots(numVertices, numIndices), "Current batch doesn't have enought slots for current data!");
 
-		m_VAO->Bind();
+		// MUST BE DELETED
+		unsigned* indices = new unsigned[numIndices];
 
 		int offset = m_UsedVertices;
-		for (unsigned i = 0; i < numIndices; ++i) indicesData[i] += offset;
+		for (unsigned i = 0; i < numIndices; ++i)
+			indices[i] = indicesData[i] + offset;
+
+		m_VAO->Bind();
 
 		m_VBO->AddSubData(verticesData, numVertices * m_Configuration.Layout.GetStride());
 		m_UsedVertices += numVertices;
 
-		m_EBO->AddSubData(indicesData, numIndices);
+		m_EBO->AddSubData(indices, numIndices);
 		m_UsedIndices += numIndices;
+
+		delete[] indices;
 	}
 
 	void Batch::SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix)

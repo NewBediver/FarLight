@@ -55,10 +55,12 @@
 	#define FL_CORE_ASSERT(x, ...)
 #endif
 
+#define FL_PROFILE 1
+#define FL_LOG 1
+
 // Resolve which function signature macro will be used. Note that this only
 // is resolved when the (pre)compiler starts, so the syntax highlighting
 // could mark the wrong one in your editor!
-#define FL_PROFILE 1
 #if FL_PROFILE
 	#if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
 		#define FL_FUNC_SIG __PRETTY_FUNCTION__

@@ -6,16 +6,16 @@
 
 namespace FarLight
 {
-	class BatchController
+	class BatchController final
 	{
 	public:
-		void AddBatch(const Batch& batch);
+		void AddData(const BatchConfiguration& config, unsigned numVertices, const float* vertices, unsigned numIndices, const unsigned* indices);
+		void SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
 
-
-		void Render();
+		void RenderAll();
+		void ClearAll();
 
 	private:
 		std::vector<Batch> m_Batches;
-		bool m_IsSorted = false;
 	};
 }
