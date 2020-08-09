@@ -7,10 +7,9 @@
 
 namespace FarLight
 {
-	RendererAPI::API RendererAPI::GetAPI()
+	RendererAPI::API RendererAPI::GetAPI() noexcept
 	{
 		#ifdef FL_PLATFORM_WINDOWS
-			FL_CORE_INFO("OpenGL renderer API returned.");
 			static API s_API = API::OpenGL;
 			return s_API;
 		#else

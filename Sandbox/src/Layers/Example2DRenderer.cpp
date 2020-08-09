@@ -11,24 +11,24 @@
 
 #include <imgui.h>
 
-Example2DRenderer::Example2DRenderer()
+Example2DRenderer::Example2DRenderer() noexcept
 	: Layer("Example2DRenderer")
 	, m_CameraController(1280.0f / 720.0f)
 	, m_Rotation(0.0f)
 { }
 
-void Example2DRenderer::OnAttach()
+void Example2DRenderer::OnAttach() noexcept
 {
 	m_Texture = FarLight::Texture2D::Create("assets/textures/Box.png");
 	m_ShovelKnightTexture = FarLight::Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
 }
 
-void Example2DRenderer::OnDetach()
+void Example2DRenderer::OnDetach() noexcept
 {
 
 }
 
-void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp)
+void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp) noexcept
 {
 	m_CameraController.OnUpdate(timestamp);
 	
@@ -47,11 +47,11 @@ void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp)
 	FarLight::Renderer2D::EndScene();
 }
 
-void Example2DRenderer::OnUserInterfaceRender()
+void Example2DRenderer::OnUserInterfaceRender() noexcept
 {
 }
 
-void Example2DRenderer::OnEvent(FarLight::Event& event)
+void Example2DRenderer::OnEvent(FarLight::Event& event) noexcept
 {
 	m_CameraController.OnEvent(event);
 }

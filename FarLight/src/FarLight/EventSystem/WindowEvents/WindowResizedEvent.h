@@ -8,16 +8,23 @@ namespace FarLight
 		: public Event
 	{
 	public:
-		explicit WindowResizedEvent(unsigned width, unsigned height)
+		WindowResizedEvent(const WindowResizedEvent&) = delete;
+		WindowResizedEvent(WindowResizedEvent&&) = delete;
+		WindowResizedEvent& operator=(const WindowResizedEvent&) = delete;
+		WindowResizedEvent& operator=(WindowResizedEvent&&) = delete;
+
+		explicit WindowResizedEvent(unsigned width, unsigned height) noexcept
 			: Event("WindowResized", EventType::WindowResizedEventType, ApplicationEventCategory)
 			, m_Width(width)
 			, m_Height(height)
 		{ }
 
-		unsigned WindowResizedEvent::GetWidth() const { return m_Width; }
-		unsigned WindowResizedEvent::GetHeight() const { return m_Height; }
+		constexpr
+		unsigned WindowResizedEvent::GetWidth() const noexcept { return m_Width; }
+		constexpr
+		unsigned WindowResizedEvent::GetHeight() const noexcept { return m_Height; }
 
-		virtual std::string ToString() const override;
+		virtual std::string ToString() const noexcept override;
 
 	private:
 		unsigned m_Width, m_Height;

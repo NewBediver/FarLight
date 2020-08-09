@@ -9,9 +9,14 @@ namespace FarLight
 	class InstrumentationTimer final
 	{
 	public:
-		explicit InstrumentationTimer(const std::string& name);
+		InstrumentationTimer(const InstrumentationTimer&) = delete;
+		InstrumentationTimer(InstrumentationTimer&&) = delete;
+		InstrumentationTimer& operator=(const InstrumentationTimer&) = delete;
+		InstrumentationTimer& operator=(InstrumentationTimer&&) = delete;
 
-		~InstrumentationTimer();
+		explicit InstrumentationTimer(const std::string& name) noexcept;
+
+		~InstrumentationTimer() noexcept;
 
 	private:
 		std::string m_Name;

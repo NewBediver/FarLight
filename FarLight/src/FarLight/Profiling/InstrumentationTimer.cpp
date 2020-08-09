@@ -8,12 +8,12 @@
 
 namespace FarLight
 {
-	InstrumentationTimer::InstrumentationTimer(const std::string& name)
+	InstrumentationTimer::InstrumentationTimer(const std::string& name) noexcept
 		: m_Name(name)
 		, m_StartTimepoint(std::chrono::steady_clock::now())
 	{ }
 
-	InstrumentationTimer::~InstrumentationTimer()
+	InstrumentationTimer::~InstrumentationTimer() noexcept
 	{
 		auto endTimepoint = std::chrono::steady_clock::now();
 		auto highResStart = std::chrono::duration<double, std::micro>(m_StartTimepoint.time_since_epoch());

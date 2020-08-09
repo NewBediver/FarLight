@@ -6,7 +6,8 @@
 
 namespace FarLight
 {
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	static constexpr
+	GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) noexcept
 	{
 		switch (type)
 		{
@@ -31,20 +32,25 @@ namespace FarLight
 		: public VertexArray
 	{
 	public:
-		explicit OpenGLVertexArray();
+		OpenGLVertexArray(const OpenGLVertexArray&) = delete;
+		OpenGLVertexArray(OpenGLVertexArray&&) = delete;
+		OpenGLVertexArray& operator=(const OpenGLVertexArray&) = delete;
+		OpenGLVertexArray& operator=(OpenGLVertexArray&&) = delete;
 
-		virtual ~OpenGLVertexArray();
+		explicit OpenGLVertexArray() noexcept;
 
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
+		virtual ~OpenGLVertexArray() noexcept;
 
-		virtual unsigned GetID() const override { return m_RendererID; }
+		virtual void Bind() const noexcept override;
+		virtual void Unbind() const noexcept override;
 
-		virtual void AddVertexBuffer(const Ref<VertexBuffer>& buffer) override;
-		virtual void SetIndexBuffer(const Ref<IndexBuffer>& buffer) override;
+		virtual unsigned GetID() const noexcept override { return m_RendererID; }
 
-		virtual const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const { return m_VertexBuffers; }
-		virtual const Ref<IndexBuffer>& GetIndexBuffer() const { return m_IndexBuffer; }
+		virtual void AddVertexBuffer(const Ref<VertexBuffer>& buffer) noexcept override;
+		virtual void SetIndexBuffer(const Ref<IndexBuffer>& buffer) noexcept override;
+
+		virtual const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const noexcept { return m_VertexBuffers; }
+		virtual const Ref<IndexBuffer>& GetIndexBuffer() const noexcept { return m_IndexBuffer; }
 
 	private:
 		unsigned m_RendererID;

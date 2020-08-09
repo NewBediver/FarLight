@@ -7,22 +7,22 @@
 
 namespace FarLight
 {
-	Instrumentor& Instrumentor::GetInstance()
+	Instrumentor& Instrumentor::GetInstance() noexcept
 	{
 		static Instrumentor s_Instance;
 		return s_Instance;
 	}
 
-	Instrumentor::Instrumentor()
+	Instrumentor::Instrumentor() noexcept
 		: m_CurrentSession(nullptr)
 	{ }
 
-	Instrumentor::~Instrumentor()
+	Instrumentor::~Instrumentor() noexcept
 	{
 		EndSession();
 	}
 
-	void Instrumentor::BeginSession(const std::string& name, const std::string& filepath)
+	void Instrumentor::BeginSession(const std::string& name, const std::string& filepath) noexcept
 	{
 		std::lock_guard lock(m_Mutex);
 		if (m_CurrentSession) {
@@ -39,13 +39,13 @@ namespace FarLight
 		}
 	}
 
-	void Instrumentor::EndSession()
+	void Instrumentor::EndSession() noexcept
 	{
 		std::lock_guard lock(m_Mutex);
 		InternalEndSession();
 	}
 
-	void Instrumentor::WriteProfile(const ProfileResult& result)
+	void Instrumentor::WriteProfile(const ProfileResult& result) noexcept
 	{
 		std::stringstream json;
 
@@ -70,19 +70,19 @@ namespace FarLight
 		}
 	}
 
-	void Instrumentor::WriteHeader()
+	void Instrumentor::WriteHeader() noexcept
 	{
 		m_OutputStream << "{\"otherData\": {},\"traceEvents\":[{}";
 		m_OutputStream.flush();
 	}
 
-	void Instrumentor::WriteFooter()
+	void Instrumentor::WriteFooter() noexcept
 	{
 		m_OutputStream << "]}";
 		m_OutputStream.flush();
 	}
 
-	void Instrumentor::InternalEndSession()
+	void Instrumentor::InternalEndSession() noexcept
 	{
 		if (m_CurrentSession) {
 			WriteFooter();

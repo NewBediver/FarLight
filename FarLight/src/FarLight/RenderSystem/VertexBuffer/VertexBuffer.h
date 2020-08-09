@@ -7,24 +7,31 @@ namespace FarLight
 	class VertexBuffer
 	{
 	public:
-		static Ref<VertexBuffer> Create(const void* vertices, unsigned size, const BufferLayout& layout);
-		static Ref<VertexBuffer> Create(unsigned size, const BufferLayout& layout);
+		static Ref<VertexBuffer> Create(const void* vertices, unsigned size, const BufferLayout& layout) noexcept;
+		static Ref<VertexBuffer> Create(unsigned size, const BufferLayout& layout) noexcept;
 
-		virtual ~VertexBuffer() = default;
+		VertexBuffer(const VertexBuffer&) = delete;
+		VertexBuffer(VertexBuffer&&) = delete;
+		VertexBuffer& operator=(const VertexBuffer&) = delete;
+		VertexBuffer& operator=(VertexBuffer&&) = delete;
 
-		virtual void Bind() const = 0;
-		virtual void Unbind() const = 0;
+		explicit VertexBuffer() noexcept = default;
 
-		virtual unsigned GetID() const = 0;
+		virtual ~VertexBuffer() noexcept = default;
 
-		virtual const BufferLayout& GetLayout() const = 0;
-		virtual void SetLayout(const BufferLayout& layout) = 0;
+		virtual void Bind() const noexcept = 0;
+		virtual void Unbind() const noexcept = 0;
 
-		virtual void AddSubData(const void* vertices, unsigned size) = 0;
+		virtual unsigned GetID() const noexcept = 0;
 
-		virtual unsigned GetOffset() const = 0;
-		virtual void SetOffset(unsigned offset) = 0;
+		virtual const BufferLayout& GetLayout() const noexcept = 0;
+		virtual void SetLayout(const BufferLayout& layout) noexcept = 0;
 
-		virtual unsigned GetUsageType() const = 0;
+		virtual void AddSubData(const void* vertices, unsigned size) noexcept = 0;
+
+		virtual unsigned GetOffset() const noexcept = 0;
+		virtual void SetOffset(unsigned offset) noexcept = 0;
+
+		virtual unsigned GetUsageType() const noexcept = 0;
 	};
 }

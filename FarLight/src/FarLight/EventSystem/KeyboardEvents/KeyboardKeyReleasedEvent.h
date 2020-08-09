@@ -8,10 +8,15 @@ namespace FarLight
 		: public KeyboardKeyEvent
 	{
 	public:
-		explicit KeyboardKeyReleasedEvent(int keyCode)
+		KeyboardKeyReleasedEvent(const KeyboardKeyReleasedEvent&) = delete;
+		KeyboardKeyReleasedEvent(KeyboardKeyReleasedEvent&&) = delete;
+		KeyboardKeyReleasedEvent& operator=(const KeyboardKeyReleasedEvent&) = delete;
+		KeyboardKeyReleasedEvent& operator=(KeyboardKeyReleasedEvent&&) = delete;
+
+		explicit KeyboardKeyReleasedEvent(int keyCode) noexcept
 			: KeyboardKeyEvent(keyCode, "KeyboardKeyReleased", EventType::KeyboardKeyReleasedEventType)
 		{ }
 
-		virtual std::string ToString() const override;
+		virtual std::string ToString() const noexcept override;
 	};
 }

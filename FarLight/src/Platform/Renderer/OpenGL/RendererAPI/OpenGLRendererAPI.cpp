@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-	void OpenGLRendererAPI::Init() const
+	void OpenGLRendererAPI::Init() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -20,28 +20,28 @@ namespace FarLight
 		glDepthFunc(GL_LESS);
 	}
 
-	void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) const
+	void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
-	void OpenGLRendererAPI::SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) const
+	void OpenGLRendererAPI::SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glViewport(x, y, width, height);
 	}
 
-	void OpenGLRendererAPI::Clear() const
+	void OpenGLRendererAPI::Clear() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray) const
+	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

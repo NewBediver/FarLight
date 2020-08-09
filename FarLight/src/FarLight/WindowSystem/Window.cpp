@@ -12,7 +12,7 @@
 
 namespace FarLight
 {
-	Ref<Window> Window::Create(const WindowProps& props)
+	Ref<Window> Window::Create(const WindowProps& props) noexcept
 	{
 		#ifdef FL_PLATFORM_WINDOWS
 			return CreateRef<WindowsWindow>(props);

@@ -55,9 +55,6 @@
 	#define FL_CORE_ASSERT(x, ...)
 #endif
 
-#define FL_PROFILE 1
-#define FL_LOG 1
-
 // Resolve which function signature macro will be used. Note that this only
 // is resolved when the (pre)compiler starts, so the syntax highlighting
 // could mark the wrong one in your editor!

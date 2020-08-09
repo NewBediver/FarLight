@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	std::string WindowResizedEvent::ToString() const
+	std::string WindowResizedEvent::ToString() const noexcept
 	{
 		std::stringstream ss;
 		ss << GetName() << ": " << "(" << GetWidth() << ", " << GetHeight() << ").";

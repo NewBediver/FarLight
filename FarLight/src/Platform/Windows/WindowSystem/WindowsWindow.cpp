@@ -21,17 +21,17 @@ namespace FarLight
 {
 	static bool isGLFWInitialized = false;
 
-	static void GLFWErrorCallback(int error, const char* description)
+	static void GLFWErrorCallback(int error, const char* description) noexcept
 	{
 		FL_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& props)
+	WindowsWindow::WindowsWindow(const WindowProps& props) noexcept
 	{
 		Init(props);
 	}
 
-	void WindowsWindow::OnUpdate()
+	void WindowsWindow::OnUpdate() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -39,7 +39,7 @@ namespace FarLight
 		m_Context->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool enabled)
+	void WindowsWindow::SetVSync(bool enabled) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -48,7 +48,7 @@ namespace FarLight
 		m_Data.IsVSync = enabled;
 	}
 
-	void WindowsWindow::Init(const WindowProps& props)
+	void WindowsWindow::Init(const WindowProps& props) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -86,7 +86,7 @@ namespace FarLight
 		SetGLFWCallbacks();
 	}
 
-	void WindowsWindow::SetGLFWCallbacks()
+	void WindowsWindow::SetGLFWCallbacks() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

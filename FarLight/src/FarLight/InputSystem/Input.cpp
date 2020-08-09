@@ -12,7 +12,7 @@
 
 namespace FarLight
 {
-	const Scope<Input>& Input::GetInstance()
+	const Scope<Input>& Input::GetInstance() noexcept
 	{
 		#ifdef FL_PLATFORM_WINDOWS
 			static Scope<Input> s_Instance = CreateScope<WindowsInput>();

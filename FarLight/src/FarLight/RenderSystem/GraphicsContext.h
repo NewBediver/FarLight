@@ -5,9 +5,16 @@ namespace FarLight
 	class GraphicsContext
 	{
 	public:
-		virtual ~GraphicsContext() = default;
+		GraphicsContext(const GraphicsContext&) = delete;
+		GraphicsContext(GraphicsContext&&) = delete;
+		GraphicsContext& operator=(const GraphicsContext&) = delete;
+		GraphicsContext& operator=(GraphicsContext&&) = delete;
 
-		virtual void Init() = 0;
-		virtual void SwapBuffers() const = 0;
+		explicit GraphicsContext() noexcept = default;
+
+		virtual ~GraphicsContext() noexcept = default;
+
+		virtual void Init() const noexcept = 0;
+		virtual void SwapBuffers() const noexcept = 0;
 	};
 }

@@ -10,7 +10,7 @@
 
 namespace FarLight
 {
-	Ref<Shader> Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
+	Ref<Shader> Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc) noexcept
 	{
 		switch (Renderer2D::GetAPI())
 		{

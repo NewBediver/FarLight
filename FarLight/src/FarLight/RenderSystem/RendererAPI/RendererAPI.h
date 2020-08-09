@@ -15,15 +15,22 @@ namespace FarLight
 			OpenGL
 		};
 
-		static API GetAPI();
+		static API GetAPI() noexcept;
 
-		virtual ~RendererAPI() = default;
+		RendererAPI(const RendererAPI&) = delete;
+		RendererAPI(RendererAPI&&) = delete;
+		RendererAPI& operator=(const RendererAPI&) = delete;
+		RendererAPI& operator=(RendererAPI&&) = delete;
 
-		virtual void Init() const = 0;
-		virtual void SetClearColor(const glm::vec4& color) const = 0;
-		virtual void SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) const = 0;
-		virtual void Clear() const = 0;
+		explicit RendererAPI() noexcept = default;
 
-		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) const = 0;
+		virtual ~RendererAPI() noexcept = default;
+
+		virtual void Init() const noexcept = 0;
+		virtual void SetClearColor(const glm::vec4& color) const noexcept = 0;
+		virtual void SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) const noexcept = 0;
+		virtual void Clear() const noexcept = 0;
+
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) const noexcept = 0;
 	};
 }

@@ -13,7 +13,7 @@ namespace FarLight
 	std::shared_ptr<spdlog::logger> Logger::s_CoreLogger = nullptr;
 	std::shared_ptr<spdlog::logger> Logger::s_ClientLogger = nullptr;
 
-	void Logger::Init()
+	void Logger::Init() noexcept
 	{
 		std::vector<spdlog::sink_ptr> logSinks;
 		logSinks.emplace_back(CreateRef<spdlog::sinks::stdout_color_sink_mt>());

@@ -13,13 +13,13 @@
 
 namespace FarLight
 {
-	Application& Application::GetInstance()
+	Application& Application::GetInstance() noexcept
 	{
 		static Application s_Instance;
 		return s_Instance;
 	}
 
-	Application::Application()
+	Application::Application() noexcept
 		: m_IsRunning(true)
 		, m_IsMinimized(false)
 		, m_LastFrameTime(0.0f)
@@ -33,7 +33,7 @@ namespace FarLight
 		Renderer2D::Init();
 	}
 
-	Application::~Application()
+	Application::~Application() noexcept
 	{
 		FL_PROFILE_BEGIN_SESSION("Termination", "FarLightProfile-Termination.json");
 
@@ -43,7 +43,7 @@ namespace FarLight
 		FL_CORE_INFO("[Application] object destroyed.");
 	}
 
-	void Application::Run()
+	void Application::Run() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -84,7 +84,7 @@ namespace FarLight
 		FL_CORE_INFO("Program execution left the [Main Loop].");
 	}
 
-	void Application::OnEvent(Event& e)
+	void Application::OnEvent(Event& e) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 		FL_CORE_INFO("Event arised [{0}]", e.ToString());
@@ -104,7 +104,7 @@ namespace FarLight
 		}
 	}
 
-	bool Application::OnWindowClosed(const WindowClosedEvent& e)
+	bool Application::OnWindowClosed(const WindowClosedEvent& e) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -112,7 +112,7 @@ namespace FarLight
 		return true;
 	}
 
-	bool Application::OnWindowResized(const WindowResizedEvent& e)
+	bool Application::OnWindowResized(const WindowResizedEvent& e) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

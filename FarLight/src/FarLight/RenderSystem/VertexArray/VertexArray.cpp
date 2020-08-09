@@ -10,7 +10,7 @@
 
 namespace FarLight
 {
-	Ref<VertexArray> VertexArray::Create()
+	Ref<VertexArray> VertexArray::Create() noexcept
 	{
 		switch (Renderer2D::GetAPI())
 		{

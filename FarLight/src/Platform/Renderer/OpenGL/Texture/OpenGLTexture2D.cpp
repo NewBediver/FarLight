@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
+	OpenGLTexture2D::OpenGLTexture2D(const std::string& path) noexcept
 		: m_RendererID(0)
 		, m_Width(0)
 		, m_Height(0)
@@ -81,7 +81,7 @@ namespace FarLight
 		stbi_image_free(data);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(unsigned width, unsigned height, const glm::vec4& pixelColor)
+	OpenGLTexture2D::OpenGLTexture2D(unsigned width, unsigned height, const glm::vec4& pixelColor) noexcept
 		: m_RendererID(0)
 		, m_Width(width)
 		, m_Height(height)
@@ -110,28 +110,28 @@ namespace FarLight
 		SetData(&colors.front(), sizeof(color) * m_Width * m_Height);
 	}
 
-	OpenGLTexture2D::~OpenGLTexture2D()
+	OpenGLTexture2D::~OpenGLTexture2D() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glDeleteTextures(1, &m_RendererID);
 	}
 
-	void OpenGLTexture2D::Bind(unsigned slot) const
+	void OpenGLTexture2D::Bind(unsigned slot) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glBindTextureUnit(slot, m_RendererID);
 	}
 
-	void OpenGLTexture2D::Unbind(unsigned slot) const
+	void OpenGLTexture2D::Unbind(unsigned slot) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glBindTextureUnit(slot, 0);
 	}
 
-	void OpenGLTexture2D::SetData(const void* data, unsigned size) const
+	void OpenGLTexture2D::SetData(const void* data, unsigned size) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

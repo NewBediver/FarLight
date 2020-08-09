@@ -11,19 +11,21 @@ namespace FarLight
 		: public Input
 	{
 	public:
-		virtual bool IsKeyPressedImpl(KeyboardKeyCodes code) const override;
-		virtual bool IsMouseButtonPressedImpl(MouseButtonCodes code) const override;
-		virtual std::pair<double, double> GetMousePositionImpl() const override;
-		virtual double GetMouseXImpl() const override;
-		virtual double GetMouseYImpl() const override;
+		virtual bool IsKeyPressedImpl(KeyboardKeyCodes code) const noexcept override;
+		virtual bool IsMouseButtonPressedImpl(MouseButtonCodes code) const noexcept override;
+		virtual std::pair<double, double> GetMousePositionImpl() const noexcept override;
+		virtual double GetMouseXImpl() const noexcept override;
+		virtual double GetMouseYImpl() const noexcept override;
 
-		virtual KeyboardKeyCodes GetFLKeyboardKeyCodeImpl(int code) const override;
-		virtual MouseButtonCodes GetFLMouseButtonCodeImpl(int code) const override;
+		virtual KeyboardKeyCodes GetFLKeyboardKeyCodeImpl(int code) const noexcept override;
+		virtual MouseButtonCodes GetFLMouseButtonCodeImpl(int code) const noexcept override;
 
 	private:
-		int GetKeyboardKeyFromGLFW(KeyboardKeyCodes code) const;
-		int GetMouseButtonFromGLFW(MouseButtonCodes code) const;
+		constexpr
+		int GetKeyboardKeyFromGLFW(KeyboardKeyCodes code) const noexcept;
+		constexpr
+		int GetMouseButtonFromGLFW(MouseButtonCodes code) const noexcept;
 
-		GLFWwindow* GetGLFWwindow() const { return static_cast<GLFWwindow*>(Application::GetInstance().GetWindow()->GetNativeWindow().get()); }
+		GLFWwindow* GetGLFWwindow() const noexcept { return static_cast<GLFWwindow*>(Application::GetInstance().GetWindow()->GetNativeWindow().get()); }
 	};
 }

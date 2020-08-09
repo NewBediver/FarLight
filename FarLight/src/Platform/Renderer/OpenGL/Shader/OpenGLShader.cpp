@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-	OpenGLShader::OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath)
+	OpenGLShader::OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath) noexcept
 		: m_RendererID(0)
 	{
 		FL_PROFILE_FUNCTION();
@@ -23,77 +23,78 @@ namespace FarLight
 		m_RendererID = LinkShaders(vertexShader, fragmentShader);
 	}
 
-	OpenGLShader::~OpenGLShader()
+	OpenGLShader::~OpenGLShader() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glDeleteProgram(m_RendererID);
 	}
 
-	void OpenGLShader::Bind() const
+	void OpenGLShader::Bind() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUseProgram(m_RendererID);
 
 	}
-	void OpenGLShader::Unbind() const
+
+	void OpenGLShader::Unbind() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::SetInt(const std::string& name, int i1) const
+	void OpenGLShader::SetInt(const std::string& name, int i1) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUniform1i(GetUniformLocation(name), i1);
 	}
 
-	void OpenGLShader::SetFloat(const std::string& name, float f1) const
+	void OpenGLShader::SetFloat(const std::string& name, float f1) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUniform1f(GetUniformLocation(name), f1);
 	}
 
-	void OpenGLShader::SetFloat2(const std::string& name, float f1, float f2) const
+	void OpenGLShader::SetFloat2(const std::string& name, float f1, float f2) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUniform2f(GetUniformLocation(name), f1, f2);
 	}
 
-	void OpenGLShader::SetFloat3(const std::string& name, float f1, float f2, float f3) const
+	void OpenGLShader::SetFloat3(const std::string& name, float f1, float f2, float f3) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUniform3f(GetUniformLocation(name), f1, f2, f3);
 	}
 
-	void OpenGLShader::SetFloat4(const std::string& name, float f1, float f2, float f3, float f4) const
+	void OpenGLShader::SetFloat4(const std::string& name, float f1, float f2, float f3, float f4) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUniform4f(GetUniformLocation(name), f1, f2, f3, f4);
 	}
 
-	void OpenGLShader::SetMat3(const std::string& name, const glm::mat3& matrix) const
+	void OpenGLShader::SetMat3(const std::string& name, const glm::mat3& matrix) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& matrix) const
+	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& matrix) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	GLint OpenGLShader::GetUniformLocation(const std::string& name) const
+	GLint OpenGLShader::GetUniformLocation(const std::string& name) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -102,7 +103,7 @@ namespace FarLight
 		return m_UniformLocation[name];
 	}
 
-	std::string OpenGLShader::RetrieveShaderCodeFromFile(const std::string& path) const
+	std::string OpenGLShader::RetrieveShaderCodeFromFile(const std::string& path) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -126,7 +127,7 @@ namespace FarLight
 		return code;
 	}
 
-	GLuint OpenGLShader::CreateCompileShader(const std::string& code, const GLuint shaderType) const
+	GLuint OpenGLShader::CreateCompileShader(const std::string& code, const GLuint shaderType) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -153,7 +154,7 @@ namespace FarLight
 		return shader;
 	}
 
-	GLuint OpenGLShader::LinkShaders(GLuint vertexShaderID, GLuint fragmentShaderID) const
+	GLuint OpenGLShader::LinkShaders(GLuint vertexShaderID, GLuint fragmentShaderID) const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -189,7 +190,7 @@ namespace FarLight
 		return program;
 	}
 
-	std::vector<GLchar> OpenGLShader::GetErrorMessageFromGlad(GLuint program) const
+	std::vector<GLchar> OpenGLShader::GetErrorMessageFromGlad(GLuint program) const noexcept
 	{
 		GLint maxLength = 0;
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);

@@ -16,7 +16,7 @@
 
 namespace FarLight
 {
-	void ImGuiLayer::OnAttach()
+	void ImGuiLayer::OnAttach() noexcept
 	{
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
@@ -48,7 +48,7 @@ namespace FarLight
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
-	void ImGuiLayer::OnDetach()
+	void ImGuiLayer::OnDetach() noexcept
 	{
 		// Cleanup
 		ImGui_ImplOpenGL3_Shutdown();
@@ -56,7 +56,7 @@ namespace FarLight
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::Begin() const
+	void ImGuiLayer::Begin() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -66,7 +66,7 @@ namespace FarLight
 		ImGui::NewFrame();
 	}
 
-	void ImGuiLayer::End() const
+	void ImGuiLayer::End() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

@@ -16,7 +16,8 @@ namespace FarLight
 		Bool
 	};
 
-	static unsigned ShaderDataTypeSize(ShaderDataType type)
+	static constexpr
+	unsigned ShaderDataTypeSize(ShaderDataType type)
 	{
 		switch (type)
 		{
@@ -37,7 +38,8 @@ namespace FarLight
 		return 0;
 	}
 
-	static unsigned ShaderDataTypeCount(ShaderDataType type)
+	static constexpr
+	unsigned ShaderDataTypeCount(ShaderDataType type)
 	{
 		switch (type)
 		{
@@ -61,23 +63,30 @@ namespace FarLight
 	class Shader
 	{
 	public:
-		static Ref<Shader> Create(const std::string& vertexSrc, const std::string& fragmentSrc);
+		static Ref<Shader> Create(const std::string& vertexSrc, const std::string& fragmentSrc) noexcept;
 
-		virtual ~Shader() = default;
+		Shader(const Shader&) = delete;
+		Shader(Shader&&) = delete;
+		Shader& operator=(const Shader&) = delete;
+		Shader& operator=(Shader&&) = delete;
 
-		virtual void Bind() const = 0;
-		virtual void Unbind() const = 0;
+		explicit Shader() noexcept = default;
 
-		virtual unsigned GetID() const = 0;
+		virtual ~Shader() noexcept = default;
 
-		virtual void SetInt(const std::string& name, int i1) const = 0;
+		virtual void Bind() const noexcept  = 0;
+		virtual void Unbind() const noexcept = 0;
 
-		virtual void SetFloat(const std::string& name, float f1) const = 0;
-		virtual void SetFloat2(const std::string& name, float f1, float f2) const = 0;
-		virtual void SetFloat3(const std::string& name, float f1, float f2, float f3) const = 0;
-		virtual void SetFloat4(const std::string& name, float f1, float f2, float f3, float f4) const = 0;
+		virtual unsigned GetID() const noexcept = 0;
 
-		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) const = 0;
-		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) const = 0;
+		virtual void SetInt(const std::string& name, int i1) const noexcept = 0;
+
+		virtual void SetFloat(const std::string& name, float f1) const noexcept = 0;
+		virtual void SetFloat2(const std::string& name, float f1, float f2) const noexcept = 0;
+		virtual void SetFloat3(const std::string& name, float f1, float f2, float f3) const noexcept = 0;
+		virtual void SetFloat4(const std::string& name, float f1, float f2, float f3, float f4) const noexcept = 0;
+
+		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) const noexcept = 0;
+		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) const noexcept = 0;
 	};
 }

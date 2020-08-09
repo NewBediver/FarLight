@@ -7,7 +7,7 @@
 
 #ifdef FL_PLATFORM_WINDOWS
 
-extern FarLight::Application& FarLight::CreateApplication();
+extern FarLight::Application& FarLight::CreateApplication() noexcept;
 
 int main(int args, char** argv)
 {

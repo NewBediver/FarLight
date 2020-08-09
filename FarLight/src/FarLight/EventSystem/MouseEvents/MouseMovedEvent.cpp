@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	std::string MouseMovedEvent::ToString() const
+	std::string MouseMovedEvent::ToString() const noexcept
 	{
 		std::stringstream ss;
 		ss.precision(3);

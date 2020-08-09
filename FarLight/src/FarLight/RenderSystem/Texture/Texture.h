@@ -7,16 +7,23 @@ namespace FarLight
 	class Texture
 	{
 	public:
-		virtual ~Texture() = default;
+		Texture(const Texture&) = delete;
+		Texture(Texture&&) = delete;
+		Texture& operator=(const Texture&) = delete;
+		Texture& operator=(Texture&&) = delete;
 
-		virtual void Bind(unsigned slot) const = 0;
-		virtual void Unbind(unsigned slot) const = 0;
+		explicit Texture() noexcept = default;
 
-		virtual unsigned GetID() const = 0;
+		virtual ~Texture() noexcept = default;
 
-		virtual unsigned GetWidth() const = 0;
-		virtual unsigned GetHeight() const = 0;
+		virtual void Bind(unsigned slot) const noexcept = 0;
+		virtual void Unbind(unsigned slot) const noexcept = 0;
 
-		virtual void SetData(const void* data, unsigned size) const = 0;
+		virtual unsigned GetID() const noexcept = 0;
+
+		virtual unsigned GetWidth() const noexcept = 0;
+		virtual unsigned GetHeight() const noexcept = 0;
+
+		virtual void SetData(const void* data, unsigned size) const noexcept = 0;
 	};
 }

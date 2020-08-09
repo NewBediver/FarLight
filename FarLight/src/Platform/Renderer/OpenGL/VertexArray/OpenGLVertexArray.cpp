@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-	FarLight::OpenGLVertexArray::OpenGLVertexArray()
+	FarLight::OpenGLVertexArray::OpenGLVertexArray() noexcept
 		: m_RendererID(0)
 		, m_VertexBufferIndex(0)
 	{
@@ -18,28 +18,28 @@ namespace FarLight
 		glCreateVertexArrays(1, &m_RendererID);
 	}
 
-	FarLight::OpenGLVertexArray::~OpenGLVertexArray()
+	FarLight::OpenGLVertexArray::~OpenGLVertexArray() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glDeleteVertexArrays(1, &m_RendererID);
 	}
 
-	void FarLight::OpenGLVertexArray::Bind() const
+	void FarLight::OpenGLVertexArray::Bind() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glBindVertexArray(m_RendererID);
 	}
 
-	void FarLight::OpenGLVertexArray::Unbind() const
+	void FarLight::OpenGLVertexArray::Unbind() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		glBindVertexArray(0);
 	}
 
-	void FarLight::OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& buffer)
+	void FarLight::OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& buffer) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -64,7 +64,7 @@ namespace FarLight
 		m_VertexBuffers.push_back(buffer);
 	}
 
-	void FarLight::OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& buffer)
+	void FarLight::OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& buffer) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

@@ -12,25 +12,30 @@ namespace FarLight
 		: public VertexBuffer
 	{
 	public:
-		explicit OpenGLVertexBuffer(const void* vertices, unsigned size, const BufferLayout& layout);
-		explicit OpenGLVertexBuffer(unsigned size, const BufferLayout& layout);
+		OpenGLVertexBuffer(const OpenGLVertexBuffer&) = delete;
+		OpenGLVertexBuffer(OpenGLVertexBuffer&&) = delete;
+		OpenGLVertexBuffer& operator=(const OpenGLVertexBuffer&) = delete;
+		OpenGLVertexBuffer& operator=(OpenGLVertexBuffer&&) = delete;
+		
+		explicit OpenGLVertexBuffer(const void* vertices, unsigned size, const BufferLayout& layout) noexcept;
+		explicit OpenGLVertexBuffer(unsigned size, const BufferLayout& layout) noexcept;
 
-		virtual ~OpenGLVertexBuffer();
+		virtual ~OpenGLVertexBuffer() noexcept;
 
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
+		virtual void Bind() const noexcept override;
+		virtual void Unbind() const noexcept override;
 
-		virtual unsigned GetID() const override { return m_RendererID; }
+		virtual unsigned GetID() const noexcept override { return m_RendererID; }
 
-		virtual const BufferLayout& GetLayout() const override { return m_Layout; }
-		virtual void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
+		virtual const BufferLayout& GetLayout() const noexcept override { return m_Layout; }
+		virtual void SetLayout(const BufferLayout& layout) noexcept override { m_Layout = layout; }
 
-		virtual unsigned GetOffset() const override { return m_Offset; }
-		virtual void SetOffset(unsigned offset) override { m_Offset = offset; }
+		virtual unsigned GetOffset() const noexcept override { return m_Offset; }
+		virtual void SetOffset(unsigned offset) noexcept override { m_Offset = offset; }
 
-		virtual unsigned GetUsageType() const override { return m_UsageType; }
+		virtual unsigned GetUsageType() const noexcept override { return m_UsageType; }
 
-		virtual void AddSubData(const void* vertices, unsigned size) override;
+		virtual void AddSubData(const void* vertices, unsigned size) noexcept override;
 
 	private:
 		unsigned m_RendererID;

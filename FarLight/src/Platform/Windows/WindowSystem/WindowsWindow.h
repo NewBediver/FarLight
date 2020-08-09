@@ -12,24 +12,28 @@ namespace FarLight
 		: public Window
 	{
 	public:
-		explicit WindowsWindow(const WindowProps& props);
+		WindowsWindow(const WindowsWindow&) = delete;
+		WindowsWindow(WindowsWindow&&) = delete;
+		WindowsWindow& operator=(const WindowsWindow&) = delete;
+		WindowsWindow& operator=(WindowsWindow&&) = delete;
 
-		virtual void OnUpdate() override;
+		explicit WindowsWindow(const WindowProps& props) noexcept;
 
-		virtual unsigned GetWidth() const override { return m_Data.Width; }
-		virtual unsigned GetHeight() const override { return m_Data.Height; }
+		virtual void OnUpdate() noexcept override;
 
-		virtual void SetEventCallback(const EventCallbackFunction& callback) override { m_Data.Callback = callback; }
+		virtual unsigned GetWidth() const noexcept override { return m_Data.Width; }
+		virtual unsigned GetHeight() const noexcept override { return m_Data.Height; }
+		virtual void SetEventCallback(const EventCallbackFunction& callback) noexcept override { m_Data.Callback = callback; }
 
-		virtual void SetVSync(bool enabled) override;
-		virtual bool IsVSync() const override { return m_Data.IsVSync; }
+		virtual void SetVSync(bool enabled) noexcept override;
+		virtual bool IsVSync() const noexcept override { return m_Data.IsVSync; }
 
-		virtual Ref<void> GetNativeWindow() const override { return m_Window; }
+		virtual Ref<void> GetNativeWindow() const noexcept override { return m_Window; }
 
 	private:
-		void Init(const WindowProps& props);
+		void Init(const WindowProps& props) noexcept;
 
-		void SetGLFWCallbacks();
+		void SetGLFWCallbacks() noexcept;
 
 		Ref<GLFWwindow> m_Window;
 		Scope<OpenGLContext> m_Context;

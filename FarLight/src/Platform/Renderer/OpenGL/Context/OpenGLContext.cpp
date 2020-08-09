@@ -10,7 +10,7 @@
 
 namespace FarLight
 {
-	void OpenGLContext::Init()
+	void OpenGLContext::Init() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -35,7 +35,7 @@ namespace FarLight
 		#endif
 	}
 
-	void OpenGLContext::SwapBuffers() const
+	void OpenGLContext::SwapBuffers() const noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

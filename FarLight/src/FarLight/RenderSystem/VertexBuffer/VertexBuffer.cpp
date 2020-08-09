@@ -10,7 +10,7 @@
 
 namespace FarLight
 {
-	Ref<VertexBuffer> VertexBuffer::Create(const void* vertices, unsigned size, const BufferLayout& layout)
+	Ref<VertexBuffer> VertexBuffer::Create(const void* vertices, unsigned size, const BufferLayout& layout) noexcept
 	{
 		switch (Renderer2D::GetAPI())
 		{
@@ -22,7 +22,7 @@ namespace FarLight
 		return nullptr;
 	}
 
-	Ref<VertexBuffer> VertexBuffer::Create(unsigned size, const BufferLayout& layout)
+	Ref<VertexBuffer> VertexBuffer::Create(unsigned size, const BufferLayout& layout) noexcept
 	{
 		switch (Renderer2D::GetAPI())
 		{

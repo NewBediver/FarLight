@@ -11,20 +11,25 @@ namespace FarLight
 		: public Texture2D
 	{
 	public:
-		explicit OpenGLTexture2D(const std::string& path);
-		explicit OpenGLTexture2D(unsigned width, unsigned height, const glm::vec4& pixelColor);
+		OpenGLTexture2D(const OpenGLTexture2D&) = delete;
+		OpenGLTexture2D(OpenGLTexture2D&&) = delete;
+		OpenGLTexture2D& operator=(const OpenGLTexture2D&) = delete;
+		OpenGLTexture2D& operator=(OpenGLTexture2D&&) = delete;
 
-		virtual ~OpenGLTexture2D();
+		explicit OpenGLTexture2D(const std::string& path) noexcept;
+		explicit OpenGLTexture2D(unsigned width, unsigned height, const glm::vec4& pixelColor) noexcept;
 
-		virtual void Bind(unsigned slot) const override;
-		virtual void Unbind(unsigned slot) const override;
+		virtual ~OpenGLTexture2D() noexcept;
 
-		virtual unsigned GetID() const override { return m_RendererID; }
+		virtual void Bind(unsigned slot) const noexcept override;
+		virtual void Unbind(unsigned slot) const noexcept override;
 
-		virtual unsigned GetWidth() const override { return m_Width; }
-		virtual unsigned GetHeight() const override { return m_Height; }
+		virtual unsigned GetID() const noexcept override { return m_RendererID; }
 
-		virtual void SetData(const void* data, unsigned size) const override;
+		virtual unsigned GetWidth() const noexcept override { return m_Width; }
+		virtual unsigned GetHeight() const noexcept override { return m_Height; }
+
+		virtual void SetData(const void* data, unsigned size) const noexcept override;
 
 	private:
 		unsigned m_RendererID;

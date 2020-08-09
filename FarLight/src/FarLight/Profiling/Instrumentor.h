@@ -20,33 +20,33 @@ namespace FarLight
 	class Instrumentor final
 	{
 	public:
-		static Instrumentor& GetInstance();
+		static Instrumentor& GetInstance() noexcept;
 
 		Instrumentor(const Instrumentor&) = delete;
 		Instrumentor(Instrumentor&&) = delete;
 		Instrumentor& operator=(const Instrumentor&) = delete;
 		Instrumentor& operator=(Instrumentor&&) = delete;
 
-		~Instrumentor();
+		~Instrumentor() noexcept;
 
-		void BeginSession(const std::string& name, const std::string& filepath = "results.json");
-		void EndSession();
+		void BeginSession(const std::string& name, const std::string& filepath = "results.json") noexcept;
+		void EndSession() noexcept;
 
 	private:
-		explicit Instrumentor();
+		explicit Instrumentor() noexcept;
 
-		void WriteProfile(const ProfileResult& result);
+		void WriteProfile(const ProfileResult& result) noexcept;
 
-		void WriteHeader();
-		void WriteFooter();
+		void WriteHeader() noexcept;
+		void WriteFooter() noexcept;
 
-		void InternalEndSession();
+		void InternalEndSession() noexcept;
 
 		struct InstrumentationSession final
 		{
 			std::string Name;
 
-			explicit InstrumentationSession(const std::string& name)
+			explicit InstrumentationSession(const std::string& name) noexcept
 				: Name(name)
 			{ }
 		};

@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-	Ref<Texture2D> Texture2D::Create(const std::string& path)
+	Ref<Texture2D> Texture2D::Create(const std::string& path) noexcept
 	{
 		switch (Renderer2D::GetAPI())
 		{
@@ -21,7 +21,7 @@ namespace FarLight
 		return nullptr;
 	}
 
-	Ref<Texture2D> Texture2D::Create(unsigned width, unsigned height, const glm::vec4& pixelColor)
+	Ref<Texture2D> Texture2D::Create(unsigned width, unsigned height, const glm::vec4& pixelColor) noexcept
 	{
 		switch (Renderer2D::GetAPI())
 		{

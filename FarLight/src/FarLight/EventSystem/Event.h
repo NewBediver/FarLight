@@ -35,24 +35,31 @@ namespace FarLight
 	class Event
 	{
 	public:
-		virtual ~Event() = 0
+		Event(const Event&) = delete;
+		Event(Event&&) = delete;
+		Event& operator=(const Event&) = delete;
+		Event& operator=(Event&&) = delete;
+
+		virtual ~Event() noexcept = 0
 		{
 			FL_CORE_INFO("Event [{0}] destroyed.", this->ToString());
 		};
 
-		virtual EventType GetType() const { return m_Type; };
-		virtual const std::string& GetName() const { return m_Name; }
-		virtual int GetCategoryFlags() const { return m_Category; };
+		virtual EventType GetType() const noexcept { return m_Type; };
+		virtual const std::string& GetName() const noexcept { return m_Name; }
+		virtual int GetCategoryFlags() const noexcept { return m_Category; };
 
-		virtual std::string ToString() const { return GetName(); }
+		virtual std::string ToString() const noexcept { return GetName(); }
 
-		bool IsHandled() const { return m_IsHandled; }
-		void SetHandled(bool isHandled) { m_IsHandled = isHandled; }
+		constexpr
+		bool IsHandled() const noexcept { return m_IsHandled; }
+		constexpr
+		void SetHandled(bool isHandled) noexcept { m_IsHandled = isHandled; }
 
-		bool IsInCategory(EventCategory eventCategory) const { return (GetCategoryFlags() & eventCategory); }
+		bool IsInCategory(EventCategory eventCategory) const noexcept { return (GetCategoryFlags() & eventCategory); }
 
 	protected:
-		explicit Event(const std::string& name, EventType type, int category)
+		explicit Event(const std::string& name, EventType type, int category) noexcept
 			: m_Name(name)
 			, m_Type(type)
 			, m_Category(category)

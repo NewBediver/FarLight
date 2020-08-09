@@ -23,12 +23,18 @@ namespace FarLight
 	class EventDispatcher final
 	{
 	public:
-		explicit EventDispatcher(Event& evt)
+		EventDispatcher(const EventDispatcher&) = delete;
+		EventDispatcher(EventDispatcher&&) = delete;
+		EventDispatcher& operator=(const EventDispatcher&) = delete;
+		EventDispatcher& operator=(EventDispatcher&&) = delete;
+
+		explicit EventDispatcher(Event& evt) noexcept
 			: m_Event(evt)
 		{ }
 
 		template<typename T>
-		bool Dispatch(const std::function<bool(const T&)>& func)
+		constexpr
+		bool Dispatch(const std::function<bool(const T&)>& func) noexcept
 		{
 			FL_PROFILE_FUNCTION();
 

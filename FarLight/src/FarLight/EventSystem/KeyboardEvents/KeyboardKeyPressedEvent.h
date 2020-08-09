@@ -8,14 +8,20 @@ namespace FarLight
 		: public KeyboardKeyEvent
 	{
 	public:
-		explicit KeyboardKeyPressedEvent(int keyCode, bool isRepeated)
+		KeyboardKeyPressedEvent(const KeyboardKeyPressedEvent&) = delete;
+		KeyboardKeyPressedEvent(KeyboardKeyPressedEvent&&) = delete;
+		KeyboardKeyPressedEvent& operator=(const KeyboardKeyPressedEvent&) = delete;
+		KeyboardKeyPressedEvent& operator=(KeyboardKeyPressedEvent&&) = delete;
+
+		explicit KeyboardKeyPressedEvent(int keyCode, bool isRepeated) noexcept
 			: KeyboardKeyEvent(keyCode, "KeyboardKeyPressed", EventType::KeyboardKeyPressedEventType)
 			, m_IsRepeated(isRepeated)
 		{ }
 
-		bool IsRepeated() const { return m_IsRepeated; }
+		constexpr
+		bool IsRepeated() const noexcept { return m_IsRepeated; }
 
-		virtual std::string ToString() const override;
+		virtual std::string ToString() const noexcept override;
 
 	private:
 		bool m_IsRepeated;

@@ -8,12 +8,18 @@ namespace FarLight
 		: public Event
 	{
 	public:
-		virtual ~MouseButtonEvent() = 0 { };
+		MouseButtonEvent(const MouseButtonEvent&) = delete;
+		MouseButtonEvent(MouseButtonEvent&&) = delete;
+		MouseButtonEvent& operator=(const MouseButtonEvent&) = delete;
+		MouseButtonEvent& operator=(MouseButtonEvent&&) = delete;
 
-		int GetButton() const { return m_Button; }
+		virtual ~MouseButtonEvent() noexcept = 0 { };
+
+		constexpr
+		int GetButton() const noexcept { return m_Button; }
 
 	protected:
-		explicit MouseButtonEvent(int button, const std::string& name, EventType type)
+		explicit MouseButtonEvent(int button, const std::string& name, EventType type) noexcept
 			: Event(name, type, InputEventCategory | MouseEventCategory | MouseButtonEventCategory)
 			, m_Button(button) 
 		{ }

@@ -8,13 +8,13 @@ class Example2DRenderer
 	: public FarLight::Layer
 {
 public:
-	explicit Example2DRenderer();
+	explicit Example2DRenderer() noexcept;
 
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
-	virtual void OnUpdate(const FarLight::Timestep& timestamp) override;
-	virtual void OnUserInterfaceRender() override;
-	virtual void OnEvent(FarLight::Event& event) override;
+	virtual void OnAttach() noexcept override;
+	virtual void OnDetach() noexcept override;
+	virtual void OnUpdate(const FarLight::Timestep& timestamp) noexcept override;
+	virtual void OnUserInterfaceRender() noexcept override;
+	virtual void OnEvent(FarLight::Event& event) noexcept override;
 
 private:
 	FarLight::OrthographicCameraController m_CameraController;

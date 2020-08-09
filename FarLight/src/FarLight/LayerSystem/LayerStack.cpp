@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	void LayerStack::PushLayer(const Ref<Layer>& layer)
+	void LayerStack::PushLayer(const Ref<Layer>& layer) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -18,7 +18,7 @@ namespace FarLight
 		FL_CORE_INFO("Layer [{0}] pushed and attached.", layer->GetName());
 	}
 
-	void LayerStack::PushOverlay(const Ref<Layer>& overlay)
+	void LayerStack::PushOverlay(const Ref<Layer>& overlay) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -28,7 +28,7 @@ namespace FarLight
 		FL_CORE_INFO("Overlay [{0}] pushed and attached.", overlay->GetName());
 	}
 	
-	void LayerStack::PopLayer(const Ref<Layer>& layer)
+	void LayerStack::PopLayer(const Ref<Layer>& layer) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -42,7 +42,7 @@ namespace FarLight
 		}
 	}
 
-	void LayerStack::PopOverlay(const Ref<Layer>& overlay)
+	void LayerStack::PopOverlay(const Ref<Layer>& overlay) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

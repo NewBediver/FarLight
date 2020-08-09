@@ -12,32 +12,37 @@ namespace FarLight
 		: public Shader
 	{
 	public:
-		explicit OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath);
+		OpenGLShader(const OpenGLShader&) = delete;
+		OpenGLShader(OpenGLShader&&) = delete;
+		OpenGLShader& operator=(const OpenGLShader&) = delete;
+		OpenGLShader& operator=(OpenGLShader&&) = delete;
 
-		virtual ~OpenGLShader();
+		explicit OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath) noexcept;
 
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
+		virtual ~OpenGLShader() noexcept;
 
-		virtual unsigned GetID() const override { return m_RendererID; }
+		virtual void Bind() const noexcept override;
+		virtual void Unbind() const noexcept override;
 
-		virtual void SetInt(const std::string& name, int i1) const override;
+		virtual unsigned GetID() const noexcept override { return m_RendererID; }
 
-		virtual void SetFloat(const std::string& name, float f1) const override;
-		virtual void SetFloat2(const std::string& name, float f1, float f2) const override;
-		virtual void SetFloat3(const std::string& name, float f1, float f2, float f3) const override;
-		virtual void SetFloat4(const std::string& name, float f1, float f2, float f3, float f4) const override;
+		virtual void SetInt(const std::string& name, int i1) const noexcept override;
 
-		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) const override;
-		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) const override;
+		virtual void SetFloat(const std::string& name, float f1) const noexcept override;
+		virtual void SetFloat2(const std::string& name, float f1, float f2) const noexcept override;
+		virtual void SetFloat3(const std::string& name, float f1, float f2, float f3) const noexcept override;
+		virtual void SetFloat4(const std::string& name, float f1, float f2, float f3, float f4) const noexcept override;
+
+		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) const noexcept override;
+		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) const noexcept override;
 
 	private:
-		GLint GetUniformLocation(const std::string& name) const;
+		GLint GetUniformLocation(const std::string& name) const noexcept;
 
-		std::string RetrieveShaderCodeFromFile(const std::string& path) const;
-		GLuint CreateCompileShader(const std::string& code, const GLuint shaderType) const;
-		GLuint LinkShaders(GLuint vertexShaderID, GLuint fragmentShaderID) const;
-		std::vector<GLchar> GetErrorMessageFromGlad(GLuint program) const;
+		std::string RetrieveShaderCodeFromFile(const std::string& path) const noexcept;
+		GLuint CreateCompileShader(const std::string& code, const GLuint shaderType) const noexcept;
+		GLuint LinkShaders(GLuint vertexShaderID, GLuint fragmentShaderID) const noexcept;
+		std::vector<GLchar> GetErrorMessageFromGlad(GLuint program) const noexcept;
 
 		unsigned m_RendererID;
 		mutable std::unordered_map<std::string, GLint> m_UniformLocation;

@@ -17,28 +17,29 @@ namespace FarLight
 	class Application final
 	{
 	public:
-		static Application& GetInstance();
+		static Application& GetInstance() noexcept;
 
 		Application(const Application&) = delete;
 		Application(Application&&) = delete;
 		Application& operator=(const Application&) = delete;
 		Application& operator=(Application&&) = delete;
 
-		~Application();
+		~Application() noexcept;
 
-		void Run();
-		void OnEvent(Event& e);
+		void Run() noexcept;
+		void OnEvent(Event& e) noexcept;
 
-		void PushLayer(const Ref<Layer>& layer) { m_LayerStack.PushLayer(layer); }
-		void PushOverlay(const Ref<Layer>& overlay) { m_LayerStack.PushOverlay(overlay); }
+		void PushLayer(const Ref<Layer>& layer) noexcept { m_LayerStack.PushLayer(layer); }
+		void PushOverlay(const Ref<Layer>& overlay) noexcept { m_LayerStack.PushOverlay(overlay); }
 
-		const Ref<Window>& GetWindow() const { return m_Window; }
+		constexpr
+		const Ref<Window>& GetWindow() const noexcept { return m_Window; }
 
 	private:
-		explicit Application();
+		explicit Application() noexcept;
 
-		bool OnWindowClosed(const WindowClosedEvent& e);
-		bool OnWindowResized(const WindowResizedEvent& e);
+		bool OnWindowClosed(const WindowClosedEvent& e) noexcept;
+		bool OnWindowResized(const WindowResizedEvent& e) noexcept;
 
 		Ref<Window> m_Window;
 		Ref<ImGuiLayer> m_UserInterfaceLayer;
@@ -52,5 +53,5 @@ namespace FarLight
 	};
 
 	// To be defined in CLIENT
-	Application& CreateApplication();
+	Application& CreateApplication() noexcept;
 }

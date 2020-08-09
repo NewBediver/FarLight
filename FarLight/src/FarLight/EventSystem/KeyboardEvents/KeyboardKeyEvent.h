@@ -8,12 +8,18 @@ namespace FarLight
 		: public Event
 	{
 	public:
-		virtual ~KeyboardKeyEvent() = 0 { };
+		KeyboardKeyEvent(const KeyboardKeyEvent&) = delete;
+		KeyboardKeyEvent(KeyboardKeyEvent&&) = delete;
+		KeyboardKeyEvent& operator=(const KeyboardKeyEvent&) = delete;
+		KeyboardKeyEvent& operator=(KeyboardKeyEvent&&) = delete;
 
-		int GetKeyCode() const { return m_KeyCode; }
+		virtual ~KeyboardKeyEvent() noexcept = 0 { };
+
+		constexpr
+		int GetKeyCode() const noexcept { return m_KeyCode; }
 
 	protected:
-		explicit KeyboardKeyEvent(int keyCode, const std::string& name, EventType type)
+		explicit KeyboardKeyEvent(int keyCode, const std::string& name, EventType type) noexcept
 			: Event(name, type, KeyboardEventCategory | InputEventCategory), m_KeyCode(keyCode)
 		{ }
 
