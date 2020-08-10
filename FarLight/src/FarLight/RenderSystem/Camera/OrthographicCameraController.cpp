@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-	OrthographicCameraController::OrthographicCameraController(float aspectRatio)
+	OrthographicCameraController::OrthographicCameraController(float aspectRatio) noexcept
 		: m_AspectRatio(aspectRatio)
 		, m_ZoomLevel(1.0f)
 		, m_MovementSpeed(5.0f)
@@ -24,7 +24,7 @@ namespace FarLight
 		, m_CounterclockwiseCode(KeyboardKeyCodes::FL_KEY_Q)
 	{ }
 
-	void OrthographicCameraController::OnUpdate(const Timestep& ts)
+	void OrthographicCameraController::OnUpdate(const Timestep& ts) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -32,7 +32,7 @@ namespace FarLight
 		HandleRotation(ts);
 	}
 
-	void OrthographicCameraController::OnEvent(Event& e)
+	void OrthographicCameraController::OnEvent(Event& e) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -41,7 +41,7 @@ namespace FarLight
 		dispatcher.Dispatch<WindowResizedEvent>(FL_BIND_EVENT_FUNC(OrthographicCameraController::OnWindowResizedEvent));
 	}
 
-	void OrthographicCameraController::HandleMovement(const Timestep& ts)
+	void OrthographicCameraController::HandleMovement(const Timestep& ts) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -57,7 +57,7 @@ namespace FarLight
 			m_Camera.SetPosition(m_Camera.GetPosition() - m_Camera.GetRightDirection() * velocity);
 	}
 
-	void OrthographicCameraController::HandleRotation(const Timestep& ts)
+	void OrthographicCameraController::HandleRotation(const Timestep& ts) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -68,7 +68,7 @@ namespace FarLight
 			m_Camera.SetRoll(m_Camera.GetRoll() + velocity);
 	}
 
-	const bool OrthographicCameraController::OnMouseScrolledEvent(const MouseScrolledEvent& e)
+	const bool OrthographicCameraController::OnMouseScrolledEvent(const MouseScrolledEvent& e) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -79,7 +79,7 @@ namespace FarLight
 		return false;
 	}
 
-	const bool OrthographicCameraController::OnWindowResizedEvent(const WindowResizedEvent& e)
+	const bool OrthographicCameraController::OnWindowResizedEvent(const WindowResizedEvent& e) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

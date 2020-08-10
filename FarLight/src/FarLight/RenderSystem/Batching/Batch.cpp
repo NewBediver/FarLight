@@ -11,7 +11,7 @@
 
 namespace FarLight
 {
-	Batch::Batch(const BufferLayout& layout, const Ref<Shader>& shader, const Ref<Texture2D> texture, unsigned maxVertices, unsigned maxIndies)
+	Batch::Batch(const BufferLayout& layout, const Ref<Shader>& shader, const Ref<Texture2D> texture, unsigned maxVertices, unsigned maxIndies) noexcept
 		: m_MaxVertices(maxVertices)
 		, m_UsedVertices(0)
 		, m_MaxIndices(maxIndies)
@@ -29,7 +29,7 @@ namespace FarLight
 		m_VAO->SetIndexBuffer(m_EBO);
 	}
 
-	void Batch::AddData(unsigned numVertices, const float* verticesData, unsigned numIndices, const unsigned* indicesData)
+	void Batch::AddData(unsigned numVertices, const float* verticesData, unsigned numIndices, const unsigned* indicesData) noexcept
 	{
 		FL_CORE_ASSERT(IsEnoughSlots(numVertices, numIndices), "Current batch doesn't have enought slots for current data!");
 
@@ -51,20 +51,20 @@ namespace FarLight
 		delete[] indices;
 	}
 
-	void Batch::SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix)
+	void Batch::SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) noexcept
 	{
 		m_Configuration.Shad->Bind();
 		m_Configuration.Shad->SetMat4("u_Transformation.View", viewMatrix);
 		m_Configuration.Shad->SetMat4("u_Transformation.Projection", projectionMatrix);
 	}
 
-	void Batch::SetTextureSlot(int slot)
+	void Batch::SetTextureSlot(int slot) noexcept
 	{
 		m_Configuration.Shad->Bind();
 		m_Configuration.Shad->SetInt("u_Texture", slot);
 	}
 
-	void Batch::Render()
+	void Batch::Render() noexcept
 	{
 		if (m_UsedIndices == 0 || m_UsedVertices == 0) return;
 
@@ -75,7 +75,7 @@ namespace FarLight
 		RenderCommand::DrawIndexed(m_VAO);
 	}
 
-	void Batch::Clear()
+	void Batch::Clear() noexcept
 	{
 		m_EBO->SetCount(0);
 		m_VBO->SetOffset(0);

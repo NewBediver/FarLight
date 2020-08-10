@@ -18,14 +18,14 @@ namespace FarLight
 		Ref<Shader> Shad;
 		unsigned TextureSlot;
 
-		BatchConfiguration(const BufferLayout& layout, const Ref<Shader>& shader, const Ref<Texture2D>& texture, unsigned textureSlot)
+		BatchConfiguration(const BufferLayout& layout, const Ref<Shader>& shader, const Ref<Texture2D>& texture, unsigned textureSlot) noexcept
 			: Layout(layout)
 			, Texture(texture)
 			, Shad(shader)
 			, TextureSlot(textureSlot)
 		{ }
 
-		bool operator==(const BatchConfiguration& other) const
+		bool operator==(const BatchConfiguration& other) const noexcept
 		{
 			return Texture->GetID() == other.Texture->GetID()
 				&& Shad->GetID() == other.Shad->GetID()
@@ -37,21 +37,30 @@ namespace FarLight
 	class Batch final
 	{
 	public:
-		Batch(const BufferLayout& layout, const Ref<Shader>& shader, const Ref<Texture2D> texture, unsigned maxVertices = 10000, unsigned maxIndies = 20000);
+		Batch(const Batch&) = delete;
+		Batch& operator=(const Batch&) = delete;
+		Batch& operator=(Batch&&) = delete;
 
-		bool IsEmpty() const { return m_UsedVertices == 0 && m_UsedIndices == 0; }
-		bool IsEnoughSlots(unsigned numVertices, unsigned numIndices) const { return m_UsedVertices + numVertices <= m_MaxVertices && numIndices + m_UsedIndices <= m_MaxIndices; }
+		Batch(Batch&&) noexcept = default;
 
-		void SetConfiguration(const BatchConfiguration& config) { m_Configuration = config; }
-		const BatchConfiguration& GetConfiguration() const { return m_Configuration; }
+		explicit Batch(const BufferLayout& layout, const Ref<Shader>& shader, const Ref<Texture2D> texture, unsigned maxVertices = 10000, unsigned maxIndies = 20000) noexcept;
 
-		void AddData(unsigned numVertices, const float* verticesData, unsigned numIndices, const unsigned* indicesData);
+		constexpr
+		bool IsEmpty() const noexcept { return m_UsedVertices == 0 && m_UsedIndices == 0; }
+		constexpr
+		bool IsEnoughSlots(unsigned numVertices, unsigned numIndices) const noexcept { return m_UsedVertices + numVertices <= m_MaxVertices && numIndices + m_UsedIndices <= m_MaxIndices; }
 
-		void SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
-		void SetTextureSlot(int slot);
+		void SetConfiguration(const BatchConfiguration& config) noexcept { m_Configuration = config; }
+		constexpr
+		const BatchConfiguration& GetConfiguration() const noexcept { return m_Configuration; }
 
-		void Render();
-		void Clear();
+		void AddData(unsigned numVertices, const float* verticesData, unsigned numIndices, const unsigned* indicesData) noexcept;
+
+		void SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) noexcept;
+		void SetTextureSlot(int slot) noexcept;
+
+		void Render() noexcept;
+		void Clear() noexcept;
 
 	private:
 		unsigned m_MaxVertices;

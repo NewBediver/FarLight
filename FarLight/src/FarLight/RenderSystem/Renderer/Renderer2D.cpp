@@ -14,7 +14,7 @@ namespace FarLight
 
 	Scope<BatchController> Renderer2D::s_BatchController = CreateScope<BatchController>();
 
-	void Renderer2D::Init()
+	void Renderer2D::Init() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -30,21 +30,21 @@ namespace FarLight
 			, Texture2D::Create(1, 1));*/
 	}
 
-	void Renderer2D::Shutdown()
+	void Renderer2D::Shutdown() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		FL_CORE_INFO("[Renderer2D] terminated.");
 	}
 
-	void Renderer2D::BeginScene(const OrthographicCamera& camera)
+	void Renderer2D::BeginScene(const OrthographicCamera& camera) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		s_BatchController->SetViewProjection(camera.GetViewMatrix(), camera.GetProjectionMatrix());
 	}
 
-	void Renderer2D::EndScene()
+	void Renderer2D::EndScene() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -52,73 +52,72 @@ namespace FarLight
 		s_BatchController->ClearAll();
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) noexcept
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, color);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		RecalculateQuadData(position, size, color);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept
 	{
 		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, color);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		RecalculateQuadData(position, size, color, counterclockwiseRadians);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tintColor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		RecalculateQuadData(position, size, tintColor, 0.0f, texture);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
 	{
 		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, texture, tintColor);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		RecalculateQuadData(position, size, tintColor, counterclockwiseRadians, texture);
 	}
 
-
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor, tintColor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		RecalculateQuadData(position, size, tintColor, 0.0f, texture, tilingFactor);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
 	{
 		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, texture, tilingFactor, tintColor);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -131,7 +130,7 @@ namespace FarLight
 		, float counterclockwiseRadians
 		, const Ref<Texture2D>& texture
 		, float tilingFactor
-		, const Ref<Shader>& shader)
+		, const Ref<Shader>& shader) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -180,5 +179,4 @@ namespace FarLight
 			, 6
 			, s_Indices);
 	}
-
 }

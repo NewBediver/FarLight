@@ -105,7 +105,7 @@ namespace FarLight
 			+ (static_cast<unsigned>(pixelColor.g * 255.0f) << 8)
 			+ (static_cast<unsigned>(pixelColor.b * 255.0f) << 16)
 			+ (static_cast<unsigned>(pixelColor.a * 255.0f) << 24);
-		std::vector<unsigned> colors(width * height, color);
+		std::vector<unsigned> colors(static_cast<unsigned long long>(width) * static_cast<unsigned long long>(height), color);
 
 		SetData(&colors.front(), sizeof(color) * m_Width * m_Height);
 	}

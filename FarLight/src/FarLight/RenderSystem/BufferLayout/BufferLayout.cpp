@@ -7,7 +7,7 @@
 
 namespace FarLight
 {
-	BufferLayout::BufferLayout(const std::initializer_list<BufferElement>& elements)
+	BufferLayout::BufferLayout(const std::initializer_list<BufferElement>& elements) noexcept
 		: m_Elements(elements)
 		, m_Stride(0)
 	{

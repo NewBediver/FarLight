@@ -15,19 +15,24 @@ namespace FarLight
 	class OrthographicCameraController final
 	{
 	public:
-		OrthographicCameraController(float aspectRation);
+		OrthographicCameraController(const OrthographicCameraController&) = delete;
+		OrthographicCameraController(OrthographicCameraController&&) = delete;
+		OrthographicCameraController& operator=(const OrthographicCameraController&) = delete;
+		OrthographicCameraController& operator=(OrthographicCameraController&&) = delete;
 
-		const OrthographicCamera& GetCamera() const { return m_Camera; }
+		explicit OrthographicCameraController(float aspectRation) noexcept;
 
-		void OnUpdate(const Timestep& ts);
-		void OnEvent(Event& e);
+		const OrthographicCamera& GetCamera() const noexcept { return m_Camera; }
+
+		void OnUpdate(const Timestep& ts) noexcept;
+		void OnEvent(Event& e) noexcept;
 
 	private:
-		void HandleMovement(const Timestep& ts);
-		void HandleRotation(const Timestep& ts);
+		void HandleMovement(const Timestep& ts) noexcept;
+		void HandleRotation(const Timestep& ts) noexcept;
 
-		const bool OnMouseScrolledEvent(const MouseScrolledEvent& e);
-		const bool OnWindowResizedEvent(const WindowResizedEvent& e);
+		const bool OnMouseScrolledEvent(const MouseScrolledEvent& e) noexcept;
+		const bool OnWindowResizedEvent(const WindowResizedEvent& e) noexcept;
 
 		OrthographicCamera m_Camera;
 

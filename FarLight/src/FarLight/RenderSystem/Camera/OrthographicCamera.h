@@ -10,36 +10,41 @@ namespace FarLight
 		: public Camera
 	{
 	public:
-		OrthographicCamera(float left, float right, float bottom, float top, float nearZone = -1.0f, float farZone = 100.0f);
+		OrthographicCamera(const OrthographicCamera&) = delete;
+		OrthographicCamera(OrthographicCamera&&) = delete;
+		OrthographicCamera& operator=(const OrthographicCamera&) = delete;
+		OrthographicCamera& operator=(OrthographicCamera&&) = delete;
 
-		virtual const glm::vec3& GetPosition() const override { return m_Position; }
-		virtual void SetPosition(const glm::vec3& position) override;
+		explicit OrthographicCamera(float left, float right, float bottom, float top, float nearZone = -1.0f, float farZone = 100.0f) noexcept;
 
-		virtual float GetPitch() const override { return m_Pitch; }
-		virtual void SetPitch(float pitch) override { m_Pitch = pitch; }
+		virtual const glm::vec3& GetPosition() const noexcept override { return m_Position; }
+		virtual void SetPosition(const glm::vec3& position) noexcept override;
 
-		virtual float GetYaw() const override { return m_Yaw; }
-		virtual void SetYaw(float yaw) override { m_Yaw = yaw; }
+		virtual float GetPitch() const noexcept override { return m_Pitch; }
+		virtual void SetPitch(float pitch) noexcept override { m_Pitch = pitch; }
 
-		virtual float GetRoll() const override { return m_Roll;}
-		virtual void SetRoll(float roll) override;
+		virtual float GetYaw() const noexcept override { return m_Yaw; }
+		virtual void SetYaw(float yaw) noexcept override { m_Yaw = yaw; }
 
-		virtual const glm::vec3& GetFrontDirection() const override { return m_CameraFront; }
-		virtual void SetFrontDirection(const glm::vec3& frontDir) override;
+		virtual float GetRoll() const noexcept override { return m_Roll;}
+		virtual void SetRoll(float roll) noexcept override;
 
-		virtual const glm::vec3& GetRightDirection() const override { return m_CameraRight; }
-		virtual void SetRightDirection(const glm::vec3& rightDir) override;
+		virtual const glm::vec3& GetFrontDirection() const noexcept override { return m_CameraFront; }
+		virtual void SetFrontDirection(const glm::vec3& frontDir) noexcept override;
 
-		virtual const glm::vec3& GetUpDirection() const override { return m_CameraUp; }
-		virtual void SetUpDirection(const glm::vec3& upDir) override;
+		virtual const glm::vec3& GetRightDirection() const noexcept override { return m_CameraRight; }
+		virtual void SetRightDirection(const glm::vec3& rightDir) noexcept override;
 
-		virtual const glm::mat4& GetProjectionMatrix() const override { return m_ProjectionMatrix; }
-		virtual void SetProjectionMatrix(float left, float right, float up, float down, float nearZone = -1.0f, float farZone = 100.0f) override;
+		virtual const glm::vec3& GetUpDirection() const noexcept override { return m_CameraUp; }
+		virtual void SetUpDirection(const glm::vec3& upDir) noexcept override;
 
-		virtual const glm::mat4& GetViewMatrix() const override { return m_ViewMatrix; }
+		virtual const glm::mat4& GetProjectionMatrix() const noexcept override { return m_ProjectionMatrix; }
+		virtual void SetProjectionMatrix(float left, float right, float up, float down, float nearZone = -1.0f, float farZone = 100.0f) noexcept override;
+
+		virtual const glm::mat4& GetViewMatrix() const noexcept override { return m_ViewMatrix; }
 
 	private:
-		void RecalculateCameraVectors();
+		void RecalculateCameraVectors() noexcept;
 
 		glm::vec3 m_WorldUp;
 

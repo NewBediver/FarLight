@@ -12,22 +12,27 @@ namespace FarLight
 		: public IndexBuffer
 	{
 	public:
-		explicit OpenGLIndexBuffer(const void* indicies, unsigned count);
-		explicit OpenGLIndexBuffer(unsigned count);
+		OpenGLIndexBuffer(const OpenGLIndexBuffer&) = delete;
+		OpenGLIndexBuffer(OpenGLIndexBuffer&&) = delete;
+		OpenGLIndexBuffer& operator=(const OpenGLIndexBuffer&) = delete;
+		OpenGLIndexBuffer& operator=(OpenGLIndexBuffer&&) = delete;
 
-		virtual ~OpenGLIndexBuffer();
+		explicit OpenGLIndexBuffer(const void* indicies, unsigned count) noexcept;
+		explicit OpenGLIndexBuffer(unsigned count) noexcept;
 
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
+		virtual ~OpenGLIndexBuffer() noexcept;
 
-		virtual unsigned GetID() const override { return m_RendererID; }
+		virtual void Bind() const noexcept override;
+		virtual void Unbind() const noexcept override;
 
-		virtual void AddSubData(const void* indices, unsigned size) override;
+		virtual unsigned GetID() const noexcept override { return m_RendererID; }
 
-		virtual unsigned GetCount() const override { return m_Count; }
-		virtual void SetCount(unsigned count) override { m_Count = count; }
+		virtual void AddSubData(const void* indices, unsigned size) noexcept override;
 
-		virtual unsigned GetUsageType() const override { return m_UsageType; }
+		virtual unsigned GetCount() const noexcept override { return m_Count; }
+		virtual void SetCount(unsigned count) noexcept override { m_Count = count; }
+
+		virtual unsigned GetUsageType() const noexcept override { return m_UsageType; }
 
 	private:
 		unsigned m_RendererID;

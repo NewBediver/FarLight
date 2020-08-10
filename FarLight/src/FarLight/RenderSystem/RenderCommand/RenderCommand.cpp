@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-	const Scope<RendererAPI>& RenderCommand::GetInstance()
+	const Scope<RendererAPI>& RenderCommand::GetInstance() noexcept
 	{
 		#ifdef FL_PLATFORM_WINDOWS
 			static Scope<RendererAPI> s_Instance = CreateScope<OpenGLRendererAPI>();
@@ -21,35 +21,35 @@ namespace FarLight
 		#endif
 	}
 
-	void RenderCommand::Init()
+	void RenderCommand::Init() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		GetInstance()->Init();
 	}
 
-	void RenderCommand::SetClearColor(const glm::vec4& color)
+	void RenderCommand::SetClearColor(const glm::vec4& color) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		GetInstance()->SetClearColor(color);
 	}
 
-	void RenderCommand::SetViewport(unsigned x, unsigned y, unsigned width, unsigned height)
+	void RenderCommand::SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		GetInstance()->SetViewport(x, y, width, height);
 	}
 
-	void RenderCommand::DrawIndexed(const Ref<VertexArray>& vertexArray)
+	void RenderCommand::DrawIndexed(const Ref<VertexArray>& vertexArray) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		GetInstance()->DrawIndexed(vertexArray);
 	}
 	
-	void RenderCommand::Clear()
+	void RenderCommand::Clear() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

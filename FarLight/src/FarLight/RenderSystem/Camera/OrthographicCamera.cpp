@@ -9,7 +9,7 @@
 
 namespace FarLight
 {
-	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float nearZone, float farZone)
+	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float nearZone, float farZone) noexcept
 		: m_WorldUp(0.0f, 1.0f, 0.0f)
 		, m_Position(0.0f)
 		, m_CameraFront(0.0f, 0.0f, -1.0f)
@@ -22,44 +22,44 @@ namespace FarLight
 		, m_ProjectionMatrix(glm::ortho(left, right, bottom, top, nearZone, farZone))
 	{ }
 
-	void OrthographicCamera::SetPosition(const glm::vec3& position)
+	void OrthographicCamera::SetPosition(const glm::vec3& position) noexcept
 	{
 		m_Position = position;
 		RecalculateCameraVectors();
 	}
 
-	void OrthographicCamera::SetRoll(float roll)
+	void OrthographicCamera::SetRoll(float roll) noexcept
 	{
 		m_Roll = roll;
 		RecalculateCameraVectors();
 	}
 
-	void OrthographicCamera::SetFrontDirection(const glm::vec3& frontDir)
+	void OrthographicCamera::SetFrontDirection(const glm::vec3& frontDir) noexcept
 	{
 		m_CameraFront = frontDir;
 		RecalculateCameraVectors();
 	}
 
-	void OrthographicCamera::SetRightDirection(const glm::vec3& rightDir)
+	void OrthographicCamera::SetRightDirection(const glm::vec3& rightDir) noexcept
 	{
 		m_CameraRight = rightDir;
 		RecalculateCameraVectors();
 	}
 
-	void OrthographicCamera::SetUpDirection(const glm::vec3& upDir)
+	void OrthographicCamera::SetUpDirection(const glm::vec3& upDir) noexcept
 	{
 		m_CameraUp = upDir;
 		RecalculateCameraVectors();
 	}
 
-	void OrthographicCamera::SetProjectionMatrix(float left, float right, float bottom, float top, float nearZone, float farZone)
+	void OrthographicCamera::SetProjectionMatrix(float left, float right, float bottom, float top, float nearZone, float farZone) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, nearZone, farZone);
 	}
 
-	void OrthographicCamera::RecalculateCameraVectors()
+	void OrthographicCamera::RecalculateCameraVectors() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 

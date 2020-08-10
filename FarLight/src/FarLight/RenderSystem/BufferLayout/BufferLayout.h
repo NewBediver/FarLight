@@ -14,7 +14,7 @@ namespace FarLight
 		unsigned Offset;
 		bool Normalized;
 
-		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false)
+		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false) noexcept
 			: Type(type)
 			, Name(name)
 			, Size(ShaderDataTypeSize(type))
@@ -22,7 +22,7 @@ namespace FarLight
 			, Normalized(normalized)
 		{ }
 
-		bool operator==(const BufferElement& other) const
+		bool operator==(const BufferElement& other) const noexcept
 		{
 			return Normalized == other.Normalized
 				&& Offset == other.Offset
@@ -31,7 +31,7 @@ namespace FarLight
 				&& Name == other.Name;
 		}
 
-		bool operator!=(const BufferElement& other) const
+		bool operator!=(const BufferElement& other) const noexcept
 		{
 			return !(*this == other);
 		}
@@ -40,20 +40,21 @@ namespace FarLight
 	class BufferLayout final
 	{
 	public:
-		BufferLayout(const std::initializer_list<BufferElement>& elements);
+		BufferLayout(const std::initializer_list<BufferElement>& elements) noexcept;
 
-		unsigned GetStride() const { return m_Stride; }
-		unsigned GetSize() const { return static_cast<unsigned>(m_Elements.size()); }
-		const std::vector<BufferElement>& GetElements() const { return m_Elements; }
+		unsigned GetStride() const noexcept { return m_Stride; }
+		unsigned GetSize() const noexcept { return static_cast<unsigned>(m_Elements.size()); }
 
-		std::vector<BufferElement>::const_iterator cbegin() const { return m_Elements.cbegin(); }
-		std::vector<BufferElement>::const_iterator cend() const { return m_Elements.cend(); }
+		const std::vector<BufferElement>& GetElements() const noexcept { return m_Elements; }
 
-		bool operator==(const BufferLayout& other) const
+		std::vector<BufferElement>::const_iterator cbegin() const noexcept { return m_Elements.cbegin(); }
+		std::vector<BufferElement>::const_iterator cend() const noexcept { return m_Elements.cend(); }
+
+		bool operator==(const BufferLayout& other) const noexcept
 		{
 			if (GetSize() == other.GetSize())
 			{
-				for (int i = 0; i < GetSize(); ++i) {
+				for (unsigned i = 0; i < GetSize(); ++i) {
 					if (m_Elements[i] != other.m_Elements[i]) return false;
 				}
 				return true;
