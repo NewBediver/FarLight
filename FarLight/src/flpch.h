@@ -2,8 +2,6 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "FarLight/Core/Defines.h"
-
 #include "FarLight/LogSystem/Logger.h"
 #include "FarLight/Profiling/Instrumentor.h"
 

@@ -76,7 +76,7 @@ namespace FarLight
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		SetData(data, sizeof(data));
+		SetData(data, m_Width * m_Height * channels);
 
 		stbi_image_free(data);
 	}

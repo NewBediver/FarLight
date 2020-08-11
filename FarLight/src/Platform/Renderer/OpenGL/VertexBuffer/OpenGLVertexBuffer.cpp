@@ -9,7 +9,7 @@ namespace FarLight
 {
 	OpenGLVertexBuffer::OpenGLVertexBuffer(const void* vertices, unsigned size, const BufferLayout& layout) noexcept
 		: m_RendererID(0)
-		, m_Offset(0)
+		, m_Offset(size)
 		, m_Layout(layout)
 		, m_UsageType(GL_STATIC_DRAW)
 	{
@@ -17,7 +17,7 @@ namespace FarLight
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-		glBufferData(GL_ARRAY_BUFFER, size, vertices, m_UsageType);
+		glBufferData(GL_ARRAY_BUFFER, m_Offset, vertices, m_UsageType);
 	}
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(unsigned size, const BufferLayout& layout) noexcept

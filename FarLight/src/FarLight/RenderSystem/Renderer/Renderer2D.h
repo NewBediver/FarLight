@@ -53,23 +53,16 @@ namespace FarLight
 		static RendererAPI::API GetAPI() noexcept { return RendererAPI::GetAPI(); }
 
 	private:
-		static void RecalculateQuadData (const glm::vec3& position
+		static void Flush() noexcept;
+		static BatchController& GetBatchController() noexcept;
+		static BatchConfiguration& GetDefaultBatchConfiguration() noexcept;
+
+		static void RecalculateQuadData(const glm::vec3& position
 			, const glm::vec2& size
 			, const glm::vec4& color = glm::vec4(1.0f)
 			, float counterclockwiseRadians = 0.0f
 			, const Ref<Texture2D>& texture = nullptr
 			, float tilingFactor = 1.0f
 			, const Ref<Shader>& shader = nullptr) noexcept;
-
-		struct Default2D
-		{
-			Ref<Shader> DefaultShader;
-			Ref<Texture2D> DefaultTexture;
-			BufferLayout DefaultLayout;
-			unsigned DefaultTextureSlot;
-		};
-
-		//static Scope<Batch> s_Batch;
-		static Scope<BatchController> s_BatchController;
 	};
 }

@@ -10,9 +10,26 @@
 
 namespace FarLight
 {
-	//Scope<Batch> Renderer2D::s_Batch = nullptr;
+	BatchController& Renderer2D::GetBatchController() noexcept
+	{
+		static BatchController s_BatchController;
+		return s_BatchController;
+	}
 
-	Scope<BatchController> Renderer2D::s_BatchController = CreateScope<BatchController>();
+
+	BatchConfiguration& Renderer2D::GetDefaultBatchConfiguration() noexcept
+	{
+		static BatchConfiguration s_BatchConfiguration(BufferLayout({
+					{ ShaderDataType::Float3, "a_Position" },
+					{ ShaderDataType::Float4, "a_Color" },
+					{ ShaderDataType::Float2, "a_TextureCoordinates" },
+					{ ShaderDataType::Float,  "a_TextureId"},
+					{ ShaderDataType::Float,  "a_TilingFactor"}
+			}), 
+			{ Texture2D::Create(1, 1) },
+			Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag"));
+		return s_BatchConfiguration;
+	}
 
 	void Renderer2D::Init() noexcept
 	{
@@ -20,14 +37,6 @@ namespace FarLight
 
 		RenderCommand::Init();
 		FL_CORE_INFO("[Renderer2D] initialized.");
-
-		/*s_Batch = CreateScope<Batch>( BufferLayout({
-				{ ShaderDataType::Float3, "a_Position" },
-				{ ShaderDataType::Float4, "a_Color" },
-				{ ShaderDataType::Float2, "a_TextureCoordinates" }
-			})
-			, Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag")
-			, Texture2D::Create(1, 1));*/
 	}
 
 	void Renderer2D::Shutdown() noexcept
@@ -41,15 +50,14 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_BatchController->SetViewProjection(camera.GetViewMatrix(), camera.GetProjectionMatrix());
+		GetBatchController().SetViewProjection(camera.GetViewMatrix(), camera.GetProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
-		s_BatchController->RenderAll();
-		s_BatchController->ClearAll();
+		Flush();
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) noexcept
@@ -134,49 +142,43 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		static constexpr glm::vec4 s_PosLowerRight = { 0.5f, -0.5f, 0.0f, 1.0f };
-		static constexpr glm::vec4 s_PosUpperRight = { 0.5f, 0.5f, 0.0f, 1.0f };
-		static constexpr glm::vec4 s_PosUpperLeft = { -0.5f, 0.5f, 0.0f, 1.0f };
-		static constexpr glm::vec4 s_PosLowerLeft = { -0.5f, -0.5f, 0.0f, 1.0f };
-
-		static constexpr unsigned s_Indices[6] = { 0, 1, 2, 2, 3, 0 };
-
 		glm::mat4 transformation = glm::translate(glm::mat4(1.0f), position)
 			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f));
 
-		glm::vec4 posLowerRight = transformation * s_PosLowerRight;
-		glm::vec4 posUpperRight = transformation * s_PosUpperRight;
-		glm::vec4 posUpperLeft = transformation * s_PosUpperLeft;
-		glm::vec4 posLowerLeft = transformation * s_PosLowerLeft;
-
-		float squareVertices[4 * 10] =
-		{
-			// position                                           // color                               // textures
-			posLowerRight.x, posLowerRight.y, posLowerRight.z,    color.r, color.g, color.b, color.a,    1.0f, 0.0f,    tilingFactor,
-			posUpperRight.x, posUpperRight.y, posUpperRight.z,    color.r, color.g, color.b, color.a,    1.0f, 1.0f,    tilingFactor,
-			posUpperLeft.x,  posUpperLeft.y,  posUpperLeft.z,     color.r, color.g, color.b, color.a,    0.0f, 1.0f,    tilingFactor,
-			posLowerLeft.x,  posLowerLeft.y,  posLowerLeft.z,     color.r, color.g, color.b, color.a,    0.0f, 0.0f,    tilingFactor
+		static constexpr glm::vec4 s_Positions[4] = {
+			{  0.5f, -0.5f,  0.0f,  1.0f },  // LowerRight
+			{  0.5f,  0.5f,  0.0f,  1.0f },  // UpperRight
+			{ -0.5f,  0.5f,  0.0f,  1.0f },  // UpperLeft
+			{ -0.5f, -0.5f,  0.0f,  1.0f }   // LowerLeft
 		};
 
-		static Default2D s_DefaultData =
-		{
-			Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag"),
-			Texture2D::Create(1, 1),
-			BufferLayout({
-					{ ShaderDataType::Float3, "a_Position" },
-					{ ShaderDataType::Float4, "a_Color" },
-					{ ShaderDataType::Float2, "a_TextureCoordinates" },
-					{ ShaderDataType::Float, "a_TilingFactor"}
-				}),
-			0
+		static constexpr glm::vec2 s_TextureCoordinates[4] = {
+			{ 1.0f, 0.0f },  // LowerRight
+			{ 1.0f, 1.0f },  // UpperRight
+			{ 0.0f, 1.0f },  // UpperLeft
+			{ 0.0f, 0.0f }   // LowerLeft
 		};
 
-		s_BatchController->AddData(
-			BatchConfiguration(s_DefaultData.DefaultLayout, s_DefaultData.DefaultShader, texture == nullptr ? s_DefaultData.DefaultTexture : texture, s_DefaultData.DefaultTextureSlot)
-			, 4
-			, squareVertices
-			, 6
-			, s_Indices);
+		std::vector<VertexData> vertices(4);
+		for (unsigned i = 0; i < 4; ++i)
+		{
+			vertices[i].Position = glm::vec3(transformation * s_Positions[i]);
+			vertices[i].Color = color;
+			vertices[i].TextureCoordinates = s_TextureCoordinates[i];
+			vertices[i].TilingFactor = tilingFactor;
+		}
+
+		static std::vector<unsigned> s_Indices = { 0, 1, 2, 2, 3, 0 };
+
+		GetBatchController().AddData(GetDefaultBatchConfiguration(), vertices, s_Indices, texture);
+	}
+
+	void Renderer2D::Flush() noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		GetBatchController().RenderAll();
+		GetBatchController().ClearAll();
 	}
 }

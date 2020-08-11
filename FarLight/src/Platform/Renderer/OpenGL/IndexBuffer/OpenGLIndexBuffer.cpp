@@ -21,14 +21,14 @@ namespace FarLight
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(unsigned count) noexcept
 		: m_RendererID(0)
-		, m_Count(count)
+		, m_Count(0)
 		, m_UsageType(GL_DYNAMIC_DRAW)
 	{
 		FL_PROFILE_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned), nullptr, m_UsageType);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned), nullptr, m_UsageType);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer() noexcept
@@ -59,6 +59,7 @@ namespace FarLight
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned), count * sizeof(unsigned), indices);
+
 		m_Count += count;
 	}
 }

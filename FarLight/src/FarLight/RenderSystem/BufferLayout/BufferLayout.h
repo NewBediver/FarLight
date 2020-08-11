@@ -44,6 +44,7 @@ namespace FarLight
 
 		unsigned GetStride() const noexcept { return m_Stride; }
 		unsigned GetSize() const noexcept { return static_cast<unsigned>(m_Elements.size()); }
+		unsigned GetCount() const noexcept { return m_Count; }
 
 		const std::vector<BufferElement>& GetElements() const noexcept { return m_Elements; }
 
@@ -65,5 +66,6 @@ namespace FarLight
 	private:
 		std::vector<BufferElement> m_Elements;
 		unsigned m_Stride;
+		unsigned m_Count;
 	};
 }

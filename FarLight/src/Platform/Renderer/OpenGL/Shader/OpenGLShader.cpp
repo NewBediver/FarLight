@@ -52,6 +52,13 @@ namespace FarLight
 		glUniform1i(GetUniformLocation(name), i1);
 	}
 
+	void OpenGLShader::SetIntArray(const std::string& name, const int* values, unsigned count) const noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		glUniform1iv(GetUniformLocation(name), count, values);
+	}
+
 	void OpenGLShader::SetFloat(const std::string& name, float f1) const noexcept
 	{
 		FL_PROFILE_FUNCTION();

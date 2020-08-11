@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "FarLight/Core/Defines.h"
+
 // Platform detection using predefined macros
 #ifdef _WIN32
 	/* Windows x64/x86 */

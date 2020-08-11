@@ -81,6 +81,8 @@ namespace FarLight
 
 		virtual void SetInt(const std::string& name, int i1) const noexcept = 0;
 
+		virtual void SetIntArray(const std::string& name, const int* values, unsigned count) const noexcept = 0;
+
 		virtual void SetFloat(const std::string& name, float f1) const noexcept = 0;
 		virtual void SetFloat2(const std::string& name, float f1, float f2) const noexcept = 0;
 		virtual void SetFloat3(const std::string& name, float f1, float f2, float f3) const noexcept = 0;

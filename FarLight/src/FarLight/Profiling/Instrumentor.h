@@ -4,8 +4,10 @@
 #include <fstream>
 #include <chrono>
 
-#include "FarLight/Core/Core.h"
 #include "InstrumentationTimer.h"
+
+#include "FarLight/Core/Core.h"
+#include "FarLight/Core/Defines.h"
 
 namespace FarLight
 {
