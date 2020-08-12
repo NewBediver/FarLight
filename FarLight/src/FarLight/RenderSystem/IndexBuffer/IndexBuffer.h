@@ -29,6 +29,6 @@ namespace FarLight
 		virtual unsigned GetCount() const noexcept = 0;
 		virtual void SetCount(unsigned count) noexcept = 0;
 
-		virtual void AddSubData(const void* indices, unsigned size) noexcept = 0;
+		virtual void AddSubData(const void* indices, unsigned count) noexcept = 0;
 	};
 }

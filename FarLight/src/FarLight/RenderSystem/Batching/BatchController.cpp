@@ -7,43 +7,71 @@
 
 namespace FarLight
 {
-	void BatchController::AddData(const BatchConfiguration& config, const std::vector<VertexData>& vertices, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture) noexcept
+	void BatchController::AddData(const BatchStatistic& stat, unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices) noexcept
 	{
-		bool found = false;
+		FL_PROFILE_FUNCTION();
+
 		for (auto& elm : m_Batches)
 		{
-			if (config == elm.GetConfiguration())
+			if (stat == elm.GetStatistic())
 			{
-				found = true;
-				if (!elm.HasFreeTextureSlots() || !elm.HasFreeIndexSlots(indices.size()) || !elm.HasFreeVertexSlots(vertices.size()))
+				if (!elm.HasFreeTextureSlots() || !elm.HasFreeIndexSlots(indexNumber) || !elm.HasFreeVertexSlots(vertexNumber))
 				{
 					elm.Render();
 					elm.Clear();
 				}
-				elm.AddData(vertices, indices, texture);
-				break;
+				elm.AddData(vertexNumber, vertexData, indexNumber, indices);
+				return;
 			}
 		}
 
-		if (!found)
+		m_Batches.emplace_back(stat);
+		m_Batches.back().AddData(vertexNumber, vertexData, indexNumber, indices);
+	}
+
+	void BatchController::AddData(const BatchStatistic& stat, unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture, unsigned textureIndexDataOffset) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		for (auto& elm : m_Batches)
 		{
-			m_Batches.emplace_back(config);
-			m_Batches.back().AddData(vertices, indices, texture);
+			if (stat == elm.GetStatistic())
+			{
+				if (!elm.HasFreeTextureSlots(1) || !elm.HasFreeIndexSlots(indexNumber) || !elm.HasFreeVertexSlots(vertexNumber))
+				{
+					elm.Render();
+					elm.Clear();
+				}
+				elm.AddData(vertexNumber, vertexData, indexNumber, indices, texture, textureIndexDataOffset);
+				return;
+			}
 		}
+
+		m_Batches.emplace_back(stat);
+		m_Batches.back().AddData(vertexNumber, vertexData, indexNumber, indices, texture, textureIndexDataOffset);
 	}
 
 	void BatchController::RenderAll() noexcept
 	{
-		for (auto& batch : m_Batches) batch.Render();
+		FL_PROFILE_FUNCTION();
+
+		for (auto& batch : m_Batches)
+			batch.Render();
 	}
 
 	void BatchController::ClearAll() noexcept
 	{
-		for (auto& batch : m_Batches) batch.Clear();
+		FL_PROFILE_FUNCTION();
+
+		for (auto& batch : m_Batches)
+			batch.Clear();
 	}
 
 	void BatchController::SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) noexcept
 	{
-		for (auto& batch : m_Batches) batch.SetViewProjection(viewMatrix, projectionMatrix);
+		FL_PROFILE_FUNCTION();
+
+		for (auto& batch : m_Batches)
+			batch.SetViewProjection(viewMatrix, projectionMatrix);
 	}
 }

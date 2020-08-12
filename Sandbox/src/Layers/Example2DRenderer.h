@@ -3,6 +3,7 @@
 #include <FarLight.h>
 
 #include <glm/glm.hpp>
+#include <FarLight\RenderSystem\Batching\BatchController.h>
 
 class Example2DRenderer
 	: public FarLight::Layer
@@ -23,4 +24,5 @@ private:
 	FarLight::Ref<FarLight::Texture2D> m_ShovelKnightTexture;
 
 	float m_Rotation;
+	FarLight::BatchController m_Controller;
 };

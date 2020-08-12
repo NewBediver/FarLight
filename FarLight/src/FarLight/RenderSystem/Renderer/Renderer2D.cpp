@@ -16,19 +16,28 @@ namespace FarLight
 		return s_BatchController;
 	}
 
-
-	BatchConfiguration& Renderer2D::GetDefaultBatchConfiguration() noexcept
+	const BufferLayout& Renderer2D::GetDefaultLayout() noexcept
 	{
-		static BatchConfiguration s_BatchConfiguration(BufferLayout({
+		static BufferLayout s_DefaultLayout({
 					{ ShaderDataType::Float3, "a_Position" },
 					{ ShaderDataType::Float4, "a_Color" },
 					{ ShaderDataType::Float2, "a_TextureCoordinates" },
 					{ ShaderDataType::Float,  "a_TextureId"},
 					{ ShaderDataType::Float,  "a_TilingFactor"}
-			}), 
-			{ Texture2D::Create(1, 1) },
-			Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag"));
-		return s_BatchConfiguration;
+			});
+		return s_DefaultLayout;
+	}
+
+	const Ref<FarLight::Shader>& Renderer2D::GetDefaultShader() noexcept
+	{
+		static Ref<Shader> s_DefaultShader = Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag");
+		return s_DefaultShader;
+	}
+
+	const Ref<FarLight::Texture2D>& Renderer2D::GetDefaultTexture() noexcept
+	{
+		static Ref<Texture2D> s_DefaultTexture = Texture2D::Create(1, 1);
+		return s_DefaultTexture;
 	}
 
 	void Renderer2D::Init() noexcept
@@ -146,32 +155,55 @@ namespace FarLight
 			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
 			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f));
 
-		static constexpr glm::vec4 s_Positions[4] = {
+		static constexpr glm::vec4 s_Positions[4] =
+		{
+			{ -0.5f, -0.5f,  0.0f,  1.0f },  // LowerLeft
 			{  0.5f, -0.5f,  0.0f,  1.0f },  // LowerRight
 			{  0.5f,  0.5f,  0.0f,  1.0f },  // UpperRight
-			{ -0.5f,  0.5f,  0.0f,  1.0f },  // UpperLeft
-			{ -0.5f, -0.5f,  0.0f,  1.0f }   // LowerLeft
+			{ -0.5f,  0.5f,  0.0f,  1.0f }   // UpperLeft
 		};
 
-		static constexpr glm::vec2 s_TextureCoordinates[4] = {
+		static constexpr glm::vec2 s_TextureCoordinates[4] =
+		{
+			{ 0.0f, 0.0f },  // LowerLeft
 			{ 1.0f, 0.0f },  // LowerRight
 			{ 1.0f, 1.0f },  // UpperRight
-			{ 0.0f, 1.0f },  // UpperLeft
-			{ 0.0f, 0.0f }   // LowerLeft
+			{ 0.0f, 1.0f }   // UpperLeft
 		};
 
-		std::vector<VertexData> vertices(4);
+		std::vector<glm::vec4> positions(4);
 		for (unsigned i = 0; i < 4; ++i)
 		{
-			vertices[i].Position = glm::vec3(transformation * s_Positions[i]);
-			vertices[i].Color = color;
-			vertices[i].TextureCoordinates = s_TextureCoordinates[i];
-			vertices[i].TilingFactor = tilingFactor;
+			positions[i] = transformation * s_Positions[i];
+		}
+
+		std::vector<float> data(4 * GetDefaultLayout().GetCount());
+		for (unsigned i = 0; i < 4; ++i)
+		{
+			unsigned offset = i * GetDefaultLayout().GetCount();
+			data[offset] = positions[i].x;
+			data[offset + 1] = positions[i].y;
+			data[offset + 2] = positions[i].z;
+			data[offset + 3] = color.r;
+			data[offset + 4] = color.g;
+			data[offset + 5] = color.b;
+			data[offset + 6] = color.a;
+			data[offset + 7] = s_TextureCoordinates[i].x;
+			data[offset + 8] = s_TextureCoordinates[i].y;
+			data[offset + 9] = 0;
+			data[offset + 10] = tilingFactor;
 		}
 
 		static std::vector<unsigned> s_Indices = { 0, 1, 2, 2, 3, 0 };
 
-		GetBatchController().AddData(GetDefaultBatchConfiguration(), vertices, s_Indices, texture);
+		if (texture == nullptr)
+		{
+			GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, data, 6, s_Indices);
+		}
+		else
+		{
+			GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, data, 6, s_Indices, texture, 9);
+		}
 	}
 
 	void Renderer2D::Flush() noexcept

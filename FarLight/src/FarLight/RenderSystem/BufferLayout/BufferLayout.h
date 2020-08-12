@@ -43,7 +43,6 @@ namespace FarLight
 		BufferLayout(const std::initializer_list<BufferElement>& elements) noexcept;
 
 		unsigned GetStride() const noexcept { return m_Stride; }
-		unsigned GetSize() const noexcept { return static_cast<unsigned>(m_Elements.size()); }
 		unsigned GetCount() const noexcept { return m_Count; }
 
 		const std::vector<BufferElement>& GetElements() const noexcept { return m_Elements; }
@@ -53,9 +52,9 @@ namespace FarLight
 
 		bool operator==(const BufferLayout& other) const noexcept
 		{
-			if (GetSize() == other.GetSize())
+			if (m_Elements.size() == other.m_Elements.size())
 			{
-				for (unsigned i = 0; i < GetSize(); ++i) {
+				for (unsigned i = 0; i < m_Elements.size(); ++i) {
 					if (m_Elements[i] != other.m_Elements[i]) return false;
 				}
 				return true;

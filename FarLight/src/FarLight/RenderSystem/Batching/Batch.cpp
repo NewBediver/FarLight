@@ -11,105 +11,102 @@
 
 namespace FarLight
 {
-	Batch::Batch(const BatchConfiguration& config, unsigned maxVertices, unsigned maxIndies) noexcept
-		: m_MaxVertices(maxVertices)
-		, m_UsedVertices(0)
-		, m_MaxIndices(maxIndies)
-		, m_UsedIndices(0)
+	Batch::Batch(const BatchStatistic& stats) noexcept
+		: m_Statistic(stats)
 		, m_VAO(VertexArray::Create())
-		, m_VBO(VertexBuffer::Create(maxVertices * config.Layout.GetStride(), config.Layout))
-		, m_EBO(IndexBuffer::Create(maxIndies))
-		, m_Configuration(config)
+		, m_VBO(VertexBuffer::Create(stats.MaxVertexNumber * stats.UsedLayout.GetStride(), stats.UsedLayout))
+		, m_EBO(IndexBuffer::Create(stats.MaxIndexNumber))
 	{
-		FL_CORE_ASSERT(m_MaxVertices >= 1000 && m_MaxIndices >= 1000, "Batch is too small. Choose a number >= 1000.");
+		FL_PROFILE_FUNCTION();
 
 		m_VAO->Bind();
 
 		m_VAO->AddVertexBuffer(m_VBO);
 		m_VAO->SetIndexBuffer(m_EBO);
+
+		FL_CORE_INFO("==================== Created Batch Info ====================");
+		FL_CORE_INFO("   Maximum Vertex Count: {0}", m_Statistic.MaxVertexNumber);
+		FL_CORE_INFO("   Maximum Index Count: {0}", m_Statistic.MaxIndexNumber);
+		FL_CORE_INFO("   Maximum Texture Slots: {0}", m_Statistic.MaxTextureSlots);
+		FL_CORE_INFO("   Used Shader ID: {0}", m_Statistic.UsedShader->GetID());
+		FL_CORE_INFO("   Used Default Texture ID: {0}", m_Statistic.UsedTextures[0]->GetID());
+		FL_CORE_INFO("   Used Layout Size and Stride: {0} / {1}", m_Statistic.UsedLayout.GetElements().size(), m_Statistic.UsedLayout.GetStride());
+		FL_CORE_INFO("============================================================");
 	}
 
-	void Batch::AddData(const std::vector<VertexData>& vertices, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture) noexcept
+	void Batch::AddData(unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices) noexcept
 	{
-		FL_CORE_ASSERT(HasFreeTextureSlots() && HasFreeVertexSlots(vertices.size()) && HasFreeIndexSlots(indices.size()), "Current batch doesn't have enought slots for current data!");
+		FL_PROFILE_FUNCTION();
 
-		// MUST BE DELETED
-		std::vector<unsigned> inds(indices.size());
-		std::vector<float> verts(vertices.size() * m_Configuration.Layout.GetStride());
-
-		unsigned offset = m_UsedVertices;
-		for (unsigned i = 0; i < indices.size(); ++i)
+		std::vector<unsigned> inds(indexNumber);
+		unsigned offset = m_Statistic.UsedVertexNumber;
+		for (unsigned i = 0; i < indexNumber; ++i)
 			inds[i] = indices[i] + offset;
-
-		int textureId = -1;
-		if (texture == nullptr) textureId = 0;
-		else
-		{
-			for (unsigned i = 0; i < m_Configuration.StartTextureIndex; ++i)
-			{
-				if (m_Configuration.Textures[i]->GetID() == texture->GetID())
-				{
-					textureId = i;
-					break;
-				}
-			}
-		}
-
-		if (textureId == -1)
-		{
-			textureId = m_Configuration.StartTextureIndex;
-			AddTexture(texture);
-		}
-
-		for (unsigned i = 0; i < vertices.size(); ++i)
-		{
-			verts[i * m_Configuration.Layout.GetCount()] = vertices[i].Position.x;
-			verts[i * m_Configuration.Layout.GetCount() + 1] = vertices[i].Position.y;
-			verts[i * m_Configuration.Layout.GetCount() + 2] = vertices[i].Position.z;
-			verts[i * m_Configuration.Layout.GetCount() + 3] = vertices[i].Color.r;
-			verts[i * m_Configuration.Layout.GetCount() + 4] = vertices[i].Color.g;
-			verts[i * m_Configuration.Layout.GetCount() + 5] = vertices[i].Color.b;
-			verts[i * m_Configuration.Layout.GetCount() + 6] = vertices[i].Color.a;
-			verts[i * m_Configuration.Layout.GetCount() + 7] = vertices[i].TextureCoordinates.x;
-			verts[i * m_Configuration.Layout.GetCount() + 8] = vertices[i].TextureCoordinates.y;
-			verts[i * m_Configuration.Layout.GetCount() + 9] = static_cast<float>(textureId);
-			verts[i * m_Configuration.Layout.GetCount() + 10] = vertices[i].TilingFactor;
-		}
 
 		m_VAO->Bind();
 
-		m_VBO->AddSubData(&verts.front(), vertices.size() * m_Configuration.Layout.GetStride());
-		m_UsedVertices += vertices.size();
+		m_VBO->AddSubData(&vertexData.front(), vertexNumber * m_Statistic.UsedLayout.GetStride());
+		m_Statistic.UsedVertexNumber += vertexNumber;
 
-		m_EBO->AddSubData(&inds.front(), indices.size());
-		m_UsedIndices += indices.size();
+		m_EBO->AddSubData(&inds.front(), indexNumber);
+		m_Statistic.UsedIndexNumber += indexNumber;
+	}
+
+	void Batch::AddData(unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture, unsigned textureIndexDataOffset) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		std::vector<float> tmp = vertexData;
+
+		unsigned textureId = 0;
+		for (unsigned i = 1; i < m_Statistic.UsedTextureSlots; ++i)
+		{
+			if (m_Statistic.UsedTextures[i]->GetID() == texture->GetID())
+			{
+				textureId = i;
+				break;
+			}
+		}
+
+		if (textureId == 0)
+		{
+			textureId = m_Statistic.UsedTextureSlots;
+			AddTexture(texture);
+		}
+
+		for (int i = 0; i < vertexNumber; ++i)
+		{
+			unsigned index = i * m_Statistic.UsedLayout.GetCount();
+			tmp[index + textureIndexDataOffset] = textureId;
+		}
+
+		AddData(vertexNumber, tmp, indexNumber, indices);
 	}
 
 	void Batch::SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) const noexcept
 	{
-		m_Configuration.Shad->Bind();
-		m_Configuration.Shad->SetMat4("u_Transformation.View", viewMatrix);
-		m_Configuration.Shad->SetMat4("u_Transformation.Projection", projectionMatrix);
+		FL_PROFILE_FUNCTION();
+
+		m_Statistic.UsedShader->Bind();
+		m_Statistic.UsedShader->SetMat4("u_Transformation.View", viewMatrix);
+		m_Statistic.UsedShader->SetMat4("u_Transformation.Projection", projectionMatrix);
 	}
 	
 	void Batch::Render() noexcept
 	{
+		FL_PROFILE_FUNCTION();
+
 		if (IsEmpty()) return;
 
-		// MUST BE DELETED
-		std::vector<int> samples(m_Configuration.MaxTextureArraySize);
+		std::vector<int> samples(m_Statistic.MaxTextureSlots);
+		std::iota(samples.begin(), samples.end(), 0);
 
-		for (unsigned i = 0; i < m_Configuration.MaxTextureArraySize; ++i)
+		m_Statistic.UsedShader->Bind();
+		m_Statistic.UsedShader->SetIntArray("u_Textures", &samples.front(), m_Statistic.MaxTextureSlots);
+
+		for (unsigned i = 0; i < m_Statistic.UsedTextureSlots; ++i)
 		{
-			samples[i] = i;
-		}
-
-		m_Configuration.Shad->Bind();
-		m_Configuration.Shad->SetIntArray("u_Textures", &samples.front(), m_Configuration.MaxTextureArraySize);
-
-		for (unsigned i = 0; i < m_Configuration.StartTextureIndex; ++i)
-		{
-			m_Configuration.Textures[i]->Bind(i);
+			m_Statistic.UsedTextures[i]->Bind(i);
 		}
 
 		m_VAO->Bind();
@@ -118,16 +115,24 @@ namespace FarLight
 
 	void Batch::Clear() noexcept
 	{
+		FL_PROFILE_FUNCTION();
+
+		m_Statistic.UsedIndexNumber = 0;
 		m_EBO->SetCount(0);
+
+		m_Statistic.UsedVertexNumber = 0;
 		m_VBO->SetOffset(0);
-		m_UsedIndices = 0;
-		m_UsedVertices = 0;
-		m_Configuration.StartTextureIndex = 1;
+		
+		m_Statistic.UsedTextureSlots = 1;
 	}
 
 	void Batch::AddTexture(const Ref<Texture2D>& texture) noexcept
 	{
-		m_Configuration.Textures.push_back(texture);
-		++m_Configuration.StartTextureIndex;
+		FL_CORE_ASSERT(HasFreeTextureSlots(1), "Current batch doesn't have free texture slots!");
+
+		FL_PROFILE_FUNCTION();
+
+		m_Statistic.UsedTextures[m_Statistic.UsedTextureSlots] = texture;
+		++m_Statistic.UsedTextureSlots;
 	}
 }

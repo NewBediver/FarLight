@@ -11,101 +11,84 @@
 
 namespace FarLight
 {
-	struct VertexData
+	struct BatchStatistic final
 	{
-		glm::vec3 Position = { 0.0f, 0.0f, 0.0f };
-		glm::vec4 Color = { 1.0f, 1.0f, 1.0f, 1.0f };
-		glm::vec2 TextureCoordinates = { 0.0f, 0.0f };
-		float TilingFactor = 1.0f;
-	};
+		unsigned MaxVertexNumber;
+		unsigned UsedVertexNumber;
 
-	struct BatchConfiguration final
-	{
-		BufferLayout Layout;
-		std::vector<Ref<Texture2D>> Textures;
-		Ref<Shader> Shad;
-		unsigned StartTextureIndex;
-		unsigned MaxTextureArraySize;
+		unsigned MaxIndexNumber;
+		unsigned UsedIndexNumber;
 
-		explicit BatchConfiguration(const BufferLayout& layout, const std::vector<Ref<Texture2D>>& textures, const Ref<Shader>& shader) noexcept
-			: Layout(layout)
-			, Textures(textures)
-			, Shad(shader)
-			, StartTextureIndex(1)
-			, MaxTextureArraySize(32)
-		{ }
+		unsigned MaxTextureSlots;
+		unsigned UsedTextureSlots;
 
-		explicit BatchConfiguration(const BatchConfiguration& config) noexcept
-			: Layout(config.Layout)
-			, Textures(config.Textures)
-			, Shad(config.Shad)
-			, StartTextureIndex(config.StartTextureIndex)
-			, MaxTextureArraySize(config.MaxTextureArraySize)
-		{ }
+		Ref<Shader> UsedShader;
+		std::vector<Ref<Texture2D>> UsedTextures;
+		BufferLayout UsedLayout;
 
-		BatchConfiguration& operator=(const BatchConfiguration& config) noexcept
+		explicit BatchStatistic(const BufferLayout& layout, const Ref<Texture2D>& defaultTexture, const Ref<Shader>& shader, unsigned vertexNumber = 10000, unsigned indexNumber = 20000, unsigned textureSlots = 32) noexcept
+			: MaxVertexNumber(vertexNumber)
+			, UsedVertexNumber(0)
+			, MaxIndexNumber(indexNumber)
+			, UsedIndexNumber(0)
+			, MaxTextureSlots(textureSlots)
+			, UsedTextureSlots(1)
+			, UsedLayout(layout)
+			, UsedShader(shader)
 		{
-			if (config == *this) return *this;
-			BatchConfiguration cfg(config.Layout, config.Textures, config.Shad);
-			cfg.StartTextureIndex = config.StartTextureIndex;
-			cfg.MaxTextureArraySize = config.MaxTextureArraySize;
-			return cfg;
+			UsedTextures.resize(MaxTextureSlots);
+			UsedTextures[0] = defaultTexture;
 		}
 
-		bool operator==(const BatchConfiguration& other) const noexcept
+		bool operator==(const BatchStatistic& other) const noexcept
 		{
-			return Shad->GetID() == other.Shad->GetID()
-				&& MaxTextureArraySize == other.MaxTextureArraySize
-				&& Layout == other.Layout;
+			return UsedShader->GetID() == other.UsedShader->GetID()
+				&& UsedLayout == other.UsedLayout
+				&& UsedTextures[0]->GetID() == other.UsedTextures[0]->GetID();
 		}
 	};
 
 	class Batch final
 	{
 	public:
-		Batch(const Batch&) = delete;
+		/*Batch(const Batch&) = delete;
 		Batch& operator=(const Batch&) = delete;
-		Batch& operator=(Batch&&) = delete;
+		Batch& operator=(Batch&&) = delete;*/
 
-		Batch(Batch&&) noexcept = default;
+		//Batch(Batch&&) noexcept = default;
 
-		explicit Batch(const BatchConfiguration& config, unsigned maxVertices = 10000, unsigned maxIndies = 20000) noexcept;
-
-		void AddData(const std::vector<VertexData>& vertices, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture) noexcept;
+		explicit Batch(const BatchStatistic& stats) noexcept;
 
 		void Render() noexcept;
 		void Clear() noexcept;
 
-		constexpr
-		bool IsEmpty() const noexcept { return m_UsedVertices == 0 && m_UsedIndices == 0; }
-		constexpr
-		bool HasFreeTextureSlots() const noexcept { return m_Configuration.StartTextureIndex < m_Configuration.MaxTextureArraySize; }
-		constexpr
-		bool HasFreeVertexSlots(unsigned numVertices) const noexcept { return m_UsedVertices + numVertices <= m_MaxVertices; }
-		constexpr
-		bool HasFreeIndexSlots(unsigned numIndices) const noexcept { return  m_UsedIndices + numIndices <= m_MaxIndices; }
+		void AddData(unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices) noexcept;
+		void AddData(unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture, unsigned textureIndexDataOffset) noexcept;
 
-		void SetConfiguration(const BatchConfiguration& config) noexcept { m_Configuration = config; }
 		constexpr
-		const BatchConfiguration& GetConfiguration() const noexcept { return m_Configuration; }
+		bool IsEmpty() const noexcept { return m_Statistic.UsedVertexNumber == 0 && m_Statistic.UsedIndexNumber == 0; }
+		constexpr
+		bool HasFreeTextureSlots(unsigned numSlots = 0) const noexcept { return m_Statistic.UsedTextureSlots + numSlots < m_Statistic.MaxTextureSlots; }
+		constexpr
+		bool HasFreeVertexSlots(unsigned numVertices = 0) const noexcept { return m_Statistic.UsedVertexNumber + numVertices <= m_Statistic.MaxVertexNumber; }
+		constexpr
+		bool HasFreeIndexSlots(unsigned numIndices = 0) const noexcept { return  m_Statistic.UsedIndexNumber + numIndices <= m_Statistic.MaxIndexNumber; }
+		constexpr
+		const BatchStatistic& GetStatistic() const noexcept { return m_Statistic; }
 
 		void SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) const noexcept;
 
 		bool operator==(const Batch& other) const noexcept
 		{
-			return m_Configuration == other.m_Configuration;
+			return m_Statistic == other.m_Statistic;
 		}
 
 	private:
 		void AddTexture(const Ref<Texture2D>& texture) noexcept;
 
-		unsigned m_MaxVertices;
-		unsigned m_MaxIndices;
-		unsigned m_UsedVertices;
-		unsigned m_UsedIndices;
+		BatchStatistic m_Statistic;
 		Ref<VertexArray> m_VAO;
 		Ref<VertexBuffer> m_VBO;
 		Ref<IndexBuffer> m_EBO;
-		BatchConfiguration m_Configuration;
 	};
 }

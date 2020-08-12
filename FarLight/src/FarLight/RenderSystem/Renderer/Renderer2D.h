@@ -50,15 +50,20 @@ namespace FarLight
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 
 		static void SetViewport(unsigned width, unsigned height) noexcept { RenderCommand::SetViewport(0, 0, width, height); }
+		
 		static RendererAPI::API GetAPI() noexcept { return RendererAPI::GetAPI(); }
+		static const BatchController& GetRender2DBatchController() noexcept { return GetBatchController(); }
 
 	private:
-		static void Flush() noexcept;
 		static BatchController& GetBatchController() noexcept;
-		static BatchConfiguration& GetDefaultBatchConfiguration() noexcept;
 
-		static void RecalculateQuadData(const glm::vec3& position
-			, const glm::vec2& size
+		static const BufferLayout& GetDefaultLayout() noexcept;
+		static const Ref<Shader>& GetDefaultShader() noexcept;
+		static const Ref<Texture2D>& GetDefaultTexture() noexcept;
+
+		static void Flush() noexcept;
+		static void RecalculateQuadData(const glm::vec3& position = glm::vec3(0.0f)
+			, const glm::vec2& size = glm::vec2(1.0f)
 			, const glm::vec4& color = glm::vec4(1.0f)
 			, float counterclockwiseRadians = 0.0f
 			, const Ref<Texture2D>& texture = nullptr

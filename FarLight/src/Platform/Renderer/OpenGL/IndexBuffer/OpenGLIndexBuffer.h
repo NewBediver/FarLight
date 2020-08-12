@@ -27,7 +27,7 @@ namespace FarLight
 
 		virtual unsigned GetID() const noexcept override { return m_RendererID; }
 
-		virtual void AddSubData(const void* indices, unsigned size) noexcept override;
+		virtual void AddSubData(const void* indices, unsigned count) noexcept override;
 
 		virtual unsigned GetCount() const noexcept override { return m_Count; }
 		virtual void SetCount(unsigned count) noexcept override { m_Count = count; }
