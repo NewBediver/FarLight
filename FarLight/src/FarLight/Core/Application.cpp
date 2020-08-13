@@ -73,7 +73,7 @@ namespace FarLight
 					FL_PROFILE_SCOPE("UserIntarface OnUpdate");
 
 					m_UserInterfaceLayer->Begin();
-					for (auto& layer = m_LayerStack.cbegin(); layer != m_LayerStack.cend(); ++layer)
+					for (auto& layer = m_LayerStack.crbegin(); layer != m_LayerStack.crend(); ++layer)
 						(*layer)->OnUserInterfaceRender();
 					m_UserInterfaceLayer->End();
 				}
@@ -98,8 +98,8 @@ namespace FarLight
 
 			for (auto& layer = m_LayerStack.crbegin(); layer != m_LayerStack.crend(); ++layer)
 			{
-				(*layer)->OnEvent(e);
 				if (e.IsHandled()) break;
+				(*layer)->OnEvent(e);
 			}
 		}
 	}
@@ -108,7 +108,7 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		m_IsRunning = false;
+		Close();
 		return true;
 	}
 
@@ -122,4 +122,8 @@ namespace FarLight
 		return false;
 	}
 
+	void Application::Close() noexcept
+	{
+		m_IsRunning = false;
+	}
 }

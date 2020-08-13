@@ -72,13 +72,14 @@ project "FarLight"
         "opengl32.lib"
     }
 
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS",
+        "GLFW_INCLUDE_NONE"
+    }
+
     filter "system:windows"
         systemversion "latest"
-
-        defines
-        {
-            "GLFW_INCLUDE_NONE"
-        }
 
     filter "configurations:Debug"
         defines 

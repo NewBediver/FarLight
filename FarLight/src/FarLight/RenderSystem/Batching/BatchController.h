@@ -18,6 +18,7 @@ namespace FarLight
 
 		void RenderAll() noexcept;
 		void ClearAll() noexcept;
+		void ResetRenderCalls() noexcept;
 
 		void AddData(const BatchStatistic& stat, unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture, unsigned textureIndexDataOffset) noexcept;
 		void AddData(const BatchStatistic& stat, unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices) noexcept;

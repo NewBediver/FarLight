@@ -59,6 +59,8 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
+		GetBatchController().ClearAll();
+		GetBatchController().ResetRenderCalls();
 		GetBatchController().SetViewProjection(camera.GetViewMatrix(), camera.GetProjectionMatrix());
 	}
 
@@ -66,7 +68,7 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		Flush();
+		GetBatchController().RenderAll();
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) noexcept
@@ -151,17 +153,29 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		glm::mat4 transformation = glm::translate(glm::mat4(1.0f), position)
-			* glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f))
-			* glm::scale(glm::mat4(1.0f), glm::vec3(size.x, size.y, 0.0f));
+		float halfXSize = size.x / 2;
+		float halfYSize = size.y / 2;
 
-		static constexpr glm::vec4 s_Positions[4] =
+		glm::vec4 positions[4];
+		if (counterclockwiseRadians == 0.0f)
 		{
-			{ -0.5f, -0.5f,  0.0f,  1.0f },  // LowerLeft
-			{  0.5f, -0.5f,  0.0f,  1.0f },  // LowerRight
-			{  0.5f,  0.5f,  0.0f,  1.0f },  // UpperRight
-			{ -0.5f,  0.5f,  0.0f,  1.0f }   // UpperLeft
-		};
+			positions[0] = { position.x - halfXSize, position.y - halfYSize, position.z, 1.0f };  // LowerLeft
+			positions[1] = { position.x + halfXSize, position.y - halfYSize, position.z, 1.0f };  // LowerRight
+			positions[2] = { position.x + halfXSize, position.y + halfYSize, position.z, 1.0f };  // UpperRight
+			positions[3] = { position.x - halfXSize, position.y + halfYSize, position.z, 1.0f };  // UpperLeft
+		}
+		else
+		{
+			positions[0] = { -halfXSize, -halfYSize, position.z, 1.0f };  // LowerLeft
+			positions[1] = {  halfXSize, -halfYSize, position.z, 1.0f };  // LowerRight
+			positions[2] = {  halfXSize,  halfYSize, position.z, 1.0f };  // UpperRight
+			positions[3] = { -halfXSize,  halfYSize, position.z, 1.0f };  // UpperLeft
+			for (int i = 0; i < 4; ++i)
+			{
+				positions[i] = glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f)) * positions[i];
+				positions[i] = glm::vec4(positions[i].x + position.x, positions[i].y + position.y, positions[i].z, positions[i].w);
+			}
+		}
 
 		static constexpr glm::vec2 s_TextureCoordinates[4] =
 		{
@@ -171,31 +185,24 @@ namespace FarLight
 			{ 0.0f, 1.0f }   // UpperLeft
 		};
 
-		std::vector<glm::vec4> positions(4);
-		for (unsigned i = 0; i < 4; ++i)
-		{
-			positions[i] = transformation * s_Positions[i];
-		}
-
-		std::vector<float> data(4 * GetDefaultLayout().GetCount());
+		std::vector<float> data(4ull * static_cast<unsigned long long>(GetDefaultLayout().GetCount()));
 		for (unsigned i = 0; i < 4; ++i)
 		{
 			unsigned offset = i * GetDefaultLayout().GetCount();
 			data[offset] = positions[i].x;
-			data[offset + 1] = positions[i].y;
-			data[offset + 2] = positions[i].z;
-			data[offset + 3] = color.r;
-			data[offset + 4] = color.g;
-			data[offset + 5] = color.b;
-			data[offset + 6] = color.a;
-			data[offset + 7] = s_TextureCoordinates[i].x;
-			data[offset + 8] = s_TextureCoordinates[i].y;
-			data[offset + 9] = 0;
-			data[offset + 10] = tilingFactor;
+			data[offset +  1ull] = positions[i].y;
+			data[offset +  2ull] = positions[i].z;
+			data[offset +  3ull] = color.r;
+			data[offset +  4ull] = color.g;
+			data[offset +  5ull] = color.b;
+			data[offset +  6ull] = color.a;
+			data[offset +  7ull] = s_TextureCoordinates[i].x;
+			data[offset +  8ull] = s_TextureCoordinates[i].y;
+			data[offset +  9ull] = 0;
+			data[offset + 10ull] = tilingFactor;
 		}
 
 		static std::vector<unsigned> s_Indices = { 0, 1, 2, 2, 3, 0 };
-
 		if (texture == nullptr)
 		{
 			GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, data, 6, s_Indices);
@@ -204,13 +211,5 @@ namespace FarLight
 		{
 			GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, data, 6, s_Indices, texture, 9);
 		}
-	}
-
-	void Renderer2D::Flush() noexcept
-	{
-		FL_PROFILE_FUNCTION();
-
-		GetBatchController().RenderAll();
-		GetBatchController().ClearAll();
 	}
 }

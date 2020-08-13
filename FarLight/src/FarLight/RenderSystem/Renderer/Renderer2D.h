@@ -61,7 +61,6 @@ namespace FarLight
 		static const Ref<Shader>& GetDefaultShader() noexcept;
 		static const Ref<Texture2D>& GetDefaultTexture() noexcept;
 
-		static void Flush() noexcept;
 		static void RecalculateQuadData(const glm::vec3& position = glm::vec3(0.0f)
 			, const glm::vec2& size = glm::vec2(1.0f)
 			, const glm::vec4& color = glm::vec4(1.0f)

@@ -21,7 +21,7 @@ namespace FarLight
 		virtual void OnDetach() noexcept override;
 		virtual void OnUpdate(const Timestep& timestamp) noexcept override { };
 		virtual void OnUserInterfaceRender() noexcept override { };
-		virtual void OnEvent(Event& event) noexcept override { }
+		virtual void OnEvent(Event& event) noexcept override;
 
 		void Begin() const noexcept;
 		void End() const noexcept;

@@ -67,6 +67,12 @@ namespace FarLight
 			batch.Clear();
 	}
 
+	void BatchController::ResetRenderCalls() noexcept
+	{
+		for (auto& batch : m_Batches)
+			batch.ResetRenderCalls();
+	}
+
 	void BatchController::SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) noexcept
 	{
 		FL_PROFILE_FUNCTION();

@@ -74,10 +74,10 @@ namespace FarLight
 			AddTexture(texture);
 		}
 
-		for (int i = 0; i < vertexNumber; ++i)
+		for (unsigned long long i = 0; i < vertexNumber; ++i)
 		{
-			unsigned index = i * m_Statistic.UsedLayout.GetCount();
-			tmp[index + textureIndexDataOffset] = textureId;
+			unsigned long long index = i * static_cast<unsigned long long>(m_Statistic.UsedLayout.GetCount());
+			tmp[index + static_cast<unsigned long long>(textureIndexDataOffset)] = static_cast<float>(textureId);
 		}
 
 		AddData(vertexNumber, tmp, indexNumber, indices);
@@ -111,6 +111,8 @@ namespace FarLight
 
 		m_VAO->Bind();
 		RenderCommand::DrawIndexed(m_VAO);
+
+		m_Statistic.m_RenderCalls.push_back({m_Statistic.UsedVertexNumber, m_Statistic.UsedIndexNumber, m_Statistic.UsedTextureSlots});
 	}
 
 	void Batch::Clear() noexcept

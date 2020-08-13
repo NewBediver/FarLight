@@ -41,6 +41,8 @@ namespace FarLight
 		bool OnWindowClosed(const WindowClosedEvent& e) noexcept;
 		bool OnWindowResized(const WindowResizedEvent& e) noexcept;
 
+		void Close() noexcept;
+
 		Ref<Window> m_Window;
 		Ref<ImGuiLayer> m_UserInterfaceLayer;
 

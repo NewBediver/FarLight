@@ -21,8 +21,8 @@ namespace FarLight
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+		ImGuiIO& io = ImGui::GetIO();
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
@@ -54,6 +54,13 @@ namespace FarLight
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
+	}
+
+	void ImGuiLayer::OnEvent(Event& event) noexcept
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::MouseEventCategory) & io.WantCaptureMouse);
+		if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::KeyboardEventCategory) & io.WantCaptureKeyboard);
 	}
 
 	void ImGuiLayer::Begin() const noexcept

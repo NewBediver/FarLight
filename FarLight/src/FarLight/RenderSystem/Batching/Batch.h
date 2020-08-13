@@ -13,6 +13,13 @@ namespace FarLight
 {
 	struct BatchStatistic final
 	{
+		struct RenderStatistic
+		{
+			unsigned UsedVertexNumber;
+			unsigned UsedIndexNumber;
+			unsigned UsedTextureSlots;
+		};
+
 		unsigned MaxVertexNumber;
 		unsigned UsedVertexNumber;
 
@@ -46,6 +53,13 @@ namespace FarLight
 				&& UsedLayout == other.UsedLayout
 				&& UsedTextures[0]->GetID() == other.UsedTextures[0]->GetID();
 		}
+
+		const std::vector<RenderStatistic>& GetRenderStatistic() const noexcept { return m_RenderCalls; }
+
+	private:
+		std::vector<RenderStatistic> m_RenderCalls;
+
+		friend class Batch;
 	};
 
 	class Batch final
@@ -75,6 +89,7 @@ namespace FarLight
 		bool HasFreeIndexSlots(unsigned numIndices = 0) const noexcept { return  m_Statistic.UsedIndexNumber + numIndices <= m_Statistic.MaxIndexNumber; }
 		constexpr
 		const BatchStatistic& GetStatistic() const noexcept { return m_Statistic; }
+		void ResetRenderCalls() noexcept { m_Statistic.m_RenderCalls.clear(); }
 
 		void SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) const noexcept;
 

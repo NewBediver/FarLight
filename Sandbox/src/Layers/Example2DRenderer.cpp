@@ -34,7 +34,7 @@ void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp) noexcept
 	
 	m_Rotation += static_cast<float>(timestamp);
 
-	FarLight::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+	FarLight::RenderCommand::SetClearColor({ 0.5f, 0.5f, 0.5f, 1.0f });
 	FarLight::RenderCommand::Clear();
 
 	FarLight::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -44,35 +44,42 @@ void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp) noexcept
 	FarLight::Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f });
 	FarLight::Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2.0f, { 0.3f, 0.8f, 0.2f, 1.0f });
 
-	for (float x = -10.0f; x < 10.0f; x += 0.5f)
+	for (float x = -10.0f; x < 10.0f; x += 1.0f)
 	{
-		for (float y = -10.0f; y < 10.0f; y += 0.5f)
+		for (float y = -10.0f; y < 10.0f; y += 1.0f)
 		{
-			FarLight::Renderer2D::DrawQuad({ x, y, 0.1f }, { 0.45f, 0.45f }, m_Texture, 1.0f, { x + 100.0f / 200.0f, 0.6f, y + 100.0f / 200.0f, 0.7f });
+			FarLight::Renderer2D::DrawQuad({ x, y, 0.1f }, { 0.45f, 0.45f }, { (x + 10.0f) / 20.0f, 0.6f, (y + 10.0f) / 20.0f, 0.7f });
 		}
 	}
 
-	m_Controller = FarLight::Renderer2D::GetRender2DBatchController();
-
 	FarLight::Renderer2D::EndScene();
+
+	m_Controller = FarLight::Renderer2D::GetRender2DBatchController();
 }
 
 void Example2DRenderer::OnUserInterfaceRender() noexcept
 {
 	ImGui::Begin("Batching Statistics");
 
-	for (int i = 0; i < m_Controller.GetBatches().size(); ++i)
+	for (unsigned i = 0; i < m_Controller.GetBatches().size(); ++i)
 	{
-		ImGui::Text("========== Statistic for batch #%d:", i+1);
+		ImGui::Text("========== Statistic for batch #%d: ==========", i+1);
 		ImGui::Text("   Maximum Vertex Count: %d", m_Controller.GetBatches()[i].GetStatistic().MaxVertexNumber);
-		ImGui::Text("   Used Vertex Count: %d", m_Controller.GetBatches()[i].GetStatistic().UsedVertexNumber);
 		ImGui::Text("   Maximum Index Count: %d", m_Controller.GetBatches()[i].GetStatistic().MaxIndexNumber);
-		ImGui::Text("   Used Index Count: %d", m_Controller.GetBatches()[i].GetStatistic().UsedIndexNumber);
 		ImGui::Text("   Maximum Texture Slots: %d", m_Controller.GetBatches()[i].GetStatistic().MaxTextureSlots);
-		ImGui::Text("   Used Texture Slots: %d", m_Controller.GetBatches()[i].GetStatistic().UsedTextureSlots);
 		ImGui::Text("   Used Shader ID: %d", m_Controller.GetBatches()[i].GetStatistic().UsedShader->GetID());
 		ImGui::Text("   Used Default Texture ID: %d", m_Controller.GetBatches()[i].GetStatistic().UsedTextures[0]->GetID());
 		ImGui::Text("   Used Layout Size, Count and Stride: %d / %d / %d", m_Controller.GetBatches()[i].GetStatistic().UsedLayout.GetElements().size(), m_Controller.GetBatches()[i].GetStatistic().UsedLayout.GetCount(), m_Controller.GetBatches()[i].GetStatistic().UsedLayout.GetStride());
+		ImGui::Text("   Render calls: %d", m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic().size());
+		for (unsigned j = 0; j < m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic().size(); ++j)
+		{
+			ImGui::Text("   ===== Statistic for render call #%d: =====", j + 1);
+			ImGui::Text("      Used Vertex Count: %d", m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedVertexNumber);
+			ImGui::Text("      Used Index Count: %d", m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedIndexNumber);
+			ImGui::Text("      Used Texture Slots: %d", m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedTextureSlots);
+			ImGui::Text("   =========================================");
+		}
+		ImGui::Text("============================================");
 	}
 
 	ImGui::End();

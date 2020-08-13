@@ -47,11 +47,22 @@
 
 #ifdef FL_DEBUG
 	#define FL_ENABLE_ASSERTS
+	#if defined(FL_PLATFORM_WINDOWS)
+		#define FL_DEBUGBREAK() __debugbreak()
+	#elif defined(FL_PLATFORM_LINUX)
+		#include <signal.h>
+		#define FL_DEBUGBREAK() raise(SIGTRAP)
+	#else
+		#error "Platform doesn't support debugbreak yet!"
+	#endif
+#else
+	#define FL_DEBUGBREAK()
 #endif
 
+
 #ifdef FL_ENABLE_ASSERTS
-	#define FL_ASSERT(x, ...) {if (!(x)) {FL_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
-	#define FL_CORE_ASSERT(x, ...) {if (!(x)) {FL_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
+	#define FL_ASSERT(x, ...) {if (!(x)) {FL_ERROR("Assertion Failed: {0}", __VA_ARGS__); FL_DEBUGBREAK();}}
+	#define FL_CORE_ASSERT(x, ...) {if (!(x)) {FL_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); FL_DEBUGBREAK();}}
 #else
 	#define FL_ASSERT(x, ...)
 	#define FL_CORE_ASSERT(x, ...)
