@@ -1,6 +1,10 @@
 #pragma once
 
+#include <array>
+
 #include "FarLight/Core/Core.h"
+
+#include <glm/glm.hpp>
 
 namespace FarLight
 {
@@ -23,6 +27,12 @@ namespace FarLight
 
 		virtual unsigned GetWidth() const noexcept = 0;
 		virtual unsigned GetHeight() const noexcept = 0;
+
+		virtual const std::array<glm::vec2, 4>& GetCoordinates() const noexcept = 0;
+		virtual const glm::vec2& GetLowerLeftCoordinate() const noexcept = 0;
+		virtual const glm::vec2& GetLowerRightCoordinate() const noexcept = 0;
+		virtual const glm::vec2& GetUpperRightCoordinate() const noexcept = 0;
+		virtual const glm::vec2& GetUpperLeftCoordinate() const noexcept = 0;
 
 		virtual void SetData(const void* data, unsigned size) const noexcept = 0;
 	};

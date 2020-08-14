@@ -10,6 +10,7 @@
 #include "FarLight/RenderSystem/Camera/OrthographicCamera.h"
 
 #include "FarLight/RenderSystem/Texture/Texture2D.h"
+#include "FarLight/RenderSystem/Texture/SubTexture.h"
 
 #include "FarLight/RenderSystem/Batching/Batch.h"
 #include "FarLight/RenderSystem/Batching/BatchController.h"
@@ -44,10 +45,20 @@ namespace FarLight
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 
 		static void SetViewport(unsigned width, unsigned height) noexcept { RenderCommand::SetViewport(0, 0, width, height); }
 		
@@ -55,18 +66,49 @@ namespace FarLight
 		static const BatchController& GetRender2DBatchController() noexcept { return GetBatchController(); }
 
 	private:
-		static BatchController& GetBatchController() noexcept;
+		static BatchController& Renderer2D::GetBatchController() noexcept
+		{
+			static BatchController s_BatchController;
+			return s_BatchController;
+		}
 
-		static const BufferLayout& GetDefaultLayout() noexcept;
-		static const Ref<Shader>& GetDefaultShader() noexcept;
-		static const Ref<Texture2D>& GetDefaultTexture() noexcept;
+		static const BufferLayout& Renderer2D::GetDefaultLayout() noexcept
+		{
+			static BufferLayout s_DefaultLayout({
+						{ ShaderDataType::Float3, "a_Position" },
+						{ ShaderDataType::Float4, "a_Color" },
+						{ ShaderDataType::Float2, "a_TextureCoordinates" },
+						{ ShaderDataType::Float,  "a_TextureId"},
+						{ ShaderDataType::Float,  "a_TilingFactor"}
+				});
+			return s_DefaultLayout;
+		}
 
-		static void RecalculateQuadData(const glm::vec3& position = glm::vec3(0.0f)
-			, const glm::vec2& size = glm::vec2(1.0f)
-			, const glm::vec4& color = glm::vec4(1.0f)
-			, float counterclockwiseRadians = 0.0f
-			, const Ref<Texture2D>& texture = nullptr
-			, float tilingFactor = 1.0f
-			, const Ref<Shader>& shader = nullptr) noexcept;
+		static const Ref<FarLight::Shader>& Renderer2D::GetDefaultShader() noexcept
+		{
+			static Ref<Shader> s_DefaultShader = Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag");
+			return s_DefaultShader;
+		}
+
+		static const Ref<FarLight::Texture2D>& Renderer2D::GetDefaultTexture() noexcept
+		{
+			static Ref<Texture2D> s_DefaultTexture = Texture2D::Create(1, 1);
+			return s_DefaultTexture;
+		}
+
+		static std::array<glm::vec4, 4> RecalculateSquareVertexPosition(const glm::vec3& position, const glm::vec2& size) noexcept;
+		static std::array<glm::vec4, 4> RecalculateSquareVertexPosition(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians) noexcept;
+
+		static std::vector<float> RecalculateSquareVertexData(const std::array<glm::vec4, 4>& position, const glm::vec4& color, const std::array<glm::vec2, 4>& textureCoordinates, float tilingFactor = 1.0f) noexcept;
+		static std::vector<unsigned> RecalculateSquareIndexData() noexcept;
+
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept;
+
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
+
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
 	};
 }

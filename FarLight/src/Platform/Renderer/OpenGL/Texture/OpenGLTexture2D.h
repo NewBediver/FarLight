@@ -29,11 +29,18 @@ namespace FarLight
 		virtual unsigned GetWidth() const noexcept override { return m_Width; }
 		virtual unsigned GetHeight() const noexcept override { return m_Height; }
 
+		virtual const std::array<glm::vec2, 4>& GetCoordinates() const noexcept override { return m_Coordinates; }
+		virtual const glm::vec2& GetLowerLeftCoordinate() const noexcept override { return m_Coordinates[0]; }
+		virtual const glm::vec2& GetLowerRightCoordinate() const noexcept override { return m_Coordinates[1]; }
+		virtual const glm::vec2& GetUpperRightCoordinate() const noexcept override { return m_Coordinates[2]; }
+		virtual const glm::vec2& GetUpperLeftCoordinate() const noexcept override { return m_Coordinates[3]; }
+
 		virtual void SetData(const void* data, unsigned size) const noexcept override;
 
 	private:
 		unsigned m_RendererID;
 		unsigned m_Width, m_Height, m_Channels;
+		std::array<glm::vec2, 4> m_Coordinates;
 		GLenum m_InternalFormat, m_DataFormat;
 	};
 }

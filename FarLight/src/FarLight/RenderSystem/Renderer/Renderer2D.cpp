@@ -10,36 +10,6 @@
 
 namespace FarLight
 {
-	BatchController& Renderer2D::GetBatchController() noexcept
-	{
-		static BatchController s_BatchController;
-		return s_BatchController;
-	}
-
-	const BufferLayout& Renderer2D::GetDefaultLayout() noexcept
-	{
-		static BufferLayout s_DefaultLayout({
-					{ ShaderDataType::Float3, "a_Position" },
-					{ ShaderDataType::Float4, "a_Color" },
-					{ ShaderDataType::Float2, "a_TextureCoordinates" },
-					{ ShaderDataType::Float,  "a_TextureId"},
-					{ ShaderDataType::Float,  "a_TilingFactor"}
-			});
-		return s_DefaultLayout;
-	}
-
-	const Ref<FarLight::Shader>& Renderer2D::GetDefaultShader() noexcept
-	{
-		static Ref<Shader> s_DefaultShader = Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag");
-		return s_DefaultShader;
-	}
-
-	const Ref<FarLight::Texture2D>& Renderer2D::GetDefaultTexture() noexcept
-	{
-		static Ref<Texture2D> s_DefaultTexture = Texture2D::Create(1, 1);
-		return s_DefaultTexture;
-	}
-
 	void Renderer2D::Init() noexcept
 	{
 		FL_PROFILE_FUNCTION();
@@ -92,7 +62,7 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, color, counterclockwiseRadians);
+		RecalculateQuadData(position, size, counterclockwiseRadians, color);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
@@ -104,7 +74,7 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, tintColor, 0.0f, texture);
+		RecalculateQuadData(position, size, texture, 1.0f, tintColor);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
@@ -116,7 +86,31 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, tintColor, counterclockwiseRadians, texture);
+		RecalculateQuadData(position, size, counterclockwiseRadians, texture, 1.0f,  tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor) noexcept
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, subTexture, tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		RecalculateQuadData(position, size, subTexture, 1.0f, tintColor);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor) noexcept
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, subTexture, tintColor);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		RecalculateQuadData(position, size, counterclockwiseRadians, subTexture, 1.0f, tintColor);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
@@ -128,7 +122,7 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, tintColor, 0.0f, texture, tilingFactor);
+		RecalculateQuadData(position, size, texture, tilingFactor, tintColor);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
@@ -140,76 +134,166 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, tintColor, counterclockwiseRadians, texture, tilingFactor);
+		RecalculateQuadData(position, size, counterclockwiseRadians, texture, tilingFactor, tintColor);
 	}
 
-	void Renderer2D::RecalculateQuadData(const glm::vec3& position
-		, const glm::vec2& size
-		, const glm::vec4& color
-		, float counterclockwiseRadians
-		, const Ref<Texture2D>& texture
-		, float tilingFactor
-		, const Ref<Shader>& shader) noexcept
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor) noexcept
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, subTexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
+		RecalculateQuadData(position, size, subTexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor) noexcept
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, subTexture, tilingFactor, tintColor);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		RecalculateQuadData(position, size, counterclockwiseRadians, subTexture, tilingFactor, tintColor);
+	}
+
+	std::array<glm::vec4, 4> Renderer2D::RecalculateSquareVertexPosition(const glm::vec3& position, const glm::vec2& size) noexcept
+	{
 		float halfXSize = size.x / 2;
 		float halfYSize = size.y / 2;
 
-		glm::vec4 positions[4];
-		if (counterclockwiseRadians == 0.0f)
+		return std::array<glm::vec4, 4>
 		{
-			positions[0] = { position.x - halfXSize, position.y - halfYSize, position.z, 1.0f };  // LowerLeft
-			positions[1] = { position.x + halfXSize, position.y - halfYSize, position.z, 1.0f };  // LowerRight
-			positions[2] = { position.x + halfXSize, position.y + halfYSize, position.z, 1.0f };  // UpperRight
-			positions[3] = { position.x - halfXSize, position.y + halfYSize, position.z, 1.0f };  // UpperLeft
-		}
-		else
-		{
-			positions[0] = { -halfXSize, -halfYSize, position.z, 1.0f };  // LowerLeft
-			positions[1] = {  halfXSize, -halfYSize, position.z, 1.0f };  // LowerRight
-			positions[2] = {  halfXSize,  halfYSize, position.z, 1.0f };  // UpperRight
-			positions[3] = { -halfXSize,  halfYSize, position.z, 1.0f };  // UpperLeft
-			for (int i = 0; i < 4; ++i)
-			{
-				positions[i] = glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f)) * positions[i];
-				positions[i] = glm::vec4(positions[i].x + position.x, positions[i].y + position.y, positions[i].z, positions[i].w);
-			}
-		}
+			glm::vec4(position.x - halfXSize, position.y - halfYSize, position.z, 1.0f),  // LowerLeft
+			glm::vec4(position.x + halfXSize, position.y - halfYSize, position.z, 1.0f),  // LowerRight
+			glm::vec4(position.x + halfXSize, position.y + halfYSize, position.z, 1.0f),  // UpperRight
+			glm::vec4(position.x - halfXSize, position.y + halfYSize, position.z, 1.0f)   // UpperLeft
+		};
+	}
+	std::array<glm::vec4, 4> Renderer2D::RecalculateSquareVertexPosition(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians) noexcept
+	{
+		float halfXSize = size.x / 2;
+		float halfYSize = size.y / 2;
 
-		static constexpr glm::vec2 s_TextureCoordinates[4] =
+		glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), counterclockwiseRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+
+		std::array<glm::vec4, 4> tmp = 
 		{
-			{ 0.0f, 0.0f },  // LowerLeft
-			{ 1.0f, 0.0f },  // LowerRight
-			{ 1.0f, 1.0f },  // UpperRight
-			{ 0.0f, 1.0f }   // UpperLeft
+			rotationMat * glm::vec4(-halfXSize, -halfYSize, position.z, 1.0f),  // LowerLeft
+			rotationMat * glm::vec4( halfXSize, -halfYSize, position.z, 1.0f),  // LowerRight
+			rotationMat * glm::vec4( halfXSize,  halfYSize, position.z, 1.0f),  // UpperRight
+			rotationMat * glm::vec4(-halfXSize,  halfYSize, position.z, 1.0f)   // UpperLeft
 		};
 
+		for (int i = 0; i < 4; ++i)
+		{
+			tmp[i].x += position.x;
+			tmp[i].y += position.y;
+		}
+		return tmp;
+	}
+
+	std::vector<float> Renderer2D::RecalculateSquareVertexData(const std::array<glm::vec4, 4>& position, const glm::vec4& color, const std::array<glm::vec2, 4>& textureCoordinates, float tilingFactor) noexcept
+	{
 		std::vector<float> data(4ull * static_cast<unsigned long long>(GetDefaultLayout().GetCount()));
 		for (unsigned i = 0; i < 4; ++i)
 		{
 			unsigned offset = i * GetDefaultLayout().GetCount();
-			data[offset] = positions[i].x;
-			data[offset +  1ull] = positions[i].y;
-			data[offset +  2ull] = positions[i].z;
-			data[offset +  3ull] = color.r;
-			data[offset +  4ull] = color.g;
-			data[offset +  5ull] = color.b;
-			data[offset +  6ull] = color.a;
-			data[offset +  7ull] = s_TextureCoordinates[i].x;
-			data[offset +  8ull] = s_TextureCoordinates[i].y;
-			data[offset +  9ull] = 0;
+			data[offset] = position[i].x;
+			data[offset + 1ull] = position[i].y;
+			data[offset + 2ull] = position[i].z;
+			data[offset + 3ull] = color.r;
+			data[offset + 4ull] = color.g;
+			data[offset + 5ull] = color.b;
+			data[offset + 6ull] = color.a;
+			data[offset + 7ull] = textureCoordinates[i].x;
+			data[offset + 8ull] = textureCoordinates[i].y;
+			data[offset + 9ull] = 0.0f;
 			data[offset + 10ull] = tilingFactor;
 		}
+		return data;
+	}
+	std::vector<unsigned> Renderer2D::RecalculateSquareIndexData() noexcept
+	{
+		return { 0, 1, 2, 2, 3, 0 };
+	}
 
-		static std::vector<unsigned> s_Indices = { 0, 1, 2, 2, 3, 0 };
-		if (texture == nullptr)
-		{
-			GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, data, 6, s_Indices);
-		}
-		else
-		{
-			GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, data, 6, s_Indices, texture, 9);
-		}
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		std::array<glm::vec4, 4> positions = RecalculateSquareVertexPosition(position, size);
+		std::array<glm::vec2, 4> textureCoords = GetDefaultTexture()->GetCoordinates();
+
+		std::vector<float> vertexData = RecalculateSquareVertexData(positions, color, textureCoords);
+		std::vector<unsigned> indexData = RecalculateSquareIndexData();
+
+		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData);
+	}
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		std::array<glm::vec4, 4> positions = RecalculateSquareVertexPosition(position, size, counterclockwiseRadians);
+		std::array<glm::vec2, 4> textureCoords = GetDefaultTexture()->GetCoordinates();
+
+		std::vector<float> vertexData = RecalculateSquareVertexData(positions, color, textureCoords);
+		std::vector<unsigned> indexData = RecalculateSquareIndexData();
+
+		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData);
+	}
+
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4 tintColor) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		std::array<glm::vec4, 4> positions = RecalculateSquareVertexPosition(position, size);
+		std::array<glm::vec2, 4> textureCoords = texture->GetCoordinates();
+
+		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
+		std::vector<unsigned> indexData = RecalculateSquareIndexData();
+
+		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, texture, 9);
+	}
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4 tintColor) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		std::array<glm::vec4, 4> positions = RecalculateSquareVertexPosition(position, size, counterclockwiseRadians);
+		std::array<glm::vec2, 4> textureCoords = texture->GetCoordinates();
+
+		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
+		std::vector<unsigned> indexData = RecalculateSquareIndexData();
+
+		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, texture, 9);
+	}
+
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4 tintColor) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		std::array<glm::vec4, 4> positions = RecalculateSquareVertexPosition(position, size);
+		std::array<glm::vec2, 4> textureCoords = subTexture->GetCoordinates();
+
+		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
+		std::vector<unsigned> indexData = RecalculateSquareIndexData();
+
+		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, subTexture->GetTexture(), 9);
+	}
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4 tintColor) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		std::array<glm::vec4, 4> positions = RecalculateSquareVertexPosition(position, size, counterclockwiseRadians);
+		std::array<glm::vec2, 4> textureCoords = subTexture->GetCoordinates();
+
+		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
+		std::vector<unsigned> indexData = RecalculateSquareIndexData();
+
+		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, subTexture->GetTexture(), 9);
 	}
 }

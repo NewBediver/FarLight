@@ -79,6 +79,13 @@ namespace FarLight
 		SetData(data, m_Width * m_Height * channels);
 
 		stbi_image_free(data);
+
+		m_Coordinates = {
+				glm::vec2(0.0f, 0.0f),  // LowerLeft
+				glm::vec2(1.0f, 0.0f),  // LowerRight
+				glm::vec2(1.0f, 1.0f),  // UpperRight
+				glm::vec2(0.0f, 1.0f)   // UpperLeft
+		};
 	}
 
 	OpenGLTexture2D::OpenGLTexture2D(unsigned width, unsigned height, const glm::vec4& pixelColor) noexcept
@@ -108,6 +115,13 @@ namespace FarLight
 		std::vector<unsigned> colors(static_cast<unsigned long long>(width) * static_cast<unsigned long long>(height), color);
 
 		SetData(&colors.front(), sizeof(color) * m_Width * m_Height);
+
+		m_Coordinates = {
+				glm::vec2(0.0f, 0.0f),  // LowerLeft
+				glm::vec2(1.0f, 0.0f),  // LowerRight
+				glm::vec2(1.0f, 1.0f),  // UpperRight
+				glm::vec2(0.0f, 1.0f)   // UpperLeft
+		};
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D() noexcept

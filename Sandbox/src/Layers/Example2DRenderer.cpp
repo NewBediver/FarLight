@@ -11,6 +11,38 @@
 
 #include <imgui.h>
 
+static const char* s_Map =
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGQUUUUUEGGGGGGG"
+"GGGGGGGGGGGGGuQUsWWWoWaEGGGGGG"
+"GGGGGGGGGGGGGQsWWWWWWWWRGGGGGG"
+"GGGGGGGGGGuGGLWWpWWiWWOaUUEGGG"
+"GGGGGGGGGcGGuADDeWWWWWWWWWRGGG"
+"GGGGGGGGGbGyGGuGAeWWWoWWPWRGGG"
+"GGGGGGGGGBGYbGuGGADDDeWWWWRGGG"
+"GGGGGGGGGcGGBbcGGcGGGADDDDSGGG"
+"GGGGGGGGGGGGGBGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG";
+
 Example2DRenderer::Example2DRenderer() noexcept
 	: Layer("Example2DRenderer")
 	, m_CameraController(1280.0f / 720.0f)
@@ -21,6 +53,40 @@ void Example2DRenderer::OnAttach() noexcept
 {
 	m_Texture = FarLight::Texture2D::Create("assets/textures/Box.png");
 	m_ShovelKnightTexture = FarLight::Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
+
+	m_TileSheet = FarLight::Texture2D::Create("assets/textures/tilesheets/Kenney_roguelike.png");
+	m_TextureMap['G'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 5, 30 });
+	m_TextureMap['W'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 3, 29 });
+
+	m_TextureMap['L'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 2, 29 });
+	m_TextureMap['U'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 3, 30 });
+	m_TextureMap['R'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 4, 29 });
+	m_TextureMap['D'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 3, 28 });
+
+	m_TextureMap['Q'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 2, 30 });
+	m_TextureMap['E'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 4, 30 });
+	m_TextureMap['A'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 2, 28 });
+	m_TextureMap['S'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 4, 28 });
+
+	m_TextureMap['q'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 0, 29 });
+	m_TextureMap['e'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 1, 29 });
+	m_TextureMap['a'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 0, 28 });
+	m_TextureMap['s'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 1, 28 });
+
+	m_TextureMap['Y'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 14, 19 });
+	m_TextureMap['y'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 14, 20 });
+	m_TextureMap['u'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 14, 21 });
+
+	m_TextureMap['B'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 15, 19 });
+	m_TextureMap['b'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 15, 20 });
+	m_TextureMap['c'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 15, 21 });
+
+	m_TextureMap['i'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 54, 7 });
+	m_TextureMap['o'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 55, 7 });
+	m_TextureMap['p'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 56, 7 });
+	m_TextureMap['I'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 54, 6 });
+	m_TextureMap['O'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 55, 6 });
+	m_TextureMap['P'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 56, 6 });
 }
 
 void Example2DRenderer::OnDetach() noexcept
@@ -39,16 +105,40 @@ void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp) noexcept
 
 	FarLight::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 1.5f);
+	/*FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 1.5f);
 	FarLight::Renderer2D::DrawRotatedQuad({ 1.0f, 1.0f, 0.0f }, { 1.3f, 0.6f }, m_Rotation, { 0.8f, 0.2f, 0.3f, 1.0f });
 	FarLight::Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f });
-	FarLight::Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2.0f, { 0.3f, 0.8f, 0.2f, 1.0f });
+	FarLight::Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2.0f, { 0.3f, 0.8f, 0.2f, 1.0f });*/
 
-	for (float x = -10.0f; x < 10.0f; x += 1.0f)
+	for (int y = 0; y < 30; ++y)
 	{
-		for (float y = -10.0f; y < 10.0f; y += 1.0f)
+		for (int x = 0; x < 30; ++x)
 		{
-			FarLight::Renderer2D::DrawQuad({ x, y, 0.1f }, { 0.45f, 0.45f }, { (x + 10.0f) / 20.0f, 0.6f, (y + 10.0f) / 20.0f, 0.7f });
+			if (m_TextureMap.find(s_Map[x + y * 30]) != m_TextureMap.end())
+			{
+				if (s_Map[x + y * 30] != 'G' && s_Map[x + y * 30] != 'W')
+				{
+					switch (s_Map[x + y * 30])
+					{
+						case 'i':
+						case 'o':
+						case 'p':
+						case 'I':
+						case 'O':
+						case 'P':
+						{
+							FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_TextureMap[s_Map['W']]);
+							break;
+						}
+						default:
+						{
+							FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_TextureMap[s_Map['G']]);
+							break;
+						}
+					}
+				}
+				FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y }, { 1.0f, 1.0f }, m_TextureMap[s_Map[x + y * 30]]);
+			}
 		}
 	}
 
