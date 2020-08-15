@@ -26,6 +26,8 @@ private:
 	float m_Rotation;
 	FarLight::BatchController m_Controller;
 
+	FarLight::Ref<FarLight::Framebuffer> m_Framebuffer;
+
 	FarLight::Ref<FarLight::Texture2D> m_TileSheet;
 	std::unordered_map<char, FarLight::Ref<FarLight::SubTexture>> m_TextureMap;
 };

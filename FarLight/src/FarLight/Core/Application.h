@@ -29,6 +29,8 @@ namespace FarLight
 		void Run() noexcept;
 		void OnEvent(Event& e) noexcept;
 
+		void Close() noexcept;
+
 		void PushLayer(const Ref<Layer>& layer) noexcept { m_LayerStack.PushLayer(layer); }
 		void PushOverlay(const Ref<Layer>& overlay) noexcept { m_LayerStack.PushOverlay(overlay); }
 
@@ -41,7 +43,6 @@ namespace FarLight
 		bool OnWindowClosed(const WindowClosedEvent& e) noexcept;
 		bool OnWindowResized(const WindowResizedEvent& e) noexcept;
 
-		void Close() noexcept;
 
 		Ref<Window> m_Window;
 		Ref<ImGuiLayer> m_UserInterfaceLayer;

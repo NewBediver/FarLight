@@ -14,13 +14,13 @@ namespace FarLight
 		: m_Texture(texture)
 		, m_TileSize(tileSize)
 		, m_SizeInTileUnits(sizeInTileUnits)
-		, m_Size({tileSize.x * sizeInTileUnits.x, tileSize.y * sizeInTileUnits.y})
+		, m_Size(glm::vec2(tileSize.x * sizeInTileUnits.x, tileSize.y * sizeInTileUnits.y))
 		, m_Offset(offset)
 	{
 		FL_PROFILE_FUNCTION();
 
-		unsigned leftOffset = offset.x;
-		unsigned upOffset = offset.y;
+		float leftOffset = offset.x;
+		float upOffset = offset.y;
 
 		// Lower Left
 		m_TextureCoords[0] = { (leftOffset + m_Offset.x * m_TileSize.x) / m_Texture->GetWidth(), (upOffset + m_Offset.y * m_TileSize.y) / m_Texture->GetHeight() };
