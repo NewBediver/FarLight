@@ -9,19 +9,23 @@
 namespace FarLight
 {
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferSpecification& spec) noexcept
-		: m_Specification(spec)
+		: m_RendererID(0)
+		, m_ColorAttachment(0)
+		, m_DepthStencilAttachment(0)
+		, m_Specification(spec)
 	{
 		Invalidate();
 	}
 
 	OpenGLFramebuffer::~OpenGLFramebuffer() noexcept
 	{
-		glDeleteFramebuffers(1, &m_RendererID);
+		DeleteOpenGLObjects();
 	}
 
 	void OpenGLFramebuffer::Bind() const noexcept
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+		glViewport(0, 0, m_Specification.Width, m_Specification.Height);
 	}
 
 	void OpenGLFramebuffer::Unbind() const noexcept
@@ -29,8 +33,20 @@ namespace FarLight
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
+	void OpenGLFramebuffer::Resize(unsigned width, unsigned height) noexcept
+	{
+		if (m_Specification.Width != width || m_Specification.Height != height)
+		{
+			m_Specification.Width = width;
+			m_Specification.Height = height;
+			Invalidate();
+		}
+	}
+
 	void OpenGLFramebuffer::Invalidate() noexcept
 	{
+		if (m_RendererID) DeleteOpenGLObjects();
+
 		glGenFramebuffers(1, &m_RendererID);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 
@@ -53,5 +69,12 @@ namespace FarLight
 		FL_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete!");
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	void OpenGLFramebuffer::DeleteOpenGLObjects() noexcept
+	{
+		glDeleteFramebuffers(1, &m_RendererID);
+		glDeleteTextures(1, &m_ColorAttachment);
+		glDeleteRenderbuffers(1, &m_DepthStencilAttachment);
 	}
 }

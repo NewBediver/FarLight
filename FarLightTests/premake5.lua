@@ -1,6 +1,7 @@
-project "Glad"
-    kind "StaticLib"
-    language "C"
+project "FarLightTests"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++17"
     staticruntime "on"
 
     targetdir (outputBinDir)
@@ -8,23 +9,22 @@ project "Glad"
 
     files
     {
-        "include/glad/glad.h",
-        "include/KHR/khrplatform.h",
-        "src/glad.c"
+        "src/**.h",
+        "src/**.cpp"
     }
 
     includedirs
     {
-        "include"
+        "vendor/googletest/googletest/include",
+        "../FarLight/src",
+        "../FarLight/vendor/GLFW/include",
+        "../FarLight/vendor/spdlog/include"
     }
 
-    filter "system:linux"
-        pic "on"
-        systemversion "latest"
-
-    defines 
+    links
     {
-        "_CRT_SECURE_NO_WARNINGS"
+        "GoogleTestsCompilation",
+        "FarLight"
     }
 
     filter "system:windows"

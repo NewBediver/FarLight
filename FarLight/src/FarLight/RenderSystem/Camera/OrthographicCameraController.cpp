@@ -41,6 +41,15 @@ namespace FarLight
 		dispatcher.Dispatch<WindowResizedEvent>(FL_BIND_EVENT_FUNC(OrthographicCameraController::OnWindowResizedEvent));
 	}
 
+	void OrthographicCameraController::OnResize(float width, float height) noexcept
+	{
+		if (m_AspectRatio != width / height)
+		{
+			m_AspectRatio = width / height;
+			m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		}
+	}
+
 	void OrthographicCameraController::HandleMovement(const Timestep& ts) noexcept
 	{
 		FL_PROFILE_FUNCTION();
@@ -83,8 +92,7 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		m_AspectRatio = static_cast<float>(e.GetWidth()) / static_cast<float>(e.GetHeight());
-		m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		OnResize(static_cast<float>(e.GetWidth()), static_cast<float>(e.GetHeight()));
 		return false;
 	}
 }

@@ -1,4 +1,4 @@
-#include <Farlight.h>
+#include <FarLight.h>
 
 #include <FarLight/Core/EntryPoint.h>
 

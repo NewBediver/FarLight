@@ -41,10 +41,8 @@ namespace FarLight
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
-		GLFWwindow* win = static_cast<GLFWwindow*>(Application::GetInstance().GetWindow()->GetNativeWindow().get());
-
 		// Setup Platform/Renderer bindings
-		ImGui_ImplGlfw_InitForOpenGL(win, true);
+		ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(Application::GetInstance().GetWindow()->GetNativeWindow().get()), true);
 		ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
@@ -58,9 +56,9 @@ namespace FarLight
 
 	void ImGuiLayer::OnEvent(Event& event) noexcept
 	{
-		ImGuiIO& io = ImGui::GetIO();
-		if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::MouseEventCategory) & io.WantCaptureMouse);
-		if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::KeyboardEventCategory) & io.WantCaptureKeyboard);
+		//ImGuiIO& io = ImGui::GetIO();
+		//if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::MouseEventCategory) & io.WantCaptureMouse);
+		//if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::KeyboardEventCategory) & io.WantCaptureKeyboard);
 	}
 
 	void ImGuiLayer::Begin() const noexcept

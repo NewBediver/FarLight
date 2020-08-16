@@ -27,6 +27,8 @@ namespace FarLight
 		virtual void Bind() const noexcept = 0;
 		virtual void Unbind() const noexcept = 0;
 
+		virtual void Resize(unsigned width, unsigned height) noexcept = 0;
+
 		virtual unsigned GetID() const noexcept = 0;
 		virtual unsigned GetColorAttachmentID() const noexcept = 0;
 		virtual unsigned GetDepthStencilAttachmentID() const noexcept = 0;

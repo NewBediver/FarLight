@@ -35,7 +35,7 @@ namespace FarLight
 
 	Application::~Application() noexcept
 	{
-		FL_PROFILE_BEGIN_SESSION("Termination", "FarLightProfile-Termination.json");
+		FL_PROFILE_BEGIN_SESSION("Shutdown", "FarLightProfile-Shutdown.json");
 
 		Renderer2D::Shutdown();
 

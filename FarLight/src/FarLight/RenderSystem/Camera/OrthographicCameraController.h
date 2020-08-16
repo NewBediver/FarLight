@@ -26,6 +26,7 @@ namespace FarLight
 
 		void OnUpdate(const Timestep& ts) noexcept;
 		void OnEvent(Event& e) noexcept;
+		void OnResize(float width, float height) noexcept;
 
 	private:
 		void HandleMovement(const Timestep& ts) noexcept;
