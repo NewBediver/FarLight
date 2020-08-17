@@ -10,7 +10,7 @@
 #include "FarLight/RenderSystem/Camera/OrthographicCamera.h"
 
 #include "FarLight/RenderSystem/Texture/Texture2D.h"
-#include "FarLight/RenderSystem/Texture/SubTexture.h"
+#include "FarLight/RenderSystem/textureAtlas/AtlasTile.h"
 
 #include "FarLight/RenderSystem/Batching/Batch.h"
 #include "FarLight/RenderSystem/Batching/BatchController.h"
@@ -45,20 +45,20 @@ namespace FarLight
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
 
 		static void SetViewport(unsigned width, unsigned height) noexcept { RenderCommand::SetViewport(0, 0, width, height); }
 		
@@ -108,7 +108,7 @@ namespace FarLight
 		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
 		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
 
-		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture>& subTexture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
-		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<SubTexture>& subTexture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
 	};
 }

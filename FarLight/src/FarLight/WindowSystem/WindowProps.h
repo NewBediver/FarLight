@@ -10,8 +10,8 @@ namespace FarLight
 		unsigned Width;
 		unsigned Height;
 
-		explicit WindowProps(const std::string& title = "FarLight Engine", unsigned width = 1280, unsigned height = 720) noexcept
-			: Title(title)
+		explicit WindowProps(std::string&& title = "FarLight Engine", unsigned width = 1280, unsigned height = 720) noexcept
+			: Title(std::move(title))
 			, Width(width)
 			, Height(height)
 		{ }

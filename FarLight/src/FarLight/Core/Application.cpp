@@ -13,12 +13,6 @@
 
 namespace FarLight
 {
-	Application& Application::GetInstance() noexcept
-	{
-		static Application s_Instance;
-		return s_Instance;
-	}
-
 	Application::Application() noexcept
 		: m_IsRunning(true)
 		, m_IsMinimized(false)

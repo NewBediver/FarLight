@@ -21,7 +21,6 @@ group "Dependencies"
     include "FarLight/vendor/GLFW"
     include "FarLight/vendor/Glad"
     include "FarLight/vendor/ImGui"
-    include "FarLightTests/vendor/googletest"
 group ""
 
 group "Engine"
@@ -31,5 +30,4 @@ group ""
 
 group "Addition"
     include "Sandbox"
-    include "FarLightTests"
 group ""

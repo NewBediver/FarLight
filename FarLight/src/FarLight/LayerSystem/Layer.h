@@ -13,8 +13,8 @@ namespace FarLight
 		Layer& operator=(const Layer&) = delete;
 		Layer& operator=(Layer&&) = delete;
 
-		explicit Layer(const std::string& name = "Layer") noexcept
-			: m_Name(name)
+		explicit Layer(std::string&& name = "Layer") noexcept
+			: m_Name(std::move(name))
 		{
 			FL_CORE_INFO("Layer [{0}] created.", this->GetName());
 		}

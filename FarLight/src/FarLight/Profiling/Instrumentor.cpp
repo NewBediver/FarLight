@@ -7,12 +7,6 @@
 
 namespace FarLight
 {
-	Instrumentor& Instrumentor::GetInstance() noexcept
-	{
-		static Instrumentor s_Instance;
-		return s_Instance;
-	}
-
 	Instrumentor::Instrumentor() noexcept
 		: m_CurrentSession(nullptr)
 	{ }
@@ -22,20 +16,20 @@ namespace FarLight
 		EndSession();
 	}
 
-	void Instrumentor::BeginSession(const std::string& name, const std::string& filepath) noexcept
+	void Instrumentor::BeginSession(std::string&& name, std::string&& filepath) noexcept
 	{
 		std::lock_guard lock(m_Mutex);
 		if (m_CurrentSession) {
 			if (Logger::GetCoreLogger()) FL_CORE_ERROR("Instrumentor::BeginSession('{0}') when session '{1}' already open.", name, m_CurrentSession->Name);
 			InternalEndSession();
 		}
-		m_OutputStream.open(filepath);
+		m_OutputStream.open(std::move(filepath));
 		if (m_OutputStream.is_open()) {
-			m_CurrentSession = CreateScope<InstrumentationSession>(name);
+			m_CurrentSession = CreateScope<InstrumentationSession>(std::move(name));
 			WriteHeader();
 		}
 		else {
-			if (Logger::GetCoreLogger()) FL_CORE_ERROR("Instrumentor could not open results file '{0}'.", filepath);
+			if (Logger::GetCoreLogger()) FL_CORE_ERROR("Instrumentor {0} could not open results file!", name);
 		}
 	}
 
@@ -47,11 +41,10 @@ namespace FarLight
 
 	void Instrumentor::WriteProfile(const ProfileResult& result) noexcept
 	{
-		std::stringstream json;
-
 		std::string name = result.Name;
 		std::replace(name.begin(), name.end(), '"', '\'');
 
+		std::stringstream json;
 		json << std::setprecision(3) << std::fixed;
 		json << ",{";
 		json << "\"cat\":\"function\",";

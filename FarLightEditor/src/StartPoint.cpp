@@ -9,7 +9,7 @@ namespace FarLight
 	Application& CreateApplication() noexcept
 	{
 		auto& app = Application::GetInstance();
-		app.PushLayer(CreateScope<EditorLayer>());
+		app.PushLayer(CreateRef<EditorLayer>());
 		return app;
 	}
 }

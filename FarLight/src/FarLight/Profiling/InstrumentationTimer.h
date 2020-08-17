@@ -14,7 +14,7 @@ namespace FarLight
 		InstrumentationTimer& operator=(const InstrumentationTimer&) = delete;
 		InstrumentationTimer& operator=(InstrumentationTimer&&) = delete;
 
-		explicit InstrumentationTimer(const std::string& name) noexcept;
+		explicit InstrumentationTimer(std::string&& name) noexcept;
 
 		~InstrumentationTimer() noexcept;
 

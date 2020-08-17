@@ -59,8 +59,8 @@ namespace FarLight
 		bool IsInCategory(EventCategory eventCategory) const noexcept { return (GetCategoryFlags() & eventCategory); }
 
 	protected:
-		explicit Event(const std::string& name, EventType type, int category) noexcept
-			: m_Name(name)
+		explicit Event(std::string&& name, EventType type, int category) noexcept
+			: m_Name(std::move(name))
 			, m_Type(type)
 			, m_Category(category)
 			, m_IsHandled(false)

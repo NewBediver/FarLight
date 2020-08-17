@@ -45,14 +45,14 @@ namespace FarLight
 		FarLight::Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f });
 		FarLight::Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2.0f, { 0.3f, 0.8f, 0.2f, 1.0f });
 
-		for (float x = -10.0f; x < 10.0f; x += 0.5f)
+		for (float x = -10.0f; x < 10.0f; x += 1.0f)
 		{
-			for (float y = -10.0f; y < 10.0f; y += 0.5f)
+			for (float y = -10.0f; y < 10.0f; y += 1.0f)
 			{
 				FarLight::Renderer2D::DrawQuad({ x, y, 0.1f }, { 0.45f, 0.45f }, m_Texture, 1.0f, { x + 100.0f / 200.0f, 0.6f, y + 100.0f / 200.0f, 0.7f });
 			}
 		}
-
+		
 		Renderer2D::EndScene();
 		m_Framebuffer->Unbind();
 

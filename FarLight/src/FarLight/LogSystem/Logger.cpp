@@ -10,8 +10,8 @@
 
 namespace FarLight
 {
-	std::shared_ptr<spdlog::logger> Logger::s_CoreLogger = nullptr;
-	std::shared_ptr<spdlog::logger> Logger::s_ClientLogger = nullptr;
+	Ref<spdlog::logger> Logger::s_CoreLogger = nullptr;
+	Ref<spdlog::logger> Logger::s_ClientLogger = nullptr;
 
 	void Logger::Init() noexcept
 	{

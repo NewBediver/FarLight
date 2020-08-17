@@ -47,6 +47,7 @@ Example2DRenderer::Example2DRenderer() noexcept
 	: Layer("Example2DRenderer")
 	, m_CameraController(1280.0f / 720.0f)
 	, m_Rotation(0.0f)
+	, m_AtlasMap(FarLight::Texture2D::Create("assets/textures/tilesheets/Kenney_roguelike.png"), { 16, 16 })
 { }
 
 void Example2DRenderer::OnAttach() noexcept
@@ -58,39 +59,38 @@ void Example2DRenderer::OnAttach() noexcept
 	m_Texture = FarLight::Texture2D::Create("assets/textures/Box.png");
 	m_ShovelKnightTexture = FarLight::Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
 
-	m_TileSheet = FarLight::Texture2D::Create("assets/textures/tilesheets/Kenney_roguelike.png");
-	m_TextureMap['G'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 5, 30 });
-	m_TextureMap['W'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 3, 29 });
+	m_AtlasCoords['G'] = { 5, 30 };
+	m_AtlasCoords['W'] = { 3, 29 };
 
-	m_TextureMap['L'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 2, 29 });
-	m_TextureMap['U'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 3, 30 });
-	m_TextureMap['R'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 4, 29 });
-	m_TextureMap['D'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 3, 28 });
+	m_AtlasCoords['L'] = { 2, 29 };
+	m_AtlasCoords['U'] = { 3, 30 };
+	m_AtlasCoords['R'] = { 4, 29 };
+	m_AtlasCoords['D'] = { 3, 28 };
 
-	m_TextureMap['Q'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 2, 30 });
-	m_TextureMap['E'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 4, 30 });
-	m_TextureMap['A'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 2, 28 });
-	m_TextureMap['S'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 4, 28 });
+	m_AtlasCoords['Q'] = { 2, 30 };
+	m_AtlasCoords['E'] = { 4, 30 };
+	m_AtlasCoords['A'] = { 2, 28 };
+	m_AtlasCoords['S'] = { 4, 28 };
 
-	m_TextureMap['q'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 0, 29 });
-	m_TextureMap['e'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 1, 29 });
-	m_TextureMap['a'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 0, 28 });
-	m_TextureMap['s'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 1, 28 });
+	m_AtlasCoords['q'] = { 0, 29 };
+	m_AtlasCoords['e'] = { 1, 29 };
+	m_AtlasCoords['a'] = { 0, 28 };
+	m_AtlasCoords['s'] = { 1, 28 };
 
-	m_TextureMap['Y'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 14, 19 });
-	m_TextureMap['y'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 14, 20 });
-	m_TextureMap['u'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 14, 21 });
+	m_AtlasCoords['Y'] = { 14, 19 };
+	m_AtlasCoords['y'] = { 14, 20 };
+	m_AtlasCoords['u'] = { 14, 21 };
 
-	m_TextureMap['B'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 15, 19 });
-	m_TextureMap['b'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 15, 20 });
-	m_TextureMap['c'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 15, 21 });
+	m_AtlasCoords['B'] = { 15, 19 };
+	m_AtlasCoords['b'] = { 15, 20 };
+	m_AtlasCoords['c'] = { 15, 21 };
 
-	m_TextureMap['i'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 54, 7 });
-	m_TextureMap['o'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 55, 7 });
-	m_TextureMap['p'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 56, 7 });
-	m_TextureMap['I'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 54, 6 });
-	m_TextureMap['O'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 55, 6 });
-	m_TextureMap['P'] = FarLight::SubTexture::Create(m_TileSheet, { 16, 16 }, { 56, 6 });
+	m_AtlasCoords['i'] = { 54, 7 };
+	m_AtlasCoords['o'] = { 55, 7 };
+	m_AtlasCoords['p'] = { 56, 7 };
+	m_AtlasCoords['I'] = { 54, 6 };
+	m_AtlasCoords['O'] = { 55, 6 };
+	m_AtlasCoords['P'] = { 56, 6 };
 }
 
 void Example2DRenderer::OnDetach() noexcept
@@ -113,30 +113,30 @@ void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp) noexcept
 	{
 		for (int x = 0; x < 30; ++x)
 		{
-			if (m_TextureMap.find(s_Map[x + y * 30]) != m_TextureMap.end())
+			if (m_AtlasCoords.find(s_Map[x + y * 30]) != m_AtlasCoords.end())
 			{
 				if (s_Map[x + y * 30] != 'G' && s_Map[x + y * 30] != 'W')
 				{
 					switch (s_Map[x + y * 30])
 					{
-						case 'i':
-						case 'o':
-						case 'p':
-						case 'I':
-						case 'O':
-						case 'P':
-						{
-							FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_TextureMap[s_Map['W']]);
-							break;
-						}
-						default:
-						{
-							FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_TextureMap[s_Map['G']]);
-							break;
-						}
+					case 'i':
+					case 'o':
+					case 'p':
+					case 'I':
+					case 'O':
+					case 'P':
+					{
+						FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_AtlasMap.GetAtlasTile(m_AtlasCoords['W']));
+						break;
+					}
+					default:
+					{
+						FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_AtlasMap.GetAtlasTile(m_AtlasCoords['G']));
+						break;
+					}
 					}
 				}
-				FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y }, { 1.0f, 1.0f }, m_TextureMap[s_Map[x + y * 30]]);
+				FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y }, { 1.0f, 1.0f }, m_AtlasMap.GetAtlasTile(m_AtlasCoords[s_Map[x + y * 30]]));
 			}
 		}
 	}

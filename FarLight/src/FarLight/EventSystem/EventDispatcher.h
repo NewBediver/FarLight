@@ -4,18 +4,6 @@
 
 #include "FarLight/EventSystem/Event.h"
 
-#include "KeyboardEvents/KeyboardKeyPressedEvent.h"
-#include "KeyboardEvents/KeyboardKeyReleasedEvent.h"
-#include "KeyboardEvents/KeyboardKeyTypedEvent.h"
-
-#include "MouseEvents/MouseButtonPressedEvent.h"
-#include "MouseEvents/MouseButtonReleasedEvent.h"
-#include "MouseEvents/MouseMovedEvent.h"
-#include "MouseEvents/MouseScrolledEvent.h"
-
-#include "WindowEvents/WindowClosedEvent.h"
-#include "WindowEvents/WindowResizedEvent.h"
-
 #include "FarLight/Profiling/Instrumentor.h"
 
 namespace FarLight

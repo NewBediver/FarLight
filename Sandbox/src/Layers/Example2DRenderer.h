@@ -3,7 +3,6 @@
 #include <FarLight.h>
 
 #include <glm/glm.hpp>
-#include <FarLight\RenderSystem\Batching\BatchController.h>
 
 class Example2DRenderer
 	: public FarLight::Layer
@@ -26,6 +25,6 @@ private:
 	float m_Rotation;
 	FarLight::BatchController m_Controller;
 
-	FarLight::Ref<FarLight::Texture2D> m_TileSheet;
-	std::unordered_map<char, FarLight::Ref<FarLight::SubTexture>> m_TextureMap;
+	FarLight::AtlasMap m_AtlasMap;
+	std::unordered_map<char, glm::vec2> m_AtlasCoords;
 };

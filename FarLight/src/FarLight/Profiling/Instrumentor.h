@@ -22,7 +22,11 @@ namespace FarLight
 	class Instrumentor final
 	{
 	public:
-		static Instrumentor& GetInstance() noexcept;
+		static Instrumentor& GetInstance() noexcept
+		{
+			static Instrumentor s_Instance;
+			return s_Instance;
+		}
 
 		Instrumentor(const Instrumentor&) = delete;
 		Instrumentor(Instrumentor&&) = delete;
@@ -31,7 +35,7 @@ namespace FarLight
 
 		~Instrumentor() noexcept;
 
-		void BeginSession(const std::string& name, const std::string& filepath = "results.json") noexcept;
+		void BeginSession(std::string&& name, std::string&& filepath = "results.json") noexcept;
 		void EndSession() noexcept;
 
 	private:
@@ -48,8 +52,8 @@ namespace FarLight
 		{
 			std::string Name;
 
-			explicit InstrumentationSession(const std::string& name) noexcept
-				: Name(name)
+			explicit InstrumentationSession(std::string&& name) noexcept
+				: Name(std::move(name))
 			{ }
 		};
 		

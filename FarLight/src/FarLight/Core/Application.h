@@ -17,7 +17,11 @@ namespace FarLight
 	class Application final
 	{
 	public:
-		static Application& GetInstance() noexcept;
+		static Application& GetInstance() noexcept
+		{
+			static Application s_Instance;
+			return s_Instance;
+		}
 
 		Application(const Application&) = delete;
 		Application(Application&&) = delete;
@@ -42,7 +46,6 @@ namespace FarLight
 
 		bool OnWindowClosed(const WindowClosedEvent& e) noexcept;
 		bool OnWindowResized(const WindowResizedEvent& e) noexcept;
-
 
 		Ref<Window> m_Window;
 		Ref<ImGuiLayer> m_UserInterfaceLayer;
