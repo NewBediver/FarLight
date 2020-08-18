@@ -25,7 +25,6 @@ namespace FarLight
 
 		void GetBatchingStatistic() const noexcept;
 
-
 		OrthographicCameraController m_CameraController;
 
 		Ref<Texture2D> m_Texture;
@@ -33,5 +32,9 @@ namespace FarLight
 
 		float m_Rotation;
 		Ref<Framebuffer> m_Framebuffer;
+
+
+		Ref<AtlasMap> m_AtlasMap;
+		std::unordered_map<char, glm::vec2> m_AtlasCoords;
 	};
 }

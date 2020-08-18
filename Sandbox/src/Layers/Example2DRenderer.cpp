@@ -47,7 +47,6 @@ Example2DRenderer::Example2DRenderer() noexcept
 	: Layer("Example2DRenderer")
 	, m_CameraController(1280.0f / 720.0f)
 	, m_Rotation(0.0f)
-	, m_AtlasMap(FarLight::Texture2D::Create("assets/textures/tilesheets/Kenney_roguelike.png"), { 16, 16 })
 { }
 
 void Example2DRenderer::OnAttach() noexcept
@@ -58,6 +57,8 @@ void Example2DRenderer::OnAttach() noexcept
 
 	m_Texture = FarLight::Texture2D::Create("assets/textures/Box.png");
 	m_ShovelKnightTexture = FarLight::Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
+
+	m_AtlasMap = FarLight::AtlasMap::Create(FarLight::Texture2D::Create("assets/textures/tilesheets/Kenney_roguelike.png"), { 16, 16 });
 
 	m_AtlasCoords['G'] = { 5, 30 };
 	m_AtlasCoords['W'] = { 3, 29 };
@@ -126,50 +127,27 @@ void Example2DRenderer::OnUpdate(const FarLight::Timestep& timestamp) noexcept
 					case 'O':
 					case 'P':
 					{
-						FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_AtlasMap.GetAtlasTile(m_AtlasCoords['W']));
+						FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_AtlasMap->GetAtlasTile(m_AtlasCoords['W']));
 						break;
 					}
 					default:
 					{
-						FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_AtlasMap.GetAtlasTile(m_AtlasCoords['G']));
+						FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y, -0.1f }, { 1.0f, 1.0f }, m_AtlasMap->GetAtlasTile(m_AtlasCoords['G']));
 						break;
 					}
 					}
 				}
-				FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y }, { 1.0f, 1.0f }, m_AtlasMap.GetAtlasTile(m_AtlasCoords[s_Map[x + y * 30]]));
+				FarLight::Renderer2D::DrawQuad({ x - 15, 15 - y }, { 1.0f, 1.0f }, m_AtlasMap->GetAtlasTile(m_AtlasCoords[s_Map[x + y * 30]]));
 			}
 		}
 	}
 
 	FarLight::Renderer2D::EndScene();
-
-	m_Controller = FarLight::Renderer2D::GetRender2DBatchController();
 }
 
 void Example2DRenderer::OnUserInterfaceRender() noexcept
 {
-	ImGui::Begin("Batching Statistics");
-	for (unsigned i = 0; i < m_Controller.GetBatches().size(); ++i)
-	{
-		ImGui::Text("========== Statistic for batch #%d: ==========", i+1);
-		ImGui::Text("   Maximum Vertex Count: %d", m_Controller.GetBatches()[i].GetStatistic().MaxVertexNumber);
-		ImGui::Text("   Maximum Index Count: %d", m_Controller.GetBatches()[i].GetStatistic().MaxIndexNumber);
-		ImGui::Text("   Maximum Texture Slots: %d", m_Controller.GetBatches()[i].GetStatistic().MaxTextureSlots);
-		ImGui::Text("   Used Shader ID: %d", m_Controller.GetBatches()[i].GetStatistic().UsedShader->GetID());
-		ImGui::Text("   Used Default Texture ID: %d", m_Controller.GetBatches()[i].GetStatistic().UsedTextures[0]->GetID());
-		ImGui::Text("   Used Layout Size, Count and Stride: %d / %d / %d", m_Controller.GetBatches()[i].GetStatistic().UsedLayout.GetElements().size(), m_Controller.GetBatches()[i].GetStatistic().UsedLayout.GetCount(), m_Controller.GetBatches()[i].GetStatistic().UsedLayout.GetStride());
-		ImGui::Text("   Render calls: %d", m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic().size());
-		for (unsigned j = 0; j < m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic().size(); ++j)
-		{
-			ImGui::Text("   ===== Statistic for render call #%d: =====", j + 1);
-			ImGui::Text("      Used Vertex Count: %d", m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedVertexNumber);
-			ImGui::Text("      Used Index Count: %d", m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedIndexNumber);
-			ImGui::Text("      Used Texture Slots: %d", m_Controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedTextureSlots);
-			ImGui::Text("   =========================================");
-		}
-		ImGui::Text("============================================");
-	}
-	ImGui::End();
+
 }
 
 void Example2DRenderer::OnEvent(FarLight::Event& event) noexcept

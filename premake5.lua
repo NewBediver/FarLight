@@ -1,6 +1,6 @@
 workspace "FarLight"
     architecture "x64"
-    startproject "Sandbox"
+    startproject "FarLightEditor"
 
     configurations
     {

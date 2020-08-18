@@ -23,8 +23,7 @@ private:
 	FarLight::Ref<FarLight::Texture2D> m_ShovelKnightTexture;
 
 	float m_Rotation;
-	FarLight::BatchController m_Controller;
 
-	FarLight::AtlasMap m_AtlasMap;
+	FarLight::Ref<FarLight::AtlasMap> m_AtlasMap;
 	std::unordered_map<char, glm::vec2> m_AtlasCoords;
 };
