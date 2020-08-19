@@ -26,13 +26,14 @@ namespace FarLight
 		void GetBatchingStatistic() const noexcept;
 
 		OrthographicCameraController m_CameraController;
+		bool m_IsRenderViewportFocused, m_IsRenderViewportHovered;
+
 
 		Ref<Texture2D> m_Texture;
 		Ref<Texture2D> m_ShovelKnightTexture;
 
 		float m_Rotation;
 		Ref<Framebuffer> m_Framebuffer;
-
 
 		Ref<AtlasMap> m_AtlasMap;
 		std::unordered_map<char, glm::vec2> m_AtlasCoords;

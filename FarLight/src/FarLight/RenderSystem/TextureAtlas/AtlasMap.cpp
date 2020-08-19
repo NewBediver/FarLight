@@ -50,8 +50,8 @@ namespace FarLight
 		{
 			m_AtlasTiles[offset.y][offset.x].SizeInTiles = sizeInTileUnits;
 
-			unsigned leftOffset = offset.x * m_DistanceBetweenTilesInPixels.x;
-			unsigned upOffset = offset.y * m_DistanceBetweenTilesInPixels.y;
+			unsigned leftOffset = static_cast<unsigned>(offset.x * m_DistanceBetweenTilesInPixels.x);
+			unsigned upOffset = static_cast<unsigned>(offset.y * m_DistanceBetweenTilesInPixels.y);
 
 			std::array<glm::vec2, 4> textureCoords;
 

@@ -45,22 +45,26 @@ namespace FarLight
 			FL_CORE_INFO("Event [{0}] destroyed.", this->ToString());
 		};
 
-		virtual EventType GetType() const noexcept { return m_Type; };
-		virtual const std::string& GetName() const noexcept { return m_Name; }
-		virtual int GetCategoryFlags() const noexcept { return m_Category; };
-
 		virtual std::string ToString() const noexcept { return GetName(); }
+
+		constexpr
+		EventType GetType() const noexcept { return m_Type; };
+		constexpr
+		const std::string& GetName() const noexcept { return m_Name; }
+		constexpr
+		int GetCategoryFlags() const noexcept { return m_Category; };
 
 		constexpr
 		bool IsHandled() const noexcept { return m_IsHandled; }
 		constexpr
 		void SetHandled(bool isHandled) noexcept { m_IsHandled = isHandled; }
 
+		constexpr
 		bool IsInCategory(EventCategory eventCategory) const noexcept { return (GetCategoryFlags() & eventCategory); }
 
 	protected:
-		explicit Event(std::string&& name, EventType type, int category) noexcept
-			: m_Name(std::move(name))
+		explicit Event(std::string&& name, EventType&& type, int&& category) noexcept
+			: m_Name(name)
 			, m_Type(type)
 			, m_Category(category)
 			, m_IsHandled(false)

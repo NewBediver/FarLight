@@ -1,7 +1,5 @@
 #pragma once
 
-#include "FarLight/Core/Core.h"
-
 namespace FarLight
 {
 	struct WindowProps final

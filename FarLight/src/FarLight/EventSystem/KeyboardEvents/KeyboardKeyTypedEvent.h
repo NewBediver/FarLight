@@ -13,8 +13,8 @@ namespace FarLight
 		KeyboardKeyTypedEvent& operator=(const KeyboardKeyTypedEvent&) = delete;
 		KeyboardKeyTypedEvent& operator=(KeyboardKeyTypedEvent&&) = delete;
 
-		explicit KeyboardKeyTypedEvent(int keyCode) noexcept
-			: KeyboardKeyEvent(keyCode, "KeyboardKeyTyped", EventType::KeyboardKeyTypedEventType)
+		explicit KeyboardKeyTypedEvent(int&& keyCode) noexcept
+			: KeyboardKeyEvent(std::move(keyCode), "KeyboardKeyTyped", EventType::KeyboardKeyTypedEventType)
 		{ }
 
 		virtual std::string ToString() const noexcept override;

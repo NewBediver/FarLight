@@ -41,8 +41,8 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		m_UserInterfaceLayer = CreateRef<ImGuiLayer>();
-		m_LayerStack.PushOverlay(m_UserInterfaceLayer);
+		m_EditorLayer = CreateRef<ImGuiLayer>();
+		m_LayerStack.PushOverlay(m_EditorLayer);
 
 		FL_CORE_INFO("Program execution entered the [Main Loop].");
 		while (m_IsRunning)
@@ -66,10 +66,10 @@ namespace FarLight
 				{
 					FL_PROFILE_SCOPE("UserIntarface OnUpdate");
 
-					m_UserInterfaceLayer->Begin();
+					m_EditorLayer->Begin();
 					for (auto& layer = m_LayerStack.crbegin(); layer != m_LayerStack.crend(); ++layer)
 						(*layer)->OnUserInterfaceRender();
-					m_UserInterfaceLayer->End();
+					m_EditorLayer->End();
 				}
 
 				m_Window->OnUpdate();

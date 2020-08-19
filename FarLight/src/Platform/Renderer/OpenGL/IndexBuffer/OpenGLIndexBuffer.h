@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "FarLight/RenderSystem/IndexBuffer/IndexBuffer.h"
 
 #include <glad/glad.h>

@@ -13,7 +13,7 @@ namespace FarLight
 		MouseScrolledEvent& operator=(const MouseScrolledEvent&) = delete;
 		MouseScrolledEvent& operator=(MouseScrolledEvent&&) = delete;
 
-		explicit MouseScrolledEvent(double xOffset, double yOffset) noexcept
+		explicit MouseScrolledEvent(double&& xOffset, double&& yOffset) noexcept
 			: Event("MouseScrolled", EventType::MouseScrolledEventType, MouseEventCategory | InputEventCategory)
 			, m_XOffset(xOffset)
 			, m_YOffset(yOffset)

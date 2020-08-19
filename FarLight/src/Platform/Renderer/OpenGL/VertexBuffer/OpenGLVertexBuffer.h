@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "FarLight/RenderSystem/VertexBuffer/VertexBuffer.h"
 
 #include <glad/glad.h>

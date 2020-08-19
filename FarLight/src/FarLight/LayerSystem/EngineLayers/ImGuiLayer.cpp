@@ -5,7 +5,6 @@
 
 #include "ImGuiLayer.h"
 
-#include "FarLight/Core/Core.h"
 #include "FarLight/Core/Application.h"
 
 #include <imgui.h>
@@ -56,9 +55,12 @@ namespace FarLight
 
 	void ImGuiLayer::OnEvent(Event& event) noexcept
 	{
-		//ImGuiIO& io = ImGui::GetIO();
-		//if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::MouseEventCategory) & io.WantCaptureMouse);
-		//if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::KeyboardEventCategory) & io.WantCaptureKeyboard);
+		if (m_IsEventsBlocked)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::MouseEventCategory) & io.WantCaptureMouse);
+			if (!event.IsHandled()) event.SetHandled(event.IsInCategory(EventCategory::KeyboardEventCategory) & io.WantCaptureKeyboard);
+		}
 	}
 
 	void ImGuiLayer::Begin() const noexcept

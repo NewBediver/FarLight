@@ -2,8 +2,6 @@
 
 #include <array>
 
-#include "FarLight/Core/Core.h"
-
 #include <glm/glm.hpp>
 
 namespace FarLight

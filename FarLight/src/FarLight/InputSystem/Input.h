@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "KeyboardKeyCodes.h"
 #include "MouseButtonCodes.h"
 

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "FarLight/Core/Core.h"
-#include "FarLight/LogSystem/Logger.h"
-
 #include <glm/glm.hpp>
 
 namespace FarLight

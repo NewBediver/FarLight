@@ -1,7 +1,5 @@
 #pragma once
 
-#include "FarLight/Core/Core.h"
-
 #include "FarLight/RenderSystem/Texture/Texture2D.h"
 
 #include <glm/glm.hpp>

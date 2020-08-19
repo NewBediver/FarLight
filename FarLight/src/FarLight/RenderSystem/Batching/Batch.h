@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "FarLight/RenderSystem/VertexArray/VertexArray.h"
 #include "FarLight/RenderSystem/VertexBuffer/VertexBuffer.h"
 #include "FarLight/RenderSystem/IndexBuffer/IndexBuffer.h"

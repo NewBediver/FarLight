@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Core.h"
-
 #include "FarLight/EventSystem/Event.h"
 #include "FarLight/EventSystem/WindowEvents/WindowClosedEvent.h"
 #include "FarLight/EventSystem/WindowEvents/WindowResizedEvent.h"
@@ -40,6 +38,8 @@ namespace FarLight
 
 		constexpr
 		const Ref<Window>& GetWindow() const noexcept { return m_Window; }
+		constexpr
+		void SetEditorEventsBlock(bool status) noexcept { return m_EditorLayer->SetEventsBlock(status); }
 
 	private:
 		explicit Application() noexcept;
@@ -48,7 +48,7 @@ namespace FarLight
 		bool OnWindowResized(const WindowResizedEvent& e) noexcept;
 
 		Ref<Window> m_Window;
-		Ref<ImGuiLayer> m_UserInterfaceLayer;
+		Ref<ImGuiLayer> m_EditorLayer;
 
 		bool m_IsRunning;
 		bool m_IsMinimized;

@@ -10,7 +10,7 @@ namespace FarLight
 		Timestep& operator=(const Timestep&) = delete;
 		Timestep& operator=(Timestep&&) = delete;
 
-		explicit Timestep(float time = 0.0f) noexcept
+		explicit Timestep(float&& time = 0.0f) noexcept
 			: m_Time(time)
 		{ }
 

@@ -10,6 +10,8 @@ namespace FarLight
 		: Layer("Editor Layer")
 		, m_CameraController(1280.0f / 720.0f)
 		, m_Rotation(0.0f)
+		, m_IsRenderViewportFocused(false)
+		, m_IsRenderViewportHovered(false)
 	{ }
 
 	void EditorLayer::OnAttach() noexcept
@@ -30,7 +32,8 @@ namespace FarLight
 
 	void EditorLayer::OnUpdate(const Timestep& timestamp) noexcept
 	{
-		m_CameraController.OnUpdate(timestamp);
+		if (m_IsRenderViewportFocused)
+			m_CameraController.OnUpdate(timestamp);
 
 		m_Rotation += static_cast<float>(timestamp);
 
@@ -134,8 +137,12 @@ namespace FarLight
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 		ImGui::Begin("Render Viewport", nullptr);
 
+		m_IsRenderViewportFocused = ImGui::IsWindowFocused();
+		m_IsRenderViewportHovered = ImGui::IsWindowHovered();
+		Application::GetInstance().SetEditorEventsBlock(!m_IsRenderViewportFocused || !m_IsRenderViewportHovered);
+
 		auto tmp = ImGui::GetContentRegionAvail();
-		m_Framebuffer->Resize(tmp.x, tmp.y);
+		m_Framebuffer->Resize(static_cast<unsigned>(tmp.x), static_cast<unsigned>(tmp.y));
 		m_CameraController.OnResize(tmp.x, tmp.y);
 
 		unsigned renderTextureID = m_Framebuffer->GetColorAttachmentID();

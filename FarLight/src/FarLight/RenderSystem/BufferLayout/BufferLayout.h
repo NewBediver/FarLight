@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "FarLight/RenderSystem/Shader/Shader.h"
 
 namespace FarLight

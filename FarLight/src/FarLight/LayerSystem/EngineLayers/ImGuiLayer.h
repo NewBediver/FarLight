@@ -15,6 +15,7 @@ namespace FarLight
 
 		explicit ImGuiLayer() noexcept
 			: Layer("ImGuiLayer")
+			, m_IsEventsBlocked(true)
 		{ }
 
 		virtual void OnAttach() noexcept override;
@@ -25,5 +26,13 @@ namespace FarLight
 
 		void Begin() const noexcept;
 		void End() const noexcept;
+
+		constexpr
+		bool IsEventsBlocked() const noexcept { return m_IsEventsBlocked; }
+		constexpr
+		void SetEventsBlock(bool status) noexcept { m_IsEventsBlocked = status; }
+
+	private:
+		bool m_IsEventsBlocked;
 	};
 }

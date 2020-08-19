@@ -19,8 +19,8 @@ namespace FarLight
 		int GetKeyCode() const noexcept { return m_KeyCode; }
 
 	protected:
-		explicit KeyboardKeyEvent(int keyCode, std::string&& name, EventType type) noexcept
-			: Event(std::move(name), type, KeyboardEventCategory | InputEventCategory)
+		explicit KeyboardKeyEvent(int&& keyCode, std::string&& name, EventType&& type) noexcept
+			: Event(std::move(name), std::move(type), KeyboardEventCategory | InputEventCategory)
 			, m_KeyCode(keyCode)
 		{ }
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 namespace FarLight
 {
 	class IndexBuffer

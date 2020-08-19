@@ -1,13 +1,11 @@
 #pragma once
 
-#include "FarLight/Core/Core.h"
-
 namespace FarLight
 {
 	struct FramebufferSpecification
 	{
-		unsigned Width;
-		unsigned Height;
+		unsigned Width = 0;
+		unsigned Height = 0;
 		unsigned Samples = 1;
 	};
 

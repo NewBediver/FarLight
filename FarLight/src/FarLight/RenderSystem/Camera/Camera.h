@@ -2,8 +2,6 @@
 
 #include "Camera.h"
 
-#include "FarLight/Core/Core.h"
-
 #include <glm/glm.hpp>
 
 namespace FarLight

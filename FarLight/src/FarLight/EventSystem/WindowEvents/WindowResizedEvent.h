@@ -13,7 +13,7 @@ namespace FarLight
 		WindowResizedEvent& operator=(const WindowResizedEvent&) = delete;
 		WindowResizedEvent& operator=(WindowResizedEvent&&) = delete;
 
-		explicit WindowResizedEvent(unsigned width, unsigned height) noexcept
+		explicit WindowResizedEvent(unsigned&& width, unsigned&& height) noexcept
 			: Event("WindowResized", EventType::WindowResizedEventType, ApplicationEventCategory)
 			, m_Width(width)
 			, m_Height(height)

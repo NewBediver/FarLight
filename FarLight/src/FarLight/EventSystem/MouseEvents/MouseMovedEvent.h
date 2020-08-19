@@ -13,7 +13,7 @@ namespace FarLight
         MouseMovedEvent& operator=(const MouseMovedEvent&) = delete;
         MouseMovedEvent& operator=(MouseMovedEvent&&) = delete;
 
-        explicit MouseMovedEvent(double xPosition, double yPosition) noexcept
+        explicit MouseMovedEvent(double&& xPosition, double&& yPosition) noexcept
             : Event("MouseMoved", EventType::MouseMovedEventType, MouseEventCategory | InputEventCategory)
             , m_XPosition(xPosition)
             , m_YPosition(yPosition)

@@ -19,8 +19,8 @@ namespace FarLight
 		int GetButton() const noexcept { return m_Button; }
 
 	protected:
-		explicit MouseButtonEvent(int button, std::string&& name, EventType type) noexcept
-			: Event(std::move(name), type, InputEventCategory | MouseEventCategory | MouseButtonEventCategory)
+		explicit MouseButtonEvent(int&& button, std::string&& name, EventType&& type) noexcept
+			: Event(std::move(name), std::move(type), InputEventCategory | MouseEventCategory | MouseButtonEventCategory)
 			, m_Button(button) 
 		{ }
 

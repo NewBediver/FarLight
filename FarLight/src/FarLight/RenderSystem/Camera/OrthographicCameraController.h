@@ -1,6 +1,5 @@
 #pragma once
 
-#include "FarLight/Core/Core.h"
 #include "FarLight/Core/Timestep.h"
 
 #include "FarLight/EventSystem/Event.h"

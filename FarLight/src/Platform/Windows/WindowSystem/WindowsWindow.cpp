@@ -99,7 +99,7 @@ namespace FarLight
 			data.Width = width;
 			data.Height = height;
 			
-			data.Callback(WindowResizedEvent(width, height));
+			data.Callback(WindowResizedEvent(std::move(width), std::move(height)));
 		});
 
 		glfwSetWindowCloseCallback(m_Window.get(), [](GLFWwindow* win) {
@@ -119,17 +119,17 @@ namespace FarLight
 			{
 				case GLFW_PRESS:
 				{
-					data.Callback(KeyboardKeyPressedEvent(key, 0));
+					data.Callback(KeyboardKeyPressedEvent(std::move(key), false));
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					data.Callback(KeyboardKeyReleasedEvent(key));
+					data.Callback(KeyboardKeyReleasedEvent(std::move(key)));
 					break;
 				}
 				case GLFW_REPEAT:
 				{
-					data.Callback(KeyboardKeyPressedEvent(key, 1));
+					data.Callback(KeyboardKeyPressedEvent(std::move(key), true));
 					break;
 				}
 			}
@@ -140,7 +140,7 @@ namespace FarLight
 
 			WindowData& data = GET_DATA(win);
 
-			data.Callback(KeyboardKeyTypedEvent(code));
+			data.Callback(KeyboardKeyTypedEvent(std::move(code)));
 		});
 
 		glfwSetMouseButtonCallback(m_Window.get(), [](GLFWwindow* win, int button, int action, int mods) {
@@ -152,12 +152,12 @@ namespace FarLight
 			{
 				case GLFW_PRESS:
 				{
-					data.Callback(MouseButtonPressedEvent(button));
+					data.Callback(MouseButtonPressedEvent(std::move(button)));
 					break;
 				}
 				case GLFW_RELEASE:
 				{
-					data.Callback(MouseButtonReleasedEvent(button));
+					data.Callback(MouseButtonReleasedEvent(std::move(button)));
 					break;
 				}
 			}
@@ -168,7 +168,7 @@ namespace FarLight
 
 			WindowData& data = GET_DATA(win);
 
-			data.Callback(MouseScrolledEvent(xOffset, yOffset));
+			data.Callback(MouseScrolledEvent(std::move(xOffset), std::move(yOffset)));
 		});
 
 		glfwSetCursorPosCallback(m_Window.get(), [](GLFWwindow* win, double xPos, double yPos) {
@@ -176,7 +176,9 @@ namespace FarLight
 
 			WindowData& data = GET_DATA(win);
 
-			data.Callback(MouseMovedEvent(xPos, yPos));
+			data.Callback(MouseMovedEvent(std::move(xPos), std::move(yPos)));
+
+			double tmp = xPos;
 		});
 	}
 }

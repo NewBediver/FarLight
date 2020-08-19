@@ -1,7 +1,5 @@
 #pragma once
 
-#include "FarLight/Core/Core.h"
-
 #include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
 #include "FarLight/RenderSystem/RendererAPI/RendererAPI.h"
 

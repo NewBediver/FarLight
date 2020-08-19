@@ -13,8 +13,8 @@ namespace FarLight
 		MouseButtonReleasedEvent& operator=(const MouseButtonReleasedEvent&) = delete;
 		MouseButtonReleasedEvent& operator=(MouseButtonReleasedEvent&&) = delete;
 
-		explicit MouseButtonReleasedEvent(int button) noexcept
-			: MouseButtonEvent(button, "MouseButtonReleased", EventType::MouseButtonReleasedEventType)
+		explicit MouseButtonReleasedEvent(int&& button) noexcept
+			: MouseButtonEvent(std::move(button), "MouseButtonReleased", EventType::MouseButtonReleasedEventType)
 		{ }
 
 		virtual std::string ToString() const noexcept override;

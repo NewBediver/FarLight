@@ -2,8 +2,6 @@
 
 #include "Layer.h"
 
-#include "FarLight/Core/Core.h"
-
 namespace FarLight
 {
 	class LayerStack final
