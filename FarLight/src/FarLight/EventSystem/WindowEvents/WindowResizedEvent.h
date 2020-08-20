@@ -15,8 +15,8 @@ namespace FarLight
 
 		explicit WindowResizedEvent(unsigned&& width, unsigned&& height) noexcept
 			: Event("WindowResized", EventType::WindowResizedEventType, ApplicationEventCategory)
-			, m_Width(width)
-			, m_Height(height)
+			, m_Width(std::move(width))
+			, m_Height(std::move(height))
 		{ }
 
 		constexpr

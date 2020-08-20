@@ -64,9 +64,9 @@ namespace FarLight
 
 	protected:
 		explicit Event(std::string&& name, EventType&& type, int&& category) noexcept
-			: m_Name(name)
-			, m_Type(type)
-			, m_Category(category)
+			: m_Name(std::move(name))
+			, m_Type(std::move(type))
+			, m_Category(std::move(category))
 			, m_IsHandled(false)
 		{
 			FL_CORE_INFO("Event [{0}] created.", this->ToString());

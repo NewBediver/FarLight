@@ -23,6 +23,17 @@ namespace FarLight
 
 		m_Texture = Texture2D::Create("assets/textures/Box.png");
 		m_ShovelKnightTexture = Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
+
+		FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 1.5f, glm::vec4(1.0f), BatchType::Static);
+		FarLight::Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f }, BatchType::Static);
+
+		for (float x = -10.0f; x < 10.0f; x += 1.0f)
+		{
+			for (float y = -10.0f; y < 10.0f; y += 1.0f)
+			{
+				FarLight::Renderer2D::DrawQuad({ x, y, 0.1f }, { 0.45f, 0.45f }, m_Texture, 1.0f, { (x + 10.0f) / 20.0f, 0.6f, (y + 10.0f) / 20.0f, 0.6f }, BatchType::Static);
+			}
+		}
 	}
 
 	void EditorLayer::OnDetach() noexcept
@@ -43,18 +54,18 @@ namespace FarLight
 
 		Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 1.5f);
+		//FarLight::Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 1.5f);
 		FarLight::Renderer2D::DrawRotatedQuad({ 1.0f, 1.0f, 0.0f }, { 1.3f, 0.6f }, m_Rotation, { 0.8f, 0.2f, 0.3f, 1.0f });
-		FarLight::Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f });
-		FarLight::Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2.0f, { 0.3f, 0.8f, 0.2f, 1.0f });
+		//FarLight::Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f });
+		//FarLight::Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2.0f, { 0.3f, 0.8f, 0.2f, 1.0f });
 
-		for (float x = -10.0f; x < 10.0f; x += 1.0f)
+		/*for (float x = -10.0f; x < 10.0f; x += 1.0f)
 		{
 			for (float y = -10.0f; y < 10.0f; y += 1.0f)
 			{
 				FarLight::Renderer2D::DrawQuad({ x, y, 0.1f }, { 0.45f, 0.45f }, m_Texture, 1.0f, { x + 100.0f / 200.0f, 0.6f, y + 100.0f / 200.0f, 0.7f });
 			}
-		}
+		}*/
 		
 		Renderer2D::EndScene();
 		m_Framebuffer->Unbind();
@@ -155,22 +166,23 @@ namespace FarLight
 	{
 		auto& controller = Renderer2D::GetRender2DBatchController();
 		ImGui::Begin("Batching Statistics");
-		for (unsigned i = 0; i < controller.GetBatches().size(); ++i)
+		for (unsigned i = 0; i < controller->GetBatches().size(); ++i)
 		{
 			ImGui::Text("========== Statistic for batch #%d: ==========", i + 1);
-			ImGui::Text("   Maximum Vertex Count: %d", controller.GetBatches()[i].GetStatistic().MaxVertexNumber);
-			ImGui::Text("   Maximum Index Count: %d", controller.GetBatches()[i].GetStatistic().MaxIndexNumber);
-			ImGui::Text("   Maximum Texture Slots: %d", controller.GetBatches()[i].GetStatistic().MaxTextureSlots);
-			ImGui::Text("   Used Shader ID: %d", controller.GetBatches()[i].GetStatistic().UsedShader->GetID());
-			ImGui::Text("   Used Default Texture ID: %d", controller.GetBatches()[i].GetStatistic().UsedTextures[0]->GetID());
-			ImGui::Text("   Used Layout Size, Count and Stride: %d / %d / %d", controller.GetBatches()[i].GetStatistic().UsedLayout.GetElements().size(), controller.GetBatches()[i].GetStatistic().UsedLayout.GetCount(), controller.GetBatches()[i].GetStatistic().UsedLayout.GetStride());
-			ImGui::Text("   Render calls: %d", controller.GetBatches()[i].GetStatistic().GetRenderStatistic().size());
-			for (unsigned j = 0; j < controller.GetBatches()[i].GetStatistic().GetRenderStatistic().size(); ++j)
+			ImGui::Text("   Batch type: %s", controller->GetBatches()[i].GetConfiguration().Type == BatchType::Dynamic ? "Dynamic" : "Static");
+			ImGui::Text("   Maximum Vertex Count: %d", controller->GetBatches()[i].GetConfiguration().MaxVertexNumber);
+			ImGui::Text("   Maximum Index Count: %d", controller->GetBatches()[i].GetConfiguration().MaxIndexNumber);
+			ImGui::Text("   Maximum Texture Slots: %d", controller->GetBatches()[i].GetConfiguration().MaxTextureSlots);
+			ImGui::Text("   Used Shader ID: %d", controller->GetBatches()[i].GetConfiguration().UsedShader->GetID());
+			ImGui::Text("   Used Default Texture ID: %d", controller->GetBatches()[i].GetConfiguration().UsedTextures[0]->GetID());
+			ImGui::Text("   Used Layout Size, Count and Stride: %d / %d / %d", controller->GetBatches()[i].GetConfiguration().UsedLayout.GetElements().size(), controller->GetBatches()[i].GetConfiguration().UsedLayout.GetCount(), controller->GetBatches()[i].GetConfiguration().UsedLayout.GetStride());
+			ImGui::Text("   Render calls: %d", controller->GetBatches()[i].GetRenderCalls().size());
+			for (unsigned j = 0; j < controller->GetBatches()[i].GetRenderCalls().size(); ++j)
 			{
 				ImGui::Text("   ===== Statistic for render call #%d: =====", j + 1);
-				ImGui::Text("      Used Vertex Count: %d", controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedVertexNumber);
-				ImGui::Text("      Used Index Count: %d", controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedIndexNumber);
-				ImGui::Text("      Used Texture Slots: %d", controller.GetBatches()[i].GetStatistic().GetRenderStatistic()[j].UsedTextureSlots);
+				ImGui::Text("      Used Vertex Count: %d", controller->GetBatches()[i].GetRenderCalls()[j].UsedVertexNumber);
+				ImGui::Text("      Used Index Count: %d", controller->GetBatches()[i].GetRenderCalls()[j].UsedIndexNumber);
+				ImGui::Text("      Used Texture Slots: %d", controller->GetBatches()[i].GetRenderCalls()[j].UsedTextureSlots);
 				ImGui::Text("   =========================================");
 			}
 			ImGui::Text("============================================");

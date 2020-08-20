@@ -15,8 +15,8 @@ namespace FarLight
 
 		explicit MouseScrolledEvent(double&& xOffset, double&& yOffset) noexcept
 			: Event("MouseScrolled", EventType::MouseScrolledEventType, MouseEventCategory | InputEventCategory)
-			, m_XOffset(xOffset)
-			, m_YOffset(yOffset)
+			, m_XOffset(std::move(xOffset))
+			, m_YOffset(std::move(yOffset))
 		{ }
 
 		constexpr

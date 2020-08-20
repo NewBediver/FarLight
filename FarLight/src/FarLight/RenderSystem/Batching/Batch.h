@@ -9,14 +9,15 @@
 
 namespace FarLight
 {
-	struct BatchStatistic final
+	enum class BatchType
 	{
-		struct RenderStatistic
-		{
-			unsigned UsedVertexNumber;
-			unsigned UsedIndexNumber;
-			unsigned UsedTextureSlots;
-		};
+		Static,
+		Dynamic
+	};
+
+	struct BatchConfiguration final
+	{
+		BatchType Type;
 
 		unsigned MaxVertexNumber;
 		unsigned UsedVertexNumber;
@@ -31,8 +32,9 @@ namespace FarLight
 		std::vector<Ref<Texture2D>> UsedTextures;
 		BufferLayout UsedLayout;
 
-		explicit BatchStatistic(const BufferLayout& layout, const Ref<Texture2D>& defaultTexture, const Ref<Shader>& shader, unsigned vertexNumber = 10000, unsigned indexNumber = 20000, unsigned textureSlots = 32) noexcept
-			: MaxVertexNumber(vertexNumber)
+		explicit BatchConfiguration(BatchType type, const BufferLayout& layout, const Ref<Texture2D>& defaultTexture, const Ref<Shader>& shader, unsigned vertexNumber = 10000, unsigned indexNumber = 20000, unsigned textureSlots = 32) noexcept
+			: Type(type)
+			, MaxVertexNumber(vertexNumber)
 			, UsedVertexNumber(0)
 			, MaxIndexNumber(indexNumber)
 			, UsedIndexNumber(0)
@@ -45,31 +47,31 @@ namespace FarLight
 			UsedTextures[0] = defaultTexture;
 		}
 
-		bool operator==(const BatchStatistic& other) const noexcept
+		bool operator==(const BatchConfiguration& other) const noexcept
 		{
-			return UsedShader->GetID() == other.UsedShader->GetID()
+			return Type == other.Type
+				&& UsedShader->GetID() == other.UsedShader->GetID()
 				&& UsedLayout == other.UsedLayout
 				&& UsedTextures[0]->GetID() == other.UsedTextures[0]->GetID();
 		}
-
-		const std::vector<RenderStatistic>& GetRenderStatistic() const noexcept { return m_RenderCalls; }
-
-	private:
-		std::vector<RenderStatistic> m_RenderCalls;
-
-		friend class Batch;
 	};
 
 	class Batch final
 	{
 	public:
-		/*Batch(const Batch&) = delete;
+		Batch(const Batch&) = delete;
 		Batch& operator=(const Batch&) = delete;
-		Batch& operator=(Batch&&) = delete;*/
+		Batch& operator=(Batch&&) = delete;
 
-		//Batch(Batch&&) noexcept = default;
+		struct RenderCall
+		{
+			unsigned UsedVertexNumber;
+			unsigned UsedIndexNumber;
+			unsigned UsedTextureSlots;
+		};
 
-		explicit Batch(const BatchStatistic& stats) noexcept;
+		explicit Batch(const BatchConfiguration& stats) noexcept;
+		explicit Batch(Batch&& other) noexcept;
 
 		void Render() noexcept;
 		void Clear() noexcept;
@@ -78,28 +80,32 @@ namespace FarLight
 		void AddData(unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture, unsigned textureIndexDataOffset) noexcept;
 
 		constexpr
-		bool IsEmpty() const noexcept { return m_Statistic.UsedVertexNumber == 0 && m_Statistic.UsedIndexNumber == 0; }
+		bool IsEmpty() const noexcept { return m_Configuration.UsedVertexNumber == 0 && m_Configuration.UsedIndexNumber == 0; }
 		constexpr
-		bool HasFreeTextureSlots(unsigned numSlots = 0) const noexcept { return m_Statistic.UsedTextureSlots + numSlots < m_Statistic.MaxTextureSlots; }
+		bool HasFreeTextureSlots(unsigned numSlots = 0) const noexcept { return m_Configuration.UsedTextureSlots + numSlots < m_Configuration.MaxTextureSlots; }
 		constexpr
-		bool HasFreeVertexSlots(unsigned numVertices = 0) const noexcept { return m_Statistic.UsedVertexNumber + numVertices <= m_Statistic.MaxVertexNumber; }
+		bool HasFreeVertexSlots(unsigned numVertices = 0) const noexcept { return m_Configuration.UsedVertexNumber + numVertices <= m_Configuration.MaxVertexNumber; }
 		constexpr
-		bool HasFreeIndexSlots(unsigned numIndices = 0) const noexcept { return  m_Statistic.UsedIndexNumber + numIndices <= m_Statistic.MaxIndexNumber; }
+		bool HasFreeIndexSlots(unsigned numIndices = 0) const noexcept { return  m_Configuration.UsedIndexNumber + numIndices <= m_Configuration.MaxIndexNumber; }
 		constexpr
-		const BatchStatistic& GetStatistic() const noexcept { return m_Statistic; }
-		void ResetRenderCalls() noexcept { m_Statistic.m_RenderCalls.clear(); }
+		const BatchConfiguration& GetConfiguration() const noexcept { return m_Configuration; }
+		constexpr
+		const std::vector<RenderCall>& GetRenderCalls() const noexcept { return m_RenderCalls; }
+		void ResetRenderCalls() noexcept { m_RenderCalls.clear(); }
 
 		void SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) const noexcept;
 
 		bool operator==(const Batch& other) const noexcept
 		{
-			return m_Statistic == other.m_Statistic;
+			return m_Configuration == other.m_Configuration;
 		}
 
 	private:
 		void AddTexture(const Ref<Texture2D>& texture) noexcept;
 
-		BatchStatistic m_Statistic;
+		std::vector<RenderCall> m_RenderCalls;
+
+		BatchConfiguration m_Configuration;
 		Ref<VertexArray> m_VAO;
 		Ref<VertexBuffer> m_VBO;
 		Ref<IndexBuffer> m_EBO;

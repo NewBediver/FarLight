@@ -11,7 +11,7 @@ namespace FarLight
 		Timestep& operator=(Timestep&&) = delete;
 
 		explicit Timestep(float&& time = 0.0f) noexcept
-			: m_Time(time)
+			: m_Time(std::move(time))
 		{ }
 
 		constexpr

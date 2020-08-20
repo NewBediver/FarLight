@@ -21,7 +21,7 @@ namespace FarLight
 	protected:
 		explicit MouseButtonEvent(int&& button, std::string&& name, EventType&& type) noexcept
 			: Event(std::move(name), std::move(type), InputEventCategory | MouseEventCategory | MouseButtonEventCategory)
-			, m_Button(button) 
+			, m_Button(std::move(button)) 
 		{ }
 
 	private:

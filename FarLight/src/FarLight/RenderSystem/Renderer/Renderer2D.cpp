@@ -10,11 +10,14 @@
 
 namespace FarLight
 {
+	Scope<BatchController> Renderer2D::s_BatchController = nullptr;
+
 	void Renderer2D::Init() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
 		RenderCommand::Init();
+		s_BatchController = CreateScope<BatchController>();
 		FL_CORE_INFO("[Renderer2D] initialized.");
 	}
 
@@ -22,6 +25,7 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
+		s_BatchController.reset();
 		FL_CORE_INFO("[Renderer2D] terminated.");
 	}
 
@@ -29,136 +33,137 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
-		GetBatchController().ClearAll();
-		GetBatchController().ResetRenderCalls();
-		GetBatchController().SetViewProjection(camera.GetViewMatrix(), camera.GetProjectionMatrix());
+		s_BatchController->ClearAll(BatchType::Dynamic);
+		s_BatchController->ResetRenderCalls(BatchType::Dynamic);
+		s_BatchController->ResetRenderCalls(BatchType::Static);
+		s_BatchController->SetViewProjection(camera.GetViewMatrix(), camera.GetProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene() noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
-		GetBatchController().RenderAll();
+		s_BatchController->RenderAll(BatchType::Static);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) noexcept
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, BatchType type) noexcept
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, color);
+		DrawQuad({ position.x, position.y, 0.0f }, size, color, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) noexcept
-	{
-		FL_PROFILE_FUNCTION();
-
-		RecalculateQuadData(position, size, color);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept
-	{
-		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, color);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, counterclockwiseRadians, color);
+		RecalculateQuadData(position, size, color, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color, BatchType type) noexcept
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tintColor);
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, color, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
-	{
-		FL_PROFILE_FUNCTION();
-
-		RecalculateQuadData(position, size, texture, 1.0f, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
-	{
-		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, texture, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor) noexcept
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, counterclockwiseRadians, texture, 1.0f,  tintColor);
+		RecalculateQuadData(position, size, counterclockwiseRadians, color, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor) noexcept
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor, BatchType type) noexcept
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, atlasTile, tintColor);
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tintColor, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor) noexcept
-	{
-		FL_PROFILE_FUNCTION();
-
-		RecalculateQuadData(position, size, atlasTile, 1.0f, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor) noexcept
-	{
-		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, atlasTile, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor) noexcept
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, counterclockwiseRadians, atlasTile, 1.0f, tintColor);
+		RecalculateQuadData(position, size, texture, 1.0f, tintColor, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor, BatchType type) noexcept
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor, tintColor);
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, texture, tintColor, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
-	{
-		FL_PROFILE_FUNCTION();
-
-		RecalculateQuadData(position, size, texture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
-	{
-		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, texture, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor) noexcept
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, counterclockwiseRadians, texture, tilingFactor, tintColor);
+		RecalculateQuadData(position, size, counterclockwiseRadians, texture, 1.0f,  tintColor, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor) noexcept
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor, BatchType type) noexcept
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, atlasTile, tilingFactor, tintColor);
+		DrawQuad({ position.x, position.y, 0.0f }, size, atlasTile, tintColor, type);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor) noexcept
-	{
-		FL_PROFILE_FUNCTION();
-
-		RecalculateQuadData(position, size, atlasTile, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor) noexcept
-	{
-		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, atlasTile, tilingFactor, tintColor);
-	}
-
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor) noexcept
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
-		RecalculateQuadData(position, size, counterclockwiseRadians, atlasTile, tilingFactor, tintColor);
+		RecalculateQuadData(position, size, atlasTile, 1.0f, tintColor, type);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, atlasTile, tintColor, type);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		RecalculateQuadData(position, size, counterclockwiseRadians, atlasTile, 1.0f, tintColor, type);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor, tintColor, type);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		RecalculateQuadData(position, size, texture, tilingFactor, tintColor, type);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, texture, tilingFactor, tintColor, type);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		RecalculateQuadData(position, size, counterclockwiseRadians, texture, tilingFactor, tintColor, type);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, atlasTile, tilingFactor, tintColor, type);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		RecalculateQuadData(position, size, atlasTile, tilingFactor, tintColor, type);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, counterclockwiseRadians, atlasTile, tilingFactor, tintColor, type);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor, BatchType type) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		RecalculateQuadData(position, size, counterclockwiseRadians, atlasTile, tilingFactor, tintColor, type);
 	}
 
 	std::array<glm::vec4, 4> Renderer2D::RecalculateSquareVertexPosition(const glm::vec3& position, const glm::vec2& size) noexcept
@@ -222,7 +227,7 @@ namespace FarLight
 		return { 0, 1, 2, 2, 3, 0 };
 	}
 
-	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) noexcept
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -232,9 +237,9 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, color, textureCoords);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData);
 	}
-	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -244,10 +249,10 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, color, textureCoords);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData);
 	}
 
-	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4 tintColor) noexcept
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4 tintColor, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -257,9 +262,9 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, texture, 9);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, texture, 9);
 	}
-	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4 tintColor) noexcept
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4 tintColor, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -269,10 +274,10 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, texture, 9);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, texture, 9);
 	}
 
-	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4 tintColor) noexcept
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4 tintColor, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -282,9 +287,9 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, atlasTile->GetTexture(), 9);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, atlasTile->GetTexture(), 9);
 	}
-	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4 tintColor) noexcept
+	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4 tintColor, BatchType type) noexcept
 	{
 		FL_PROFILE_FUNCTION();
 
@@ -294,6 +299,6 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		GetBatchController().AddData(BatchStatistic(GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, atlasTile->GetTexture(), 9);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, atlasTile->GetTexture(), 9);
 	}
 }

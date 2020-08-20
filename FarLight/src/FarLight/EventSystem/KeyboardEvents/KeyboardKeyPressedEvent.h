@@ -15,7 +15,7 @@ namespace FarLight
 
 		explicit KeyboardKeyPressedEvent(int&& keyCode, bool&& isRepeated) noexcept
 			: KeyboardKeyEvent(std::move(keyCode), "KeyboardKeyPressed", EventType::KeyboardKeyPressedEventType)
-			, m_IsRepeated(isRepeated)
+			, m_IsRepeated(std::move(isRepeated))
 		{ }
 
 		constexpr

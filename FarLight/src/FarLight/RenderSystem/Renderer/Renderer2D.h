@@ -33,42 +33,38 @@ namespace FarLight
 		static void EndScene() noexcept;
 
 		// Quad draw calls
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) noexcept;
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) noexcept;
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept;
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept;
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color, BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color, BatchType type = BatchType::Dynamic) noexcept;
 
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
 
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
 
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
 
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
-		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f)) noexcept;
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4& tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
 
 		static void SetViewport(unsigned width, unsigned height) noexcept { RenderCommand::SetViewport(0, 0, width, height); }
 		
 		static RendererAPI::API GetAPI() noexcept { return RendererAPI::GetAPI(); }
-		static const BatchController& GetRender2DBatchController() noexcept { return GetBatchController(); }
+		static const Scope<BatchController>& GetRender2DBatchController() noexcept { return s_BatchController; }
 
 	private:
-		static BatchController& Renderer2D::GetBatchController() noexcept
-		{
-			static BatchController s_BatchController;
-			return s_BatchController;
-		}
+		static Scope<BatchController> s_BatchController;
 
 		static const BufferLayout& Renderer2D::GetDefaultLayout() noexcept
 		{
@@ -100,13 +96,13 @@ namespace FarLight
 		static std::vector<float> RecalculateSquareVertexData(const std::array<glm::vec4, 4>& position, const glm::vec4& color, const std::array<glm::vec2, 4>& textureCoordinates, float tilingFactor = 1.0f) noexcept;
 		static std::vector<unsigned> RecalculateSquareIndexData() noexcept;
 
-		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) noexcept;
-		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, BatchType type = BatchType::Dynamic) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color, BatchType type = BatchType::Dynamic) noexcept;
 
-		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
-		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
 
-		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
-		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f)) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
+		static void RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor = 1.0f, const glm::vec4 tintColor = glm::vec4(1.0f), BatchType type = BatchType::Dynamic) noexcept;
 	};
 }

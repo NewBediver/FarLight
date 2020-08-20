@@ -15,8 +15,8 @@ namespace FarLight
 
         explicit MouseMovedEvent(double&& xPosition, double&& yPosition) noexcept
             : Event("MouseMoved", EventType::MouseMovedEventType, MouseEventCategory | InputEventCategory)
-            , m_XPosition(xPosition)
-            , m_YPosition(yPosition)
+            , m_XPosition(std::move(xPosition))
+            , m_YPosition(std::move(yPosition))
         { }
 
         constexpr

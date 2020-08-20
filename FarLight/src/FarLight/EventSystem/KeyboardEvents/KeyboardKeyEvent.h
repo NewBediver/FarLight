@@ -21,7 +21,7 @@ namespace FarLight
 	protected:
 		explicit KeyboardKeyEvent(int&& keyCode, std::string&& name, EventType&& type) noexcept
 			: Event(std::move(name), std::move(type), KeyboardEventCategory | InputEventCategory)
-			, m_KeyCode(keyCode)
+			, m_KeyCode(std::move(keyCode))
 		{ }
 
 	private:
