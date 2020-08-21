@@ -89,9 +89,6 @@ namespace FarLight
 		bool HasFreeIndexSlots(unsigned numIndices = 0) const noexcept { return  m_Configuration.UsedIndexNumber + numIndices <= m_Configuration.MaxIndexNumber; }
 		constexpr
 		const BatchConfiguration& GetConfiguration() const noexcept { return m_Configuration; }
-		constexpr
-		const std::vector<RenderCall>& GetRenderCalls() const noexcept { return m_RenderCalls; }
-		void ResetRenderCalls() noexcept { m_RenderCalls.clear(); }
 
 		void SetViewProjection(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) const noexcept;
 
@@ -102,12 +99,14 @@ namespace FarLight
 
 	private:
 		void AddTexture(const Ref<Texture2D>& texture) noexcept;
-
-		std::vector<RenderCall> m_RenderCalls;
+		void ClearBufferedData() noexcept;
 
 		BatchConfiguration m_Configuration;
 		Ref<VertexArray> m_VAO;
 		Ref<VertexBuffer> m_VBO;
 		Ref<IndexBuffer> m_EBO;
+
+		std::vector<float> m_VertexData;
+		std::vector<unsigned> m_IndexData;
 	};
 }

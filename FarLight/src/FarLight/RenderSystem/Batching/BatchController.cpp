@@ -15,17 +15,15 @@ namespace FarLight
 		{
 			if (stat == elm.GetConfiguration())
 			{
-				if (!elm.HasFreeTextureSlots() || !elm.HasFreeIndexSlots(indexNumber) || !elm.HasFreeVertexSlots(vertexNumber))
+				if (elm.HasFreeTextureSlots() && elm.HasFreeIndexSlots(indexNumber) && elm.HasFreeVertexSlots(vertexNumber))
 				{
-					elm.Render();
-					elm.Clear();
+					elm.AddData(vertexNumber, vertexData, indexNumber, indices);
+					return;
 				}
-				elm.AddData(vertexNumber, vertexData, indexNumber, indices);
-				return;
 			}
 		}
 
-		m_Batches.push_back(Batch(stat));
+		m_Batches.emplace_back(stat);
 		m_Batches.back().AddData(vertexNumber, vertexData, indexNumber, indices);
 	}
 
@@ -37,17 +35,15 @@ namespace FarLight
 		{
 			if (stat == elm.GetConfiguration())
 			{
-				if (!elm.HasFreeTextureSlots(1) || !elm.HasFreeIndexSlots(indexNumber) || !elm.HasFreeVertexSlots(vertexNumber))
+				if (elm.HasFreeTextureSlots(1) && elm.HasFreeIndexSlots(indexNumber) && elm.HasFreeVertexSlots(vertexNumber))
 				{
-					elm.Render();
-					elm.Clear();
+					elm.AddData(vertexNumber, vertexData, indexNumber, indices, texture, textureIndexDataOffset);
+					return;
 				}
-				elm.AddData(vertexNumber, vertexData, indexNumber, indices, texture, textureIndexDataOffset);
-				return;
 			}
 		}
 
-		m_Batches.push_back(Batch(stat));
+		m_Batches.emplace_back(stat);
 		m_Batches.back().AddData(vertexNumber, vertexData, indexNumber, indices, texture, textureIndexDataOffset);
 	}
 
@@ -68,16 +64,6 @@ namespace FarLight
 		for (auto& batch : m_Batches)
 		{
 			if (type == batch.GetConfiguration().Type) batch.Clear();
-		}
-	}
-
-	void BatchController::ResetRenderCalls(BatchType type) noexcept
-	{
-		FL_PROFILE_FUNCTION();
-
-		for (auto& batch : m_Batches)
-		{
-			if (type == batch.GetConfiguration().Type) batch.ResetRenderCalls();
 		}
 	}
 

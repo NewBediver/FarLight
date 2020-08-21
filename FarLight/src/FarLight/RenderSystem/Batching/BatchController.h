@@ -16,7 +16,6 @@ namespace FarLight
 
 		void RenderAll(BatchType type) noexcept;
 		void ClearAll(BatchType type) noexcept;
-		void ResetRenderCalls(BatchType type) noexcept;
 
 		void AddData(const BatchConfiguration& stat, unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices, const Ref<Texture2D>& texture, unsigned textureIndexDataOffset) noexcept;
 		void AddData(const BatchConfiguration& stat, unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices) noexcept;

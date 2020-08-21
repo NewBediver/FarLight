@@ -19,11 +19,16 @@ namespace FarLight
 		virtual void OnEvent(Event& event) noexcept override;
 
 	private:
-		void EnableDocking() const noexcept;
-		void UpdateMenuBar() const noexcept;
+		void EnableDocking() noexcept;
+		void UpdateMenuBar() noexcept;
 		void UpdateRenderViewport() noexcept;
 
-		void GetBatchingStatistic() const noexcept;
+		void GetBatchingStatistic() noexcept;
+
+		struct Options
+		{
+			bool ShowBatchStatistics = false;
+		} m_Options;
 
 		OrthographicCameraController m_CameraController;
 		bool m_IsRenderViewportFocused, m_IsRenderViewportHovered;

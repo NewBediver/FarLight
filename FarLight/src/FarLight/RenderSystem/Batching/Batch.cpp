@@ -36,10 +36,11 @@ namespace FarLight
 
 	Batch::Batch(Batch&& other) noexcept
 		: m_Configuration(std::move(other.m_Configuration))
+		, m_VertexData(std::move(other.m_VertexData))
+		, m_IndexData(std::move(other.m_IndexData))
 		, m_VAO(std::move(other.m_VAO))
 		, m_VBO(std::move(other.m_VBO))
 		, m_EBO(std::move(other.m_EBO))
-		, m_RenderCalls(std::move(other.m_RenderCalls))
 	{ }
 
 	void Batch::AddData(unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices) noexcept
@@ -51,12 +52,10 @@ namespace FarLight
 		for (unsigned i = 0; i < indexNumber; ++i)
 			inds[i] = indices[i] + offset;
 
-		m_VAO->Bind();
-
-		m_VBO->AddSubData(&vertexData.front(), vertexNumber * m_Configuration.UsedLayout.GetStride());
+		m_VertexData.insert(m_VertexData.end(), vertexData.begin(), vertexData.end());
 		m_Configuration.UsedVertexNumber += vertexNumber;
 
-		m_EBO->AddSubData(&inds.front(), indexNumber);
+		m_IndexData.insert(m_IndexData.end(), inds.begin(), inds.end());
 		m_Configuration.UsedIndexNumber += indexNumber;
 	}
 
@@ -116,9 +115,13 @@ namespace FarLight
 			m_Configuration.UsedTextures[i]->Bind(i);
 
 		m_VAO->Bind();
+
+		m_VBO->AddSubData(&m_VertexData.front(), m_Configuration.UsedVertexNumber * m_Configuration.UsedLayout.GetStride());
+		m_EBO->AddSubData(&m_IndexData.front(), m_Configuration.UsedIndexNumber);
+
 		RenderCommand::DrawIndexed(m_VAO);
 
-		m_RenderCalls.push_back({ m_Configuration.UsedVertexNumber, m_Configuration.UsedIndexNumber, m_Configuration.UsedTextureSlots});
+		ClearBufferedData();
 	}
 
 	void Batch::Clear() noexcept
@@ -126,12 +129,14 @@ namespace FarLight
 		FL_PROFILE_FUNCTION();
 
 		m_Configuration.UsedIndexNumber = 0;
-		m_EBO->SetCount(0);
+		m_IndexData.clear();
 
 		m_Configuration.UsedVertexNumber = 0;
-		m_VBO->SetOffset(0);
+		m_VertexData.clear();
 		
 		m_Configuration.UsedTextureSlots = 1;
+
+		ClearBufferedData();
 	}
 
 	void Batch::AddTexture(const Ref<Texture2D>& texture) noexcept
@@ -142,5 +147,11 @@ namespace FarLight
 
 		m_Configuration.UsedTextures[m_Configuration.UsedTextureSlots] = texture;
 		++m_Configuration.UsedTextureSlots;
+	}
+
+	void Batch::ClearBufferedData() noexcept
+	{
+		m_EBO->SetCount(0);
+		m_VBO->SetOffset(0);
 	}
 }

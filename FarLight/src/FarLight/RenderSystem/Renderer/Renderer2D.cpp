@@ -34,8 +34,6 @@ namespace FarLight
 		FL_PROFILE_FUNCTION();
 
 		s_BatchController->ClearAll(BatchType::Dynamic);
-		s_BatchController->ResetRenderCalls(BatchType::Dynamic);
-		s_BatchController->ResetRenderCalls(BatchType::Static);
 		s_BatchController->SetViewProjection(camera.GetViewMatrix(), camera.GetProjectionMatrix());
 	}
 
@@ -44,6 +42,7 @@ namespace FarLight
 		FL_PROFILE_FUNCTION();
 
 		s_BatchController->RenderAll(BatchType::Static);
+		s_BatchController->RenderAll(BatchType::Dynamic);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, BatchType type) noexcept
