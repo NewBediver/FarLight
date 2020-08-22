@@ -4,6 +4,7 @@
 #include "flpch.h"
 
 #include "AtlasMap.h"
+#include "AtlasTile.h"
 
 namespace FarLight
 {
@@ -64,7 +65,7 @@ namespace FarLight
 			// UpperLeft
 			textureCoords[3] = { (leftOffset + offset.x * m_TileSize.x) / m_Texture->GetWidth(), (upOffset + (offset.y + sizeInTileUnits.y) * m_TileSize.y) / m_Texture->GetHeight() };
 
-			m_AtlasTiles[offset.y][offset.x].Tile = CreateRef<AtlasTile>(m_Texture, std::move(textureCoords));
+			m_AtlasTiles[offset.y][offset.x].Tile = CreateRef<AtlasTile>(this, std::move(textureCoords));
 		}
 
 		return m_AtlasTiles[offset.y][offset.x].Tile;

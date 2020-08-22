@@ -15,12 +15,13 @@ project "Sandbox"
 
     includedirs
     {
-        "../FarLight/src",
-        "../FarLight/vendor/Glad/include",
-        "../FarLight/vendor/glm",
-        "../FarLight/vendor/ImGui",
-        "../FarLight/vendor/spdlog/include",
-        "../FarLight/vendor/stb"
+		"%{IncludeDir.FarLight}",
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.spdlog}",
+        "%{IncludeDir.stb}",
+		"%{IncludeDir.entt}"
     }
 
     links

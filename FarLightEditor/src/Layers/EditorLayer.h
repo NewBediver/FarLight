@@ -14,7 +14,7 @@ namespace FarLight
 
 		virtual void OnAttach() noexcept override;
 		virtual void OnDetach() noexcept override;
-		virtual void OnUpdate(const Timestep& timestamp) noexcept override;
+		virtual void OnUpdate(const Timestep& timestep) noexcept override;
 		virtual void OnUserInterfaceRender() noexcept override;
 		virtual void OnEvent(Event& event) noexcept override;
 
@@ -33,6 +33,8 @@ namespace FarLight
 		OrthographicCameraController m_CameraController;
 		bool m_IsRenderViewportFocused, m_IsRenderViewportHovered;
 
+		Ref<Scene> m_Scene;
+		Ref<Entity> m_Square;
 
 		Ref<Texture2D> m_Texture;
 		Ref<Texture2D> m_ShovelKnightTexture;

@@ -2,12 +2,15 @@
 
 #include <vector>
 
-#include "FarLight/RenderSystem/TextureAtlas/AtlasTile.h"
-
 #include "FarLight/Core/Core.h"
+#include "FarLight/RenderSystem/Texture/Texture2D.h"
+
+#include <glm/glm.hpp>
 
 namespace FarLight
 {
+	class AtlasTile;
+
 	class AtlasMap final
 	{
 	public:
@@ -53,5 +56,7 @@ namespace FarLight
 		};
 
 		std::vector<std::vector<AtlasTileData>> m_AtlasTiles;
+
+		friend class AtlasTile;
 	};
 }

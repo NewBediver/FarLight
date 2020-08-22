@@ -18,13 +18,14 @@ project "FarLight"
 
     includedirs
     {
-        "src",
-        "vendor/Glad/include",
-        "vendor/glm",
-        "vendor/GLFW/include",
-        "vendor/ImGui",
-        "vendor/spdlog/include",
-        "vendor/stb"
+        "%{IncludeDir.FarLight}",
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.spdlog}",
+        "%{IncludeDir.stb}",
+		"%{IncludeDir.entt}"
     }
 
     links

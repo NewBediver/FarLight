@@ -19,11 +19,15 @@ namespace FarLight
 		FramebufferSpecification spec = {1280, 720};
 		m_Framebuffer = Framebuffer::Create(spec);
 
-		m_Texture = Texture2D::Create("assets/textures/Box.png");
-		m_ShovelKnightTexture = Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
+		//m_Texture = Texture2D::Create("assets/textures/Box.png");
+		//m_ShovelKnightTexture = Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
 
-		Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 1.5f, glm::vec4(1.0f), BatchType::Static);
-		Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f }, BatchType::Static);
+		m_Scene = Scene::Create();
+		m_Square = CreateRef<Entity>(m_Scene->CreateEntity("Square"));
+		m_Square->AddComponent<RendererComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+
+		/*Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 1.5f, glm::vec4(1.0f), BatchType::Static);
+		Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f }, BatchType::Static);*/
 	}
 
 	void EditorLayer::OnDetach() noexcept
@@ -31,12 +35,12 @@ namespace FarLight
 
 	}
 
-	void EditorLayer::OnUpdate(const Timestep& timestamp) noexcept
+	void EditorLayer::OnUpdate(const Timestep& timestep) noexcept
 	{
 		if (m_IsRenderViewportFocused)
-			m_CameraController.OnUpdate(timestamp);
+			m_CameraController.OnUpdate(timestep);
 
-		m_Rotation += static_cast<float>(timestamp);
+		m_Rotation += static_cast<float>(timestep);
 
 		m_Framebuffer->Bind();
 		RenderCommand::SetClearColor({ 0.5f, 0.5f, 0.5f, 1.0f });
@@ -44,7 +48,7 @@ namespace FarLight
 
 		Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		Renderer2D::DrawRotatedQuad({ 1.0f, 1.0f, 0.0f }, { 1.3f, 0.6f }, m_Rotation, { 0.8f, 0.2f, 0.3f, 1.0f });
+		/*Renderer2D::DrawRotatedQuad({ 1.0f, 1.0f, 0.0f }, { 1.3f, 0.6f }, m_Rotation, { 0.8f, 0.2f, 0.3f, 1.0f });
 		Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2.0f, { 0.3f, 0.8f, 0.2f, 1.0f });
 
 		for (float x = -20.0f; x < 20.0f; x += 2.0f)
@@ -53,7 +57,8 @@ namespace FarLight
 			{
 				Renderer2D::DrawQuad({ x, y, 0.1f }, { 1.0f, 1.0f }, { (x + 20.0f) / 40.0f, 0.6f, (y + 20.0f) / 40.0f, 0.7f });
 			}
-		}
+		}*/
+		m_Scene->OnUpdate(timestep);
 		
 		Renderer2D::EndScene();
 		m_Framebuffer->Unbind();

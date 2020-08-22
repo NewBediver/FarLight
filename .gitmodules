@@ -18,3 +18,6 @@
 	path = FarLight/vendor/stb
 	url = https://github.com/nothings/stb
 	branch = master
+[submodule "FarLight/vendor/entt"]
+	path = FarLight/vendor/entt
+	url = https://github.com/skypjack/entt
