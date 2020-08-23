@@ -193,7 +193,7 @@ namespace FarLight
 			rotationMat * glm::vec4(-halfXSize,  halfYSize, position.z, 1.0f)   // UpperLeft
 		};
 
-		for (int i = 0; i < 4; ++i)
+		for (int i = 0; i < tmp.size(); ++i)
 		{
 			tmp[i].x += position.x;
 			tmp[i].y += position.y;
@@ -203,8 +203,8 @@ namespace FarLight
 
 	std::vector<float> Renderer2D::RecalculateSquareVertexData(const std::array<glm::vec4, 4>& position, const glm::vec4& color, const std::array<glm::vec2, 4>& textureCoordinates, float tilingFactor) noexcept
 	{
-		std::vector<float> data(4ull * static_cast<unsigned long long>(GetDefaultLayout().GetCount()));
-		for (unsigned i = 0; i < 4; ++i)
+		std::vector<float> data(position.size() * static_cast<unsigned long long>(GetDefaultLayout().GetCount()));
+		for (unsigned i = 0; i < position.size(); ++i)
 		{
 			unsigned offset = i * GetDefaultLayout().GetCount();
 			data[offset] = position[i].x;
@@ -236,7 +236,7 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, color, textureCoords);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), positions.size(), vertexData, indexData.size(), indexData);
 	}
 	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const glm::vec4& color, BatchType type) noexcept
 	{
@@ -248,7 +248,7 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, color, textureCoords);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), positions.size(), vertexData, indexData.size(), indexData);
 	}
 
 	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4 tintColor, BatchType type) noexcept
@@ -261,7 +261,7 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, texture, 9);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), positions.size(), vertexData, indexData.size(), indexData, texture, 9);
 	}
 	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4 tintColor, BatchType type) noexcept
 	{
@@ -273,7 +273,7 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, texture, 9);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), positions.size(), vertexData, indexData.size(), indexData, texture, 9);
 	}
 
 	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4 tintColor, BatchType type) noexcept
@@ -286,7 +286,7 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, atlasTile->GetTexture(), 9);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), positions.size(), vertexData, indexData.size(), indexData, atlasTile->GetTexture(), 9);
 	}
 	void Renderer2D::RecalculateQuadData(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians, const Ref<AtlasTile>& atlasTile, float tilingFactor, const glm::vec4 tintColor, BatchType type) noexcept
 	{
@@ -298,6 +298,6 @@ namespace FarLight
 		std::vector<float> vertexData = RecalculateSquareVertexData(positions, tintColor, textureCoords, tilingFactor);
 		std::vector<unsigned> indexData = RecalculateSquareIndexData();
 
-		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), 4, vertexData, 6, indexData, atlasTile->GetTexture(), 9);
+		s_BatchController->AddData(BatchConfiguration(type, GetDefaultLayout(), GetDefaultTexture(), GetDefaultShader()), positions.size(), vertexData, indexData.size(), indexData, atlasTile->GetTexture(), 9);
 	}
 }

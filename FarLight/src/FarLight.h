@@ -27,6 +27,10 @@
 #include "FarLight/EntityComponentSystem/Entity.h"
 #include "FarLight/EntityComponentSystem/Components.h"
 //------------------------------------
+//---Virtual-File-System--------------
+#include "FarLight/VirtualFileSystem/FileSystem.h"
+#include "FarLight/VirtualFileSystem/Directory.h"
+//------------------------------------
 //---Render-System--------------------
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 #include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"

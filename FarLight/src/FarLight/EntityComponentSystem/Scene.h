@@ -16,8 +16,8 @@ namespace FarLight
 
 		Scene(const Scene&) = delete;
 		Scene(Scene&&) = delete;
-		Scene& operator==(const Scene&) = delete;
-		Scene& operator==(Scene&&) = delete;
+		Scene& operator=(const Scene&) = delete;
+		Scene& operator=(Scene&&) = delete;
 
 		explicit Scene() noexcept = default;
 

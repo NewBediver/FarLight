@@ -24,10 +24,14 @@ namespace FarLight
 		void UpdateRenderViewport() noexcept;
 
 		void GetBatchingStatistic() noexcept;
+		void GetFileSystem() noexcept;
+
+		void DirectoryTraverslBuild(Directory& directory) noexcept;
 
 		struct Options
 		{
 			bool ShowBatchStatistics = false;
+			bool ShowFileSystem = false;
 		} m_Options;
 
 		OrthographicCameraController m_CameraController;

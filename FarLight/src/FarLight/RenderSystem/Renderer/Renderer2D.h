@@ -80,7 +80,7 @@ namespace FarLight
 
 		static const Ref<FarLight::Shader>& Renderer2D::GetDefaultShader() noexcept
 		{
-			static Ref<Shader> s_DefaultShader = Shader::Create("assets/shaders/DefaultSquare/DefaultSquareShader.vert", "assets/shaders/DefaultSquare/DefaultSquareShader.frag");
+			static Ref<Shader> s_DefaultShader = Shader::Create("Assets/Shaders/DefaultSquare/DefaultSquareShader.vert", "Assets/Shaders/DefaultSquare/DefaultSquareShader.frag");
 			return s_DefaultShader;
 		}
 
