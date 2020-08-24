@@ -24,6 +24,9 @@ namespace FarLight
 		void UpdateRenderViewport() noexcept;
 
 		void GetBatchingStatistic() noexcept;
+
+		void GetECS() noexcept;
+
 		void GetFileSystem() noexcept;
 
 		void DirectoryTraverslBuild(Directory& directory) noexcept;
@@ -32,18 +35,20 @@ namespace FarLight
 		{
 			bool ShowBatchStatistics = false;
 			bool ShowFileSystem = false;
+			bool ShowECS = false;
 		} m_Options;
 
+		struct RenderViewportOptions
+		{
+			bool IsFocused = true, IsHovered = true;
+			unsigned Height = 0, Width = 0;
+		} m_RenderViewportOptions;
+
 		OrthographicCameraController m_CameraController;
-		bool m_IsRenderViewportFocused, m_IsRenderViewportHovered;
 
 		Ref<Scene> m_Scene;
 		Ref<Entity> m_Square;
 
-		Ref<Texture2D> m_Texture;
-		Ref<Texture2D> m_ShovelKnightTexture;
-
-		float m_Rotation;
 		Ref<Framebuffer> m_Framebuffer;
 
 		Ref<AtlasMap> m_AtlasMap;

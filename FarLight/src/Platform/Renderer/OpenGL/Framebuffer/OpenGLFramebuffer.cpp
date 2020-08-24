@@ -14,6 +14,9 @@ namespace FarLight
 		, m_DepthStencilAttachment(0)
 		, m_Specification(spec)
 	{
+		FL_CORE_ASSERT(spec.Width > 0, "Framebuffer width should be greater than 0!");
+		FL_CORE_ASSERT(spec.Height > 0, "Framebuffer height should be greater than 0!");
+
 		Invalidate();
 	}
 
@@ -35,7 +38,7 @@ namespace FarLight
 
 	void OpenGLFramebuffer::Resize(unsigned width, unsigned height) noexcept
 	{
-		if (m_Specification.Width != width || m_Specification.Height != height)
+		if (width > 0 && height > 0 && (m_Specification.Width != width || m_Specification.Height != height))
 		{
 			m_Specification.Width = width;
 			m_Specification.Height = height;

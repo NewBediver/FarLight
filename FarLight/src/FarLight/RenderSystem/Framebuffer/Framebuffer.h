@@ -6,7 +6,6 @@ namespace FarLight
 	{
 		unsigned Width = 0;
 		unsigned Height = 0;
-		unsigned Samples = 1;
 	};
 
 	class Framebuffer

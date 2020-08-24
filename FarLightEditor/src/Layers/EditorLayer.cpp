@@ -3,15 +3,13 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <imgui.h>
+#include <imgui_internal.h>
 
 namespace FarLight
 {
 	EditorLayer::EditorLayer() noexcept
 		: Layer("Editor Layer")
 		, m_CameraController(1280.0f / 720.0f)
-		, m_Rotation(0.0f)
-		, m_IsRenderViewportFocused(false)
-		, m_IsRenderViewportHovered(false)
 	{ }
 
 	void EditorLayer::OnAttach() noexcept
@@ -19,15 +17,9 @@ namespace FarLight
 		FramebufferSpecification spec = {1280, 720};
 		m_Framebuffer = Framebuffer::Create(spec);
 
-		//m_Texture = Texture2D::Create("assets/textures/Box.png");
-		//m_ShovelKnightTexture = Texture2D::Create("assets/textures/ShovelKnightDigPromo.png");
-
 		m_Scene = Scene::Create();
 		m_Square = CreateRef<Entity>(m_Scene->CreateEntity("Square"));
 		m_Square->AddComponent<RendererComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
-
-		/*Renderer2D::DrawQuad({ 0.0f, -0.5f, -0.1f }, { 10.0f, 10.0f }, m_Texture, 1.5f, glm::vec4(1.0f), BatchType::Static);
-		Renderer2D::DrawQuad({ -1.0f, 0.3f }, { 0.8f, 1.5f }, { 0.3f, 0.2f, 0.8f, 1.0f }, BatchType::Static);*/
 	}
 
 	void EditorLayer::OnDetach() noexcept
@@ -37,10 +29,11 @@ namespace FarLight
 
 	void EditorLayer::OnUpdate(const Timestep& timestep) noexcept
 	{
-		if (m_IsRenderViewportFocused)
-			m_CameraController.OnUpdate(timestep);
+		m_Framebuffer->Resize(static_cast<unsigned>(m_RenderViewportOptions.Width), static_cast<unsigned>(m_RenderViewportOptions.Height));
+		m_CameraController.OnResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
 
-		m_Rotation += static_cast<float>(timestep);
+		if (m_RenderViewportOptions.IsFocused)
+			m_CameraController.OnUpdate(timestep);
 
 		m_Framebuffer->Bind();
 		RenderCommand::SetClearColor({ 0.5f, 0.5f, 0.5f, 1.0f });
@@ -48,16 +41,6 @@ namespace FarLight
 
 		Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		/*Renderer2D::DrawRotatedQuad({ 1.0f, 1.0f, 0.0f }, { 1.3f, 0.6f }, m_Rotation, { 0.8f, 0.2f, 0.3f, 1.0f });
-		Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, -m_Rotation, m_ShovelKnightTexture, 2.0f, { 0.3f, 0.8f, 0.2f, 1.0f });
-
-		for (float x = -20.0f; x < 20.0f; x += 2.0f)
-		{
-			for (float y = -20.0f; y < 20.0f; y += 2.0f)
-			{
-				Renderer2D::DrawQuad({ x, y, 0.1f }, { 1.0f, 1.0f }, { (x + 20.0f) / 40.0f, 0.6f, (y + 20.0f) / 40.0f, 0.7f });
-			}
-		}*/
 		m_Scene->OnUpdate(timestep);
 		
 		Renderer2D::EndScene();
@@ -67,10 +50,15 @@ namespace FarLight
 
 	void EditorLayer::OnUserInterfaceRender() noexcept
 	{
+		//bool demo = true;
+		//ImGui::ShowDemoWindow(&demo);
+
 		EnableDocking();
 		UpdateRenderViewport();
 
 		if (m_Options.ShowBatchStatistics) GetBatchingStatistic();
+		if (m_Options.ShowECS) GetECS();
+
 		if (m_Options.ShowFileSystem) GetFileSystem();
 	}
 
@@ -136,6 +124,7 @@ namespace FarLight
 			}
 			if (ImGui::BeginMenu("Tools"))
 			{
+				if (ImGui::MenuItem("Show ECS", "ECS")) m_Options.ShowECS = true;
 				if (ImGui::MenuItem("Show batch statistics", "B")) m_Options.ShowBatchStatistics = true;
 				ImGui::EndMenu();
 			}
@@ -148,13 +137,13 @@ namespace FarLight
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
 		ImGui::Begin("Render Viewport", nullptr);
 
-		m_IsRenderViewportFocused = ImGui::IsWindowFocused();
-		m_IsRenderViewportHovered = ImGui::IsWindowHovered();
-		Application::GetInstance().SetEditorEventsBlock(!m_IsRenderViewportFocused || !m_IsRenderViewportHovered);
+		m_RenderViewportOptions.IsFocused = ImGui::IsWindowFocused();
+		m_RenderViewportOptions.IsHovered = ImGui::IsWindowFocused();
+		Application::GetInstance().SetEditorEventsBlock(!m_RenderViewportOptions.IsFocused || !m_RenderViewportOptions.IsHovered);
 
 		auto tmp = ImGui::GetContentRegionAvail();
-		m_Framebuffer->Resize(static_cast<unsigned>(tmp.x), static_cast<unsigned>(tmp.y));
-		m_CameraController.OnResize(tmp.x, tmp.y);
+		m_RenderViewportOptions.Width = tmp.x;
+		m_RenderViewportOptions.Height = tmp.y;
 
 		unsigned renderTextureID = m_Framebuffer->GetColorAttachmentID();
 		ImGui::Image(reinterpret_cast<void*>(renderTextureID), { static_cast<float>(m_Framebuffer->GetSpecification().Width), static_cast<float>(m_Framebuffer->GetSpecification().Height) }, { 0, 1 }, { 1, 0 });
@@ -190,6 +179,28 @@ namespace FarLight
 		ImGui::End();
 	}
 
+	void EditorLayer::GetECS() noexcept
+	{
+		ImGui::Begin("Entity Component System", &m_Options.ShowECS);
+		if (m_Square->IsExists())
+		{
+			std::string& str = m_Square->GetComponent<TagComponent>().Tag;
+			ImGui::InputText("Tag", const_cast<char*>(str.c_str()), str.capacity());
+
+			ImGui::DragFloat3("Position", glm::value_ptr(m_Square->GetComponent<TransformComponent>().Position), 0.001f, 0.0f);
+
+			ImGui::DragFloat2("Size", glm::value_ptr(m_Square->GetComponent<TransformComponent>().Size), 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None);
+
+
+			static float s_Degree = 0.0f;
+			ImGui::DragFloat("Rotation", &s_Degree, 0.1f, std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
+			m_Square->GetComponent<TransformComponent>().Rotation = glm::radians(s_Degree);
+
+			ImGui::ColorEdit4("Color", glm::value_ptr(m_Square->GetComponent<RendererComponent>().Color));
+		}
+		ImGui::End();
+	}
+
 	void EditorLayer::GetFileSystem() noexcept
 	{
 		ImGui::Begin("File system", &m_Options.ShowFileSystem);
@@ -201,7 +212,8 @@ namespace FarLight
 
 	void EditorLayer::DirectoryTraverslBuild(Directory& directory) noexcept
 	{
-		if (ImGui::TreeNode(directory.GetRelativePath().c_str()))
+		std::string label = directory.GetAbsolutePath().c_str();
+		if (ImGui::TreeNode(label.c_str()))
 		{
 			for (auto& node : directory.GetDirectoryMap())
 			{

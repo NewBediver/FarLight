@@ -43,7 +43,7 @@ namespace FarLight
 
 	void OrthographicCameraController::OnResize(float width, float height) noexcept
 	{
-		if (abs(m_AspectRatio - width / height) > 1e-9)
+		if (height > 0.0f && width > 0.0f && abs(m_AspectRatio - width / height) > 1e-9)
 		{
 			m_AspectRatio = width / height;
 			m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
