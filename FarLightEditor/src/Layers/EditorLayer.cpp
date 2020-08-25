@@ -18,8 +18,8 @@ namespace FarLight
 		m_Framebuffer = Framebuffer::Create(spec);
 
 		m_Scene = Scene::Create();
-		m_Square = CreateRef<Entity>(m_Scene->CreateEntity("Square"));
-		m_Square->AddComponent<RendererComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+		auto tmp = m_Scene->CreateEntity("Square");
+		tmp.AddComponent<RendererComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
 	}
 
 	void EditorLayer::OnDetach() noexcept
@@ -182,22 +182,50 @@ namespace FarLight
 	void EditorLayer::GetECS() noexcept
 	{
 		ImGui::Begin("Entity Component System", &m_Options.ShowECS);
-		if (m_Square->IsExists())
+
+		if (ImGui::Button("Create square", { ImGui::GetContentRegionAvail().x, 25 }))
 		{
-			std::string& str = m_Square->GetComponent<TagComponent>().Tag;
-			ImGui::InputText("Tag", const_cast<char*>(str.c_str()), str.capacity());
-
-			ImGui::DragFloat3("Position", glm::value_ptr(m_Square->GetComponent<TransformComponent>().Position), 0.001f, 0.0f);
-
-			ImGui::DragFloat2("Size", glm::value_ptr(m_Square->GetComponent<TransformComponent>().Size), 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None);
-
-
-			static float s_Degree = 0.0f;
-			ImGui::DragFloat("Rotation", &s_Degree, 0.1f, std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-			m_Square->GetComponent<TransformComponent>().Rotation = glm::radians(s_Degree);
-
-			ImGui::ColorEdit4("Color", glm::value_ptr(m_Square->GetComponent<RendererComponent>().Color));
+			auto tmp = m_Scene->CreateEntity();
+			tmp.AddComponent<RendererComponent>();
 		}
+
+		auto entities = m_Scene->GetEntities<TransformComponent>();
+		for (int i = 0; i < entities.size(); ++i)
+		{
+			auto& entity = entities[i];
+			if (entity.HasAllComponents<TagComponent>())
+			{
+				ImGui::PushID(i);
+				std::string& str = entity.GetComponent<TagComponent>().Tag;
+				if (ImGui::TreeNode("%s", str.c_str()))
+				{
+					ImGui::InputText("Tag", const_cast<char*>(str.c_str()), str.capacity());
+
+					if (entity.HasAllComponents<TransformComponent>())
+					{
+						if (ImGui::CollapsingHeader("Transform"))
+						{
+							ImGui::DragFloat3("Position", glm::value_ptr(entity.GetComponent<TransformComponent>().Position), 0.001f, 0.0f);
+							ImGui::DragFloat2("Size", glm::value_ptr(entity.GetComponent<TransformComponent>().Size), 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None);
+							float degree = glm::degrees(entity.GetComponent<TransformComponent>().Rotation);
+							ImGui::DragFloat("Rotation", &degree, 0.1f, std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
+							entity.GetComponent<TransformComponent>().Rotation = glm::radians(degree);
+						}
+					}
+
+					if (entity.HasAllComponents<RendererComponent>())
+					{
+						if (ImGui::CollapsingHeader("Rendering"))
+						{
+							ImGui::ColorEdit4("Color", glm::value_ptr(entity.GetComponent<RendererComponent>().Color));
+						}
+					}
+					ImGui::TreePop();
+				}
+			}
+			ImGui::PopID();
+		}
+
 		ImGui::End();
 	}
 

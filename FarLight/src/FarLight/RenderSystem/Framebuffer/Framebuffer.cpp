@@ -23,5 +23,3 @@ namespace FarLight
 		return nullptr;
 	}
 }
-
-

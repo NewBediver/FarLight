@@ -47,7 +47,6 @@ namespace FarLight
 		OrthographicCameraController m_CameraController;
 
 		Ref<Scene> m_Scene;
-		Ref<Entity> m_Square;
 
 		Ref<Framebuffer> m_Framebuffer;
 

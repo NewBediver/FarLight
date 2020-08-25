@@ -24,6 +24,17 @@ namespace FarLight
 		Entity CreateEntity(const std::string& name = std::string()) noexcept;
 		void DestroyEntity(const Entity& entity) noexcept;
 
+		template<typename... Components>
+		std::vector<Entity> GetEntities() noexcept
+		{
+			std::vector<Entity> res;
+			auto view = m_Registry.view<Components...>();
+			for (auto entity : view) {
+				res.emplace_back(this, entity);
+			}
+			return res;
+		}
+
 		void OnUpdate(const Timestep& ts) noexcept;
 
 	private:

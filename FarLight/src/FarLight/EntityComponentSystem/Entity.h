@@ -46,16 +46,16 @@ namespace FarLight
 			return m_ScenePtr->m_Registry.get<T>(m_Handle);
 		}
 
-		template<typename... Component>
+		template<typename... Components>
 		bool HasAllComponents() noexcept
 		{
-			return m_ScenePtr->m_Registry.has<Component...>(m_Handle);
+			return m_ScenePtr->m_Registry.has<Components...>(m_Handle);
 		}
 
-		template<typename... Component>
+		template<typename... Components>
 		bool HasAnyComponent() noexcept
 		{
-			return m_ScenePtr->m_Registry.any<Component...>(m_Handle);
+			return m_ScenePtr->m_Registry.any<Components...>(m_Handle);
 		}
 
 		bool IsExists() const noexcept
