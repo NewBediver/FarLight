@@ -8,11 +8,6 @@ namespace FarLight
 		: public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(const MouseButtonPressedEvent&) = delete;
-		MouseButtonPressedEvent(MouseButtonPressedEvent&&) = delete;
-		MouseButtonPressedEvent& operator=(const MouseButtonPressedEvent&) = delete;
-		MouseButtonPressedEvent& operator=(MouseButtonPressedEvent&&) = delete;
-
 		explicit MouseButtonPressedEvent(int&& button) noexcept
 			: MouseButtonEvent(std::move(button), "MouseButtonPressed", EventType::MouseButtonPressedEventType)
 		{ }

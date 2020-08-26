@@ -10,11 +10,6 @@ namespace FarLight
 		: public VertexBuffer
 	{
 	public:
-		OpenGLVertexBuffer(const OpenGLVertexBuffer&) = delete;
-		OpenGLVertexBuffer(OpenGLVertexBuffer&&) = delete;
-		OpenGLVertexBuffer& operator=(const OpenGLVertexBuffer&) = delete;
-		OpenGLVertexBuffer& operator=(OpenGLVertexBuffer&&) = delete;
-		
 		explicit OpenGLVertexBuffer(const void* vertices, unsigned size, const BufferLayout& layout) noexcept;
 		explicit OpenGLVertexBuffer(unsigned size, const BufferLayout& layout) noexcept;
 

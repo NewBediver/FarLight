@@ -11,11 +11,6 @@ namespace FarLight
 		: public Texture2D
 	{
 	public:
-		OpenGLTexture2D(const OpenGLTexture2D&) = delete;
-		OpenGLTexture2D(OpenGLTexture2D&&) = delete;
-		OpenGLTexture2D& operator=(const OpenGLTexture2D&) = delete;
-		OpenGLTexture2D& operator=(OpenGLTexture2D&&) = delete;
-
 		explicit OpenGLTexture2D(const std::string& path) noexcept;
 		explicit OpenGLTexture2D(unsigned width, unsigned height, const glm::vec4& pixelColor) noexcept;
 

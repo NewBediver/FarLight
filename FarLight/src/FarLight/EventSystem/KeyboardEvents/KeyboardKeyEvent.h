@@ -8,11 +8,6 @@ namespace FarLight
 		: public Event
 	{
 	public:
-		KeyboardKeyEvent(const KeyboardKeyEvent&) = delete;
-		KeyboardKeyEvent(KeyboardKeyEvent&&) = delete;
-		KeyboardKeyEvent& operator=(const KeyboardKeyEvent&) = delete;
-		KeyboardKeyEvent& operator=(KeyboardKeyEvent&&) = delete;
-
 		virtual ~KeyboardKeyEvent() noexcept = 0 { };
 
 		constexpr

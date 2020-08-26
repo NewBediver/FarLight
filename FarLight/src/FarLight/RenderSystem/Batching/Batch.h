@@ -59,10 +59,6 @@ namespace FarLight
 	class Batch final
 	{
 	public:
-		Batch(const Batch&) = delete;
-		Batch& operator=(const Batch&) = delete;
-		Batch& operator=(Batch&&) = delete;
-
 		struct RenderCall
 		{
 			unsigned UsedVertexNumber;
@@ -71,7 +67,6 @@ namespace FarLight
 		};
 
 		explicit Batch(const BatchConfiguration& stats) noexcept;
-		explicit Batch(Batch&& other) noexcept;
 
 		void Render() noexcept;
 		void Clear() noexcept;

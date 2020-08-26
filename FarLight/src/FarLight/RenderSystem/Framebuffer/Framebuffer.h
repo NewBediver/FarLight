@@ -13,12 +13,6 @@ namespace FarLight
 	public:
 		static Ref<Framebuffer> Create(const FramebufferSpecification& spec) noexcept;
 
-		Framebuffer(const Framebuffer&) = delete;
-		Framebuffer(Framebuffer&&) = delete;
-		Framebuffer& operator=(const Framebuffer&) = delete;
-		Framebuffer& operator=(Framebuffer&&) = delete;
-
-		explicit Framebuffer() noexcept = default;
 		virtual ~Framebuffer() noexcept = default;
 
 		virtual void Bind() const noexcept = 0;

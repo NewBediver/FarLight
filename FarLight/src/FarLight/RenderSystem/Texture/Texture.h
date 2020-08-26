@@ -9,13 +9,6 @@ namespace FarLight
 	class Texture
 	{
 	public:
-		Texture(const Texture&) = delete;
-		Texture(Texture&&) = delete;
-		Texture& operator=(const Texture&) = delete;
-		Texture& operator=(Texture&&) = delete;
-
-		explicit Texture() noexcept = default;
-
 		virtual ~Texture() noexcept = default;
 
 		virtual void Bind(unsigned slot) const noexcept = 0;

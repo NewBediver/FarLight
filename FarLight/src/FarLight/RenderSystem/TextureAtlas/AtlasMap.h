@@ -16,11 +16,6 @@ namespace FarLight
 	public:
 		static Ref<AtlasMap> Create(const Ref<Texture2D>& texture, const glm::vec2& tileSize, const glm::vec2& distanceBetweenTilesInPixels = glm::vec2(1)) noexcept;
 
-		AtlasMap(const AtlasMap&) = delete;
-		AtlasMap(AtlasMap&&) = delete;
-		AtlasMap& operator==(const AtlasMap&) = delete;
-		AtlasMap& operator==(AtlasMap&&) = delete;
-
 		explicit AtlasMap(const Ref<Texture2D>& texture, const glm::vec2& tileSize, const glm::vec2& distanceBetweenTilesInPixels) noexcept;
 
 		const Ref<AtlasTile>& GetAtlasTile(const glm::vec2& offset, const glm::vec2& sizeInTileUnits = glm::vec2(1)) noexcept;

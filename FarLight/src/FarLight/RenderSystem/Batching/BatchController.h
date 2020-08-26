@@ -7,13 +7,6 @@ namespace FarLight
 	class BatchController final
 	{
 	public:
-		BatchController(const BatchController&) = delete;
-		BatchController(BatchController&&) = delete;
-		BatchController& operator=(const BatchController&) = delete;
-		BatchController& operator=(BatchController&&) = delete;
-
-		explicit BatchController() noexcept = default;
-
 		void RenderAll(BatchType type) noexcept;
 		void ClearAll(BatchType type) noexcept;
 

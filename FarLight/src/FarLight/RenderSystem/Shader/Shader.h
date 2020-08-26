@@ -62,13 +62,6 @@ namespace FarLight
 	public:
 		static Ref<Shader> Create(const std::string& vertexSrc, const std::string& fragmentSrc) noexcept;
 
-		Shader(const Shader&) = delete;
-		Shader(Shader&&) = delete;
-		Shader& operator=(const Shader&) = delete;
-		Shader& operator=(Shader&&) = delete;
-
-		explicit Shader() noexcept = default;
-
 		virtual ~Shader() noexcept = default;
 
 		virtual void Bind() const noexcept  = 0;

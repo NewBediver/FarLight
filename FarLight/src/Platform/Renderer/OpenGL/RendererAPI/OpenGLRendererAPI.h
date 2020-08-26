@@ -8,11 +8,6 @@ namespace FarLight
 		: public RendererAPI
 	{
 	public:
-		OpenGLRendererAPI(const OpenGLRendererAPI&) = delete;
-		OpenGLRendererAPI(OpenGLRendererAPI&&) = delete;
-		OpenGLRendererAPI& operator=(const OpenGLRendererAPI&) = delete;
-		OpenGLRendererAPI& operator=(OpenGLRendererAPI&&) = delete;
-
 		explicit OpenGLRendererAPI() noexcept = default;
 
 		virtual void Init() const noexcept override;

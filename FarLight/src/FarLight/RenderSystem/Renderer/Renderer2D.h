@@ -30,6 +30,8 @@ namespace FarLight
 		static void Shutdown() noexcept;
 
 		static void BeginScene(const OrthographicCamera& camera) noexcept;
+		static void BeginScene(const glm::mat4& view, const glm::mat4& projection) noexcept;
+
 		static void EndScene() noexcept;
 
 		// Quad draw calls
@@ -89,6 +91,8 @@ namespace FarLight
 			static Ref<Texture2D> s_DefaultTexture = Texture2D::Create(1, 1);
 			return s_DefaultTexture;
 		}
+
+		static void BeginSceneInit(const glm::mat4& view, const glm::mat4& projection) noexcept;
 
 		static std::array<glm::vec4, 4> RecalculateSquareVertexPosition(const glm::vec3& position, const glm::vec2& size) noexcept;
 		static std::array<glm::vec4, 4> RecalculateSquareVertexPosition(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians) noexcept;

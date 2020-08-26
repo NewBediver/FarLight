@@ -33,8 +33,22 @@ namespace FarLight
 	{
 		FL_PROFILE_FUNCTION();
 
+		BeginSceneInit(camera.GetViewMatrix(), camera.GetProjectionMatrix());
+	}
+
+	void Renderer2D::BeginScene(const glm::mat4& view, const glm::mat4& projection) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
+		BeginSceneInit(view, projection);
+	}
+
+	void Renderer2D::BeginSceneInit(const glm::mat4& view, const glm::mat4& projection) noexcept
+	{
+		FL_PROFILE_FUNCTION();
+
 		s_BatchController->ClearAll(BatchType::Dynamic);
-		s_BatchController->SetViewProjection(camera.GetViewMatrix(), camera.GetProjectionMatrix());
+		s_BatchController->SetViewProjection(view, projection);
 	}
 
 	void Renderer2D::EndScene() noexcept
@@ -178,6 +192,7 @@ namespace FarLight
 			glm::vec4(position.x - halfXSize, position.y + halfYSize, position.z, 1.0f)   // UpperLeft
 		};
 	}
+
 	std::array<glm::vec4, 4> Renderer2D::RecalculateSquareVertexPosition(const glm::vec3& position, const glm::vec2& size, float counterclockwiseRadians) noexcept
 	{
 		float halfXSize = size.x / 2;

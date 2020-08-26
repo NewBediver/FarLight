@@ -12,11 +12,6 @@ namespace FarLight
 		: public Window
 	{
 	public:
-		WindowsWindow(const WindowsWindow&) = delete;
-		WindowsWindow(WindowsWindow&&) = delete;
-		WindowsWindow& operator=(const WindowsWindow&) = delete;
-		WindowsWindow& operator=(WindowsWindow&&) = delete;
-
 		explicit WindowsWindow(const WindowProps& props) noexcept;
 
 		virtual void OnUpdate() noexcept override;

@@ -17,13 +17,6 @@ namespace FarLight
 
 		static API GetAPI() noexcept;
 
-		RendererAPI(const RendererAPI&) = delete;
-		RendererAPI(RendererAPI&&) = delete;
-		RendererAPI& operator=(const RendererAPI&) = delete;
-		RendererAPI& operator=(RendererAPI&&) = delete;
-
-		explicit RendererAPI() noexcept = default;
-
 		virtual ~RendererAPI() noexcept = default;
 
 		virtual void Init() const noexcept = 0;

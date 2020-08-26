@@ -12,11 +12,6 @@ namespace FarLight
 		: public Shader
 	{
 	public:
-		OpenGLShader(const OpenGLShader&) = delete;
-		OpenGLShader(OpenGLShader&&) = delete;
-		OpenGLShader& operator=(const OpenGLShader&) = delete;
-		OpenGLShader& operator=(OpenGLShader&&) = delete;
-
 		explicit OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath) noexcept;
 
 		virtual ~OpenGLShader() noexcept;

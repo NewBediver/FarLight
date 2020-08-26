@@ -8,11 +8,6 @@ namespace FarLight
         : public Event
     {
     public:
-        MouseMovedEvent(const MouseMovedEvent&) = delete;
-        MouseMovedEvent(MouseMovedEvent&&) = delete;
-        MouseMovedEvent& operator=(const MouseMovedEvent&) = delete;
-        MouseMovedEvent& operator=(MouseMovedEvent&&) = delete;
-
         explicit MouseMovedEvent(double&& xPosition, double&& yPosition) noexcept
             : Event("MouseMoved", EventType::MouseMovedEventType, MouseEventCategory | InputEventCategory)
             , m_XPosition(std::move(xPosition))

@@ -32,11 +32,6 @@ namespace FarLight
 		: public VertexArray
 	{
 	public:
-		OpenGLVertexArray(const OpenGLVertexArray&) = delete;
-		OpenGLVertexArray(OpenGLVertexArray&&) = delete;
-		OpenGLVertexArray& operator=(const OpenGLVertexArray&) = delete;
-		OpenGLVertexArray& operator=(OpenGLVertexArray&&) = delete;
-
 		explicit OpenGLVertexArray() noexcept;
 
 		virtual ~OpenGLVertexArray() noexcept;

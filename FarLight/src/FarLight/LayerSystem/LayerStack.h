@@ -7,11 +7,6 @@ namespace FarLight
 	class LayerStack final
 	{
 	public:
-		LayerStack(const LayerStack&) = delete;
-		LayerStack(LayerStack&&) = delete;
-		LayerStack& operator=(const LayerStack&) = delete;
-		LayerStack& operator=(LayerStack&&) = delete;
-
 		explicit LayerStack() noexcept
 			: m_LayerInsertIndex(0)
 		{ }

@@ -12,13 +12,6 @@ namespace FarLight
 	public:
 		static Ref<VertexArray> Create() noexcept;
 
-		VertexArray(const VertexArray&) = delete;
-		VertexArray(VertexArray&&) = delete;
-		VertexArray& operator=(const VertexArray&) = delete;
-		VertexArray& operator=(VertexArray&&) = delete;
-
-		explicit VertexArray() noexcept = default;
-
 		virtual ~VertexArray() noexcept = default;
 
 		virtual void Bind() const noexcept = 0;

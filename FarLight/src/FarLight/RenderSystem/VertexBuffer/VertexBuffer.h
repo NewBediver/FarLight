@@ -10,13 +10,6 @@ namespace FarLight
 		static Ref<VertexBuffer> Create(const void* vertices, unsigned size, const BufferLayout& layout) noexcept;
 		static Ref<VertexBuffer> Create(unsigned size, const BufferLayout& layout) noexcept;
 
-		VertexBuffer(const VertexBuffer&) = delete;
-		VertexBuffer(VertexBuffer&&) = delete;
-		VertexBuffer& operator=(const VertexBuffer&) = delete;
-		VertexBuffer& operator=(VertexBuffer&&) = delete;
-
-		explicit VertexBuffer() noexcept = default;
-
 		virtual ~VertexBuffer() noexcept = default;
 
 		virtual void Bind() const noexcept = 0;

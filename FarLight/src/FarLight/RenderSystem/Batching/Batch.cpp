@@ -34,15 +34,6 @@ namespace FarLight
 		FL_CORE_INFO("============================================================");
 	}
 
-	Batch::Batch(Batch&& other) noexcept
-		: m_Configuration(std::move(other.m_Configuration))
-		, m_VertexData(std::move(other.m_VertexData))
-		, m_IndexData(std::move(other.m_IndexData))
-		, m_VAO(std::move(other.m_VAO))
-		, m_VBO(std::move(other.m_VBO))
-		, m_EBO(std::move(other.m_EBO))
-	{ }
-
 	void Batch::AddData(unsigned vertexNumber, const std::vector<float>& vertexData, unsigned indexNumber, const std::vector<unsigned>& indices) noexcept
 	{
 		FL_PROFILE_FUNCTION();

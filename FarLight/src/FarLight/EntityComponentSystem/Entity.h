@@ -11,12 +11,6 @@ namespace FarLight
 	class Entity final
 	{
 	public:
-		Entity(const Entity&) = delete;
-		Entity& operator=(const Entity&) = delete;
-
-		Entity(Entity&&) = default;
-		Entity& operator=(Entity&&) = default;
-
 		explicit Entity(Scene* scene, entt::entity ent) noexcept
 			: m_ScenePtr(scene)
 			, m_Handle(ent)

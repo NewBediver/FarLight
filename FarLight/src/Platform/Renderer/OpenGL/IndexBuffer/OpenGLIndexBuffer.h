@@ -10,11 +10,6 @@ namespace FarLight
 		: public IndexBuffer
 	{
 	public:
-		OpenGLIndexBuffer(const OpenGLIndexBuffer&) = delete;
-		OpenGLIndexBuffer(OpenGLIndexBuffer&&) = delete;
-		OpenGLIndexBuffer& operator=(const OpenGLIndexBuffer&) = delete;
-		OpenGLIndexBuffer& operator=(OpenGLIndexBuffer&&) = delete;
-
 		explicit OpenGLIndexBuffer(const void* indicies, unsigned count) noexcept;
 		explicit OpenGLIndexBuffer(unsigned count) noexcept;
 

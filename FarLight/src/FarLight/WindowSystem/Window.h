@@ -12,13 +12,6 @@ namespace FarLight
 	public:
 		using EventCallbackFunction = std::function<void(Event&)>;
 
-		Window(const Window&) = delete;
-		Window(Window&&) = delete;
-		Window& operator=(const Window&) = delete;
-		Window& operator=(Window&&) = delete;
-
-		explicit Window() noexcept = default;
-
 		virtual ~Window() noexcept = default;
 
 		static Ref<Window> Create(const WindowProps& props = WindowProps()) noexcept;

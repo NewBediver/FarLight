@@ -8,7 +8,7 @@
 
 # FarLight files
 **.log
-**imgui.ini
+**.ini
 
 # Visual Studio files and folder
 .vs/

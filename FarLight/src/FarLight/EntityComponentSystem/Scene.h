@@ -14,11 +14,6 @@ namespace FarLight
 	public:
 		static Ref<Scene> Create() noexcept;
 
-		Scene(const Scene&) = delete;
-		Scene(Scene&&) = delete;
-		Scene& operator=(const Scene&) = delete;
-		Scene& operator=(Scene&&) = delete;
-
 		explicit Scene() noexcept = default;
 
 		Entity CreateEntity(const std::string& name = std::string()) noexcept;

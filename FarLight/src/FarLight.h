@@ -23,9 +23,13 @@
 #include "FarLight/InputSystem/MouseButtonCodes.h"
 //------------------------------------
 //---Entity-Component-System----------
-#include "FarLight/EntityComponentSystem/Scene.h"
+#include "FarLight/EntityComponentSystem/Components/Tag/TagComponent.h"
+#include "FarLight/EntityComponentSystem/Components/Transform/TransformComponent.h"
+#include "FarLight/EntityComponentSystem/Components/Render/RenderComponent.h"
+#include "FarLight/EntityComponentSystem/Components/Camera/Camera2DComponent.h"
+
 #include "FarLight/EntityComponentSystem/Entity.h"
-#include "FarLight/EntityComponentSystem/Components.h"
+#include "FarLight/EntityComponentSystem/Scene.h"
 //------------------------------------
 //---Virtual-File-System--------------
 #include "FarLight/VirtualFileSystem/FileSystem.h"

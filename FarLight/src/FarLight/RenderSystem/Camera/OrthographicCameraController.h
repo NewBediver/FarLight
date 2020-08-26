@@ -14,11 +14,6 @@ namespace FarLight
 	class OrthographicCameraController final
 	{
 	public:
-		OrthographicCameraController(const OrthographicCameraController&) = delete;
-		OrthographicCameraController(OrthographicCameraController&&) = delete;
-		OrthographicCameraController& operator=(const OrthographicCameraController&) = delete;
-		OrthographicCameraController& operator=(OrthographicCameraController&&) = delete;
-
 		explicit OrthographicCameraController(float aspectRation) noexcept;
 
 		const OrthographicCamera& GetCamera() const noexcept { return m_Camera; }

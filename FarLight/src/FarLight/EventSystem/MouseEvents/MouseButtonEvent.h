@@ -8,11 +8,6 @@ namespace FarLight
 		: public Event
 	{
 	public:
-		MouseButtonEvent(const MouseButtonEvent&) = delete;
-		MouseButtonEvent(MouseButtonEvent&&) = delete;
-		MouseButtonEvent& operator=(const MouseButtonEvent&) = delete;
-		MouseButtonEvent& operator=(MouseButtonEvent&&) = delete;
-
 		virtual ~MouseButtonEvent() noexcept = 0 { };
 
 		constexpr

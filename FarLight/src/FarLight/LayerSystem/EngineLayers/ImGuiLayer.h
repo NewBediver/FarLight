@@ -8,11 +8,6 @@ namespace FarLight
 		: public Layer
 	{
 	public:
-		ImGuiLayer(const ImGuiLayer&) = delete;
-		ImGuiLayer(ImGuiLayer&&) = delete;
-		ImGuiLayer& operator=(const ImGuiLayer&) = delete;
-		ImGuiLayer& operator=(ImGuiLayer&&) = delete;
-
 		explicit ImGuiLayer() noexcept
 			: Layer("ImGuiLayer")
 			, m_IsEventsBlocked(true)

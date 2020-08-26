@@ -5,11 +5,6 @@ namespace FarLight
 	class Timestep final
 	{
 	public:
-		Timestep(const Timestep&) = delete;
-		Timestep(Timestep&&) = delete;
-		Timestep& operator=(const Timestep&) = delete;
-		Timestep& operator=(Timestep&&) = delete;
-
 		explicit Timestep(float&& time = 0.0f) noexcept
 			: m_Time(std::move(time))
 		{ }

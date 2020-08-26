@@ -10,11 +10,6 @@ namespace FarLight
 		: public GraphicsContext
 	{
 	public:
-		OpenGLContext(const OpenGLContext&) = delete;
-		OpenGLContext(OpenGLContext&&) = delete;
-		OpenGLContext& operator=(const OpenGLContext&) = delete;
-		OpenGLContext& operator=(OpenGLContext&&) = delete;
-
 		explicit OpenGLContext(const Ref<GLFWwindow>& windowHandle) noexcept
 			: m_WindowHandle(windowHandle)
 		{ }

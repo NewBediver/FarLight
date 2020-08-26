@@ -19,7 +19,10 @@ namespace FarLight
 
 		m_Scene = Scene::Create();
 		auto tmp = m_Scene->CreateEntity("Square");
-		tmp.AddComponent<RendererComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+		tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+
+		auto camera = m_Scene->CreateEntity("Camera");
+		camera.AddComponent<Camera2DComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f), true);
 	}
 
 	void EditorLayer::OnDetach() noexcept
@@ -36,14 +39,14 @@ namespace FarLight
 			m_CameraController.OnUpdate(timestep);
 
 		m_Framebuffer->Bind();
-		RenderCommand::SetClearColor({ 0.5f, 0.5f, 0.5f, 1.0f });
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		RenderCommand::Clear();
 
-		Renderer2D::BeginScene(m_CameraController.GetCamera());
+		//Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 		m_Scene->OnUpdate(timestep);
 		
-		Renderer2D::EndScene();
+		//Renderer2D::EndScene();
 		m_Framebuffer->Unbind();
 
 	}
@@ -186,7 +189,7 @@ namespace FarLight
 		if (ImGui::Button("Create square", { ImGui::GetContentRegionAvail().x, 25 }))
 		{
 			auto tmp = m_Scene->CreateEntity();
-			tmp.AddComponent<RendererComponent>();
+			tmp.AddComponent<RenderComponent>();
 		}
 
 		auto entities = m_Scene->GetEntities<TransformComponent>();
@@ -196,34 +199,35 @@ namespace FarLight
 			if (entity.HasAllComponents<TagComponent>())
 			{
 				ImGui::PushID(i);
-				std::string& str = entity.GetComponent<TagComponent>().Tag;
-				if (ImGui::TreeNode("%s", str.c_str()))
+				auto& tagComp = entity.GetComponent<TagComponent>();
+				if (ImGui::TreeNode("%s", tagComp.Tag.c_str()))
 				{
-					ImGui::InputText("Tag", const_cast<char*>(str.c_str()), str.capacity());
+					tagComp.OnUserInterfaceDraw();
 
 					if (entity.HasAllComponents<TransformComponent>())
 					{
+						auto& comp = entity.GetComponent<TransformComponent>();
 						if (ImGui::CollapsingHeader("Transform"))
-						{
-							ImGui::DragFloat3("Position", glm::value_ptr(entity.GetComponent<TransformComponent>().Position), 0.001f, 0.0f);
-							ImGui::DragFloat2("Size", glm::value_ptr(entity.GetComponent<TransformComponent>().Size), 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None);
-							float degree = glm::degrees(entity.GetComponent<TransformComponent>().Rotation);
-							ImGui::DragFloat("Rotation", &degree, 0.1f, std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-							entity.GetComponent<TransformComponent>().Rotation = glm::radians(degree);
-						}
+							comp.OnUserInterfaceDraw();
 					}
 
-					if (entity.HasAllComponents<RendererComponent>())
+					if (entity.HasAllComponents<Camera2DComponent>())
 					{
-						if (ImGui::CollapsingHeader("Rendering"))
-						{
-							ImGui::ColorEdit4("Color", glm::value_ptr(entity.GetComponent<RendererComponent>().Color));
-						}
+						auto& comp = entity.GetComponent<Camera2DComponent>();
+						if (ImGui::CollapsingHeader("Camera"))
+							comp.OnUserInterfaceDraw();
+					}
+
+					if (entity.HasAllComponents<RenderComponent>())
+					{
+						auto& comp = entity.GetComponent<RenderComponent>();
+						if (ImGui::CollapsingHeader("Render"))
+							comp.OnUserInterfaceDraw();
 					}
 					ImGui::TreePop();
 				}
+				ImGui::PopID();
 			}
-			ImGui::PopID();
 		}
 
 		ImGui::End();

@@ -8,11 +8,6 @@ namespace FarLight
 	class Directory
 	{
 	public:
-		/*Directory(const Directory&) = delete;
-		Directory& operator=(const Directory&) = delete;
-		Directory(Directory&&) = delete;
-		Directory& operator=(Directory&&) = delete;*/
-
 		Directory() = default;
 		explicit Directory(Directory& parent, const std::string& relativePath) noexcept;
 

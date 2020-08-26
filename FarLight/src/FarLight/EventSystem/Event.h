@@ -35,11 +35,6 @@ namespace FarLight
 	class Event
 	{
 	public:
-		Event(const Event&) = delete;
-		Event(Event&&) = delete;
-		Event& operator=(const Event&) = delete;
-		Event& operator=(Event&&) = delete;
-
 		virtual ~Event() noexcept = 0
 		{
 			FL_CORE_INFO("Event [{0}] destroyed.", this->ToString());

@@ -8,11 +8,6 @@ namespace FarLight
 		: public KeyboardKeyEvent
 	{
 	public:
-		KeyboardKeyPressedEvent(const KeyboardKeyPressedEvent&) = delete;
-		KeyboardKeyPressedEvent(KeyboardKeyPressedEvent&&) = delete;
-		KeyboardKeyPressedEvent& operator=(const KeyboardKeyPressedEvent&) = delete;
-		KeyboardKeyPressedEvent& operator=(KeyboardKeyPressedEvent&&) = delete;
-
 		explicit KeyboardKeyPressedEvent(int&& keyCode, bool&& isRepeated) noexcept
 			: KeyboardKeyEvent(std::move(keyCode), "KeyboardKeyPressed", EventType::KeyboardKeyPressedEventType)
 			, m_IsRepeated(std::move(isRepeated))

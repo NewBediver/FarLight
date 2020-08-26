@@ -8,11 +8,6 @@ namespace FarLight
 		: public KeyboardKeyEvent
 	{
 	public:
-		KeyboardKeyTypedEvent(const KeyboardKeyTypedEvent&) = delete;
-		KeyboardKeyTypedEvent(KeyboardKeyTypedEvent&&) = delete;
-		KeyboardKeyTypedEvent& operator=(const KeyboardKeyTypedEvent&) = delete;
-		KeyboardKeyTypedEvent& operator=(KeyboardKeyTypedEvent&&) = delete;
-
 		explicit KeyboardKeyTypedEvent(int&& keyCode) noexcept
 			: KeyboardKeyEvent(std::move(keyCode), "KeyboardKeyTyped", EventType::KeyboardKeyTypedEventType)
 		{ }

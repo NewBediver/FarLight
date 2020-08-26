@@ -11,11 +11,6 @@ namespace FarLight
 	class EventDispatcher final
 	{
 	public:
-		EventDispatcher(const EventDispatcher&) = delete;
-		EventDispatcher(EventDispatcher&&) = delete;
-		EventDispatcher& operator=(const EventDispatcher&) = delete;
-		EventDispatcher& operator=(EventDispatcher&&) = delete;
-
 		explicit EventDispatcher(Event& evt) noexcept
 			: m_Event(evt)
 		{ }

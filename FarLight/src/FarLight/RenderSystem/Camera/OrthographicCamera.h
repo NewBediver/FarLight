@@ -10,11 +10,6 @@ namespace FarLight
 		: public Camera
 	{
 	public:
-		OrthographicCamera(const OrthographicCamera&) = delete;
-		OrthographicCamera(OrthographicCamera&&) = delete;
-		OrthographicCamera& operator=(const OrthographicCamera&) = delete;
-		OrthographicCamera& operator=(OrthographicCamera&&) = delete;
-
 		explicit OrthographicCamera(float left, float right, float bottom, float top, float nearZone = -1.0f, float farZone = 100.0f) noexcept;
 
 		virtual const glm::vec3& GetPosition() const noexcept override { return m_Position; }

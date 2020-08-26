@@ -9,11 +9,6 @@ namespace FarLight
 	class AtlasTile final
 	{
 	public:
-		AtlasTile(const AtlasTile&) = delete;
-		AtlasTile(AtlasTile&&) = delete;
-		AtlasTile& operator=(const AtlasTile&) = delete;
-		AtlasTile& operator=(AtlasTile&&) = delete;
-
 		explicit AtlasTile(AtlasMap* atlasMap, std::array<glm::vec2, 4>&& textureCoords) noexcept
 			: m_AtlasMap(atlasMap)
 			, m_TextureCoords(textureCoords)

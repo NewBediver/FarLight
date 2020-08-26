@@ -8,12 +8,8 @@ namespace FarLight
 		: public Framebuffer
 	{
 	public:
-		OpenGLFramebuffer(const OpenGLFramebuffer&) = delete;
-		OpenGLFramebuffer(OpenGLFramebuffer&&) = delete;
-		OpenGLFramebuffer& operator=(const OpenGLFramebuffer&) = delete;
-		OpenGLFramebuffer& operator=(OpenGLFramebuffer&&) = delete;
-
 		explicit OpenGLFramebuffer(const FramebufferSpecification& spec) noexcept;
+
 		virtual ~OpenGLFramebuffer() noexcept;
 
 		virtual void Bind() const noexcept override;
