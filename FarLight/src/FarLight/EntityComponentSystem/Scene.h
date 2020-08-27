@@ -31,6 +31,7 @@ namespace FarLight
 		}
 
 		void OnUpdate(const Timestep& ts) noexcept;
+		void OnViewportResize(unsigned width, unsigned height) noexcept;
 
 	private:
 		entt::registry m_Registry;

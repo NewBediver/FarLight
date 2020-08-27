@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FarLight/RenderSystem/Camera/RenderCamera.h"
+#include "FarLight/RenderSystem/Camera/Render2DCamera.h"
 
 #include "FarLight/EntityComponentSystem/Interfaces/IUIDrawable.h"
 
@@ -12,10 +12,14 @@ namespace FarLight
 		: public IUIDrawable
 	{
 	public:
-		RenderCamera Camera;
+		Render2DCamera Camera;
 		bool IsPrimary;
+		bool IsFixedAspectRatio;
 
-		explicit Camera2DComponent(const glm::mat4& projection = glm::mat4(1.0f), bool isPrimary = false) noexcept;
+		explicit Camera2DComponent(unsigned width, unsigned height, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept;
+		explicit Camera2DComponent(unsigned width, unsigned height, float zoom, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept;
+
+		void SetAspectRatio(unsigned width, unsigned height) noexcept;
 
 		virtual void OnUserInterfaceDraw() noexcept override;
 	};

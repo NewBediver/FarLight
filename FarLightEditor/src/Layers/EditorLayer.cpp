@@ -22,7 +22,7 @@ namespace FarLight
 		tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
 
 		auto camera = m_Scene->CreateEntity("Camera");
-		camera.AddComponent<Camera2DComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f), true);
+		camera.AddComponent<Camera2DComponent>(spec.Width, spec.Height, true);
 	}
 
 	void EditorLayer::OnDetach() noexcept
@@ -34,6 +34,7 @@ namespace FarLight
 	{
 		m_Framebuffer->Resize(static_cast<unsigned>(m_RenderViewportOptions.Width), static_cast<unsigned>(m_RenderViewportOptions.Height));
 		m_CameraController.OnResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
+		m_Scene->OnViewportResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
 
 		if (m_RenderViewportOptions.IsFocused)
 			m_CameraController.OnUpdate(timestep);
