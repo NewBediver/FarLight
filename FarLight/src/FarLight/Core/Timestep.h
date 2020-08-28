@@ -10,7 +10,7 @@ namespace FarLight
 		{ }
 
 		constexpr
-		explicit operator float() const noexcept { return m_Time; }
+		operator float() const noexcept { return m_Time; }
 
 		constexpr
 		float GetSeconds() const noexcept { return m_Time; }

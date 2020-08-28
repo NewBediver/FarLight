@@ -7,6 +7,7 @@
 #include "Components/Transform/TransformComponent.h"
 #include "Components/Render/RenderComponent.h"
 #include "Components/Camera/Camera2DComponent.h"
+#include "Components/Script/NativeScriptComponent.h"
 
 #include "Scene.h"
 #include "Entity.h"
@@ -41,6 +42,21 @@ namespace FarLight
 
 	void Scene::OnUpdate(const Timestep& ts) noexcept
 	{
+		// execute scripts
+		{
+			m_Registry.view<NativeScriptComponent>().each([&](auto entity, auto& nativeScriptComp)
+				{
+					if (nativeScriptComp.Script == nullptr)
+					{
+						nativeScriptComp.m_Instanciate();
+						nativeScriptComp.Script->m_Entity = Entity(this, entity);
+						nativeScriptComp.Script->OnCreate();
+					}
+					nativeScriptComp.Script->OnUpdate(ts);
+				});
+		}
+
+		// Find main camera and get it's transform
 		Render2DCamera* mainCamera = nullptr;
 		glm::mat4 cameraTransform = glm::mat4(1.0f);
 		float cameraRotation = 0.0f;
@@ -57,6 +73,7 @@ namespace FarLight
 			}
 		}
 
+		// Render scene
 		if (mainCamera)
 		{
 			Renderer2D::BeginScene(glm::inverse(cameraTransform), mainCamera->GetProjection());

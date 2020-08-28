@@ -27,6 +27,9 @@
 #include "FarLight/EntityComponentSystem/Components/Transform/TransformComponent.h"
 #include "FarLight/EntityComponentSystem/Components/Render/RenderComponent.h"
 #include "FarLight/EntityComponentSystem/Components/Camera/Camera2DComponent.h"
+#include "FarLight/EntityComponentSystem/Components/Script/NativeScriptComponent.h"
+
+#include "FarLight/EntityComponentSystem/ScriptableBehaviour.h"
 
 #include "FarLight/EntityComponentSystem/Entity.h"
 #include "FarLight/EntityComponentSystem/Scene.h"

@@ -23,6 +23,37 @@ namespace FarLight
 
 		auto camera = m_Scene->CreateEntity("Camera");
 		camera.AddComponent<Camera2DComponent>(spec.Width, spec.Height, true);
+
+		class Script
+			: public ScriptableBehaviour
+		{
+			virtual void OnCreate() noexcept override
+			{
+				FL_TRACE("Script::OnCreate()");
+			}
+
+			virtual void OnDestroy() noexcept override
+			{
+				FL_TRACE("Script::OnDestroy()");
+			}
+
+			virtual void OnUpdate(const Timestep& ts) noexcept override
+			{
+				FL_TRACE("Script::OnUpdate()");
+
+				auto& transformComp = GetComponent<TransformComponent>();
+				float speed = 5.0f;
+				float velocity = speed * ts;
+
+				if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_W)) transformComp.Position.y += velocity;
+				else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_S)) transformComp.Position.y -= velocity;
+
+				if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_A)) transformComp.Position.x -= velocity;
+				else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_D)) transformComp.Position.x += velocity;
+			}
+		};
+		camera.AddComponent<NativeScriptComponent>().Bind<Script>();
+
 	}
 
 	void EditorLayer::OnDetach() noexcept
