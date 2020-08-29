@@ -15,7 +15,8 @@ project "FarLightEditor"
 
     includedirs
     {
-		"%{IncludeDir.FarLight}",
+        "src",
+        "%{IncludeDir.FarLight}",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.glm}",
         "%{IncludeDir.ImGui}",

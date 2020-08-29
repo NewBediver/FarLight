@@ -33,7 +33,7 @@ namespace FarLight
 		}
 
 		template<typename T>
-		T& GetComponent() noexcept
+		T& GetComponent() const noexcept
 		{
 			FL_CORE_ASSERT(HasAllComponents<T>(), "Current component does not exist!");
 
@@ -41,13 +41,13 @@ namespace FarLight
 		}
 
 		template<typename... Components>
-		bool HasAllComponents() noexcept
+		bool HasAllComponents() const noexcept
 		{
 			return m_ScenePtr->m_Registry.has<Components...>(m_Handle);
 		}
 
 		template<typename... Components>
-		bool HasAnyComponent() noexcept
+		bool HasAnyComponent() const noexcept
 		{
 			return m_ScenePtr->m_Registry.any<Components...>(m_Handle);
 		}

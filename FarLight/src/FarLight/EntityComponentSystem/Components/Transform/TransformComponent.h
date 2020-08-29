@@ -18,6 +18,7 @@ namespace FarLight
 
 		glm::mat4 GetTransformationMatrix() const noexcept;
 
-		virtual void OnUserInterfaceDraw() noexcept override;
+		virtual void OnUserInterfaceEditableDraw() noexcept override;
+		virtual void OnUserInterfaceConstantDraw() const noexcept override;
 	};
 }

@@ -16,8 +16,8 @@ namespace FarLight
 		{
 			FL_CORE_ASSERT(Script == nullptr, "Script has already been binded! Unbind it first!");
 
-			m_Instanciate = [this]() { this->Script = CreateScope<T>(); };
-			m_Destroy = [this]() { this->Unbind(); };
+			m_Instanciate = [](NativeScriptComponent& nsComp) { nsComp.Script = CreateScope<T>(); };
+			m_Destroy = [](NativeScriptComponent& nsComp) { nsComp.Unbind(); };
 		}
 
 		void Unbind()
@@ -28,8 +28,8 @@ namespace FarLight
 		}
 
 	private:
-		std::function<void()> m_Instanciate;
-		std::function<void()> m_Destroy;
+		void(*m_Instanciate)(NativeScriptComponent&);
+		void(*m_Destroy)(NativeScriptComponent&);
 
 		friend class Scene;
 	};

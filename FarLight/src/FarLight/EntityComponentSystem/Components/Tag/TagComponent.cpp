@@ -15,7 +15,7 @@ namespace FarLight
 		: Tag(tag)
 	{ }
 
-	void TagComponent::OnUserInterfaceDraw() noexcept
+	void TagComponent::OnUserInterfaceEditableDraw() noexcept
 	{
 		ImGui::InputText("Tag", Tag.data(), Tag.capacity() + 1, ImGuiInputTextFlags_CallbackResize,
 			[](ImGuiInputTextCallbackData* data)
@@ -25,6 +25,11 @@ namespace FarLight
 				data->Buf = str->data();
 				return 0;
 			}, &Tag);
+	}
+
+	void TagComponent::OnUserInterfaceConstantDraw() const noexcept
+	{
+		ImGui::Text("Tag: %s", Tag.c_str());
 	}
 }
 

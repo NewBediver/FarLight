@@ -14,6 +14,7 @@ namespace FarLight
 
 		explicit TagComponent(const std::string& tag = "Entity") noexcept;
 
-		virtual void OnUserInterfaceDraw() noexcept override;
+		virtual void OnUserInterfaceEditableDraw() noexcept override;
+		virtual void OnUserInterfaceConstantDraw() const noexcept override;
 	};
 }

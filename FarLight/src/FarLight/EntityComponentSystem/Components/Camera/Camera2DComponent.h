@@ -21,6 +21,7 @@ namespace FarLight
 
 		void SetAspectRatio(unsigned width, unsigned height) noexcept;
 
-		virtual void OnUserInterfaceDraw() noexcept override;
+		virtual void OnUserInterfaceEditableDraw() noexcept override;
+		virtual void OnUserInterfaceConstantDraw() const noexcept override;
 	};
 }

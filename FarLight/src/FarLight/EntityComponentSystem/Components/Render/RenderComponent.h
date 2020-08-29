@@ -14,6 +14,7 @@ namespace FarLight
 
 		explicit RenderComponent(const glm::vec4& color = glm::vec4(1.0f)) noexcept;
 
-		virtual void OnUserInterfaceDraw() noexcept override;
+		virtual void OnUserInterfaceEditableDraw() noexcept override;
+		virtual void OnUserInterfaceConstantDraw() const noexcept override;
 	};
 }

@@ -7,6 +7,7 @@ namespace FarLight
 	public:
 		virtual ~IUIDrawable() noexcept = default;
 
-		virtual void OnUserInterfaceDraw() noexcept = 0;
+		virtual void OnUserInterfaceEditableDraw() noexcept = 0;
+		virtual void OnUserInterfaceConstantDraw() const noexcept = 0;
 	};
 }

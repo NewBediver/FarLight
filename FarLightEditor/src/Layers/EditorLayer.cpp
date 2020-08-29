@@ -50,10 +50,16 @@ namespace FarLight
 
 				if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_A)) transformComp.Position.x -= velocity;
 				else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_D)) transformComp.Position.x += velocity;
+
+				auto& cameraComp = GetComponent<Camera2DComponent>();
+
+				if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
+				else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
 			}
 		};
 		camera.AddComponent<NativeScriptComponent>().Bind<Script>();
 
+		m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene);
 	}
 
 	void EditorLayer::OnDetach() noexcept
@@ -91,8 +97,9 @@ namespace FarLight
 		EnableDocking();
 		UpdateRenderViewport();
 
+		m_Panels.Hierarchy->ShowEditableContent();
+
 		if (m_Options.ShowBatchStatistics) GetBatchingStatistic();
-		if (m_Options.ShowECS) GetECS();
 
 		if (m_Options.ShowFileSystem) GetFileSystem();
 	}
@@ -159,7 +166,7 @@ namespace FarLight
 			}
 			if (ImGui::BeginMenu("Tools"))
 			{
-				if (ImGui::MenuItem("Show ECS", "ECS")) m_Options.ShowECS = true;
+				if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy->SetShown(true);
 				if (ImGui::MenuItem("Show batch statistics", "B")) m_Options.ShowBatchStatistics = true;
 				ImGui::EndMenu();
 			}
@@ -211,57 +218,6 @@ namespace FarLight
 				ImGui::BulletText("Used Layout Size, Count and Stride: %d / %d / %d", controller->GetBatches()[i].GetConfiguration().UsedLayout.GetElements().size(), controller->GetBatches()[i].GetConfiguration().UsedLayout.GetCount(), controller->GetBatches()[i].GetConfiguration().UsedLayout.GetStride());
 			}
 		}
-		ImGui::End();
-	}
-
-	void EditorLayer::GetECS() noexcept
-	{
-		ImGui::Begin("Entity Component System", &m_Options.ShowECS);
-
-		if (ImGui::Button("Create square", { ImGui::GetContentRegionAvail().x, 25 }))
-		{
-			auto tmp = m_Scene->CreateEntity();
-			tmp.AddComponent<RenderComponent>();
-		}
-
-		auto entities = m_Scene->GetEntities<TransformComponent>();
-		for (int i = 0; i < entities.size(); ++i)
-		{
-			auto& entity = entities[i];
-			if (entity.HasAllComponents<TagComponent>())
-			{
-				ImGui::PushID(i);
-				auto& tagComp = entity.GetComponent<TagComponent>();
-				if (ImGui::TreeNode("%s", tagComp.Tag.c_str()))
-				{
-					tagComp.OnUserInterfaceDraw();
-
-					if (entity.HasAllComponents<TransformComponent>())
-					{
-						auto& comp = entity.GetComponent<TransformComponent>();
-						if (ImGui::CollapsingHeader("Transform"))
-							comp.OnUserInterfaceDraw();
-					}
-
-					if (entity.HasAllComponents<Camera2DComponent>())
-					{
-						auto& comp = entity.GetComponent<Camera2DComponent>();
-						if (ImGui::CollapsingHeader("Camera"))
-							comp.OnUserInterfaceDraw();
-					}
-
-					if (entity.HasAllComponents<RenderComponent>())
-					{
-						auto& comp = entity.GetComponent<RenderComponent>();
-						if (ImGui::CollapsingHeader("Render"))
-							comp.OnUserInterfaceDraw();
-					}
-					ImGui::TreePop();
-				}
-				ImGui::PopID();
-			}
-		}
-
 		ImGui::End();
 	}
 

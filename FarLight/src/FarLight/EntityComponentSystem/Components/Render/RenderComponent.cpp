@@ -15,8 +15,13 @@ namespace FarLight
 		: Color(color)
 	{ }
 
-	void RenderComponent::OnUserInterfaceDraw() noexcept
+	void RenderComponent::OnUserInterfaceEditableDraw() noexcept
 	{
 		ImGui::ColorEdit4("Color", glm::value_ptr(Color));
+	}
+
+	void RenderComponent::OnUserInterfaceConstantDraw() const noexcept
+	{
+		ImGui::Text("Color: %d %d %d %d", static_cast<int>(Color.r * 255), static_cast<int>(Color.g * 255), static_cast<int>(Color.b * 255), static_cast<int>(Color.a * 255));
 	}
 }

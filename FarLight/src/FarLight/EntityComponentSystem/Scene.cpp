@@ -48,7 +48,7 @@ namespace FarLight
 				{
 					if (nativeScriptComp.Script == nullptr)
 					{
-						nativeScriptComp.m_Instanciate();
+						nativeScriptComp.m_Instanciate(nativeScriptComp);
 						nativeScriptComp.Script->m_Entity = Entity(this, entity);
 						nativeScriptComp.Script->OnCreate();
 					}
