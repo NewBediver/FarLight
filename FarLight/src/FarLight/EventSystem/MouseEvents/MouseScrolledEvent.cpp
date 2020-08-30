@@ -3,15 +3,15 @@
 
 #include "flpch.h"
 
-#include "MouseScrolledEvent.h"
+#include "FarLight/EventSystem/MouseEvents/MouseScrolledEvent.h"
 
 namespace FarLight
 {
-	std::string MouseScrolledEvent::ToString() const noexcept
-	{
-		std::stringstream ss;
-		ss.precision(3);
-		ss << std::fixed << GetName() << ": " << "(" << GetXOffset() << ", " << GetYOffset() << ").";
-		return ss.str();
-	}
+    std::string MouseScrolledEvent::ToString() const noexcept
+    {
+        std::stringstream ss;
+        ss.precision(3);
+        ss << std::fixed << GetName() << ": " << "(" << GetXOffset() << ", " << GetYOffset() << ").";
+        return ss.str();
+    }
 }

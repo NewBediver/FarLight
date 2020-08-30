@@ -1,23 +1,24 @@
 [submodule "FarLight/vendor/spdlog"]
 	path = FarLight/vendor/spdlog
-	url = https://github.com/gabime/spdlog
+	url = ../../gabime/spdlog.git
 	branch = v1.x
 [submodule "FarLight/vendor/GLFW"]
 	path = FarLight/vendor/GLFW
-	url = https://github.com/glfw/glfw
+	url = ../../glfw/glfw.git
 	branch = master
 [submodule "FarLight/vendor/ImGui"]
 	path = FarLight/vendor/ImGui
-	url = https://github.com/ocornut/imgui
+	url = ../../ocornut/imgui.git
 	branch = docking
 [submodule "FarLight/vendor/glm"]
 	path = FarLight/vendor/glm
-	url = https://github.com/g-truc/glm
+	url = ../../g-truc/glm.git
 	branch = master
 [submodule "FarLight/vendor/stb"]
 	path = FarLight/vendor/stb
-	url = https://github.com/nothings/stb
+	url = ../../nothings/stb.git
 	branch = master
 [submodule "FarLight/vendor/entt"]
 	path = FarLight/vendor/entt
-	url = https://github.com/skypjack/entt
+	url = ../../skypjack/entt.git
+	branch = master

@@ -8,29 +8,28 @@
 
 namespace FarLight
 {
-	class EventDispatcher final
-	{
-	public:
-		explicit EventDispatcher(Event& evt) noexcept
-			: m_Event(evt)
-		{ }
+    class EventDispatcher final
+    {
+    public:
+        explicit EventDispatcher(Event& evt) noexcept
+            : m_Event(evt)
+        { }
 
-		template<typename T>
-		constexpr
-		bool Dispatch(const std::function<bool(const T&)>& func) noexcept
-		{
-			FL_PROFILE_FUNCTION();
+        template<typename T>
+        constexpr bool Dispatch(const std::function<bool(const T&)>& func) noexcept
+        {
+            FL_PROFILE_FUNCTION();
 
-			if (typeid(T) == typeid(m_Event))
-			{
-				FL_CORE_INFO("Event [{0}] dispatched.", m_Event.ToString());
-				m_Event.SetHandled(func(static_cast<const T&>(m_Event)));
-				return true;
-			}
-			return false;
-		}
+            if (typeid(T) == typeid(m_Event))
+            {
+                FL_CORE_INFO("Event [{0}] dispatched.", m_Event.ToString());
+                m_Event.SetHandled(func(static_cast<const T&>(m_Event)));
+                return true;
+            }
+            return false;
+        }
 
-	private:
-		Event& m_Event;
-	};
+    private:
+        Event& m_Event;
+    };
 }

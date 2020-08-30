@@ -3,14 +3,14 @@
 
 #include "flpch.h"
 
-#include "WindowResizedEvent.h"
+#include "FarLight/EventSystem/WindowEvents/WindowResizedEvent.h"
 
 namespace FarLight
 {
-	std::string WindowResizedEvent::ToString() const noexcept
-	{
-		std::stringstream ss;
-		ss << GetName() << ": " << "(" << GetWidth() << ", " << GetHeight() << ").";
-		return ss.str();
-	}
+    std::string WindowResizedEvent::ToString() const noexcept
+    {
+        std::stringstream ss;
+        ss << GetName() << ": " << "(" << GetWidth() << ", " << GetHeight() << ").";
+        return ss.str();
+    }
 }

@@ -3,14 +3,14 @@
 
 #include "flpch.h"
 
-#include "MouseButtonReleasedEvent.h"
+#include "FarLight/EventSystem/MouseEvents/MouseButtonReleasedEvent.h"
 
 namespace FarLight
 {
-	std::string MouseButtonReleasedEvent::ToString() const noexcept
-	{
-		std::stringstream ss;
-		ss << GetName() << ": " << "(" << GetButton() << ").";
-		return ss.str();
-	}
+    std::string MouseButtonReleasedEvent::ToString() const noexcept
+    {
+        std::stringstream ss;
+        ss << GetName() << ": " << "(" << GetButton() << ").";
+        return ss.str();
+    }
 }

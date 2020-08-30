@@ -3,7 +3,7 @@
 
 #include "flpch.h"
 
-#include "KeyboardKeyTypedEvent.h"
+#include "FarLight/EventSystem/KeyboardEvents/KeyboardKeyTypedEvent.h"
 
 namespace FarLight
 {

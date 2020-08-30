@@ -3,8 +3,9 @@
 
 #include "flpch.h"
 
-#include "Input.h"
-#include "FarLight/Core/Application.h"
+#include "FarLight/InputSystem/Input.h"
+
+#include "FarLight/BasicFunctionality/Application.h"
 
 #ifdef FL_PLATFORM_WINDOWS
     #include <GLFW/glfw3.h>
@@ -12,8 +13,6 @@
 
 namespace FarLight
 {
-
-#ifdef FL_PLATFORM_WINDOWS
     bool Input::IsKeyPressed(KeyboardKeyCodes code) noexcept
     {
         FL_PROFILE_FUNCTION();
@@ -327,20 +326,15 @@ namespace FarLight
     {
         switch (code)
         {
-            case MouseButtonCodes::FL_MOUSE_BUTTON_1: return          GLFW_MOUSE_BUTTON_1;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_2: return          GLFW_MOUSE_BUTTON_2;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_3: return          GLFW_MOUSE_BUTTON_3;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_4: return          GLFW_MOUSE_BUTTON_4;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_5: return          GLFW_MOUSE_BUTTON_5;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_6: return          GLFW_MOUSE_BUTTON_6;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_7: return          GLFW_MOUSE_BUTTON_7;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_8: return          GLFW_MOUSE_BUTTON_8;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_LAST: return       GLFW_MOUSE_BUTTON_LAST;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_LEFT: return       GLFW_MOUSE_BUTTON_LEFT;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_RIGHT: return      GLFW_MOUSE_BUTTON_RIGHT;
-            case MouseButtonCodes::FL_MOUSE_BUTTON_MIDDLE: return     GLFW_MOUSE_BUTTON_MIDDLE;
+            case MouseButtonCodes::FL_MOUSE_BUTTON_0: return          GLFW_MOUSE_BUTTON_1;
+            case MouseButtonCodes::FL_MOUSE_BUTTON_1: return          GLFW_MOUSE_BUTTON_2;
+            case MouseButtonCodes::FL_MOUSE_BUTTON_2: return          GLFW_MOUSE_BUTTON_3;
+            case MouseButtonCodes::FL_MOUSE_BUTTON_3: return          GLFW_MOUSE_BUTTON_4;
+            case MouseButtonCodes::FL_MOUSE_BUTTON_4: return          GLFW_MOUSE_BUTTON_5;
+            case MouseButtonCodes::FL_MOUSE_BUTTON_5: return          GLFW_MOUSE_BUTTON_6;
+            case MouseButtonCodes::FL_MOUSE_BUTTON_6: return          GLFW_MOUSE_BUTTON_7;
+            case MouseButtonCodes::FL_MOUSE_BUTTON_7: return          GLFW_MOUSE_BUTTON_8;
         }
         return GLFW_KEY_UNKNOWN;
     }
-#endif
 }

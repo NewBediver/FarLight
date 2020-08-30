@@ -14,10 +14,8 @@ namespace FarLight
             , m_YPosition(std::move(yPosition))
         { }
 
-        constexpr
-        double MouseMovedEvent::GetX() const noexcept { return m_XPosition; }
-        constexpr
-        double MouseMovedEvent::GetY() const noexcept { return m_YPosition; }
+        constexpr double MouseMovedEvent::GetX() const noexcept { return m_XPosition; }
+        constexpr double MouseMovedEvent::GetY() const noexcept { return m_YPosition; }
 
         virtual std::string ToString() const noexcept override;
 

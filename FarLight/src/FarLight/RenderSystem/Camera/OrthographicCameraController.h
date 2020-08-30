@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FarLight/Core/Timestep.h"
+#include "FarLight/BasicFunctionality/Timestep.h"
 
 #include "FarLight/EventSystem/Event.h"
 #include "FarLight/EventSystem/MouseEvents/MouseScrolledEvent.h"

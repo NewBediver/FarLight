@@ -1,17 +1,17 @@
 #pragma once
 
-#include "MouseButtonEvent.h"
+#include "FarLight/EventSystem/MouseEvents/MouseButtonEvent.h"
 
 namespace FarLight
 {
-	class MouseButtonPressedEvent final
-		: public MouseButtonEvent
-	{
-	public:
-		explicit MouseButtonPressedEvent(int&& button) noexcept
-			: MouseButtonEvent(std::move(button), "MouseButtonPressed", EventType::MouseButtonPressedEventType)
-		{ }
+    class MouseButtonPressedEvent final
+        : public MouseButtonEvent
+    {
+    public:
+        explicit MouseButtonPressedEvent(int&& button) noexcept
+            : MouseButtonEvent(std::move(button), "MouseButtonPressed", EventType::MouseButtonPressedEventType)
+        { }
 
-		virtual std::string ToString() const noexcept override;
-	};
+        virtual std::string ToString() const noexcept override;
+    };
 }

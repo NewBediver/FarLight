@@ -4,8 +4,10 @@
 
 //---Core-----------------------------
 #include "FarLight/Core/Core.h"
-#include "FarLight/Core/Application.h"
-#include "FarLight/Core/Timestep.h"
+//------------------------------------
+//---Basic-Functionality--------------
+#include "FarLight/BasicFunctionality/Application.h"
+#include "FarLight/BasicFunctionality/Timestep.h"
 //------------------------------------
 //---Log-System-----------------------
 #include "FarLight/LogSystem/Logger.h"

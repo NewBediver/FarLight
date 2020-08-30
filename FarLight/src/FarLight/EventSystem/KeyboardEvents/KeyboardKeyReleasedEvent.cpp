@@ -3,14 +3,14 @@
 
 #include "flpch.h"
 
-#include "KeyboardKeyReleasedEvent.h"
+#include "FarLight/EventSystem/KeyboardEvents/KeyboardKeyReleasedEvent.h"
 
 namespace FarLight
 {
-	std::string KeyboardKeyReleasedEvent::ToString() const noexcept
-	{
-		std::stringstream ss;
-		ss << GetName() << ": " << "(" << GetKeyCode() << ").";
-		return ss.str();
-	}
+    std::string KeyboardKeyReleasedEvent::ToString() const noexcept
+    {
+        std::stringstream ss;
+        ss << GetName() << ": " << "(" << GetKeyCode() << ").";
+        return ss.str();
+    }
 }

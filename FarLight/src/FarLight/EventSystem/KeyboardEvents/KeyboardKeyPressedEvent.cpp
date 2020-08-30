@@ -3,14 +3,14 @@
 
 #include "flpch.h"
 
-#include "KeyboardKeyPressedEvent.h"
+#include "FarLight/EventSystem/KeyboardEvents/KeyboardKeyPressedEvent.h"
 
 namespace FarLight
 {
-	std::string KeyboardKeyPressedEvent::ToString() const noexcept
-	{
-		std::stringstream ss;
-		ss << std::boolalpha << GetName() << ": " << "(" << GetKeyCode() << "). " << "Is repeated: " << IsRepeated() << ".";
-		return ss.str();
-	}
+    std::string KeyboardKeyPressedEvent::ToString() const noexcept
+    {
+        std::stringstream ss;
+        ss << std::boolalpha << GetName() << ": " << "(" << GetKeyCode() << "). " << "Is repeated: " << IsRepeated() << ".";
+        return ss.str();
+    }
 }

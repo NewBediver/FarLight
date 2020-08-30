@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FarLight/Core/Core.h"
-#include "FarLight/Core/Timestep.h"
+#include "FarLight/BasicFunctionality/Timestep.h"
 
 #include <entt/entt.hpp>
 

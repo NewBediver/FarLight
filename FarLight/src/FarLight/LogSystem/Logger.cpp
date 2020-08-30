@@ -3,33 +3,33 @@
 
 #include "flpch.h"
 
-#include "Logger.h"
+#include "FarLight/LogSystem/Logger.h"
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
 namespace FarLight
 {
-	Ref<spdlog::logger> Logger::s_CoreLogger = nullptr;
-	Ref<spdlog::logger> Logger::s_ClientLogger = nullptr;
+    Ref<spdlog::logger> Logger::s_CoreLogger = nullptr;
+    Ref<spdlog::logger> Logger::s_ClientLogger = nullptr;
 
-	void Logger::Init() noexcept
-	{
-		std::vector<spdlog::sink_ptr> logSinks;
-		logSinks.emplace_back(CreateRef<spdlog::sinks::stdout_color_sink_mt>());
-		logSinks.emplace_back(CreateRef<spdlog::sinks::basic_file_sink_mt>("FarLight.log", true));
+    void Logger::Init() noexcept
+    {
+        std::vector<spdlog::sink_ptr> logSinks;
+        logSinks.emplace_back(CreateRef<spdlog::sinks::stdout_color_sink_mt>());
+        logSinks.emplace_back(CreateRef<spdlog::sinks::basic_file_sink_mt>("FarLight.log", true));
 
-		logSinks[0]->set_pattern("%^[%T] %n: %v%$");
-		logSinks[1]->set_pattern("[%T] [%l] [%n] : %v%$");
+        logSinks[0]->set_pattern("%^[%T] %n: %v%$");
+        logSinks[1]->set_pattern("[%T] [%l] [%n] : %v%$");
 
-		s_CoreLogger = CreateRef<spdlog::logger>("FarLight", begin(logSinks), end(logSinks));
-		spdlog::register_logger(s_CoreLogger);
-		s_CoreLogger->set_level(spdlog::level::trace);
-		s_CoreLogger->flush_on(spdlog::level::trace);
+        s_CoreLogger = CreateRef<spdlog::logger>("FarLight", begin(logSinks), end(logSinks));
+        spdlog::register_logger(s_CoreLogger);
+        s_CoreLogger->set_level(spdlog::level::trace);
+        s_CoreLogger->flush_on(spdlog::level::trace);
 
-		s_ClientLogger = CreateRef<spdlog::logger>("Application", begin(logSinks), end(logSinks));
-		spdlog::register_logger(s_ClientLogger);
-		s_ClientLogger->set_level(spdlog::level::trace);
-		s_ClientLogger->flush_on(spdlog::level::trace);
-	}
+        s_ClientLogger = CreateRef<spdlog::logger>("Application", begin(logSinks), end(logSinks));
+        spdlog::register_logger(s_ClientLogger);
+        s_ClientLogger->set_level(spdlog::level::trace);
+        s_ClientLogger->flush_on(spdlog::level::trace);
+    }
 }
