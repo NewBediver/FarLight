@@ -1,3 +1,5 @@
+include "./vendor/premake/premake_customization/solution_items.lua"
+
 workspace "FarLight"
     architecture "x64"
     startproject "FarLightEditor"
@@ -8,6 +10,11 @@ workspace "FarLight"
         "Release",
         "Dist"
     }
+
+    solution_items
+	{
+		".editorconfig"
+	}
 
     flags
 	{
@@ -28,6 +35,7 @@ IncludeDir["entt"] = "%{wks.location}/FarLight/vendor/entt/single_include"
 IncludeDir["spdlog"] = "%{wks.location}/FarLight/vendor/spdlog/include"
 
 group "Dependencies"
+    include "vendor/premake"
     include "FarLight/vendor/GLFW"
     include "FarLight/vendor/Glad"
     include "FarLight/vendor/ImGui"

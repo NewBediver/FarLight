@@ -3,7 +3,8 @@
 
 #include "flpch.h"
 
-#include "Window.h"
+#include "FarLight/WindowSystem/Window.h"
+
 #include "Platform/Windows/WindowSystem/WindowsWindow.h"
 
 #ifdef FL_PLATFORM_WINDOWS

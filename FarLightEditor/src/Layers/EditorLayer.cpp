@@ -45,16 +45,16 @@ namespace FarLight
 				float speed = 5.0f;
 				float velocity = speed * ts;
 
-				if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_W)) transformComp.Position.y += velocity;
-				else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_S)) transformComp.Position.y -= velocity;
+				if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_W)) transformComp.Position.y += velocity;
+				else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_S)) transformComp.Position.y -= velocity;
 
-				if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_A)) transformComp.Position.x -= velocity;
-				else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_D)) transformComp.Position.x += velocity;
+				if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_A)) transformComp.Position.x -= velocity;
+				else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_D)) transformComp.Position.x += velocity;
 
 				auto& cameraComp = GetComponent<Camera2DComponent>();
 
-				if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
-				else if (Input::IsKeyPressed(KeyboardKeyCodes::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
+				if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
+				else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
 			}
 		};
 		camera.AddComponent<NativeScriptComponent>().Bind<Script>();

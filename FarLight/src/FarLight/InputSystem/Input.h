@@ -19,8 +19,8 @@ namespace FarLight
             return s_Instance;
         }
 
-        static bool IsKeyPressed(KeyboardKeyCodes code) noexcept;
-        static bool IsMouseButtonPressed(MouseButtonCodes code) noexcept;
+        static bool IsKeyPressed(KeyboardKeyCode code) noexcept;
+        static bool IsMouseButtonPressed(MouseButtonCode code) noexcept;
         static std::pair<double, double> GetMousePosition() noexcept;
         static double GetMouseX() noexcept;
         static double GetMouseY() noexcept;
@@ -28,10 +28,7 @@ namespace FarLight
     private:
         explicit Input() noexcept = default;
 
-        static KeyboardKeyCodes GetFLKeyboardKeyCode(int code) noexcept;
-        static MouseButtonCodes GetFLMouseButtonCode(int code) noexcept;
-
-        static int GetKeyboardKeyFromGLFW(KeyboardKeyCodes code) noexcept;
-        static int GetMouseButtonFromGLFW(MouseButtonCodes code) noexcept;
+        static int GetKeyboardKeyFromGLFW(KeyboardKeyCode code) noexcept;
+        static int GetMouseButtonFromGLFW(MouseButtonCode code) noexcept;
     };
 }

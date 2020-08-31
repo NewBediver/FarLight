@@ -2,7 +2,8 @@
 
 #include <functional>
 
-#include "WindowProps.h"
+#include "FarLight/WindowSystem/WindowProps.h"
+
 #include "FarLight/EventSystem/Event.h"
 
 namespace FarLight

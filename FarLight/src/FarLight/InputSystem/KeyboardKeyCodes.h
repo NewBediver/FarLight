@@ -2,7 +2,7 @@
 
 namespace FarLight
 {
-    enum class KeyboardKeyCodes
+    enum class KeyboardKeyCode
     {
         FL_KEY_UNKNOWN = -1,
 

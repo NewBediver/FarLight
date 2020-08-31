@@ -38,11 +38,11 @@ namespace FarLight
 		float m_ZoomLevel;
 		float m_Sensitivity;
 
-		KeyboardKeyCodes m_ForwardCode;
-		KeyboardKeyCodes m_BackwardCode;
-		KeyboardKeyCodes m_RightCode;
-		KeyboardKeyCodes m_LeftCode;
-		KeyboardKeyCodes m_ClockwiseCode;
-		KeyboardKeyCodes m_CounterclockwiseCode;
+		KeyboardKeyCode m_ForwardCode;
+		KeyboardKeyCode m_BackwardCode;
+		KeyboardKeyCode m_RightCode;
+		KeyboardKeyCode m_LeftCode;
+		KeyboardKeyCode m_ClockwiseCode;
+		KeyboardKeyCode m_CounterclockwiseCode;
 	};
 }

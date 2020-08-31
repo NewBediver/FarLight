@@ -8,7 +8,7 @@ namespace FarLight
         : public MouseButtonEvent
     {
     public:
-        explicit MouseButtonReleasedEvent(int&& button) noexcept
+        explicit MouseButtonReleasedEvent(MouseButtonCode&& button) noexcept
             : MouseButtonEvent(std::move(button), "MouseButtonReleased", EventType::MouseButtonReleasedEventType)
         { }
 

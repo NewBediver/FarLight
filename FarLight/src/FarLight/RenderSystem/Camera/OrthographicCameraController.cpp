@@ -16,12 +16,12 @@ namespace FarLight
         , m_RotationSpeed(180.0f)
         , m_Sensitivity(0.5f)
         , m_Camera(-aspectRatio, aspectRatio, -1.0f, 1.0f)
-        , m_ForwardCode(KeyboardKeyCodes::FL_KEY_W)
-        , m_BackwardCode(KeyboardKeyCodes::FL_KEY_S)
-        , m_LeftCode(KeyboardKeyCodes::FL_KEY_A)
-        , m_RightCode(KeyboardKeyCodes::FL_KEY_D)
-        , m_ClockwiseCode(KeyboardKeyCodes::FL_KEY_E)
-        , m_CounterclockwiseCode(KeyboardKeyCodes::FL_KEY_Q)
+        , m_ForwardCode(KeyboardKeyCode::FL_KEY_W)
+        , m_BackwardCode(KeyboardKeyCode::FL_KEY_S)
+        , m_LeftCode(KeyboardKeyCode::FL_KEY_A)
+        , m_RightCode(KeyboardKeyCode::FL_KEY_D)
+        , m_ClockwiseCode(KeyboardKeyCode::FL_KEY_E)
+        , m_CounterclockwiseCode(KeyboardKeyCode::FL_KEY_Q)
     { }
 
     void OrthographicCameraController::OnUpdate(const Timestep& ts) noexcept

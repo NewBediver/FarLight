@@ -2,7 +2,7 @@
 
 namespace FarLight
 {
-    enum class MouseButtonCodes
+    enum class MouseButtonCode
     {
         FL_MOUSE_BUTTON_UNKNOWN = -1,
 

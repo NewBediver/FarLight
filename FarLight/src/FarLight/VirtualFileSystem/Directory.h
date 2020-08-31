@@ -5,45 +5,43 @@
 
 namespace FarLight
 {
-	class Directory
-	{
-	public:
-		Directory() = default;
-		explicit Directory(Directory& parent, const std::string& relativePath) noexcept;
+    class Directory
+    {
+    public:
+        Directory() = default;
+        explicit Directory(Directory& parent, const std::string& relativePath) noexcept;
 
-		bool IsExists() const noexcept { return std::filesystem::directory_entry(m_AbsolutePath).exists(); }
-		bool IsExists(const std::string& name) const noexcept { return m_DirectoryMap.find(name) != m_DirectoryMap.end() && m_DirectoryMap.at(name).IsExists(); }
+        bool IsExists() const noexcept { return std::filesystem::directory_entry(m_AbsolutePath).exists(); }
+        bool IsExists(const std::string& name) const noexcept { return m_DirectoryMap.find(name) != m_DirectoryMap.end() && m_DirectoryMap.at(name).IsExists(); }
 
-		void Create() noexcept;
-		Directory& Create(const std::string& relativeName) noexcept;
+        void Create() noexcept;
+        Directory& Create(const std::string& relativeName) noexcept;
 
-		Directory& GetDirectory(const std::string& relativeName) noexcept;
+        Directory& GetDirectory(const std::string& relativeName) noexcept;
 
-		const std::string& GetAbsolutePath() const noexcept { return m_AbsolutePath; }
-		const std::string& GetRelativePath() const noexcept { return m_RelativePath; }
+        const std::string& GetAbsolutePath() const noexcept { return m_AbsolutePath; }
+        const std::string& GetRelativePath() const noexcept { return m_RelativePath; }
 
-		const Directory* GetParent() const noexcept { return m_ParentDirectory; }
-		std::map<std::string, Directory>& GetDirectoryMap() noexcept;
+        const Directory* GetParent() const noexcept { return m_ParentDirectory; }
+        std::map<std::string, Directory>& GetDirectoryMap() noexcept;
 
-	private:
-		explicit Directory(const std::string& absolutePath) noexcept;
-		
-		constexpr
-		bool IsResolvedContent() const noexcept { return m_IsResolvedContent; }
-		constexpr
-		void SetResolvedContent(bool status) noexcept { m_IsResolvedContent = status; }
+    private:
+        explicit Directory(const std::string& absolutePath) noexcept;
 
-		void ResolveContent() noexcept;
-		
-		std::string m_AbsolutePath;
-		std::string m_RelativePath;
+        constexpr bool IsResolvedContent() const noexcept { return m_IsResolvedContent; }
+        constexpr void SetResolvedContent(bool status) noexcept { m_IsResolvedContent = status; }
 
-		Directory* m_ParentDirectory;
+        void ResolveContent() noexcept;
 
-		bool m_IsResolvedContent;
-		std::map<std::string, Directory> m_DirectoryMap;
-		//std::unordered_map<std::string, Asset> m_AssetsMap;
+        std::string m_AbsolutePath;
+        std::string m_RelativePath;
 
-		friend class FileSystem;
-	};
+        Directory* m_ParentDirectory;
+
+        bool m_IsResolvedContent;
+        std::map<std::string, Directory> m_DirectoryMap;
+        //std::unordered_map<std::string, Asset> m_AssetsMap;
+
+        friend class FileSystem;
+    };
 }
