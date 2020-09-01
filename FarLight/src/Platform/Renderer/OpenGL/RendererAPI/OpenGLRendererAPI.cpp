@@ -3,48 +3,48 @@
 
 #include "flpch.h"
 
-#include "OpenGLRendererAPI.h"
+#include "Platform/Renderer/OpenGL/RendererAPI/OpenGLRendererAPI.h"
 
 #include <glad/glad.h>
 
 namespace FarLight
 {
-	void OpenGLRendererAPI::Init() const noexcept
-	{
-		FL_PROFILE_FUNCTION();
+    void OpenGLRendererAPI::Init() const noexcept
+    {
+        FL_PROFILE_FUNCTION();
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
-	}
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+    }
 
-	void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) const noexcept
-	{
-		FL_PROFILE_FUNCTION();
+    void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) const noexcept
+    {
+        FL_PROFILE_FUNCTION();
 
-		glClearColor(color.r, color.g, color.b, color.a);
-	}
+        glClearColor(color.r, color.g, color.b, color.a);
+    }
 
-	void OpenGLRendererAPI::SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) const noexcept
-	{
-		FL_PROFILE_FUNCTION();
+    void OpenGLRendererAPI::SetViewport(unsigned x, unsigned y, unsigned width, unsigned height) const noexcept
+    {
+        FL_PROFILE_FUNCTION();
 
-		glViewport(x, y, width, height);
-	}
+        glViewport(x, y, width, height);
+    }
 
-	void OpenGLRendererAPI::Clear() const noexcept
-	{
-		FL_PROFILE_FUNCTION();
+    void OpenGLRendererAPI::Clear() const noexcept
+    {
+        FL_PROFILE_FUNCTION();
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
 
-	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray) const noexcept
-	{
-		FL_PROFILE_FUNCTION();
+    void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray) const noexcept
+    {
+        FL_PROFILE_FUNCTION();
 
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-	}
+        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+    }
 }

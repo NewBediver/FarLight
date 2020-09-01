@@ -6,10 +6,10 @@
 
 namespace FarLight
 {
-	Application& CreateApplication() noexcept
-	{
-		auto& app = Application::GetInstance();
-		app.PushLayer(CreateRef<EditorLayer>());
-		return app;
-	}
+    Application& CreateApplication() noexcept
+    {
+        auto& app = Application::GetInstance();
+        app.PushLayer(CreateRef<EditorLayer>());
+        return app;
+    }
 }

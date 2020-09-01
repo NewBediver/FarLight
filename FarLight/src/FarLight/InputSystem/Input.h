@@ -28,7 +28,9 @@ namespace FarLight
     private:
         explicit Input() noexcept = default;
 
-        static int GetKeyboardKeyFromGLFW(KeyboardKeyCode code) noexcept;
-        static int GetMouseButtonFromGLFW(MouseButtonCode code) noexcept;
+        #ifdef FL_PLATFORM_WINDOWS
+            static int GetKeyboardKeyFromGLFW(KeyboardKeyCode code) noexcept;
+            static int GetMouseButtonFromGLFW(MouseButtonCode code) noexcept;
+        #endif
     };
 }

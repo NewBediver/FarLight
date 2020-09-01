@@ -4,80 +4,50 @@
 
 namespace FarLight
 {
-	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene, bool show, bool editable, const std::string& title) noexcept
-		: m_Scene(scene)
-		, m_IsShown(show)
-		, m_IsEditable(editable)
-		, m_Title(title)
-	{ }
+    SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene, bool show, const std::string& title) noexcept
+        : m_Scene(scene)
+        , m_IsShown(show)
+        , m_Title(title)
+    { }
 
-	void SceneHierarchyPanel::ShowConstantContent() const noexcept
-	{
-		if (m_IsShown && !m_IsEditable)
-		{
-			ImGui::Begin(m_Title.c_str(), &m_IsShown);
+    void SceneHierarchyPanel::ShowContent() noexcept
+    {
+        if (m_IsShown)
+        {
+            ImGui::Begin(m_Title.c_str(), &m_IsShown);
 
-			auto entities = m_Scene->GetEntities<TagComponent>();
-			for (int i = 0; i < entities.size(); ++i)
-			{
-				ImGui::PushID(i);
+            ShowCreateButton();
 
-				auto& tagComp = entities[i].GetComponent<TagComponent>();
-				if (ImGui::TreeNode("%s", tagComp.Tag.c_str()))
-				{
-					tagComp.OnUserInterfaceConstantDraw();
+            auto entities = m_Scene->GetEntities<TagComponent>();
+            for (int i = 0; i < entities.size(); ++i)
+            {
+                ImGui::PushID(i);
 
-					ShowConstantComponent<TransformComponent>(entities[i], "Transform");
-					ShowConstantComponent<Camera2DComponent>(entities[i], "Camera 2D");
-					ShowConstantComponent<RenderComponent>(entities[i], "Render");
+                auto& tagComp = entities[i].GetComponent<TagComponent>();
+                if (ImGui::TreeNode("%s", tagComp.Tag.c_str()))
+                {
+                    tagComp.OnUserInterfaceDraw();
 
-					ImGui::TreePop();
-				}
+                    ShowComponent<TransformComponent>(entities[i], "Transform");
+                    ShowComponent<Camera2DComponent>(entities[i], "Camera 2D");
+                    ShowComponent<RenderComponent>(entities[i], "Render");
 
-				ImGui::PopID();
-			}
-			ImGui::End();
-		}
-	}
+                    ImGui::TreePop();
+                }
 
-	void SceneHierarchyPanel::ShowEditableContent() noexcept
-	{
-		if (m_IsShown && m_IsEditable)
-		{
-			ImGui::Begin(m_Title.c_str(), &m_IsShown);
+                ImGui::PopID();
+            }
 
-			ShowCreateButton();
+            ImGui::End();
+        }
+    }
 
-			auto entities = m_Scene->GetEntities<TagComponent>();
-			for (int i = 0; i < entities.size(); ++i)
-			{
-				ImGui::PushID(i);
-
-				auto& tagComp = entities[i].GetComponent<TagComponent>();
-				if (ImGui::TreeNode("%s", tagComp.Tag.c_str()))
-				{
-					tagComp.OnUserInterfaceEditableDraw();
-
-					ShowEditableComponent<TransformComponent>(entities[i], "Transform");
-					ShowEditableComponent<Camera2DComponent>(entities[i], "Camera 2D");
-					ShowEditableComponent<RenderComponent>(entities[i], "Render");
-
-					ImGui::TreePop();
-				}
-
-				ImGui::PopID();
-			}
-
-			ImGui::End();
-		}
-	}
-
-	void SceneHierarchyPanel::ShowCreateButton() noexcept
-	{
-		if (ImGui::Button("Create square", { ImGui::GetContentRegionAvail().x, 25 }))
-		{
-			auto tmp = m_Scene->CreateEntity();
-			tmp.AddComponent<RenderComponent>();
-		}
-	}
+    void SceneHierarchyPanel::ShowCreateButton() noexcept
+    {
+        if (ImGui::Button("Create square", { ImGui::GetContentRegionAvail().x, 25 }))
+        {
+            auto tmp = m_Scene->CreateEntity();
+            tmp.AddComponent<RenderComponent>();
+        }
+    }
 }

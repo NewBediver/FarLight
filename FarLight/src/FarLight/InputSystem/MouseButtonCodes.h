@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace FarLight
 {
     enum class MouseButtonCode
@@ -20,4 +22,20 @@ namespace FarLight
         FL_MOUSE_BUTTON_RIGHT = FL_MOUSE_BUTTON_1,
         FL_MOUSE_BUTTON_MIDDLE = FL_MOUSE_BUTTON_2
     };
+
+    inline std::string FLMouseButtonCodeToString(MouseButtonCode code)
+    {
+        switch (code)
+        {
+            case MouseButtonCode::FL_MOUSE_BUTTON_0:   return "FL_MOUSE_BUTTON_0";
+            case MouseButtonCode::FL_MOUSE_BUTTON_1:   return "FL_MOUSE_BUTTON_1";
+            case MouseButtonCode::FL_MOUSE_BUTTON_2:   return "FL_MOUSE_BUTTON_2";
+            case MouseButtonCode::FL_MOUSE_BUTTON_3:   return "FL_MOUSE_BUTTON_3";
+            case MouseButtonCode::FL_MOUSE_BUTTON_4:   return "FL_MOUSE_BUTTON_4";
+            case MouseButtonCode::FL_MOUSE_BUTTON_5:   return "FL_MOUSE_BUTTON_5";
+            case MouseButtonCode::FL_MOUSE_BUTTON_6:   return "FL_MOUSE_BUTTON_6";
+            case MouseButtonCode::FL_MOUSE_BUTTON_7:   return "FL_MOUSE_BUTTON_7";
+        }
+        return "FL_MOUSE_BUTTON_UNKNOWN";
+    }
 }

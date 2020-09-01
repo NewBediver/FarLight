@@ -7,239 +7,239 @@
 
 namespace FarLight
 {
-	EditorLayer::EditorLayer() noexcept
-		: Layer("Editor Layer")
-		, m_CameraController(1280.0f / 720.0f)
-	{ }
+    EditorLayer::EditorLayer() noexcept
+        : Layer("Editor Layer")
+        , m_CameraController(1280.0f / 720.0f)
+    { }
 
-	void EditorLayer::OnAttach() noexcept
-	{
-		FramebufferSpecification spec = {1280, 720};
-		m_Framebuffer = Framebuffer::Create(spec);
+    void EditorLayer::OnAttach() noexcept
+    {
+        FramebufferSpecification spec = { 1280, 720 };
+        m_Framebuffer = Framebuffer::Create(spec);
 
-		m_Scene = Scene::Create();
-		auto tmp = m_Scene->CreateEntity("Square");
-		tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+        m_Scene = Scene::Create();
+        auto tmp = m_Scene->CreateEntity("Square");
+        tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
 
-		auto camera = m_Scene->CreateEntity("Camera");
-		camera.AddComponent<Camera2DComponent>(spec.Width, spec.Height, true);
+        auto camera = m_Scene->CreateEntity("Camera");
+        camera.AddComponent<Camera2DComponent>(spec.Width, spec.Height, true);
 
-		class Script
-			: public ScriptableBehaviour
-		{
-			virtual void OnCreate() noexcept override
-			{
-				FL_TRACE("Script::OnCreate()");
-			}
+        class Script
+            : public ScriptableBehaviour
+        {
+            virtual void OnCreate() noexcept override
+            {
+                FL_TRACE("Script::OnCreate()");
+            }
 
-			virtual void OnDestroy() noexcept override
-			{
-				FL_TRACE("Script::OnDestroy()");
-			}
+            virtual void OnDestroy() noexcept override
+            {
+                FL_TRACE("Script::OnDestroy()");
+            }
 
-			virtual void OnUpdate(const Timestep& ts) noexcept override
-			{
-				FL_TRACE("Script::OnUpdate()");
+            virtual void OnUpdate(const Timestep& ts) noexcept override
+            {
+                FL_TRACE("Script::OnUpdate()");
 
-				auto& transformComp = GetComponent<TransformComponent>();
-				float speed = 5.0f;
-				float velocity = speed * ts;
+                auto& transformComp = GetComponent<TransformComponent>();
+                float speed = 5.0f;
+                float velocity = speed * ts;
 
-				if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_W)) transformComp.Position.y += velocity;
-				else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_S)) transformComp.Position.y -= velocity;
+                if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_W)) transformComp.Position.y += velocity;
+                else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_S)) transformComp.Position.y -= velocity;
 
-				if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_A)) transformComp.Position.x -= velocity;
-				else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_D)) transformComp.Position.x += velocity;
+                if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_A)) transformComp.Position.x -= velocity;
+                else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_D)) transformComp.Position.x += velocity;
 
-				auto& cameraComp = GetComponent<Camera2DComponent>();
+                auto& cameraComp = GetComponent<Camera2DComponent>();
 
-				if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
-				else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
-			}
-		};
-		camera.AddComponent<NativeScriptComponent>().Bind<Script>();
+                if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
+                else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
+            }
+        };
+        camera.AddComponent<NativeScriptComponent>().Bind<Script>();
 
-		m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene);
-	}
+        m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene);
+    }
 
-	void EditorLayer::OnDetach() noexcept
-	{
+    void EditorLayer::OnDetach() noexcept
+    {
 
-	}
+    }
 
-	void EditorLayer::OnUpdate(const Timestep& timestep) noexcept
-	{
-		m_Framebuffer->Resize(static_cast<unsigned>(m_RenderViewportOptions.Width), static_cast<unsigned>(m_RenderViewportOptions.Height));
-		m_CameraController.OnResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
-		m_Scene->OnViewportResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
+    void EditorLayer::OnUpdate(const Timestep& timestep) noexcept
+    {
+        m_Framebuffer->Resize(static_cast<unsigned>(m_RenderViewportOptions.Width), static_cast<unsigned>(m_RenderViewportOptions.Height));
+        //m_CameraController.OnResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
+        m_Scene->OnViewportResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
 
-		if (m_RenderViewportOptions.IsFocused)
-			m_CameraController.OnUpdate(timestep);
+        /*if (m_RenderViewportOptions.IsFocused && m_RenderViewportOptions.IsHovered)
+            m_CameraController.OnUpdate(timestep);*/
 
-		m_Framebuffer->Bind();
-		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-		RenderCommand::Clear();
+        m_Framebuffer->Bind();
+        RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+        RenderCommand::Clear();
 
-		//Renderer2D::BeginScene(m_CameraController.GetCamera());
+        //Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		m_Scene->OnUpdate(timestep);
-		
-		//Renderer2D::EndScene();
-		m_Framebuffer->Unbind();
+        m_Scene->OnUpdate(timestep);
 
-	}
+        //Renderer2D::EndScene();
+        m_Framebuffer->Unbind();
 
-	void EditorLayer::OnUserInterfaceRender() noexcept
-	{
-		//bool demo = true;
-		//ImGui::ShowDemoWindow(&demo);
+    }
 
-		EnableDocking();
-		UpdateRenderViewport();
+    void EditorLayer::OnUserInterfaceRender() noexcept
+    {
+        //bool demo = true;
+        //ImGui::ShowDemoWindow(&demo);
 
-		m_Panels.Hierarchy->ShowEditableContent();
+        EnableDocking();
+        UpdateRenderViewport();
 
-		if (m_Options.ShowBatchStatistics) GetBatchingStatistic();
+        m_Panels.Hierarchy->ShowContent();
 
-		if (m_Options.ShowFileSystem) GetFileSystem();
-	}
+        if (m_Options.ShowBatchStatistics) GetBatchingStatistic();
 
-	void EditorLayer::OnEvent(Event& event) noexcept
-	{
-		m_CameraController.OnEvent(event);
-	}
+        if (m_Options.ShowFileSystem) GetFileSystem();
+    }
 
-	void EditorLayer::EnableDocking() noexcept
-	{
-		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+    void EditorLayer::OnEvent(Event& event) noexcept
+    {
+        m_CameraController.OnEvent(event);
+    }
 
-		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-		// because it would be confusing to have two docking targets within each others.
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-		ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImGui::SetNextWindowPos(viewport->GetWorkPos());
-		ImGui::SetNextWindowSize(viewport->GetWorkSize());
-		ImGui::SetNextWindowViewport(viewport->ID);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+    void EditorLayer::EnableDocking() noexcept
+    {
+        static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
-		// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
-		// and handle the pass-thru hole, so we ask Begin() to not render a background.
-		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-			window_flags |= ImGuiWindowFlags_NoBackground;
+        // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
+        // because it would be confusing to have two docking targets within each others.
+        ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+        ImGuiViewport* viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(viewport->GetWorkPos());
+        ImGui::SetNextWindowSize(viewport->GetWorkSize());
+        ImGui::SetNextWindowViewport(viewport->ID);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
-		// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-		// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
-		// all active windows docked into it will lose their parent and become undocked.
-		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
-		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace", nullptr, window_flags);
-		ImGui::PopStyleVar();
+        // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
+        // and handle the pass-thru hole, so we ask Begin() to not render a background.
+        if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+            window_flags |= ImGuiWindowFlags_NoBackground;
 
-		ImGui::PopStyleVar(2);
+        // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
+        // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
+        // all active windows docked into it will lose their parent and become undocked.
+        // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
+        // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::Begin("DockSpace", nullptr, window_flags);
+        ImGui::PopStyleVar();
 
-		// DockSpace
-		ImGuiIO& io = ImGui::GetIO();
-		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-		{
-			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-		}
+        ImGui::PopStyleVar(2);
 
-		UpdateMenuBar();
+        // DockSpace
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        {
+            ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+            ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+        }
 
-		ImGui::End();
-	}
+        UpdateMenuBar();
 
-	void EditorLayer::UpdateMenuBar() noexcept
-	{
-		if (ImGui::BeginMenuBar())
-		{
-			if (ImGui::BeginMenu("File"))
-			{
-				if (ImGui::MenuItem("Show file system", "Fs")) m_Options.ShowFileSystem = true;
-				if (ImGui::MenuItem("Exit", "E")) Application::GetInstance().Close();
-				ImGui::EndMenu();
-			}
-			if (ImGui::BeginMenu("Tools"))
-			{
-				if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy->SetShown(true);
-				if (ImGui::MenuItem("Show batch statistics", "B")) m_Options.ShowBatchStatistics = true;
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
-		}
-	}
+        ImGui::End();
+    }
 
-	void EditorLayer::UpdateRenderViewport() noexcept
-	{
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
-		ImGui::Begin("Render Viewport", nullptr);
+    void EditorLayer::UpdateMenuBar() noexcept
+    {
+        if (ImGui::BeginMenuBar())
+        {
+            if (ImGui::BeginMenu("File"))
+            {
+                if (ImGui::MenuItem("Show file system", "Fs")) m_Options.ShowFileSystem = true;
+                if (ImGui::MenuItem("Exit", "E")) Application::GetInstance().Close();
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Tools"))
+            {
+                if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy->SetShown(true);
+                if (ImGui::MenuItem("Show batch statistics", "B")) m_Options.ShowBatchStatistics = true;
+                ImGui::EndMenu();
+            }
+            ImGui::EndMenuBar();
+        }
+    }
 
-		m_RenderViewportOptions.IsFocused = ImGui::IsWindowFocused();
-		m_RenderViewportOptions.IsHovered = ImGui::IsWindowFocused();
-		Application::GetInstance().SetEditorEventsBlock(!m_RenderViewportOptions.IsFocused || !m_RenderViewportOptions.IsHovered);
+    void EditorLayer::UpdateRenderViewport() noexcept
+    {
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
+        ImGui::Begin("Render Viewport", nullptr);
 
-		auto tmp = ImGui::GetContentRegionAvail();
-		m_RenderViewportOptions.Width = tmp.x;
-		m_RenderViewportOptions.Height = tmp.y;
+        m_RenderViewportOptions.IsFocused = ImGui::IsWindowFocused();
+        m_RenderViewportOptions.IsHovered = ImGui::IsWindowFocused();
+        Application::GetInstance().SetEditorEventsBlock(!m_RenderViewportOptions.IsFocused || !m_RenderViewportOptions.IsHovered);
 
-		unsigned renderTextureID = m_Framebuffer->GetColorAttachmentID();
-		ImGui::Image(reinterpret_cast<void*>(renderTextureID), { static_cast<float>(m_Framebuffer->GetSpecification().Width), static_cast<float>(m_Framebuffer->GetSpecification().Height) }, { 0, 1 }, { 1, 0 });
-		ImGui::End();
-		ImGui::PopStyleVar();
-	}
+        auto tmp = ImGui::GetContentRegionAvail();
+        m_RenderViewportOptions.Width = tmp.x;
+        m_RenderViewportOptions.Height = tmp.y;
 
-	void EditorLayer::GetBatchingStatistic() noexcept
-	{
-		auto& controller = Renderer2D::GetRender2DBatchController();
-		ImGui::Begin("Batching Statistics", &m_Options.ShowBatchStatistics);
-		for (unsigned i = 0; i < controller->GetBatches().size(); ++i)
-		{
-			std::string name = "Statistics for batch #" + std::to_string(i + 1);
-			if (ImGui::CollapsingHeader(name.c_str()))
-			{
-				ImGui::BulletText("Batch type: %s", controller->GetBatches()[i].GetConfiguration().Type == BatchType::Dynamic ? "Dynamic" : "Static");
-				ImGui::Separator();
-				ImGui::BulletText("Maximum Vertex Count: %d", controller->GetBatches()[i].GetConfiguration().MaxVertexNumber);
-				ImGui::BulletText("Used Vertex Count: %d", controller->GetBatches()[i].GetConfiguration().UsedVertexNumber);
-				ImGui::Separator();
-				ImGui::BulletText("Maximum Index Count: %d", controller->GetBatches()[i].GetConfiguration().MaxIndexNumber);
-				ImGui::BulletText("Used Index Count: %d", controller->GetBatches()[i].GetConfiguration().UsedIndexNumber);
-				ImGui::Separator();
-				ImGui::BulletText("Maximum Texture Slots: %d", controller->GetBatches()[i].GetConfiguration().MaxTextureSlots);
-				ImGui::BulletText("Used Texture Slots: %d", controller->GetBatches()[i].GetConfiguration().UsedTextureSlots);
-				ImGui::Separator();
-				ImGui::BulletText("Used Shader ID: %d", controller->GetBatches()[i].GetConfiguration().UsedShader->GetID());
-				ImGui::BulletText("Used Default Texture ID: %d", controller->GetBatches()[i].GetConfiguration().UsedTextures[0]->GetID());
-				ImGui::BulletText("Used Layout Size, Count and Stride: %d / %d / %d", controller->GetBatches()[i].GetConfiguration().UsedLayout.GetElements().size(), controller->GetBatches()[i].GetConfiguration().UsedLayout.GetCount(), controller->GetBatches()[i].GetConfiguration().UsedLayout.GetStride());
-			}
-		}
-		ImGui::End();
-	}
+        unsigned renderTextureID = m_Framebuffer->GetColorAttachmentID();
+        ImGui::Image(reinterpret_cast<void*>(renderTextureID), { static_cast<float>(m_Framebuffer->GetSpecification().Width), static_cast<float>(m_Framebuffer->GetSpecification().Height) }, { 0, 1 }, { 1, 0 });
+        ImGui::End();
+        ImGui::PopStyleVar();
+    }
 
-	void EditorLayer::GetFileSystem() noexcept
-	{
-		ImGui::Begin("File system", &m_Options.ShowFileSystem);
-		DirectoryTraverslBuild(FileSystem::GetAssetsDirectory());
-		DirectoryTraverslBuild(FileSystem::GetEditorDirectory());
-		DirectoryTraverslBuild(FileSystem::GetResourcesDirectory());
-		ImGui::End();
-	}
+    void EditorLayer::GetBatchingStatistic() noexcept
+    {
+        auto& controller = Renderer2D::GetRender2DBatchController();
+        ImGui::Begin("Batching Statistics", &m_Options.ShowBatchStatistics);
+        for (unsigned i = 0; i < controller->GetBatches().size(); ++i)
+        {
+            std::string name = "Statistics for batch #" + std::to_string(i + 1);
+            if (ImGui::CollapsingHeader(name.c_str()))
+            {
+                ImGui::BulletText("Batch type: %s", controller->GetBatches()[i].GetConfiguration().Type == BatchType::Dynamic ? "Dynamic" : "Static");
+                ImGui::Separator();
+                ImGui::BulletText("Maximum Vertex Count: %d", controller->GetBatches()[i].GetConfiguration().MaxVertexNumber);
+                ImGui::BulletText("Used Vertex Count: %d", controller->GetBatches()[i].GetConfiguration().UsedVertexNumber);
+                ImGui::Separator();
+                ImGui::BulletText("Maximum Index Count: %d", controller->GetBatches()[i].GetConfiguration().MaxIndexNumber);
+                ImGui::BulletText("Used Index Count: %d", controller->GetBatches()[i].GetConfiguration().UsedIndexNumber);
+                ImGui::Separator();
+                ImGui::BulletText("Maximum Texture Slots: %d", controller->GetBatches()[i].GetConfiguration().MaxTextureSlots);
+                ImGui::BulletText("Used Texture Slots: %d", controller->GetBatches()[i].GetConfiguration().UsedTextureSlots);
+                ImGui::Separator();
+                ImGui::BulletText("Used Shader ID: %d", controller->GetBatches()[i].GetConfiguration().UsedShader->GetID());
+                ImGui::BulletText("Used Default Texture ID: %d", controller->GetBatches()[i].GetConfiguration().UsedTextures[0]->GetID());
+                ImGui::BulletText("Used Layout Size, Count and Stride: %d / %d / %d", controller->GetBatches()[i].GetConfiguration().UsedLayout.GetElements().size(), controller->GetBatches()[i].GetConfiguration().UsedLayout.GetCount(), controller->GetBatches()[i].GetConfiguration().UsedLayout.GetStride());
+            }
+        }
+        ImGui::End();
+    }
 
-	void EditorLayer::DirectoryTraverslBuild(Directory& directory) noexcept
-	{
-		std::string label = directory.GetAbsolutePath().c_str();
-		if (ImGui::TreeNode(label.c_str()))
-		{
-			for (auto& node : directory.GetDirectoryMap())
-			{
-				DirectoryTraverslBuild(node.second);
-			}
-			ImGui::TreePop();
-		}
-	}
+    void EditorLayer::GetFileSystem() noexcept
+    {
+        ImGui::Begin("File system", &m_Options.ShowFileSystem);
+        DirectoryTraverslBuild(FileSystem::GetAssetsDirectory());
+        DirectoryTraverslBuild(FileSystem::GetEditorDirectory());
+        DirectoryTraverslBuild(FileSystem::GetResourcesDirectory());
+        ImGui::End();
+    }
+
+    void EditorLayer::DirectoryTraverslBuild(Directory& directory) noexcept
+    {
+        std::string label = directory.GetAbsolutePath().c_str();
+        if (ImGui::TreeNode(label.c_str()))
+        {
+            for (auto& node : directory.GetDirectoryMap())
+            {
+                DirectoryTraverslBuild(node.second);
+            }
+            ImGui::TreePop();
+        }
+    }
 }

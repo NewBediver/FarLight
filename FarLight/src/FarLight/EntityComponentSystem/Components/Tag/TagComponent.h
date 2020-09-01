@@ -2,19 +2,18 @@
 
 #include <string>
 
-#include "FarLight/EntityComponentSystem/Interfaces/IUIDrawable.h"
+#include "FarLight/EntityComponentSystem/Interfaces/IComponent.h"
 
 namespace FarLight
 {
-	class TagComponent final
-		: public IUIDrawable
-	{
-	public:
-		std::string Tag;
+    class TagComponent final
+        : public IComponent
+    {
+    public:
+        std::string Tag;
 
-		explicit TagComponent(const std::string& tag = "Entity") noexcept;
+        explicit TagComponent(const std::string& tag = "Entity") noexcept;
 
-		virtual void OnUserInterfaceEditableDraw() noexcept override;
-		virtual void OnUserInterfaceConstantDraw() const noexcept override;
-	};
+        virtual void OnUserInterfaceDraw() noexcept override;
+    };
 }

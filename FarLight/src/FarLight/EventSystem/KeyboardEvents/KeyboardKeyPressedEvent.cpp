@@ -10,7 +10,7 @@ namespace FarLight
     std::string KeyboardKeyPressedEvent::ToString() const noexcept
     {
         std::stringstream ss;
-        ss << std::boolalpha << GetName() << ": " << "(" << static_cast<int>(GetKeyCode()) << "). " << "Is repeated: " << IsRepeated() << ".";
+        ss << std::boolalpha << GetName() << ": " << "(" << FLKeyboardKeyCodeToString(GetKeyCode()) << "). " << "Is repeated: " << IsRepeated() << ".";
         return ss.str();
     }
 }

@@ -19,11 +19,11 @@ namespace FarLight
     enum EventCategory
     {
         None = 0,
-        ApplicationEventCategory = BIT(0),
-        InputEventCategory = BIT(1),
-        KeyboardEventCategory = BIT(2),
-        MouseEventCategory = BIT(3),
-        MouseButtonEventCategory = BIT(4)
+        ApplicationEventCategory = FL_BIT(0),
+        InputEventCategory = FL_BIT(1),
+        KeyboardEventCategory = FL_BIT(2),
+        MouseEventCategory = FL_BIT(3),
+        MouseButtonEventCategory = FL_BIT(4)
     };
 
     // TODO: Event buffer

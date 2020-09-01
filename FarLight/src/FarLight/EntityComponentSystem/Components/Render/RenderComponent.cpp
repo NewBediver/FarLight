@@ -3,7 +3,7 @@
 
 #include "flpch.h"
 
-#include "RenderComponent.h"
+#include "FarLight/EntityComponentSystem/Components/Render/RenderComponent.h"
 
 #include <imgui.h>
 
@@ -11,17 +11,12 @@
 
 namespace FarLight
 {
-	RenderComponent::RenderComponent(const glm::vec4& color) noexcept
-		: Color(color)
-	{ }
+    RenderComponent::RenderComponent(const glm::vec4& color) noexcept
+        : Color(color)
+    { }
 
-	void RenderComponent::OnUserInterfaceEditableDraw() noexcept
-	{
-		ImGui::ColorEdit4("Color", glm::value_ptr(Color));
-	}
-
-	void RenderComponent::OnUserInterfaceConstantDraw() const noexcept
-	{
-		ImGui::Text("Color: %d %d %d %d", static_cast<int>(Color.r * 255), static_cast<int>(Color.g * 255), static_cast<int>(Color.b * 255), static_cast<int>(Color.a * 255));
-	}
+    void RenderComponent::OnUserInterfaceDraw() noexcept
+    {
+        ImGui::ColorEdit4("Color", glm::value_ptr(Color));
+    }
 }

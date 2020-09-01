@@ -3,7 +3,7 @@
 
 #include "flpch.h"
 
-#include "OrthographicCameraController.h"
+#include "FarLight/RenderSystem/Camera/OrthographicCameraController.h"
 #include "FarLight/EventSystem/EventDispatcher.h"
 #include "FarLight/InputSystem/Input.h"
 
