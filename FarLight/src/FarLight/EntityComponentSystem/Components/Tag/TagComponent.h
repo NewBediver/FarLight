@@ -10,10 +10,14 @@ namespace FarLight
         : public IComponent
     {
     public:
-        std::string Tag;
-
         explicit TagComponent(const std::string& tag = "Entity") noexcept;
 
+        void SetTag(const std::string& tag) noexcept { m_Tag = tag; }
+        const std::string& GetTag() const noexcept { return m_Tag; }
+
         virtual void OnUserInterfaceDraw() noexcept override;
+
+    private:
+        std::string m_Tag;
     };
 }

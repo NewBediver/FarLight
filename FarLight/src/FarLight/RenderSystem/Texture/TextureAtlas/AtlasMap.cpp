@@ -3,8 +3,8 @@
 
 #include "flpch.h"
 
-#include "FarLight/RenderSystem/TextureAtlas/AtlasMap.h"
-#include "FarLight/RenderSystem/TextureAtlas/AtlasTile.h"
+#include "FarLight/RenderSystem/Texture/TextureAtlas/AtlasMap.h"
+#include "FarLight/RenderSystem/Texture/TextureAtlas/AtlasTile.h"
 
 namespace FarLight
 {

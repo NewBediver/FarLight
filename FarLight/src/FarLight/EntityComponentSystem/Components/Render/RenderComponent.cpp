@@ -12,11 +12,11 @@
 namespace FarLight
 {
     RenderComponent::RenderComponent(const glm::vec4& color) noexcept
-        : Color(color)
+        : m_Color(color)
     { }
 
     void RenderComponent::OnUserInterfaceDraw() noexcept
     {
-        ImGui::ColorEdit4("Color", glm::value_ptr(Color));
+        ImGui::ColorEdit4("Color", glm::value_ptr(m_Color));
     }
 }

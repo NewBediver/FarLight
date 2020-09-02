@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FarLight/RenderSystem/TextureAtlas/AtlasMap.h"
+#include "FarLight/RenderSystem/Texture/TextureAtlas/AtlasMap.h"
 
 #include <glm/glm.hpp>
 

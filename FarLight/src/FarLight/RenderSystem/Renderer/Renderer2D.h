@@ -8,7 +8,7 @@
 #include "FarLight/RenderSystem/Camera/OrthographicCamera.h"
 
 #include "FarLight/RenderSystem/Texture/Texture2D.h"
-#include "FarLight/RenderSystem/TextureAtlas/AtlasTile.h"
+#include "FarLight/RenderSystem/Texture/TextureAtlas/AtlasTile.h"
 
 #include "FarLight/RenderSystem/Batching/Batch.h"
 #include "FarLight/RenderSystem/Batching/BatchController.h"

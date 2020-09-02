@@ -10,10 +10,14 @@ namespace FarLight
         : public IComponent
     {
     public:
-        glm::vec4 Color;
-
         explicit RenderComponent(const glm::vec4& color = glm::vec4(1.0f)) noexcept;
 
+        void SetColor(const glm::vec4& color) noexcept { m_Color = color; }
+        const glm::vec4& GetColor() const noexcept { return m_Color; }
+
         virtual void OnUserInterfaceDraw() noexcept override;
+
+    private:
+        glm::vec4 m_Color;
     };
 }

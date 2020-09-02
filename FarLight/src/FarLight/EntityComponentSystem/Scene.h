@@ -20,6 +20,12 @@ namespace FarLight
         Entity CreateEntity(const std::string& name = std::string()) noexcept;
         void DestroyEntity(const Entity& entity) noexcept;
 
+        void OnUpdate(const Timestep& ts) noexcept;
+        void OnViewportResize(unsigned width, unsigned height) noexcept;
+
+        void CreateSquare() noexcept;
+        void CreateCamera() noexcept;
+
         template<typename... Components>
         std::vector<Entity> GetEntities() noexcept
         {
@@ -30,9 +36,6 @@ namespace FarLight
             }
             return res;
         }
-
-        void OnUpdate(const Timestep& ts) noexcept;
-        void OnViewportResize(unsigned width, unsigned height) noexcept;
 
     private:
         entt::registry m_Registry;

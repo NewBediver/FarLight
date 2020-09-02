@@ -8,7 +8,7 @@
 
 namespace FarLight
 {
-    class Camera2DComponent final
+    class CameraComponent final
         : public IComponent
     {
     public:
@@ -16,8 +16,8 @@ namespace FarLight
         bool IsPrimary;
         bool IsFixedAspectRatio;
 
-        explicit Camera2DComponent(unsigned width, unsigned height, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept;
-        explicit Camera2DComponent(unsigned width, unsigned height, float zoom, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept;
+        explicit CameraComponent(unsigned width, unsigned height, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept;
+        explicit CameraComponent(unsigned width, unsigned height, float zoom, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept;
 
         void SetAspectRatio(unsigned width, unsigned height) noexcept;
 

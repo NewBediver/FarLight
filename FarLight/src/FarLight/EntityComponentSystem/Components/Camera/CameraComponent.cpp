@@ -3,7 +3,7 @@
 
 #include "flpch.h"
 
-#include "FarLight/EntityComponentSystem/Components/Camera/Camera2DComponent.h"
+#include "FarLight/EntityComponentSystem/Components/Camera/CameraComponent.h"
 
 #include <imgui.h>
 
@@ -11,24 +11,24 @@
 
 namespace FarLight
 {
-    Camera2DComponent::Camera2DComponent(unsigned width, unsigned height, bool isPrimary, bool isFixedAspectRatio) noexcept
+    CameraComponent::CameraComponent(unsigned width, unsigned height, bool isPrimary, bool isFixedAspectRatio) noexcept
         : Camera(width, height)
         , IsPrimary(isPrimary)
         , IsFixedAspectRatio(isFixedAspectRatio)
     { }
 
-    Camera2DComponent::Camera2DComponent(unsigned width, unsigned height, float zoom, bool isPrimary, bool isFixedAspectRatio) noexcept
+    CameraComponent::CameraComponent(unsigned width, unsigned height, float zoom, bool isPrimary, bool isFixedAspectRatio) noexcept
         : Camera(width, height, zoom)
         , IsPrimary(isPrimary)
         , IsFixedAspectRatio(isFixedAspectRatio)
     { }
 
-    void Camera2DComponent::SetAspectRatio(unsigned width, unsigned height) noexcept
+    void CameraComponent::SetAspectRatio(unsigned width, unsigned height) noexcept
     {
         Camera.SetAspectRatio(width, height);
     }
 
-    void Camera2DComponent::OnUserInterfaceDraw() noexcept
+    void CameraComponent::OnUserInterfaceDraw() noexcept
     {
         ImGui::Checkbox("Is primary", &IsPrimary);
         ImGui::Checkbox("Is fixed aspect ratio", &IsFixedAspectRatio);

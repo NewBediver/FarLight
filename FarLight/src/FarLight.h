@@ -28,7 +28,7 @@
 #include "FarLight/EntityComponentSystem/Components/Tag/TagComponent.h"
 #include "FarLight/EntityComponentSystem/Components/Transform/TransformComponent.h"
 #include "FarLight/EntityComponentSystem/Components/Render/RenderComponent.h"
-#include "FarLight/EntityComponentSystem/Components/Camera/Camera2DComponent.h"
+#include "FarLight/EntityComponentSystem/Components/Camera/CameraComponent.h"
 #include "FarLight/EntityComponentSystem/Components/Script/NativeScriptComponent.h"
 
 #include "FarLight/EntityComponentSystem/ScriptableBehaviour.h"
@@ -49,7 +49,7 @@
 #include "FarLight/RenderSystem/Shader/Shader.h"
 
 #include "FarLight/RenderSystem/Texture/Texture2D.h"
-#include "FarLight/RenderSystem/TextureAtlas/AtlasMap.h"
+#include "FarLight/RenderSystem/Texture/TextureAtlas/AtlasMap.h"
 
 #include "FarLight/RenderSystem/Framebuffer/Framebuffer.h"
 #include "FarLight/RenderSystem/VertexBuffer/VertexBuffer.h"

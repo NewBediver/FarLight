@@ -1,6 +1,7 @@
-#include "SceneHierarchyPanel.h"
 
-#include "imgui.h"
+#include "EditorPanels/SceneHierarchyPanel/SceneHierarchyPanel.h"
+
+#include <imgui.h>
 
 namespace FarLight
 {
@@ -8,6 +9,7 @@ namespace FarLight
         : m_Scene(scene)
         , m_IsShown(show)
         , m_Title(title)
+        , m_ComponentsPanel(nullptr)
     { }
 
     void SceneHierarchyPanel::ShowContent() noexcept
@@ -16,38 +18,26 @@ namespace FarLight
         {
             ImGui::Begin(m_Title.c_str(), &m_IsShown);
 
-            ShowCreateButton();
-
             auto entities = m_Scene->GetEntities<TagComponent>();
+
             for (int i = 0; i < entities.size(); ++i)
             {
                 ImGui::PushID(i);
 
                 auto& tagComp = entities[i].GetComponent<TagComponent>();
-                if (ImGui::TreeNode("%s", tagComp.Tag.c_str()))
-                {
-                    tagComp.OnUserInterfaceDraw();
-
-                    ShowComponent<TransformComponent>(entities[i], "Transform");
-                    ShowComponent<Camera2DComponent>(entities[i], "Camera 2D");
-                    ShowComponent<RenderComponent>(entities[i], "Render");
-
+                if (ImGui::TreeNodeEx(tagComp.GetTag().c_str(), ImGuiTreeNodeFlags_OpenOnArrow))
                     ImGui::TreePop();
-                }
+
+                if (ImGui::IsItemClicked())
+                    m_ComponentsPanel = CreateRef<ComponentsPanel>(CreateRef<Entity>(entities[i]), true);
 
                 ImGui::PopID();
             }
 
-            ImGui::End();
-        }
-    }
+            if (m_ComponentsPanel != nullptr)
+                m_ComponentsPanel->ShowContent();
 
-    void SceneHierarchyPanel::ShowCreateButton() noexcept
-    {
-        if (ImGui::Button("Create square", { ImGui::GetContentRegionAvail().x, 25 }))
-        {
-            auto tmp = m_Scene->CreateEntity();
-            tmp.AddComponent<RenderComponent>();
+            ImGui::End();
         }
     }
 }

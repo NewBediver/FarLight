@@ -18,11 +18,11 @@ namespace FarLight
         m_Framebuffer = Framebuffer::Create(spec);
 
         m_Scene = Scene::Create();
-        auto tmp = m_Scene->CreateEntity("Square");
-        tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+        //auto tmp = m_Scene->CreateEntity("Square");
+        //tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
 
         auto camera = m_Scene->CreateEntity("Camera");
-        camera.AddComponent<Camera2DComponent>(spec.Width, spec.Height, true);
+        camera.AddComponent<CameraComponent>(spec.Width, spec.Height, true);
 
         class Script
             : public ScriptableBehaviour
@@ -45,13 +45,17 @@ namespace FarLight
                 float speed = 5.0f;
                 float velocity = speed * ts;
 
-                if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_W)) transformComp.Position.y += velocity;
-                else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_S)) transformComp.Position.y -= velocity;
+                glm::vec3 position = transformComp.GetPosition();
 
-                if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_A)) transformComp.Position.x -= velocity;
-                else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_D)) transformComp.Position.x += velocity;
+                if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_W)) position.y += velocity;
+                else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_S)) position.y -= velocity;
 
-                auto& cameraComp = GetComponent<Camera2DComponent>();
+                if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_A)) position.x -= velocity;
+                else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_D)) position.x += velocity;
+
+                transformComp.SetPosition(position);
+
+                auto& cameraComp = GetComponent<CameraComponent>();
 
                 if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
                 else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
@@ -168,6 +172,14 @@ namespace FarLight
             {
                 if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy->SetShown(true);
                 if (ImGui::MenuItem("Show batch statistics", "B")) m_Options.ShowBatchStatistics = true;
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Entities"))
+            {
+                if (ImGui::MenuItem("Create Square", "CS")) m_Scene->CreateSquare();
+                if (ImGui::MenuItem("Create Camera", "CC")) m_Scene->CreateCamera();
+                ImGui::Separator();
+                if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy->SetShown(true);
                 ImGui::EndMenu();
             }
             ImGui::EndMenuBar();

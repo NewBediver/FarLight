@@ -4,15 +4,13 @@
 
 #include "EditorPanels/Interfaces/IPanel.h"
 
-#include "EditorPanels/ComponentsPanel/ComponentsPanel.h"
-
 namespace FarLight
 {
-    class SceneHierarchyPanel final
+    class ComponentsPanel final
         : public IPanel
     {
     public:
-        explicit SceneHierarchyPanel(const Ref<Scene>& scene, bool show = false, const std::string& title = "Scene hierarchy") noexcept;
+        explicit ComponentsPanel(const Ref<Entity>& entity, bool show = false, const std::string& title = "Components") noexcept;
 
         virtual void ShowContent() noexcept override;
 
@@ -23,8 +21,17 @@ namespace FarLight
         virtual void SetTitle(const std::string& title) noexcept override { m_Title = title; }
 
     private:
-        Ref<Scene> m_Scene;
-        Ref<ComponentsPanel> m_ComponentsPanel;
+        template<typename Comp>
+        void ShowComponent(const std::string& title) noexcept
+        {
+            if (m_Entity->HasAllComponents<Comp>())
+            {
+                if (ImGui::CollapsingHeader(title.c_str()))
+                    m_Entity->GetComponent<Comp>().OnUserInterfaceDraw();
+            }
+        }
+
+        Ref<Entity> m_Entity;
 
         bool m_IsShown;
         std::string m_Title;
