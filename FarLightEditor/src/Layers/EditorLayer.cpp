@@ -18,11 +18,11 @@ namespace FarLight
         m_Framebuffer = Framebuffer::Create(spec);
 
         m_Scene = Scene::Create();
-        //auto tmp = m_Scene->CreateEntity("Square");
-        //tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+        auto tmp = m_Scene->CreateEntity("Square");
+        tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
 
         auto camera = m_Scene->CreateEntity("Camera");
-        camera.AddComponent<CameraComponent>(spec.Width, spec.Height, true);
+        camera.AddComponent<CameraComponent>(spec.Width, spec.Height, 1.0f, true);
 
         class Script
             : public ScriptableBehaviour
@@ -55,10 +55,13 @@ namespace FarLight
 
                 transformComp.SetPosition(position);
 
-                auto& cameraComp = GetComponent<CameraComponent>();
+                if (HasAllComponents<CameraComponent>())
+                {
+                    auto& cameraComp = GetComponent<CameraComponent>();
 
-                if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
-                else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
+                    if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
+                    else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
+                }
             }
         };
         camera.AddComponent<NativeScriptComponent>().Bind<Script>();
@@ -73,7 +76,7 @@ namespace FarLight
 
     void EditorLayer::OnUpdate(const Timestep& timestep) noexcept
     {
-        m_Framebuffer->Resize(static_cast<unsigned>(m_RenderViewportOptions.Width), static_cast<unsigned>(m_RenderViewportOptions.Height));
+        //m_Framebuffer->Resize(static_cast<unsigned>(m_RenderViewportOptions.Width), static_cast<unsigned>(m_RenderViewportOptions.Height));
         //m_CameraController.OnResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
         m_Scene->OnViewportResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
 
@@ -176,6 +179,7 @@ namespace FarLight
             }
             if (ImGui::BeginMenu("Entities"))
             {
+                if (ImGui::MenuItem("Create Empty", "CE")) m_Scene->CreateEntity();
                 if (ImGui::MenuItem("Create Square", "CS")) m_Scene->CreateSquare();
                 if (ImGui::MenuItem("Create Camera", "CC")) m_Scene->CreateCamera();
                 ImGui::Separator();

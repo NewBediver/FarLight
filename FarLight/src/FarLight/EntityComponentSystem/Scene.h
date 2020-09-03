@@ -17,11 +17,11 @@ namespace FarLight
 
         explicit Scene() = default;
 
-        Entity CreateEntity(const std::string& name = std::string()) noexcept;
-        void DestroyEntity(const Entity& entity) noexcept;
-
         void OnUpdate(const Timestep& ts) noexcept;
         void OnViewportResize(unsigned width, unsigned height) noexcept;
+
+        Entity CreateEntity(const std::string& name = std::string()) noexcept;
+        void DestroyEntity(const Entity& entity) noexcept;
 
         void CreateSquare() noexcept;
         void CreateCamera() noexcept;

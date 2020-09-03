@@ -23,23 +23,6 @@ namespace FarLight
         return CreateRef<Scene>();
     }
 
-    Entity Scene::CreateEntity(const std::string& name) noexcept
-    {
-        Entity entity(this, m_Registry.create());
-
-        entity.AddComponent<TransformComponent>();
-
-        if (name.empty()) entity.AddComponent<TagComponent>();
-        else entity.AddComponent<TagComponent>(name);
-
-        return entity;
-    }
-
-    void Scene::DestroyEntity(const Entity& entity) noexcept
-    {
-        m_Registry.destroy(entity.m_Handle);
-    }
-
     void Scene::OnUpdate(const Timestep& ts) noexcept
     {
         // execute scripts
@@ -102,15 +85,32 @@ namespace FarLight
         }
     }
 
+    Entity Scene::CreateEntity(const std::string& name) noexcept
+    {
+        Entity entity(this, m_Registry.create());
+
+        entity.AddComponent<TransformComponent>();
+
+        if (name.empty()) entity.AddComponent<TagComponent>();
+        else entity.AddComponent<TagComponent>(name);
+
+        return entity;
+    }
+
+    void Scene::DestroyEntity(const Entity& entity) noexcept
+    {
+        m_Registry.destroy(entity.m_Handle);
+    }
+
     void Scene::CreateSquare() noexcept
     {
-        auto tmp = CreateEntity();
+        auto tmp = CreateEntity("Square");
         tmp.AddComponent<RenderComponent>();
     }
 
     void Scene::CreateCamera() noexcept
     {
-        auto tmp = CreateEntity();
+        auto tmp = CreateEntity("Camera");
         tmp.AddComponent<CameraComponent>(16, 9, false);
     }
 }

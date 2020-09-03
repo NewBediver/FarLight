@@ -11,12 +11,6 @@
 
 namespace FarLight
 {
-    CameraComponent::CameraComponent(unsigned width, unsigned height, bool isPrimary, bool isFixedAspectRatio) noexcept
-        : Camera(width, height)
-        , IsPrimary(isPrimary)
-        , IsFixedAspectRatio(isFixedAspectRatio)
-    { }
-
     CameraComponent::CameraComponent(unsigned width, unsigned height, float zoom, bool isPrimary, bool isFixedAspectRatio) noexcept
         : Camera(width, height, zoom)
         , IsPrimary(isPrimary)
