@@ -30,6 +30,7 @@ namespace FarLight
 
         glm::vec3 m_Position;
         glm::vec3 m_Size;
+        // Pitch, Yaw, Roll
         glm::vec3 m_Rotation;
 
         bool m_IsDataChanged;

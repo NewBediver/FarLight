@@ -40,18 +40,19 @@ namespace FarLight
         }
 
         // Find main camera and get it's transform
-        Render2DCamera* mainCamera = nullptr;
-        glm::mat4 cameraTransform = glm::mat4(1.0f);
-        float cameraRotation = 0.0f;
+        CameraComponent* mainCamera = nullptr;
+        glm::vec3 cameraPosition = glm::vec3(0.0f);
+        glm::vec3 cameraRotation = glm::vec3(0.0f);
         {
             auto view = m_Registry.view<TransformComponent, CameraComponent>();
             for (auto entity : view)
             {
                 auto& [transformComp, cameraComp] = view.get<TransformComponent, CameraComponent>(entity);
-                if (cameraComp.IsPrimary)
+                if (cameraComp.IsPrimary())
                 {
-                    mainCamera = &cameraComp.Camera;
-                    cameraTransform = transformComp.GetTransformationMatrix();
+                    mainCamera = &cameraComp;
+                    cameraPosition = transformComp.GetPosition();
+                    cameraRotation = transformComp.GetRotation();
                 }
             }
         }
@@ -59,7 +60,7 @@ namespace FarLight
         // Render scene
         if (mainCamera)
         {
-            Renderer2D::BeginScene(glm::inverse(cameraTransform), mainCamera->GetProjection());
+            Renderer2D::BeginScene(mainCamera->GetViewMatrix(cameraPosition, cameraRotation), mainCamera->GetProjectionMatrix());
 
             auto view = m_Registry.view<TransformComponent, RenderComponent>();
             for (auto entity : view)
@@ -78,7 +79,7 @@ namespace FarLight
         for (auto entity : view)
         {
             auto& cameraComp = view.get<CameraComponent>(entity);
-            if (!cameraComp.IsFixedAspectRatio)
+            if (!cameraComp.IsFixedAspectRatio())
             {
                 cameraComp.SetAspectRatio(width, height);
             }

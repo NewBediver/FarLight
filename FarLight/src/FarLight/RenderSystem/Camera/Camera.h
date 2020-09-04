@@ -11,7 +11,7 @@ namespace FarLight
 
         virtual ~Camera() noexcept = default;
 
-        virtual const glm::vec3& GetPosition() const noexcept = 0;
+        /*virtual const glm::vec3& GetPosition() const noexcept = 0;
         virtual void SetPosition(const glm::vec3& position) noexcept = 0;
 
         virtual float GetPitch() const noexcept = 0;
@@ -21,7 +21,7 @@ namespace FarLight
         virtual void SetYaw(float yaw) noexcept = 0;
 
         virtual float GetRoll() const noexcept = 0;
-        virtual void SetRoll(float roll) noexcept = 0;
+        virtual void SetRoll(float roll) noexcept = 0;*/
 
         virtual const glm::vec3& GetFrontDirection() const noexcept = 0;
         virtual void SetFrontDirection(const glm::vec3& frontDir) noexcept = 0;

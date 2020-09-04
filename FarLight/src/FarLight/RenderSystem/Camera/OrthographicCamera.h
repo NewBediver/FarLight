@@ -12,17 +12,17 @@ namespace FarLight
     public:
         explicit OrthographicCamera(float left, float right, float bottom, float top, float nearZone = -1.0f, float farZone = 100.0f) noexcept;
 
-        virtual const glm::vec3& GetPosition() const noexcept override { return m_Position; }
-        virtual void SetPosition(const glm::vec3& position) noexcept override;
+        /*virtual */const glm::vec3& GetPosition() const noexcept/* override*/ { return m_Position; }
+        /*virtual */void SetPosition(const glm::vec3& position) noexcept/* override*/;
 
-        virtual float GetPitch() const noexcept override { return m_Pitch; }
-        virtual void SetPitch(float pitch) noexcept override { m_Pitch = pitch; }
+        /*virtual */float GetPitch() const noexcept/* override*/ { return m_Pitch; }
+        /*virtual */void SetPitch(float pitch) noexcept/* override*/ { m_Pitch = pitch; }
 
-        virtual float GetYaw() const noexcept override { return m_Yaw; }
-        virtual void SetYaw(float yaw) noexcept override { m_Yaw = yaw; }
+        /*virtual */float GetYaw() const noexcept/* override*/ { return m_Yaw; }
+        /*virtual */void SetYaw(float yaw) noexcept/* override*/ { m_Yaw = yaw; }
 
-        virtual float GetRoll() const noexcept override { return m_Roll; }
-        virtual void SetRoll(float roll) noexcept override;
+        /*virtual */float GetRoll() const noexcept/* override*/ { return m_Roll; }
+        /*virtual */void SetRoll(float roll) noexcept/* override*/;
 
         virtual const glm::vec3& GetFrontDirection() const noexcept override { return m_CameraFront; }
         virtual void SetFrontDirection(const glm::vec3& frontDir) noexcept override;

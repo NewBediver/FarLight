@@ -59,8 +59,8 @@ namespace FarLight
                 {
                     auto& cameraComp = GetComponent<CameraComponent>();
 
-                    if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() - velocity);
-                    else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.Camera.SetZoomLevel(cameraComp.Camera.GetZoomLevel() + velocity);
+                    if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.SetZoom(cameraComp.GetZoom() - velocity);
+                    else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.SetZoom(cameraComp.GetZoom() + velocity);
                 }
             }
         };
@@ -76,7 +76,7 @@ namespace FarLight
 
     void EditorLayer::OnUpdate(const Timestep& timestep) noexcept
     {
-        //m_Framebuffer->Resize(static_cast<unsigned>(m_RenderViewportOptions.Width), static_cast<unsigned>(m_RenderViewportOptions.Height));
+        m_Framebuffer->Resize(static_cast<unsigned>(m_RenderViewportOptions.Width), static_cast<unsigned>(m_RenderViewportOptions.Height));
         //m_CameraController.OnResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
         m_Scene->OnViewportResize(m_RenderViewportOptions.Width, m_RenderViewportOptions.Height);
 
