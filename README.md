@@ -9,7 +9,9 @@
 <a alt="GLFW"> <img src="https://img.shields.io/badge/GLFW-gray" /> </a>
 <a alt="GLM"> <img src="https://img.shields.io/badge/GLM-gray" /> </a>
 
-![FarLight](/Logo/Logo.png?raw=true "FarLight")
+<p align="center">
+  <img src="/Logo/Logo.png?raw=true">
+</p>
 
 FarLight is primarily an early-stage interactive application and rendering engine for Windows. Currently not much is implemented, but I plan to do more convenient features and user-friendly design and in the future :smile:. 
 
