@@ -11,10 +11,6 @@
 
 namespace FarLight
 {
-    TagComponent::TagComponent(const std::string& tag) noexcept
-        : m_Tag(tag)
-    { }
-
     void TagComponent::OnUserInterfaceDraw() noexcept
     {
         ImGui::InputText("Tag", m_Tag.data(), m_Tag.capacity() + 1, ImGuiInputTextFlags_CallbackResize,

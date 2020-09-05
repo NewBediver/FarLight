@@ -30,18 +30,11 @@ namespace FarLight
         FL_CORE_INFO("[Renderer2D] terminated.");
     }
 
-    void Renderer2D::BeginScene(const OrthographicCamera& camera) noexcept
+    void Renderer2D::BeginScene(const Scope<Camera>& camera) noexcept
     {
         FL_PROFILE_FUNCTION();
 
-        BeginSceneInit(camera.GetViewMatrix(), camera.GetProjectionMatrix());
-    }
-
-    void Renderer2D::BeginScene(const glm::mat4& view, const glm::mat4& projection) noexcept
-    {
-        FL_PROFILE_FUNCTION();
-
-        BeginSceneInit(view, projection);
+        BeginSceneInit(camera->GetViewMatrix(), camera->GetProjectionMatrix());
     }
 
     void Renderer2D::BeginSceneInit(const glm::mat4& view, const glm::mat4& projection) noexcept

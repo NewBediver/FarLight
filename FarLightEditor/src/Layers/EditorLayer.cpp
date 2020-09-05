@@ -9,7 +9,7 @@ namespace FarLight
 {
     EditorLayer::EditorLayer() noexcept
         : Layer("Editor Layer")
-        , m_CameraController(1280.0f / 720.0f)
+        //, m_CameraController(1280.0f / 720.0f)
     { }
 
     void EditorLayer::OnAttach() noexcept
@@ -19,10 +19,11 @@ namespace FarLight
 
         m_Scene = Scene::Create();
         auto tmp = m_Scene->CreateEntity("Square");
+        tmp.GetComponent<TransformComponent>().SetSize(glm::vec3(400.0f, 400.0f, 0.0f));
         tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
 
         auto camera = m_Scene->CreateEntity("Camera");
-        camera.AddComponent<CameraComponent>(spec.Width, spec.Height, 1.0f, true);
+        camera.AddComponent<CameraComponent>(spec.Width, spec.Height, true);
 
         class Script
             : public ScriptableBehaviour
@@ -57,10 +58,10 @@ namespace FarLight
 
                 if (HasAllComponents<CameraComponent>())
                 {
-                    auto& cameraComp = GetComponent<CameraComponent>();
+                    auto& camera = GetComponent<CameraComponent>().GetCamera();
 
-                    if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) cameraComp.SetZoom(cameraComp.GetZoom() - velocity);
-                    else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) cameraComp.SetZoom(cameraComp.GetZoom() + velocity);
+                    if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_Q)) camera->SetZoom(camera->GetZoom() - velocity);
+                    else if (Input::IsKeyPressed(KeyboardKeyCode::FL_KEY_E)) camera->SetZoom(camera->GetZoom() + velocity);
                 }
             }
         };
@@ -84,8 +85,8 @@ namespace FarLight
             m_CameraController.OnUpdate(timestep);*/
 
         m_Framebuffer->Bind();
-        RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-        RenderCommand::Clear();
+        //RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+        //RenderCommand::Clear();
 
         //Renderer2D::BeginScene(m_CameraController.GetCamera());
 
@@ -113,7 +114,7 @@ namespace FarLight
 
     void EditorLayer::OnEvent(Event& event) noexcept
     {
-        m_CameraController.OnEvent(event);
+        //m_CameraController.OnEvent(event);
     }
 
     void EditorLayer::EnableDocking() noexcept

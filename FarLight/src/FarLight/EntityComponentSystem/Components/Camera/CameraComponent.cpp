@@ -12,132 +12,67 @@
 
 namespace FarLight
 {
-    CameraComponent::CameraComponent(unsigned width, unsigned height, float zoom, bool isPrimary, bool isFixedAspectRatio) noexcept
-        : m_AspectRatio(static_cast<float>(width) / static_cast<float>(height))
-        , m_Zoom(zoom)
-        , m_Left(0.0f)
-        , m_Right(1.0f)
-        , m_Top(1.0f)
-        , m_Bottom(0.0f)
-        , m_Near(-0.1f)
-        , m_Far(100.0f)
-        , m_CameraFront(glm::vec3(0.0f, 0.0f, -1.0f))
-        , m_CameraUp(glm::vec3(0.0f, 1.0f, 0.0f))
-        , m_CameraRight(glm::vec3(1.0f, 0.0f, 0.0f))
-        , m_IsPrimary(isPrimary)
-        , m_IsFixedAspectRatio(isFixedAspectRatio)
-        , m_IsProjectionChanged(true)
-        , m_ProjectionMatrix(glm::mat4(1.0f))
-        , m_ViewMatrix(glm::mat4(1.0f))
-    { }
-
-    void CameraComponent::SetAspectRatio(unsigned width, unsigned height) noexcept
-    {
-        m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);
-        m_IsProjectionChanged = true;
-    }
-
-    void CameraComponent::SetLeftBound(float left) noexcept
-    {
-        m_Left = left;
-        m_IsProjectionChanged = true;
-    }
-
-    void CameraComponent::SetRightBound(float right) noexcept
-    {
-        m_Right = right;
-        m_IsProjectionChanged = true;
-    }
-
-    void CameraComponent::SetTopBound(float top) noexcept
-    {
-        m_Top = top;
-        m_IsProjectionChanged = true;
-    }
-
-    void CameraComponent::SetBottomBound(float bottom) noexcept
-    {
-        m_Bottom = bottom;
-        m_IsProjectionChanged = true;
-    }
-
-    void CameraComponent::SetNearBound(float _near) noexcept
-    {
-        m_Near = _near;
-        m_IsProjectionChanged = true;
-    }
-
-    void CameraComponent::SetFarBound(float _far) noexcept
-    {
-        m_Far = _far;
-        m_IsProjectionChanged = true;
-    }
-
-    void CameraComponent::SetZoom(float zoom) noexcept
-    {
-        m_Zoom = zoom;
-        m_IsProjectionChanged = true;
-    }
-
-    void CameraComponent::SetProjectionMatrix(float left, float right, float bottom, float top, float _near, float _far) noexcept
-    {
-        m_Left = left;
-        m_Right = right;
-        m_Bottom = bottom;
-        m_Top = top;
-        m_Near = _near;
-        m_Far = _far;
-        m_IsProjectionChanged = true;
-    }
-
-    const glm::mat4& CameraComponent::GetViewMatrix(const glm::vec3& position, const glm::vec3& rotation) noexcept
-    {
-        glm::vec3 cameraUp = glm::vec3(sin(rotation.z), cos(rotation.z), 0.0f);
-        glm::vec3 cameraRight = glm::vec3(cos(rotation.z), -sin(rotation.z), 0.0f);
-        m_CameraUp = glm::normalize(cameraUp);
-        m_CameraRight = glm::normalize(cameraRight);
-        RecalculateViewMatrix(position);
-        return m_ViewMatrix;
-    }
-
-    void CameraComponent::RecalculateViewMatrix(const glm::vec3& position) noexcept
-    {
-        m_ViewMatrix = glm::lookAt(position, position + m_CameraFront, m_CameraUp);
-    }
-
-    const glm::mat4& CameraComponent::GetProjectionMatrix() noexcept
-    {
-        if (m_IsProjectionChanged)
-            RecalculateProjectionMatrix();
-        return m_ProjectionMatrix;
-    }
-
-    void CameraComponent::RecalculateProjectionMatrix() noexcept
-    {
-        float deltaX = m_Right - m_Left;
-        float deltaY = m_Top - m_Bottom;
-
-        float left = -deltaX * 0.5 * m_AspectRatio * m_Zoom;
-        float right = deltaX * 0.5 * m_AspectRatio * m_Zoom;
-        float bottom = -deltaY * 0.5 * m_Zoom;
-        float top = deltaY * 0.5 * m_Zoom;
-
-        m_ProjectionMatrix = glm::ortho(left, right, bottom, top, m_Near, m_Far);
-        m_IsProjectionChanged = false;
-    }
-
     void CameraComponent::OnUserInterfaceDraw() noexcept
     {
         ImGui::Checkbox("Is primary", &m_IsPrimary);
         ImGui::Checkbox("Is fixed aspect ratio", &m_IsFixedAspectRatio);
-        ImGui::SliderFloat("AspectRatio", &m_AspectRatio, 0.1f, 2.0f, "%.3f", ImGuiSliderFlags_None);
-        ImGui::DragFloat("Zoom", &m_Zoom, 0.1f, 0.0, std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-        ImGui::DragFloat("Left", &m_Left, 0.1f, 0.0, std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-        ImGui::DragFloat("Right", &m_Right, 0.1f, 0.0, std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-        ImGui::DragFloat("Top", &m_Top, 0.1f, 0.0, std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-        ImGui::DragFloat("Bottom", &m_Bottom, 0.1f, 0.0, std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-        ImGui::DragFloat("Near", &m_Near, 0.1f, 0.0, std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-        ImGui::DragFloat("Far", &m_Far, 0.1f, 0.0, std::numeric_limits<float>::max(), "%.1f", ImGuiSliderFlags_None);
-        m_IsProjectionChanged = true;
+        {
+            float zoom = m_Camera->GetZoom();
+            if (ImGui::DragFloat("Zoom level", &zoom, 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None))
+                m_Camera->SetZoom(zoom);
+        }
+        {
+            int resolution[2] = { m_Camera->GetResolutionWidth(), m_Camera->GetResolutionHeight() };
+            ImGui::Text("Resolution");
+            if (ImGui::DragInt2("Width / Height", resolution, 1, 0, std::numeric_limits<int>::max()))
+            {
+                m_Camera->SetResolutionWidth(resolution[0]);
+                m_Camera->SetResolutionHeight(resolution[1]);
+            }
+        }
+        {
+            glm::vec2 clippingPlane = { m_Camera->GetNearBound(), m_Camera->GetFarBound() };
+            ImGui::Text("Clipping Plane");
+            if (ImGui::DragFloat2("Near / Far", glm::value_ptr(clippingPlane), 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None))
+            {
+                m_Camera->SetNearBound(clippingPlane.x);
+                m_Camera->SetFarBound(clippingPlane.y);
+            }
+        }
+        {
+            glm::vec2 leftRight = { m_Camera->GetLeftBound(), m_Camera->GetRightBound() };
+            glm::vec2 bottomTop = { m_Camera->GetBottomBound(), m_Camera->GetTopBound() };
+            ImGui::Text("Normalized Viewport Rectangle");
+            if (ImGui::DragFloat2("Left / Right", glm::value_ptr(leftRight), 0.001f, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_None))
+            {
+                m_Camera->SetLeftBound(leftRight.x);
+                m_Camera->SetRightBound(leftRight.y);
+            }
+            if (ImGui::DragFloat2("Bottom / Top", glm::value_ptr(bottomTop), 0.001f, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_None))
+            {
+                m_Camera->SetBottomBound(bottomTop.x);
+                m_Camera->SetTopBound(bottomTop.y);
+            }
+        }
+        {
+            glm::vec4 color = m_Camera->GetBackgroundColor();
+            if (ImGui::ColorEdit4("Background color", glm::value_ptr(color)))
+                m_Camera->SetBackgroundColor(color);
+        }
+        ImGui::Separator();
+        {
+            float aspectRatio = m_Camera->GetAspectRatio();
+            ImGui::DragFloat("Aspect Ratio", &aspectRatio, 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_NoInput);
+        }
+        {
+            glm::vec3 cameraRight = m_Camera->GetRightDirection();
+            glm::vec3 cameraUp = m_Camera->GetUpDirection();
+            glm::vec3 cameraFront = m_Camera->GetFrontDirection();
+            ImGui::Text("Camera vectors");
+            ImGui::DragFloat3("Right vector", glm::value_ptr(cameraRight), 0.001f, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_NoInput);
+            ImGui::DragFloat3("Up vector", glm::value_ptr(cameraUp), 0.001f, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_NoInput);
+            ImGui::DragFloat3("Front vector", glm::value_ptr(cameraFront), 0.001f, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_NoInput);
+        }
+
     }
 }

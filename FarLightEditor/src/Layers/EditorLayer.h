@@ -49,7 +49,7 @@ namespace FarLight
             unsigned Height = 0, Width = 0;
         } m_RenderViewportOptions;
 
-        OrthographicCameraController m_CameraController;
+        //OrthographicCameraController m_CameraController;
 
         Ref<Scene> m_Scene;
 

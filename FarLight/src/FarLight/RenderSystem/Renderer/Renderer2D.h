@@ -1,11 +1,12 @@
 #pragma once
 
+#include "FarLight/BasicFunctionality/Camera/Camera.h"
+
 #include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
 #include "FarLight/RenderSystem/RendererAPI/RendererAPI.h"
 
 #include "FarLight/RenderSystem/VertexArray/VertexArray.h"
 #include "FarLight/RenderSystem/Shader/Shader.h"
-#include "FarLight/RenderSystem/Camera/OrthographicCamera.h"
 
 #include "FarLight/RenderSystem/Texture/Texture2D.h"
 #include "FarLight/RenderSystem/Texture/TextureAtlas/AtlasTile.h"
@@ -29,8 +30,7 @@ namespace FarLight
         static void Init() noexcept;
         static void Shutdown() noexcept;
 
-        static void BeginScene(const OrthographicCamera& camera) noexcept;
-        static void BeginScene(const glm::mat4& view, const glm::mat4& projection) noexcept;
+        static void BeginScene(const Scope<Camera>& camera) noexcept;
 
         static void EndScene() noexcept;
 

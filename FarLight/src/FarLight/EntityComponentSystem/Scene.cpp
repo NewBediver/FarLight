@@ -60,7 +60,11 @@ namespace FarLight
         // Render scene
         if (mainCamera)
         {
-            Renderer2D::BeginScene(mainCamera->GetViewMatrix(cameraPosition, cameraRotation), mainCamera->GetProjectionMatrix());
+            RenderCommand::SetClearColor(mainCamera->GetCamera()->GetBackgroundColor());
+            RenderCommand::Clear();
+
+            mainCamera->GetCamera()->SetViewMatrix(cameraPosition, cameraRotation);
+            Renderer2D::BeginScene(mainCamera->GetCamera());
 
             auto view = m_Registry.view<TransformComponent, RenderComponent>();
             for (auto entity : view)
@@ -81,7 +85,8 @@ namespace FarLight
             auto& cameraComp = view.get<CameraComponent>(entity);
             if (!cameraComp.IsFixedAspectRatio())
             {
-                cameraComp.SetAspectRatio(width, height);
+                cameraComp.GetCamera()->SetResolutionWidth(width);
+                cameraComp.GetCamera()->SetResolutionHeight(height);
             }
         }
     }

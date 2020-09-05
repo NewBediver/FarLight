@@ -8,6 +8,9 @@
 //---Basic-Functionality--------------
 #include "FarLight/BasicFunctionality/Application.h"
 #include "FarLight/BasicFunctionality/Timestep.h"
+
+#include "FarLight/BasicFunctionality/Camera/Camera.h"
+#include "FarLight/BasicFunctionality/Camera/RenderOrthoCamera.h"
 //------------------------------------
 //---Log-System-----------------------
 #include "FarLight/LogSystem/Logger.h"
@@ -44,7 +47,7 @@
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 #include "FarLight/RenderSystem/RenderCommand/RenderCommand.h"
 
-#include "FarLight/RenderSystem/Camera/OrthographicCameraController.h"
+//#include "FarLight/RenderSystem/Camera/OrthographicCameraController.h"
 
 #include "FarLight/RenderSystem/Shader/Shader.h"
 
