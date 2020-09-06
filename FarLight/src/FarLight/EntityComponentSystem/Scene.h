@@ -3,6 +3,7 @@
 #include "FarLight/Core/Core.h"
 
 #include "FarLight/BasicFunctionality/Timestep.h"
+#include "FarLight/BasicFunctionality/Camera/OrthographicCameraController.h"
 
 #include <entt/entt.hpp>
 
@@ -15,10 +16,13 @@ namespace FarLight
     public:
         static Ref<Scene> Create() noexcept;
 
-        explicit Scene() = default;
+        explicit Scene() noexcept
+            : m_EditorCameraController(1289, 720)
+        { }
 
         void OnUpdate(const Timestep& ts) noexcept;
         void OnViewportResize(unsigned width, unsigned height) noexcept;
+        void OnEvent(Event& e) noexcept;
 
         Entity CreateEntity(const std::string& name = std::string()) noexcept;
         void DestroyEntity(const Entity& entity) noexcept;
@@ -39,6 +43,8 @@ namespace FarLight
 
     private:
         entt::registry m_Registry;
+
+        OrthographicCameraController m_EditorCameraController;
 
         friend class Entity;
     };

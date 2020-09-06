@@ -9,7 +9,6 @@ namespace FarLight
 {
     EditorLayer::EditorLayer() noexcept
         : Layer("Editor Layer")
-        //, m_CameraController(1280.0f / 720.0f)
     { }
 
     void EditorLayer::OnAttach() noexcept
@@ -22,7 +21,7 @@ namespace FarLight
         tmp.GetComponent<TransformComponent>().SetSize(glm::vec3(400.0f, 400.0f, 0.0f));
         tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
 
-        auto camera = m_Scene->CreateEntity("Camera");
+        /*auto camera = m_Scene->CreateEntity("Camera");
         camera.AddComponent<CameraComponent>(spec.Width, spec.Height, true);
 
         class Script
@@ -65,7 +64,7 @@ namespace FarLight
                 }
             }
         };
-        camera.AddComponent<NativeScriptComponent>().Bind<Script>();
+        camera.AddComponent<NativeScriptComponent>().Bind<Script>();*/
 
         m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene);
     }
@@ -115,6 +114,7 @@ namespace FarLight
     void EditorLayer::OnEvent(Event& event) noexcept
     {
         //m_CameraController.OnEvent(event);
+        m_Scene->OnEvent(event);
     }
 
     void EditorLayer::EnableDocking() noexcept

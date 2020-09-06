@@ -11,6 +11,7 @@
 
 #include "FarLight/BasicFunctionality/Camera/Camera.h"
 #include "FarLight/BasicFunctionality/Camera/RenderOrthoCamera.h"
+#include "FarLight/BasicFunctionality/Camera/OrthographicCameraController.h"
 //------------------------------------
 //---Log-System-----------------------
 #include "FarLight/LogSystem/Logger.h"

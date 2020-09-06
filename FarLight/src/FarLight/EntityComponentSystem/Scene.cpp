@@ -75,6 +75,24 @@ namespace FarLight
 
             Renderer2D::EndScene();
         }
+        else
+        {
+            m_EditorCameraController.OnUpdate(ts);
+
+            RenderCommand::SetClearColor(m_EditorCameraController.GetCamera()->GetBackgroundColor());
+            RenderCommand::Clear();
+
+            Renderer2D::BeginScene(m_EditorCameraController.GetCamera());
+
+            auto view = m_Registry.view<TransformComponent, RenderComponent>();
+            for (auto entity : view)
+            {
+                auto& [transformComp, renderComp] = view.get<TransformComponent, RenderComponent>(entity);
+                Renderer2D::DrawRotatedQuad(transformComp.GetPosition(), glm::vec2(transformComp.GetSize()), transformComp.GetRotation().z, renderComp.GetColor());
+            }
+
+            Renderer2D::EndScene();
+        }
     }
 
     void Scene::OnViewportResize(unsigned width, unsigned height) noexcept
@@ -89,6 +107,11 @@ namespace FarLight
                 cameraComp.GetCamera()->SetResolutionHeight(height);
             }
         }
+    }
+
+    void Scene::OnEvent(Event& e) noexcept
+    {
+        m_EditorCameraController.OnEvent(e);
     }
 
     Entity Scene::CreateEntity(const std::string& name) noexcept
