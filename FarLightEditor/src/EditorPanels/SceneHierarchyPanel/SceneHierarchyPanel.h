@@ -12,7 +12,12 @@ namespace FarLight
         : public IPanel
     {
     public:
-        explicit SceneHierarchyPanel(const Ref<Scene>& scene, bool show = false, const std::string& title = "Scene hierarchy") noexcept;
+        explicit SceneHierarchyPanel(const Ref<Scene>& scene, bool show = false, const std::string& title = "Scene hierarchy") noexcept
+            : m_Scene(scene)
+            , m_IsShown(show)
+            , m_Title(title)
+            , m_ComponentsPanel(nullptr)
+        { }
 
         virtual void ShowContent() noexcept override;
 
@@ -23,6 +28,8 @@ namespace FarLight
         virtual void SetTitle(const std::string& title) noexcept override { m_Title = title; }
 
     private:
+        void ShowEntityPopupMenu(Entity ent) noexcept;
+
         Ref<Scene> m_Scene;
         Ref<ComponentsPanel> m_ComponentsPanel;
 

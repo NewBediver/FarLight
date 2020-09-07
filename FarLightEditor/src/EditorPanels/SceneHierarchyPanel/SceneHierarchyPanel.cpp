@@ -5,13 +5,6 @@
 
 namespace FarLight
 {
-    SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene, bool show, const std::string& title) noexcept
-        : m_Scene(scene)
-        , m_IsShown(show)
-        , m_Title(title)
-        , m_ComponentsPanel(nullptr)
-    { }
-
     void SceneHierarchyPanel::ShowContent() noexcept
     {
         if (m_IsShown)
@@ -25,11 +18,17 @@ namespace FarLight
                 ImGui::PushID(i);
 
                 auto& tagComp = entities[i].GetComponent<TagComponent>();
-                if (ImGui::TreeNodeEx(tagComp.GetTag().c_str(), ImGuiTreeNodeFlags_OpenOnArrow))
-                    ImGui::TreePop();
+                bool open = ImGui::TreeNodeEx(tagComp.GetTag().c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
 
-                if (ImGui::IsItemClicked())
+                if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
                     m_ComponentsPanel = CreateRef<ComponentsPanel>(CreateRef<Entity>(entities[i]), true);
+
+                ShowEntityPopupMenu(entities[i]);
+
+                if (open)
+                {
+                    ImGui::TreePop();
+                }
 
                 ImGui::PopID();
             }
@@ -38,6 +37,15 @@ namespace FarLight
                 m_ComponentsPanel->ShowContent();
 
             ImGui::End();
+        }
+    }
+
+    void SceneHierarchyPanel::ShowEntityPopupMenu(Entity ent) noexcept
+    {
+        if (ImGui::BeginPopupContextItem())
+        {
+            if (ImGui::MenuItem("Delete entity")) m_Scene->DestroyEntity(ent);
+            ImGui::EndPopup();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace FarLight
         , m_Rotation(glm::vec3(0.0f))
         , m_MovementSpeed(500.0f)
         , m_RotationSpeed(180.0f)
-        , m_Sensitivity(0.5f)
+        , m_Sensitivity(0.001f)
         , m_Camera(CreateScope<RenderOrthoCamera>(width, height))
         , m_ForwardCode(KeyboardKeyCode::FL_KEY_W)
         , m_BackwardCode(KeyboardKeyCode::FL_KEY_S)
@@ -91,7 +91,7 @@ namespace FarLight
 
         float zoomLevel = m_Camera->GetZoom();
         zoomLevel -= static_cast<float>(e.GetYOffset()) * m_Sensitivity;
-        zoomLevel = std::max(zoomLevel, 0.25f);
+        zoomLevel = std::max(zoomLevel, 0.001f);
         m_Camera->SetZoom(zoomLevel);
 
         m_MovementSpeed = 500.0f * zoomLevel;

@@ -18,6 +18,8 @@ namespace FarLight
 
         explicit Scene() noexcept
             : m_EditorCameraController(1289, 720)
+            , m_IsRenderViewportHovered(true)
+            , m_IsRenderViewportFocused(true)
         { }
 
         void OnUpdate(const Timestep& ts) noexcept;
@@ -41,10 +43,16 @@ namespace FarLight
             return res;
         }
 
+        void SetIsRenderViewportHovered(bool status) { m_IsRenderViewportHovered = status; }
+        void SetIsRenderViewportFocused(bool status) { m_IsRenderViewportFocused = status; }
+
     private:
         entt::registry m_Registry;
 
         OrthographicCameraController m_EditorCameraController;
+
+        bool m_IsRenderViewportHovered;
+        bool m_IsRenderViewportFocused;
 
         friend class Entity;
     };

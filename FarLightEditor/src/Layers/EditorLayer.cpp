@@ -84,14 +84,9 @@ namespace FarLight
             m_CameraController.OnUpdate(timestep);*/
 
         m_Framebuffer->Bind();
-        //RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-        //RenderCommand::Clear();
-
-        //Renderer2D::BeginScene(m_CameraController.GetCamera());
 
         m_Scene->OnUpdate(timestep);
 
-        //Renderer2D::EndScene();
         m_Framebuffer->Unbind();
 
     }
@@ -198,6 +193,8 @@ namespace FarLight
 
         m_RenderViewportOptions.IsFocused = ImGui::IsWindowFocused();
         m_RenderViewportOptions.IsHovered = ImGui::IsWindowFocused();
+        m_Scene->SetIsRenderViewportFocused(m_RenderViewportOptions.IsFocused);
+        m_Scene->SetIsRenderViewportHovered(m_RenderViewportOptions.IsHovered);
         Application::GetInstance().SetEditorEventsBlock(!m_RenderViewportOptions.IsFocused || !m_RenderViewportOptions.IsHovered);
 
         auto tmp = ImGui::GetContentRegionAvail();
