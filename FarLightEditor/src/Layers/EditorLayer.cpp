@@ -169,7 +169,6 @@ namespace FarLight
             }
             if (ImGui::BeginMenu("Tools"))
             {
-                if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy->SetShown(true);
                 if (ImGui::MenuItem("Show batch statistics", "B")) m_Options.ShowBatchStatistics = true;
                 ImGui::EndMenu();
             }

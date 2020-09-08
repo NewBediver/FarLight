@@ -5,6 +5,7 @@
 #include "EditorPanels/Interfaces/IPanel.h"
 
 #include <imgui.h>
+#include <imgui_internal.h>
 
 namespace FarLight
 {
@@ -28,11 +29,24 @@ namespace FarLight
         {
             if (m_Entity->HasAllComponents<Comp>())
             {
-                if (ImGui::CollapsingHeader(title.c_str()))
+                bool isShown = true;
+                bool isOpened = ImGui::CollapsingHeader(title.c_str(), &isShown, ImGuiTreeNodeFlags_DefaultOpen);
+
+                auto& style = ImGui::GetStyle();
+                auto positionMin = ImGui::GetItemRectMin();
+                auto positionMax = ImGui::GetItemRectMax();
+
+                if (isOpened)
                 {
                     m_Entity->GetComponent<Comp>().OnUserInterfaceDraw();
-                    if (ImGui::Button(("Remove " + title + " component").c_str()))
-                        m_Entity->RemoveComponent<Comp>();
+                    positionMax.y = ImGui::GetItemRectMax().y + style.FramePadding.y;
+                }
+
+                ImGui::GetWindowDrawList()->AddRect(positionMin, positionMax, ImGui::ColorConvertFloat4ToU32(style.Colors[ImGuiCol_Border]), style.FrameRounding);
+
+                if (!isShown)
+                {
+                    m_Entity->RemoveComponent<Comp>();
                 }
             }
         }
@@ -42,19 +56,38 @@ namespace FarLight
         {
             if (m_Entity->HasAllComponents<TagComponent>())
             {
-                if (ImGui::CollapsingHeader(title.c_str()))
+                bool isOpened = ImGui::CollapsingHeader(title.c_str(), nullptr, ImGuiTreeNodeFlags_DefaultOpen);
+
+                auto& style = ImGui::GetStyle();
+                auto positionMin = ImGui::GetItemRectMin();
+                auto positionMax = ImGui::GetItemRectMax();
+
+                if (isOpened)
+                {
                     m_Entity->GetComponent<TagComponent>().OnUserInterfaceDraw();
+                    positionMax.y = ImGui::GetItemRectMax().y + style.FramePadding.y;
+                }
+
+                ImGui::GetWindowDrawList()->AddRect(positionMin, positionMax, ImGui::ColorConvertFloat4ToU32(style.Colors[ImGuiCol_Border]), style.FrameRounding);
             }
         }
 
         template<>
         void ShowComponent<TransformComponent>(const std::string& title) noexcept
         {
-            if (m_Entity->HasAllComponents<TransformComponent>())
+            bool isOpened = ImGui::CollapsingHeader(title.c_str(), nullptr, ImGuiTreeNodeFlags_DefaultOpen);
+
+            auto& style = ImGui::GetStyle();
+            auto positionMin = ImGui::GetItemRectMin();
+            auto positionMax = ImGui::GetItemRectMax();
+
+            if (isOpened)
             {
-                if (ImGui::CollapsingHeader(title.c_str()))
-                    m_Entity->GetComponent<TransformComponent>().OnUserInterfaceDraw();
+                m_Entity->GetComponent<TransformComponent>().OnUserInterfaceDraw();
+                positionMax.y = ImGui::GetItemRectMax().y + style.FramePadding.y;
             }
+
+            ImGui::GetWindowDrawList()->AddRect(positionMin, positionMax, ImGui::ColorConvertFloat4ToU32(style.Colors[ImGuiCol_Border]), style.FrameRounding);
         }
 
         template<typename Comp>

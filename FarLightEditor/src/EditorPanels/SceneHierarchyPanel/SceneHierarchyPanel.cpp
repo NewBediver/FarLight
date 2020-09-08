@@ -18,6 +18,7 @@ namespace FarLight
                 ImGui::PushID(i);
 
                 auto& tagComp = entities[i].GetComponent<TagComponent>();
+
                 bool open = ImGui::TreeNodeEx(tagComp.GetTag().c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
 
                 if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
@@ -26,9 +27,7 @@ namespace FarLight
                 ShowEntityPopupMenu(entities[i]);
 
                 if (open)
-                {
                     ImGui::TreePop();
-                }
 
                 ImGui::PopID();
             }

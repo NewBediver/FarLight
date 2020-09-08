@@ -2,6 +2,8 @@
 
 #include "FarLight/LayerSystem/Layer.h"
 
+#include <imgui.h>
+
 namespace FarLight
 {
     class ImGuiLayer final
@@ -26,6 +28,8 @@ namespace FarLight
         constexpr void SetEventsBlock(bool status) noexcept { m_IsEventsBlocked = status; }
 
     private:
+        void SetupFarLightStyle(bool isDark, float alpha) noexcept;
+
         bool m_IsEventsBlocked;
     };
 }
