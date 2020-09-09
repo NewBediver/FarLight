@@ -103,7 +103,7 @@ namespace FarLight
 
         if (m_Options.ShowBatchStatistics) GetBatchingStatistic();
 
-        if (m_Options.ShowFileSystem) GetFileSystem();
+        //if (m_Options.ShowFileSystem) GetFileSystem();
     }
 
     void EditorLayer::OnEvent(Event& event) noexcept
@@ -163,7 +163,7 @@ namespace FarLight
         {
             if (ImGui::BeginMenu("File"))
             {
-                if (ImGui::MenuItem("Show file system", "Fs")) m_Options.ShowFileSystem = true;
+                //if (ImGui::MenuItem("Show file system", "Fs")) m_Options.ShowFileSystem = true;
                 if (ImGui::MenuItem("Exit", "E")) Application::GetInstance().Close();
                 ImGui::EndMenu();
             }
@@ -232,27 +232,5 @@ namespace FarLight
             }
         }
         ImGui::End();
-    }
-
-    void EditorLayer::GetFileSystem() noexcept
-    {
-        ImGui::Begin("File system", &m_Options.ShowFileSystem);
-        DirectoryTraverslBuild(FileSystem::GetAssetsDirectory());
-        DirectoryTraverslBuild(FileSystem::GetEditorDirectory());
-        DirectoryTraverslBuild(FileSystem::GetResourcesDirectory());
-        ImGui::End();
-    }
-
-    void EditorLayer::DirectoryTraverslBuild(Directory& directory) noexcept
-    {
-        std::string label = directory.GetAbsolutePath().c_str();
-        if (ImGui::TreeNode(label.c_str()))
-        {
-            for (auto& node : directory.GetDirectoryMap())
-            {
-                DirectoryTraverslBuild(node.second);
-            }
-            ImGui::TreePop();
-        }
     }
 }

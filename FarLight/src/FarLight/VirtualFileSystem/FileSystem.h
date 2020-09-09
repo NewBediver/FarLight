@@ -1,24 +1,28 @@
 #pragma once
 
-#include <filesystem>
+#include <string>
 
-#include "FarLight/VirtualFileSystem/Directory.h"
+#include "FarLight/Core/Core.h"
+
+#include <cereal/archives/binary.hpp>
 
 namespace FarLight
 {
-    class FileSystem final
+    class FileSystem
     {
     public:
-        FileSystem() = delete;
         FileSystem(const FileSystem&) = delete;
         FileSystem(FileSystem&&) = delete;
         FileSystem& operator=(const FileSystem&) = delete;
         FileSystem& operator=(FileSystem&&) = delete;
 
-        static Directory& GetProjectDirectory() noexcept;
+        static FileSystem& GetInstance() noexcept
+        {
+            static FileSystem s_Instance;
+            return s_Instance;
+        }
 
-        static Directory& GetAssetsDirectory() noexcept;
-        static Directory& GetEditorDirectory() noexcept;
-        static Directory& GetResourcesDirectory() noexcept;
+    private:
+        explicit FileSystem() noexcept = default;
     };
 }

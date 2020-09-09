@@ -33,6 +33,7 @@ IncludeDir["glm"] = "%{wks.location}/FarLight/vendor/glm"
 IncludeDir["stb"] = "%{wks.location}/FarLight/vendor/stb"
 IncludeDir["entt"] = "%{wks.location}/FarLight/vendor/entt/single_include"
 IncludeDir["spdlog"] = "%{wks.location}/FarLight/vendor/spdlog/include"
+IncludeDir["cereal"] = "%{wks.location}/FarLight/vendor/cereal/include"
 
 group "Dependencies"
     include "vendor/premake"

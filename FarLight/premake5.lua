@@ -25,7 +25,8 @@ project "FarLight"
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.spdlog}",
         "%{IncludeDir.stb}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+        "%{IncludeDir.cereal}"
     }
 
     links

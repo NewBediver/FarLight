@@ -27,14 +27,12 @@ namespace FarLight
 
         void GetBatchingStatistic() noexcept;
 
-        void GetFileSystem() noexcept;
-
-        void DirectoryTraverslBuild(Directory& directory) noexcept;
+        //void DirectoryTraverslBuild(Directory& directory) noexcept;
 
         struct Options
         {
             bool ShowBatchStatistics = false;
-            bool ShowFileSystem = false;
+            //bool ShowFileSystem = false;
             bool ShowECS = false;
         } m_Options;
 

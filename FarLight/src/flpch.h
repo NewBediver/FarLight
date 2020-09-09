@@ -14,6 +14,8 @@
 #include <fstream>
 #include <iomanip>
 
+#include <cctype>
+
 #include <codecvt>
 
 #include <filesystem>
