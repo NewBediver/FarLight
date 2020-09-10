@@ -66,7 +66,7 @@ namespace FarLight
         };
         camera.AddComponent<NativeScriptComponent>().Bind<Script>();*/
 
-        m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene);
+        m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene, true);
     }
 
     void EditorLayer::OnDetach() noexcept

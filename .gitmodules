@@ -24,4 +24,5 @@
 	branch = master
 [submodule "FarLight/vendor/cereal"]
 	path = FarLight/vendor/cereal
-	url = https://github.com/USCiLab/cereal
+	url = ../../USCiLab/cereal
+	branch = master
