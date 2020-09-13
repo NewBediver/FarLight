@@ -12,7 +12,7 @@ namespace FarLight
         : public Shader
     {
     public:
-        explicit OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath) noexcept;
+        explicit OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc) noexcept;
 
         virtual ~OpenGLShader() noexcept;
 

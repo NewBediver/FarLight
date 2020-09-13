@@ -9,16 +9,19 @@
 
 namespace FarLight
 {
-    OpenGLShader::OpenGLShader(const std::string& vertexPath, const std::string& fragmentPath) noexcept
+    OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc) noexcept
         : m_RendererID(0)
     {
         FL_PROFILE_FUNCTION();
 
-        std::string vertexCode = RetrieveShaderCodeFromFile(vertexPath);
-        std::string fragmentCode = RetrieveShaderCodeFromFile(fragmentPath);
+        std::string vertexCode = RetrieveShaderCodeFromFile(vertexSrc);
+        std::string fragmentCode = RetrieveShaderCodeFromFile(fragmentSrc);
 
         GLuint vertexShader = CreateCompileShader(vertexCode, GL_VERTEX_SHADER);
         GLuint fragmentShader = CreateCompileShader(fragmentCode, GL_FRAGMENT_SHADER);
+
+        /*GLuint vertexShader = CreateCompileShader(vertexSrc, GL_VERTEX_SHADER);
+        GLuint fragmentShader = CreateCompileShader(fragmentSrc, GL_FRAGMENT_SHADER);*/
 
         m_RendererID = LinkShaders(vertexShader, fragmentShader);
     }

@@ -1,14 +1,19 @@
-#include "flpch.h"
-#include "Resource.h"
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
-#include <libs/uuid/include/boost/uuid/random_generator.hpp>
+#include "flpch.h"
+
+#include "FarLight/ResourceSystem/Resource.h"
+
+#include <boost/uuid/random_generator.hpp>
 
 namespace FarLight
 {
-    Resource::Resource(const std::string& name, ResourceType type) noexcept
-        : m_Name(name)
-        , m_Type(type)
+    Resource::Resource() noexcept
+        : m_Name("")
+        , m_Type(ResourceType::Unknown)
         , m_FilePath("")
+        , m_IsInitialized(false)
     {
         GenerateAndSetId();
     }
@@ -17,6 +22,7 @@ namespace FarLight
         : m_Name(name)
         , m_Type(type)
         , m_FilePath(filePath)
+        , m_IsInitialized(false)
     {
         GenerateAndSetId();
     }
@@ -24,6 +30,6 @@ namespace FarLight
     void Resource::GenerateAndSetId() noexcept
     {
         boost::uuids::random_generator gen;
-        m_Id = fen();
+        m_Id = gen();
     }
 }

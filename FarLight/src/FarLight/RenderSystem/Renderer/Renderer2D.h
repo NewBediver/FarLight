@@ -16,6 +16,12 @@
 
 #include <glm/glm.hpp>
 
+#include "FarLight/ResourceSystem/Resources/ShaderResource.h"
+
+#include "FarLight/SerializationSystem/Serialization.h"
+
+#include <fstream>
+
 namespace FarLight
 {
     class Renderer2D final

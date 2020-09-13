@@ -23,14 +23,20 @@ project "FarLightEditor"
         "%{IncludeDir.spdlog}",
         "%{IncludeDir.stb}",
 		"%{IncludeDir.entt}",
-        "%{IncludeDir.cereal}"
+        "%{IncludeDir.cereal}",
+        "%{IncludeDir.boost}"
+    }
+
+    libdirs
+    {
+        "%{IncludeDir.boost}/stage/lib"
     }
 
     links
     {
         "FarLight"
     }
-    
+
     filter "system:windows"
         systemversion "latest"
 

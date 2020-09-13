@@ -29,6 +29,7 @@
 #include <algorithm>
 #include <numeric>
 
+#include <array>
 #include <string>
 #include <vector>
 #include <map>

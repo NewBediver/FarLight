@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="18">
+<test class_id="0" tracking_level="0" version="0">
+	<Resource class_id="1" tracking_level="0" version="0">
+		<Name>default</Name>
+		<Type>1</Type>
+		<UUID>528117ce-84b9-4f41-88a5-64b605e324c8</UUID>
+		<Path>D:\Projects\C++\FarLight\FarLightEditor\Assets\Shaders\DefaultSquare\DefaultSquareShader.vert</Path>
+	</Resource>
+	<VertexShader></VertexShader>
+	<FragmentShader></FragmentShader>
+</test>
+</boost_serialization>
+

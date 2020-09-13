@@ -22,7 +22,7 @@
 	path = FarLight/vendor/entt
 	url = ../../skypjack/entt.git
 	branch = master
-[submodule "FarLight/vendor/cereal"]
-	path = FarLight/vendor/cereal
-	url = ../../USCiLab/cereal
+[submodule "FarLight/vendor/boost"]
+	path = FarLight/vendor/boost
+	url = ../../boostorg/boost.git
 	branch = master

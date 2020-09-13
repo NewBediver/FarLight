@@ -15,12 +15,12 @@ namespace FarLight
     {
         switch (Renderer2D::GetAPI())
         {
-        case RendererAPI::API::None:
-        {
-            FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
-            return nullptr;
-        }
-        case RendererAPI::API::OpenGL:  return CreateRef<OpenGLShader>(vertexSrc, fragmentSrc);
+            case RendererAPI::API::None:
+            {
+                FL_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+                return nullptr;
+            }
+            case RendererAPI::API::OpenGL:  return CreateRef<OpenGLShader>(vertexSrc, fragmentSrc);
         }
 
         FL_CORE_ASSERT(false, "Unknown RendererAPI!");
