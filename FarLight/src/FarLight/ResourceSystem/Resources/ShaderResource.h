@@ -20,7 +20,7 @@ namespace FarLight
     public:
         explicit ShaderResource() noexcept
             : Resource("", ResourceType::Shader, "")
-        {}
+        { }
 
         explicit ShaderResource(const std::string& name, const std::string& filePath)
             : Resource(name, ResourceType::Shader, filePath)

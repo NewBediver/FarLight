@@ -14,7 +14,7 @@ namespace FarLight
         Logger& operator=(const Logger&) = delete;
         Logger& operator=(Logger&&) = delete;
 
-        static void Init() noexcept;
+        static void Initialize() noexcept;
 
         static constexpr const Ref<spdlog::logger>& GetCoreLogger() noexcept { return s_CoreLogger; }
         static constexpr const Ref<spdlog::logger>& GetClientLogger() noexcept { return s_ClientLogger; }

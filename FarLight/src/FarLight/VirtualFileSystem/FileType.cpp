@@ -26,7 +26,7 @@ namespace FarLight
         std::string ext = path.substr(periodIndex);
         std::transform(ext.begin(), ext.end(), ext.begin(), [](char c) -> char
             {
-                if (c >= 'A' || c <= 'Z') return c ^ 0x20;
+                if (c >= 'A' && c <= 'Z') return c ^ 0x20;
                 return c;
             });
         return ext;

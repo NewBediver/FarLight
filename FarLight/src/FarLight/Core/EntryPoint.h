@@ -8,6 +8,8 @@
 
 #include "FarLight/Profiling/Instrumentor.h"
 
+#include "FarLight/VirtualFileSystem/FileSystem.h"
+
 #ifdef FL_PLATFORM_WINDOWS
 
 extern FarLight::Application& FarLight::CreateApplication() noexcept;
@@ -15,7 +17,8 @@ extern FarLight::Application& FarLight::CreateApplication() noexcept;
 int main(int args, char** argv)
 {
     FL_PROFILE_BEGIN_SESSION("Startup", "FarLightProfile-Startup.json");
-    FarLight::Logger::Init();
+    FarLight::Logger::Initialize();
+    FarLight::FileSystem::GetInstance().Initialize();
     FL_CORE_INFO("[Logger] initialized.");
     auto& app = FarLight::CreateApplication();
     FL_PROFILE_END_SESSION();
