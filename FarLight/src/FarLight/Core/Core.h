@@ -2,20 +2,29 @@
 
 #include <memory>
 
-#include "FarLight/Core/Defines.h"
+#include "FarLight/Core/AdditionDefine.h"
 
 #include "FarLight/Core/PlatformDetection.h"
-#include "FarLight/Core/DebugDetection.h"
-#include "FarLight/Core/AssertDetection.h"
-#include "FarLight/Core/ProfileDetection.h"
+#include "FarLight/Core/ArchitectureDetection.h"
+#include "FarLight/Core/CompilerDetection.h"
+
+#include "FarLight/Core/BreakpointDetection.h"
+#include "FarLight/Core/FunctionSignatureDetection.h"
 
 #include "FarLight/Core/LoggerDefine.h"
+#include "FarLight/Core/AssertDefine.h"
 #include "FarLight/Core/ProfileDefine.h"
-
-#include "FarLight/Core/PredefinedMacros.h"
 
 namespace FarLight
 {
+    #define FL_VERSION_MAJOR 0
+    #define FL_VERSION_MINOR 0
+    #define FL_VERSION_PATCH 0
+    #define FL_VERSION_SUFFIX ""
+    #define FL_VERSION_NAME "Fresh"
+
+    #define FL_VERSION    ((FL_VERSION_MAJOR << 16) | (FL_VERSION_MINOR << 8) | FL_VERSION_PATCH)
+
     template<typename T>
     using Scope = std::unique_ptr<T>;
     template<typename T, typename ... Args>

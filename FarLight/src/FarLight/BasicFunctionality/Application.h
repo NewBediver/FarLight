@@ -51,5 +51,5 @@ namespace FarLight
     };
 
     // To be defined in CLIENT
-    Application& CreateApplication() noexcept;
+    //Application& CreateApplication() noexcept;
 }

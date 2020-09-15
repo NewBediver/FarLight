@@ -1,23 +1,18 @@
 #pragma once
 
+#include "FarLight/Abstraction/Singleton/Singleton.h"
+
 #include "FarLight/InputSystem/KeyboardKeyCodes.h"
 #include "FarLight/InputSystem/MouseButtonCodes.h"
 
 namespace FarLight
 {
-    class Input final
+    class Input
+        : public Singleton<Input>
     {
     public:
-        Input(const Input&) = delete;
-        Input(Input&&) = delete;
-        Input& operator=(const Input&) = delete;
-        Input& operator=(Input&&) = delete;
-
-        static Input& GetInstance() noexcept
-        {
-            static Input s_Instance;
-            return s_Instance;
-        }
+        Input() = default;
+        ~Input() = default;
 
         static bool IsKeyPressed(KeyboardKeyCode code) noexcept;
         static bool IsMouseButtonPressed(MouseButtonCode code) noexcept;
@@ -26,8 +21,6 @@ namespace FarLight
         static double GetMouseY() noexcept;
 
     private:
-        explicit Input() noexcept = default;
-
         #ifdef FL_PLATFORM_WINDOWS
             static int GetKeyboardKeyFromGLFW(KeyboardKeyCode code) noexcept;
             static int GetMouseButtonFromGLFW(MouseButtonCode code) noexcept;
