@@ -23,9 +23,9 @@ namespace FarLight
         tmp.GetComponent<TransformComponent>().SetSize(glm::vec3(400.0f, 400.0f, 0.0f));
         tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
 
-        FL_TRACE("Root directory: {0}", FarLight::FileSystem::GetInstance().GetRootDirectory());
-        FL_TRACE("Assets directory: {0}", FarLight::FileSystem::GetInstance().GetAssetsDirectory());
-        FL_TRACE("Shaders directory: {0}", FarLight::FileSystem::GetInstance().GetShadersDirectory());
+        //FL_TRACE("Root directory: {0}", FarLight::FileSystem::GetInstance().GetRootDirectory());
+        //FL_TRACE("Assets directory: {0}", FarLight::FileSystem::GetInstance().GetAssetsDirectory());
+        //FL_TRACE("Shaders directory: {0}", FarLight::FileSystem::GetInstance().GetShadersDirectory());
 
         /*auto camera = m_Scene->CreateEntity("Camera");
         camera.AddComponent<CameraComponent>(spec.Width, spec.Height, true);

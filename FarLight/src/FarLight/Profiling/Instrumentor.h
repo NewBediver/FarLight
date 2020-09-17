@@ -8,6 +8,8 @@
 
 #include "FarLight/Profiling/InstrumentationTimer.h"
 
+#include "FarLight/Abstraction/Singleton/Singleton.h"
+
 #include "FarLight/Core/Core.h"
 
 namespace FarLight
@@ -21,26 +23,21 @@ namespace FarLight
     };
 
     class Instrumentor final
+        : public Singleton<Instrumentor>
     {
+        friend class Singleton<Instrumentor>;
+        friend class InstrumentationTimer;
+
     public:
-        static Instrumentor& GetInstance() noexcept
-        {
-            static Instrumentor s_Instance;
-            return s_Instance;
-        }
-
-        Instrumentor(const Instrumentor&) = delete;
-        Instrumentor(Instrumentor&&) = delete;
-        Instrumentor& operator=(const Instrumentor&) = delete;
-        Instrumentor& operator=(Instrumentor&&) = delete;
-
         ~Instrumentor() noexcept;
 
         void BeginSession(std::string&& name, std::string&& filepath = "results.json") noexcept;
         void EndSession() noexcept;
 
     private:
-        explicit Instrumentor() noexcept;
+        explicit Instrumentor() noexcept
+            : m_CurrentSession(nullptr)
+        { }
 
         void WriteProfile(const ProfileResult& result) noexcept;
 
@@ -61,7 +58,5 @@ namespace FarLight
         Scope<InstrumentationSession> m_CurrentSession;
         std::ofstream m_OutputStream;
         std::mutex m_Mutex;
-
-        friend class InstrumentationTimer;
     };
 }

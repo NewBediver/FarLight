@@ -1,26 +1,23 @@
 #pragma once
 
+#include "FarLight/Abstraction/Singleton/Singleton.h"
+
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 
 namespace FarLight
 {
     class Logger final
+        : public Singleton<Logger>
     {
     public:
-        Logger() = delete;
-        Logger(const Logger&) = delete;
-        Logger(Logger&&) = delete;
-        Logger& operator=(const Logger&) = delete;
-        Logger& operator=(Logger&&) = delete;
+        void Initialize() noexcept;
 
-        static void Initialize() noexcept;
-
-        static constexpr const Ref<spdlog::logger>& GetCoreLogger() noexcept { return s_CoreLogger; }
-        static constexpr const Ref<spdlog::logger>& GetClientLogger() noexcept { return s_ClientLogger; }
+        constexpr const Ref<spdlog::logger>& GetCoreLogger() noexcept { return s_CoreLogger; }
+        constexpr const Ref<spdlog::logger>& GetClientLogger() noexcept { return s_ClientLogger; }
 
     private:
-        static Ref<spdlog::logger> s_CoreLogger;
-        static Ref<spdlog::logger> s_ClientLogger;
+        Ref<spdlog::logger> s_CoreLogger = nullptr;
+        Ref<spdlog::logger> s_ClientLogger = nullptr;
     };
 }

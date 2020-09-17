@@ -19,7 +19,6 @@ namespace FarLight
 
         RenderCommand::Init();
         s_BatchController = CreateScope<BatchController>();
-        FL_CORE_INFO("[Renderer2D] initialized.");
     }
 
     void Renderer2D::Shutdown() noexcept
@@ -27,7 +26,6 @@ namespace FarLight
         FL_PROFILE_FUNCTION();
 
         s_BatchController.reset();
-        FL_CORE_INFO("[Renderer2D] terminated.");
     }
 
     void Renderer2D::BeginScene(const Scope<Camera>& camera) noexcept

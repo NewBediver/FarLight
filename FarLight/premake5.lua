@@ -1,5 +1,5 @@
 project "FarLight"
-    kind "StaticLib"
+    kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
     staticruntime "on"
@@ -26,8 +26,12 @@ project "FarLight"
         "%{IncludeDir.spdlog}",
         "%{IncludeDir.stb}",
 		"%{IncludeDir.entt}",
-        "%{IncludeDir.cereal}",
         "%{IncludeDir.boost}"
+    }
+
+    libdirs
+    {
+        "%{IncludeDir.boost}/stage/lib"
     }
 
     links

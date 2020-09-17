@@ -5,6 +5,9 @@
 //---Core-----------------------------
 #include "FarLight/Core/Core.h"
 //------------------------------------
+//---Abstraction----------------------
+#include "FarLight/Abstraction/Singleton/Singleton.h"
+//------------------------------------
 //---Basic-Functionality--------------
 #include "FarLight/BasicFunctionality/Application.h"
 #include "FarLight/BasicFunctionality/Timestep.h"
@@ -24,7 +27,7 @@
 #include "FarLight/LayerSystem/Layer.h"
 //------------------------------------
 //---Input-System---------------------
-#include "FarLight/InputSystem/Input.h"
+#include "FarLight/InputSystem/InputManager.h"
 #include "FarLight/InputSystem/KeyboardKeyCodes.h"
 #include "FarLight/InputSystem/MouseButtonCodes.h"
 //------------------------------------

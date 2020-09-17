@@ -5,7 +5,7 @@
 
 #include "Platform/Windows/WindowSystem/WindowsWindow.h"
 
-#include "FarLight/InputSystem/Input.h"
+#include "FarLight/InputSystem/InputManager.h"
 #include "FarLight/InputSystem/KeyboardKeyCodes.h"
 #include "FarLight/InputSystem/MouseButtonCodes.h"
 

@@ -7,10 +7,6 @@
 
 namespace FarLight
 {
-    Instrumentor::Instrumentor() noexcept
-        : m_CurrentSession(nullptr)
-    { }
-
     Instrumentor::~Instrumentor() noexcept
     {
         EndSession();
@@ -20,7 +16,7 @@ namespace FarLight
     {
         std::lock_guard lock(m_Mutex);
         if (m_CurrentSession) {
-            if (Logger::GetCoreLogger()) FL_CORE_ERROR("Instrumentor::BeginSession('{0}') when session '{1}' already open.", name, m_CurrentSession->Name);
+            if (Logger::GetInstancePtr() != nullptr) FL_CORE_ERROR("Instrumentor::BeginSession('{0}') when session '{1}' already open.", name, m_CurrentSession->Name);
             InternalEndSession();
         }
         m_OutputStream.open(std::move(filepath));
@@ -29,7 +25,7 @@ namespace FarLight
             WriteHeader();
         }
         else {
-            if (Logger::GetCoreLogger()) FL_CORE_ERROR("Instrumentor {0} could not open results file!", name);
+            if (Logger::GetInstancePtr() != nullptr) FL_CORE_ERROR("Instrumentor {0} could not open results file!", name);
         }
     }
 

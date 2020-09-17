@@ -8,7 +8,10 @@ namespace FarLight
     class InstrumentationTimer final
     {
     public:
-        explicit InstrumentationTimer(std::string&& name) noexcept;
+        explicit InstrumentationTimer(std::string&& name) noexcept
+            : m_Name(std::move(name))
+            , m_StartTimepoint(std::chrono::steady_clock::now())
+        { }
 
         ~InstrumentationTimer() noexcept;
 

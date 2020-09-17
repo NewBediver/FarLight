@@ -13,15 +13,48 @@ namespace FarLight
     {
         // root
         DirectoryInitialization(GetRootDirectory());
-        // assets
-        DirectoryInitialization(GetAssetsDirectory());
+
         // first level dirs
+        DirectoryInitialization(GetAssetsDirectory());
+        DirectoryInitialization(GetSettingsDirectory());
+
+        // second level dirs
         DirectoryInitialization(GetEditorDirectory());
         DirectoryInitialization(GetResourcesDirectory());
-        // second level dirs
+
+        // third level dirs
         DirectoryInitialization(GetShadersDirectory());
 
         LoadShaders(GetShadersDirectory());
+    }
+
+    void FileSystem::WriteToFile(const std::string& path, const std::string& str) const noexcept
+    {
+        std::ofstream ofs(path);
+        ofs << str;
+        ofs.close();
+    }
+
+    std::string FileSystem::ReadFromFile(const std::string& path) const noexcept
+    {
+        if (!IsFileExists(path)) return "";
+        std::ifstream ifs;
+        ifs.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        try
+        {
+            ifs.open(path);
+            std::stringstream ss;
+            ss << ifs.rdbuf();
+            ifs.close();
+            return ss.str();
+        }
+        catch (const std::ifstream::failure& e)
+        {
+            FL_CORE_ERROR("Error when try to write to the file: {0}", path);
+            FL_CORE_ERROR("Error massage: {0}", e.what());
+            FL_CORE_ASSERT(false, "Critical error in file writing!");
+        }
+        return "";
     }
 
     void FileSystem::DirectoryInitialization(const std::string& dir) const noexcept

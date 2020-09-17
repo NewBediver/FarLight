@@ -3,7 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "FarLight/Core/Core.h"
-#include "FarLight/Core/Defines.h"
+
 #include "FarLight/LogSystem/Logger.h"
 #include "FarLight/Profiling/Instrumentor.h"
 
@@ -38,10 +38,10 @@
 #include <unordered_set>
 
 #ifdef FL_PLATFORM_WINDOWS
-	#include <Windows.h>
+#   include <Windows.h>
 
-    #ifndef NOMINMAX
+#   ifndef NOMINMAX
         // See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
-        #define NOMINMAX
-    #endif
+#       define NOMINMAX
+#   endif
 #endif

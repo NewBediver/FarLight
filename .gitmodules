@@ -2,14 +2,6 @@
 	path = FarLight/vendor/spdlog
 	url = ../../gabime/spdlog.git
 	branch = v1.x
-[submodule "FarLight/vendor/GLFW"]
-	path = FarLight/vendor/GLFW
-	url = ../../glfw/glfw.git
-	branch = master
-[submodule "FarLight/vendor/ImGui"]
-	path = FarLight/vendor/ImGui
-	url = ../../ocornut/imgui.git
-	branch = docking
 [submodule "FarLight/vendor/glm"]
 	path = FarLight/vendor/glm
 	url = ../../g-truc/glm.git
@@ -22,7 +14,15 @@
 	path = FarLight/vendor/entt
 	url = ../../skypjack/entt.git
 	branch = master
+[submodule "FarLight/vendor/glfw"]
+	path = FarLight/vendor/glfw
+	url = ../glfw.git
+	branch = master
+[submodule "FarLight/vendor/ImGui"]
+	path = FarLight/vendor/ImGui
+	url = ../imgui.git
+	branch = docking
 [submodule "FarLight/vendor/boost"]
 	path = FarLight/vendor/boost
-	url = ../../boostorg/boost.git
+	url = ../boost.git
 	branch = master

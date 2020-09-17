@@ -2,7 +2,7 @@ include "./vendor/premake/premake_customization/solution_items.lua"
 
 workspace "FarLight"
     architecture "x64"
-    startproject "FarLightEditor"
+    startproject "FarLight"
 
     configurations
     {
@@ -33,7 +33,6 @@ IncludeDir["glm"] = "%{wks.location}/FarLight/vendor/glm"
 IncludeDir["stb"] = "%{wks.location}/FarLight/vendor/stb"
 IncludeDir["entt"] = "%{wks.location}/FarLight/vendor/entt/single_include"
 IncludeDir["spdlog"] = "%{wks.location}/FarLight/vendor/spdlog/include"
-IncludeDir["cereal"] = "%{wks.location}/FarLight/vendor/cereal/include"
 IncludeDir["boost"] = "%{wks.location}/FarLight/vendor/boost"
 
 group "Dependencies"
@@ -45,9 +44,4 @@ group ""
 
 group "Engine"
     include "FarLight"
-    include "FarLightEditor"
-group ""
-
-group "Addition"
-    include "Sandbox"
 group ""

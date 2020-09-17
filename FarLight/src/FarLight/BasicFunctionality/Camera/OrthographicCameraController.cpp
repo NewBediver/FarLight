@@ -7,7 +7,7 @@
 
 #include "FarLight/EventSystem/EventDispatcher.h"
 
-#include "FarLight/InputSystem/Input.h"
+#include "FarLight/InputSystem/InputManager.h"
 
 namespace FarLight
 {
@@ -58,14 +58,14 @@ namespace FarLight
 
         float velocity = m_MovementSpeed * static_cast<float>(ts);
 
-        if (Input::IsKeyPressed(m_ForwardCode))
+        if (InputManager::GetInstance().IsKeyPressed(m_ForwardCode))
             m_Position += m_Camera->GetUpDirection() * velocity;
-        else if (Input::IsKeyPressed(m_BackwardCode))
+        else if (InputManager::GetInstance().IsKeyPressed(m_BackwardCode))
             m_Position -= m_Camera->GetUpDirection() * velocity;
 
-        if (Input::IsKeyPressed(m_RightCode))
+        if (InputManager::GetInstance().IsKeyPressed(m_RightCode))
             m_Position += m_Camera->GetRightDirection() * velocity;
-        else if (Input::IsKeyPressed(m_LeftCode))
+        else if (InputManager::GetInstance().IsKeyPressed(m_LeftCode))
             m_Position -= m_Camera->GetRightDirection() * velocity;
 
         m_Camera->SetViewMatrix(m_Position, m_Rotation);
@@ -77,9 +77,9 @@ namespace FarLight
 
         float velocity = glm::radians(m_RotationSpeed) * static_cast<float>(ts);
 
-        if (Input::IsKeyPressed(m_ClockwiseCode))
+        if (InputManager::GetInstance().IsKeyPressed(m_ClockwiseCode))
             m_Rotation.z += velocity;
-        else if (Input::IsKeyPressed(m_CounterclockwiseCode))
+        else if (InputManager::GetInstance().IsKeyPressed(m_CounterclockwiseCode))
             m_Rotation.z -= velocity;
 
         m_Camera->SetViewMatrix(m_Position, m_Rotation);

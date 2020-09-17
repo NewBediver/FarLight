@@ -7,6 +7,7 @@ namespace FarLight
     enum class FileType
     {
         Unknown = 0,
+        Configuration,
         VertexShader,
         FragmentShader,
         Image

@@ -37,7 +37,9 @@ namespace FarLight
         FL_PROFILE_FUNCTION();
 
         std::string extension = GetFileExtension(path);
-        if (extension == "bmp" || extension == "tga" || extension == "png" || extension == "jpg" || extension == "jpeg")
+        if (extension == "cfg")
+            return FileType::Configuration;
+        else if (extension == "bmp" || extension == "tga" || extension == "png" || extension == "jpg" || extension == "jpeg")
             return FileType::Image;
         else if (extension == "vert")
             return FileType::VertexShader;

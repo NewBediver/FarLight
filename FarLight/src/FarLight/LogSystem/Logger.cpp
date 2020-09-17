@@ -11,9 +11,6 @@
 
 namespace FarLight
 {
-    Ref<spdlog::logger> Logger::s_CoreLogger = nullptr;
-    Ref<spdlog::logger> Logger::s_ClientLogger = nullptr;
-
     void Logger::Initialize() noexcept
     {
         std::vector<spdlog::sink_ptr> logSinks;

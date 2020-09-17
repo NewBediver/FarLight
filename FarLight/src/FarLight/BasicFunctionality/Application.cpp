@@ -8,7 +8,7 @@
 
 #include "FarLight/EventSystem/EventDispatcher.h"
 
-#include "FarLight/InputSystem/Input.h"
+#include "FarLight/InputSystem/InputManager.h"
 
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 
@@ -24,22 +24,9 @@ namespace FarLight
         , m_LastFrameTime(0.0f)
     {
         FL_PROFILE_FUNCTION();
-        FL_CORE_INFO("[Application] object instantiated.");
 
         m_Window = Window::Create();
         m_Window->SetEventCallback(FL_BIND_EVENT_FUNC(Application::OnEvent));
-
-        Renderer2D::Init();
-    }
-
-    Application::~Application() noexcept
-    {
-        FL_PROFILE_BEGIN_SESSION("Shutdown", "FarLightProfile-Shutdown.json");
-
-        Renderer2D::Shutdown();
-
-        FL_PROFILE_END_SESSION();
-        FL_CORE_INFO("[Application] object destroyed.");
     }
 
     void Application::Run() noexcept

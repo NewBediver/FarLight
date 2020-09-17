@@ -3,7 +3,7 @@
 
 #include "flpch.h"
 
-#include "FarLight/InputSystem/Input.h"
+#include "FarLight/InputSystem/InputManager.h"
 
 #include "FarLight/BasicFunctionality/Application.h"
 
@@ -13,7 +13,7 @@
 
 namespace FarLight
 {
-    bool Input::IsKeyPressed(KeyboardKeyCode code) noexcept
+    bool InputManager::IsKeyPressed(KeyboardKeyCode code) noexcept
     {
         FL_PROFILE_FUNCTION();
 
@@ -24,7 +24,7 @@ namespace FarLight
         return status == GLFW_PRESS || status == GLFW_REPEAT;
     }
 
-    bool Input::IsMouseButtonPressed(MouseButtonCode code) noexcept
+    bool InputManager::IsMouseButtonPressed(MouseButtonCode code) noexcept
     {
         FL_PROFILE_FUNCTION();
 
@@ -35,7 +35,7 @@ namespace FarLight
         return status == GLFW_PRESS;
     }
 
-    std::pair<double, double> Input::GetMousePosition() noexcept
+    std::pair<double, double> InputManager::GetMousePosition() noexcept
     {
         FL_PROFILE_FUNCTION();
 
@@ -46,18 +46,18 @@ namespace FarLight
         return { x, y };
     }
 
-    double Input::GetMouseX() noexcept
+    double InputManager::GetMouseX() noexcept
     {
         return GetMousePosition().first;
     }
 
-    double Input::GetMouseY() noexcept
+    double InputManager::GetMouseY() noexcept
     {
         return GetMousePosition().second;
     }
 
     #ifdef FL_PLATFORM_WINDOWS
-        int Input::GetKeyboardKeyFromGLFW(KeyboardKeyCode code) noexcept
+        int InputManager::GetKeyboardKeyFromGLFW(KeyboardKeyCode code) noexcept
         {
             switch (code)
             {
@@ -185,7 +185,7 @@ namespace FarLight
             return GLFW_KEY_UNKNOWN;
         }
     
-        int Input::GetMouseButtonFromGLFW(MouseButtonCode code) noexcept
+        int InputManager::GetMouseButtonFromGLFW(MouseButtonCode code) noexcept
         {
             switch (code)
             {

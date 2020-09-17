@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FarLight/Abstraction/Singleton/Singleton.h"
+
 #include "FarLight/EventSystem/Event.h"
 #include "FarLight/EventSystem/WindowEvents/WindowClosedEvent.h"
 #include "FarLight/EventSystem/WindowEvents/WindowResizedEvent.h"
@@ -13,16 +15,11 @@
 namespace FarLight
 {
     class Application final
+        : public Singleton<Application>
     {
+        friend class Singleton<Application>;
+
     public:
-        static Application& GetInstance() noexcept
-        {
-            static Application s_Instance;
-            return s_Instance;
-        }
-
-        ~Application() noexcept;
-
         void Run() noexcept;
         void OnEvent(Event& e) noexcept;
 
@@ -49,7 +46,4 @@ namespace FarLight
         bool m_IsMinimized;
         float m_LastFrameTime;
     };
-
-    // To be defined in CLIENT
-    //Application& CreateApplication() noexcept;
 }
