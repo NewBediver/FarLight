@@ -3,94 +3,92 @@
 
 #include "FarLight/VirtualFileSystem/FileType.h"
 
+
 #include "FarLight/ResourceSystem/Resources/ShaderLibrary.h"
 
+#include <boost/filesystem.hpp>
 #include <boost/uuid/random_generator.hpp>
 
 namespace FarLight
 {
-    void FileSystem::Initialize() const noexcept
+    FileSystem::FileSystem() noexcept
     {
-        // root
-        DirectoryInitialization(GetRootDirectory());
+        m_DirectoriesMap["Root"] = boost::filesystem::current_path().string();
 
-        // first level dirs
-        DirectoryInitialization(GetAssetsDirectory());
-        DirectoryInitialization(GetSettingsDirectory());
+        m_DirectoriesMap["Settings"] = m_DirectoriesMap["Root"] + "\\Settings";
+        if (!IsDirectoryExists("Settings")) CreateEmptyDirectory("Settings", m_DirectoriesMap["Root"] + "\\Settings");
 
-        // second level dirs
-        DirectoryInitialization(GetEditorDirectory());
-        DirectoryInitialization(GetResourcesDirectory());
-
-        // third level dirs
-        DirectoryInitialization(GetShadersDirectory());
-
-        LoadShaders(GetShadersDirectory());
+        m_FilesMap["GlobalSettings"] = m_DirectoriesMap["Settings"] + "\\GlobalSettings.cfg";
+        if (!IsFileExists("GlobalSettings")) CreateEmptyFile("GlobalSettings", m_DirectoriesMap["Settings"] + "\\GlobalSettings.cfg");
+            
+        Settings settings(m_FilesMap["GlobalSettings"]);
+        ReconstructDirectory("Assets", "Directories.Assets", settings);
+        ReconstructDirectory("Shaders", "Directories.Shaders", settings);
+        ReconstructDirectory("Editor", "Directories.Editor", settings);
     }
 
-    void FileSystem::WriteToFile(const std::string& path, const std::string& str) const noexcept
+    bool FileSystem::IsFileExists(const std::string& name) const noexcept
+    {
+        if (m_FilesMap.find(name) == m_FilesMap.end()) return false;
+        else if (!boost::filesystem::exists(m_FilesMap[name]) || !boost::filesystem::is_regular_file(m_FilesMap[name]))
+        {
+            m_FilesMap.erase(name);
+            return false;
+        }
+        return true;
+    }
+
+    void FileSystem::CreateEmptyFile(const std::string& name, const std::string& path) noexcept
     {
         std::ofstream ofs(path);
-        ofs << str;
-        ofs.close();
+        m_FilesMap[name] = path;
     }
 
-    std::string FileSystem::ReadFromFile(const std::string& path) const noexcept
+    const std::string& FileSystem::GetFile(const std::string& name) const noexcept
     {
-        if (!IsFileExists(path)) return "";
-        std::ifstream ifs;
-        ifs.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        try
+        FL_CORE_ASSERT(IsFileExists(name), "Current file doest exists!");
+        return m_FilesMap.at(name);
+    }
+
+    bool FileSystem::IsDirectoryExists(const std::string& name) const noexcept
+    {
+        if (m_DirectoriesMap.find(name) == m_DirectoriesMap.end()) return false;
+        else if (!boost::filesystem::exists(m_DirectoriesMap[name]) || !boost::filesystem::is_directory(m_DirectoriesMap[name]))
         {
-            ifs.open(path);
-            std::stringstream ss;
-            ss << ifs.rdbuf();
-            ifs.close();
-            return ss.str();
+            m_DirectoriesMap.erase(name);
+            return false;
         }
-        catch (const std::ifstream::failure& e)
-        {
-            FL_CORE_ERROR("Error when try to write to the file: {0}", path);
-            FL_CORE_ERROR("Error massage: {0}", e.what());
-            FL_CORE_ASSERT(false, "Critical error in file writing!");
-        }
-        return "";
+        return true;
     }
 
-    void FileSystem::DirectoryInitialization(const std::string& dir) const noexcept
+    void FileSystem::CreateEmptyDirectory(const std::string& name, const std::string& path) noexcept
     {
-        fs::path path(dir);
-        if (!fs::exists(path)) fs::create_directory(path);
-        else if (!fs::is_directory(path)) FL_CORE_ASSERT(false, "This path \"{0}\" must be a directory!", path.string());
+        boost::filesystem::create_directory(path);
+        m_DirectoriesMap[name] = path;
     }
 
-    void FileSystem::LoadShaders(const std::string& dir) const noexcept
+    const std::string& FileSystem::GetDirectory(const std::string& name) const noexcept
     {
-        fs::directory_iterator it(dir);
-        for (fs::directory_iterator it(dir); it != fs::directory_iterator(); ++it)
+        FL_CORE_ASSERT(IsDirectoryExists(name), "Current directory doest exists!");
+        return m_DirectoriesMap.at(name);
+    }
+
+    void FileSystem::ReconstructDirectory(const std::string& name, const std::string& option, Settings& settings)
+    {
+        if (settings.HasOption<std::string>(option))
         {
-            if (is_directory(it->path()))
+            std::string path = settings.GetValue<std::string>(option);
+            m_DirectoriesMap[name] = path;
+            if (!IsDirectoryExists(name))
             {
-                LoadShaders(it->path().string());
-            }
-            else
-            {
-                if (FarLight::GetFileType(it->path().string()) == FileType::VertexShader)
-                {
-                    LoadShader(it->path().string());
-                }
+                CreateEmptyDirectory(name, path);
             }
         }
-    }
-
-    void FileSystem::LoadShader(const std::string& pathToVert) const noexcept
-    {
-        boost::uuids::uuid id = boost::uuids::random_generator_mt19937()();
-        while (ShaderLibrary::GetInstance().HasById(id)) id = boost::uuids::random_generator_mt19937()();
-        Ref<ShaderResource> shaderResource = CreateRef<ShaderResource>();
-        shaderResource->SetVertexShaderPath(pathToVert);
-        shaderResource->SetFragmentShaderPath(pathToVert.substr(0, pathToVert.length() - 4) + "frag");
-        ShaderLibrary::GetInstance().SetById(id, shaderResource);
+        else
+        {
+            CreateEmptyDirectory(name, m_DirectoriesMap["Root"] + "\\" + name);
+            settings.SetValue(option, m_DirectoriesMap[name]);
+        }
     }
 }
 

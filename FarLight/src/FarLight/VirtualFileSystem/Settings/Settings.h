@@ -1,29 +1,50 @@
 #pragma once
 
 #include <string>
-#include <map>
 
-#include "FarLight/VirtualFileSystem/Settings/SettingNode.h"
+#include <boost/property_tree/ptree.hpp>
 
 namespace FarLight
 {
-    class Settings
+    class Settings final
     {
     public:
-        explicit Settings(const std::string& pathToFile) noexcept
-            : m_PathToFile(pathToFile)
-        { }
+        explicit Settings(const std::string& pathToFile) noexcept;
+        ~Settings() noexcept;
 
-        const std::string& GetPath() const noexcept { return m_PathToFile; }
+        void Save() noexcept;
+        void Load() noexcept;
 
-        void SaveFile() noexcept;
-        void ReadFile() noexcept;
+        template<typename T>
+        bool HasOption(const std::string& key) const noexcept
+        {
+            bool isContain = true;
+            try
+            {
+                m_PropertyTree.get<T>(key);
+            }
+            catch (...)
+            {
+                isContain = false;
+            }
+            return isContain;
+        }
 
+        template<typename T>
+        T GetValue(const std::string& key) const noexcept
+        {
+            FL_ASSERT(HasOption<T>(key), "Current settings tree doesn't contain this option!");
+            return m_PropertyTree.get<T>(key);
+        }
 
+        template<typename T>
+        void SetValue(const std::string& key, const T& value) noexcept
+        {
+            m_PropertyTree.put<T>(key, value);
+        }
 
     private:
         std::string m_PathToFile;
-
-        std::map<std::string, SettingNode> m_Sections;
+        boost::property_tree::ptree m_PropertyTree;
     };
 }

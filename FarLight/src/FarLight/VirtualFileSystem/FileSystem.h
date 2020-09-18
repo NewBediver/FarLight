@@ -1,47 +1,32 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include "FarLight/Abstraction/Singleton/Singleton.h"
 
 #include "FarLight/Core/Core.h"
 
+#include "FarLight/VirtualFileSystem/Settings/Settings.h"
+
 #include "FarLight/SerializationSystem/Serialization.h"
 
-#include <boost/filesystem.hpp>
-
-namespace fs = boost::filesystem;
 
 namespace FarLight
 {
     class FileSystem final
         : public Singleton<FileSystem>
     {
+        friend class Singleton<FileSystem>;
+
     public:
-        void Initialize() const noexcept;
+        bool IsFileExists(const std::string& name) const noexcept;
+        void CreateEmptyFile(const std::string& name, const std::string& path) noexcept;
+        const std::string& GetFile(const std::string& name) const noexcept;
 
-        std::string GetRootDirectory() const noexcept { return m_RootDirectory; }
-
-        std::string GetAssetsDirectory() const noexcept { return m_AssetsDirectory; }
-        std::string GetSettingsDirectory() const noexcept { return m_SettingsDirectory; }
-
-        std::string GetEditorDirectory() const noexcept { return m_EditorDirectory; }
-        std::string GetResourcesDirectory() const noexcept { return m_ResourcesDirectory; }
-
-        std::string GetShadersDirectory() const noexcept { return m_ShadersDirectory; }
-
-        bool IsFileExists(const std::string& path) const noexcept
-        {
-            return fs::exists(fs::path(path));
-        }
-
-        void CreateEmptyFile(const std::string& path) const noexcept
-        {
-            std::ofstream ofs(path);
-        }
-
-        void WriteToFile(const std::string& path, const std::string& str) const noexcept;
-        std::string ReadFromFile(const std::string& path) const noexcept;
+        bool IsDirectoryExists(const std::string& name) const noexcept;
+        void CreateEmptyDirectory(const std::string& name, const std::string& path) noexcept;
+        const std::string& GetDirectory(const std::string& name) const noexcept;
 
         template<typename T>
         bool WriteToDisk(T& obj, const std::string& filePath) noexcept
@@ -81,30 +66,11 @@ namespace FarLight
         }
 
     private:
-        explicit FileSystem() noexcept
-            : m_RootDirectory(fs::current_path().string())
-        {
-            m_AssetsDirectory = m_RootDirectory + "\\Assets";
-            m_SettingsDirectory = m_RootDirectory + "\\Settings";
+        explicit FileSystem() noexcept;
 
-            m_EditorDirectory = m_AssetsDirectory + "\\Editor";
-            m_ResourcesDirectory = m_AssetsDirectory + "\\Resources";
+        void ReconstructDirectory(const std::string& name, const std::string& option, Settings& settings);
 
-            m_ShadersDirectory = m_ResourcesDirectory + "\\Shaders";
-        }
-
-        void DirectoryInitialization(const std::string& dir) const noexcept;
-
-        void LoadShaders(const std::string& dir) const noexcept;
-        void LoadShader(const std::string& pathToVert) const noexcept;
-
-        std::string m_RootDirectory;
-
-        std::string m_AssetsDirectory;
-        std::string m_SettingsDirectory;
-
-        std::string m_EditorDirectory;
-        std::string m_ResourcesDirectory;
-        std::string m_ShadersDirectory;
+        mutable std::unordered_map<std::string, std::string> m_DirectoriesMap;
+        mutable std::unordered_map<std::string, std::string> m_FilesMap;
     };
 }

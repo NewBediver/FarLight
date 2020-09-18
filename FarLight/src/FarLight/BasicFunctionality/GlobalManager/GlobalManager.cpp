@@ -1,9 +1,10 @@
 #include "flpch.h"
 #include "GlobalManager.h"
 
-#include "FarLight/LogSystem/Logger.h"
-#include "FarLight/InputSystem/InputManager.h"
 #include "FarLight/Profiling/Instrumentor.h"
+#include "FarLight/LogSystem/Logger.h"
+#include "FarLight/VirtualFileSystem/FileSystem.h"
+#include "FarLight/InputSystem/InputManager.h"
 #include "FarLight/BasicFunctionality/Application.h"
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 
@@ -19,6 +20,10 @@ namespace FarLight
         FarLight::Logger::Create();
         FarLight::Logger::GetInstance().Initialize();
         FL_CORE_INFO("[Logger] is initialized.");
+
+        // FileSystem
+        FarLight::FileSystem::Create();
+        FL_CORE_INFO("[File System] is initialized.");
 
         // InputManager
         FarLight::InputManager::Create();
@@ -51,6 +56,10 @@ namespace FarLight
         // InputManager
         FarLight::InputManager::Destroy();
         FL_CORE_INFO("[InputManager] is destroyed.");
+
+        // FileSystem
+        FarLight::FileSystem::Destroy();
+        FL_CORE_INFO("[File System] is destroyed.");
 
         // Logger
         FL_CORE_INFO("[Logger] is destroyed.");

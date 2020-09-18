@@ -4,28 +4,28 @@
 
 #include "Settings.h"
 
-#include "FarLight/VirtualFileSystem/FileSystem.h"
+#include <boost/property_tree/xml_parser.hpp>
 
 namespace FarLight
 {
-    void Settings::SaveFile() noexcept
+    Settings::Settings(const std::string& pathToFile) noexcept
+        : m_PathToFile(pathToFile)
     {
-        std::stringstream ss;
-        for (const auto& elm : m_Sections)
-        {
-            ss << "[" << elm.first << "]" << std::endl;
-            const auto& mp = elm.second.GetSettings();
-            for (const auto& elm : mp) {
-                ss << elm.first << " = " << elm.second << std::endl;
-            }
-            ss << std::endl;
-        }
-        FileSystem::GetInstance().WriteToFile(m_PathToFile, ss.str());
+        Load();
     }
 
-    void Settings::ReadFile() noexcept
+    Settings::~Settings() noexcept
     {
-        std::string fileContent = FileSystem::GetInstance().ReadFromFile(m_PathToFile);
-        // TODO: Write parser
+        Save();
+    }
+
+    void Settings::Save() noexcept
+    {
+        boost::property_tree::write_xml(m_PathToFile, m_PropertyTree);
+    }
+
+    void Settings::Load() noexcept
+    {
+        boost::property_tree::read_xml(m_PathToFile, m_PropertyTree);
     }
 }

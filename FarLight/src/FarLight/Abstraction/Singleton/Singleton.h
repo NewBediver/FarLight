@@ -22,6 +22,7 @@ namespace FarLight
         static void Destroy() noexcept
         {
             delete s_Instance;
+            s_Instance = nullptr;
         }
 
         static T& GetInstance() noexcept
@@ -40,11 +41,6 @@ namespace FarLight
         {
             assert(s_Instance == nullptr);
             s_Instance = static_cast<T*>(this);
-        }
-
-        ~Singleton() noexcept
-        {
-            s_Instance = nullptr;
         }
 
     private:
