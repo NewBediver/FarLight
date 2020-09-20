@@ -3,6 +3,7 @@
 #include <FarLight.h>
 
 #include "FarLight/EditorSystem/EditorPanels/SceneHierarchyPanel/SceneHierarchyPanel.h"
+#include "FarLight/EditorSystem/EditorPanels/SettingsPanel/SettingsPanel.h"
 
 #include <glm/glm.hpp>
 
@@ -27,18 +28,16 @@ namespace FarLight
 
         void GetBatchingStatistic() noexcept;
 
-        //void DirectoryTraverslBuild(Directory& directory) noexcept;
-
         struct Options
         {
             bool ShowBatchStatistics = false;
-            //bool ShowFileSystem = false;
             bool ShowECS = false;
         } m_Options;
 
         struct Panels
         {
             Scope<SceneHierarchyPanel> Hierarchy = nullptr;
+            Scope<SettingsPanel> Settings = nullptr;
         } m_Panels;
 
         struct RenderViewportOptions

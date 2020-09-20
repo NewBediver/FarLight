@@ -44,3 +44,47 @@
 #define FL_SERIALIZE_NAMED(NAME, FIELD) boost::serialization::make_nvp(NAME, FIELD)
 
 #define FL_SERIALIZE_DERIVED(BASE_CLASS) BOOST_SERIALIZATION_BASE_OBJECT_NVP(BASE_CLASS)
+
+namespace FarLight
+{
+    class Serializer
+    {
+    public:
+        template<typename T>
+        bool Serialize(T& obj, const std::string& filePath) noexcept
+        {
+            FL_PROFILE_FUNCTION();
+
+            bool result = true;
+            try
+            {
+                std::ofstream fs(filePath);
+                FL_SERIALIZE_DATA(fs, obj);
+            }
+            catch (const std::exception& e)
+            {
+                result = false;
+                FL_CORE_ERROR("An error occurred while attempting to serialize an object to disk.\nPath: {0}\nError: {1}", filePath, e.what());
+            }
+            return result;
+        }
+
+        template<typename T>
+        T Deserialize(const std::string& filePath) noexcept
+        {
+            FL_PROFILE_FUNCTION();
+
+            T data;
+            try
+            {
+                std::ifstream fs(filePath);
+                FL_DESERIALIZE_DATA(fs, data);
+            }
+            catch (std::exception& e)
+            {
+                FL_CORE_ERROR("An error occurred while attempting to deserialize an object from disk.\nPath: {0}\nError: {1}", filePath, e.what());
+            }
+            return data;
+        }
+    };
+}

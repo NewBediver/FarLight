@@ -73,6 +73,7 @@ namespace FarLight
         camera.AddComponent<NativeScriptComponent>().Bind<Script>();*/
 
         m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene, true);
+        m_Panels.Settings = CreateScope<SettingsPanel>(false);
     }
 
     void EditorLayer::OnDetach() noexcept
@@ -106,10 +107,9 @@ namespace FarLight
         UpdateRenderViewport();
 
         m_Panels.Hierarchy->ShowContent();
+        m_Panels.Settings->ShowContent();
 
         if (m_Options.ShowBatchStatistics) GetBatchingStatistic();
-
-        //if (m_Options.ShowFileSystem) GetFileSystem();
     }
 
     void EditorLayer::OnEvent(Event& event) noexcept
@@ -169,7 +169,6 @@ namespace FarLight
         {
             if (ImGui::BeginMenu("File"))
             {
-                //if (ImGui::MenuItem("Show file system", "Fs")) m_Options.ShowFileSystem = true;
                 if (ImGui::MenuItem("Exit", "E")) Application::GetInstance().Close();
                 ImGui::EndMenu();
             }
@@ -185,6 +184,11 @@ namespace FarLight
                 if (ImGui::MenuItem("Create Camera", "CC")) m_Scene->CreateCamera();
                 ImGui::Separator();
                 if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy->SetShown(true);
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Settings"))
+            {
+                m_Panels.Settings->SetShown(true);
                 ImGui::EndMenu();
             }
             ImGui::EndMenuBar();

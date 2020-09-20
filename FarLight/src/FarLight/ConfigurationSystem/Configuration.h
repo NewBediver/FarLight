@@ -6,11 +6,11 @@
 
 namespace FarLight
 {
-    class Settings final
+    class Configuration
     {
     public:
-        explicit Settings(const std::string& pathToFile) noexcept;
-        ~Settings() noexcept;
+        explicit Configuration(const std::string& fileName) noexcept;
+        virtual ~Configuration() noexcept;
 
         void Save() noexcept;
         void Load() noexcept;
@@ -44,7 +44,7 @@ namespace FarLight
         }
 
     private:
-        std::string m_PathToFile;
+        std::string m_FileName;
         boost::property_tree::ptree m_PropertyTree;
     };
 }
