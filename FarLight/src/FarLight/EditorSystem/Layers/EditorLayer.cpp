@@ -4,8 +4,13 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include "FarLight/ConfigurationSystem/ConfigurationManager.h"
+#include "FarLight/ResourceSystem/Resources/ShaderResource.h"
+
 #include <imgui.h>
 #include <imgui_internal.h>
+
+#include <boost/lexical_cast.hpp>
 
 namespace FarLight
 {
@@ -71,6 +76,8 @@ namespace FarLight
             }
         };
         camera.AddComponent<NativeScriptComponent>().Bind<Script>();*/
+
+        //Ref<ShaderResource> res = ConfigurationManager::GetInstance().GetShaderLibraryConfiguration()->GetShader("Default");
 
         m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene, true);
         m_Panels.Settings = CreateScope<SettingsPanel>(false);

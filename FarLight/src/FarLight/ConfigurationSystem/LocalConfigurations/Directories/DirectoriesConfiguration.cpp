@@ -11,7 +11,7 @@ namespace FarLight
 {
     std::string DirectoriesConfiguration::GetSettings() noexcept
     {
-        if (!HasOption<std::string>("Directories.Settings"))
+        if (!IsExists<std::string>("Directories.Settings"))
             SetValue<std::string>("Directories.Settings", FileSystem::GetInstance().GetDirectory("Root") + '\\' + "Settings");
 
         return GetValue<std::string>("Directories.Settings");
@@ -19,7 +19,7 @@ namespace FarLight
 
     std::string DirectoriesConfiguration::GetAssets() noexcept
     {
-        if (!HasOption<std::string>("Directories.Assets"))
+        if (!IsExists<std::string>("Directories.Assets"))
             SetValue<std::string>("Directories.Assets", FileSystem::GetInstance().GetDirectory("Root") + '\\' + "Assets");
             
         return GetValue<std::string>("Directories.Assets");
@@ -32,7 +32,7 @@ namespace FarLight
 
     std::string DirectoriesConfiguration::GetEditor() noexcept
     {
-        if (!HasOption<std::string>("Directories.Editor"))
+        if (!IsExists<std::string>("Directories.Editor"))
             SetValue<std::string>("Directories.Editor", FileSystem::GetInstance().GetDirectory("Root") + '\\' + "Editor");
 
         return GetValue<std::string>("Directories.Editor");
@@ -45,7 +45,7 @@ namespace FarLight
 
     std::string DirectoriesConfiguration::GetShaders() noexcept
     {
-        if (!HasOption<std::string>("Directories.Shaders"))
+        if (!IsExists<std::string>("Directories.Shaders"))
             SetValue<std::string>("Directories.Shaders", FileSystem::GetInstance().GetDirectory("Root") + '\\' + "Shaders");
 
         return GetValue<std::string>("Directories.Shaders");

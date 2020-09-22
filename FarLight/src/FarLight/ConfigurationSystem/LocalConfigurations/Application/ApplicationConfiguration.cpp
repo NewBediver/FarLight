@@ -11,7 +11,7 @@ namespace FarLight
 {
     unsigned ApplicationConfiguration::GetWidth() noexcept
     {
-        if (!HasOption<unsigned>("MainWindow.Width"))
+        if (!IsExists<unsigned>("MainWindow.Width"))
             SetValue<unsigned>("MainWindow.Width", 1280);
 
         return GetValue<unsigned>("MainWindow.Width");
@@ -24,7 +24,7 @@ namespace FarLight
 
     unsigned ApplicationConfiguration::GetHeight() noexcept
     {
-        if (!HasOption<unsigned>("MainWindow.Height"))
+        if (!IsExists<unsigned>("MainWindow.Height"))
             SetValue<unsigned>("MainWindow.Height", 720);
 
         return GetValue<unsigned>("MainWindow.Height");
@@ -37,7 +37,7 @@ namespace FarLight
 
     std::string ApplicationConfiguration::GetTitle() noexcept
     {
-        if (!HasOption<std::string>("MainWindow.Title"))
+        if (!IsExists<std::string>("MainWindow.Title"))
             SetValue<std::string>("MainWindow.Title", "FarLight Engine");
 
         return GetValue<std::string>("MainWindow.Title");

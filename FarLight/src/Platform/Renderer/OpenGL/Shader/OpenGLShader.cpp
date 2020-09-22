@@ -20,9 +20,6 @@ namespace FarLight
         GLuint vertexShader = CreateCompileShader(vertexCode, GL_VERTEX_SHADER);
         GLuint fragmentShader = CreateCompileShader(fragmentCode, GL_FRAGMENT_SHADER);
 
-        /*GLuint vertexShader = CreateCompileShader(vertexSrc, GL_VERTEX_SHADER);
-        GLuint fragmentShader = CreateCompileShader(fragmentSrc, GL_FRAGMENT_SHADER);*/
-
         m_RendererID = LinkShaders(vertexShader, fragmentShader);
     }
 

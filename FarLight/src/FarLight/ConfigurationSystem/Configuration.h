@@ -16,7 +16,7 @@ namespace FarLight
         void Load() noexcept;
 
         template<typename T>
-        bool HasOption(const std::string& key) const noexcept
+        bool IsExists(const std::string& key) const noexcept
         {
             bool isContain = true;
             try
@@ -31,9 +31,16 @@ namespace FarLight
         }
 
         template<typename T>
+        bool IsExists(const std::string& key, const T& value) const noexcept
+        {
+            if (!IsExists<T>(key) || m_PropertyTree.get<T>(key) != value) return false;
+            else return true;
+        }
+
+        template<typename T>
         T GetValue(const std::string& key) const noexcept
         {
-            FL_ASSERT(HasOption<T>(key), "Current settings tree doesn't contain this option!");
+            FL_ASSERT(IsExists<T>(key), "Current settings tree doesn't contain this option!");
             return m_PropertyTree.get<T>(key);
         }
 
@@ -43,8 +50,8 @@ namespace FarLight
             m_PropertyTree.put<T>(key, value);
         }
 
-    private:
-        std::string m_FileName;
+    protected:
         boost::property_tree::ptree m_PropertyTree;
+        std::string m_FileName;
     };
 }

@@ -4,6 +4,7 @@
 #include "FarLight/Profiling/Instrumentor.h"
 #include "FarLight/LogSystem/Logger.h"
 #include "FarLight/VirtualFileSystem/FileSystem.h"
+#include "FarLight/ConfigurationSystem/ConfigurationManager.h"
 #include "FarLight/InputSystem/InputManager.h"
 #include "FarLight/BasicFunctionality/Application.h"
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
@@ -24,6 +25,10 @@ namespace FarLight
         // FileSystem
         FarLight::FileSystem::Create();
         FL_CORE_INFO("[File System] is initialized.");
+
+        // Configuration Manager
+        FarLight::ConfigurationManager::Create();
+        FL_CORE_INFO("[Configuration Manager] is initialized.");
 
         // InputManager
         FarLight::InputManager::Create();
@@ -56,6 +61,10 @@ namespace FarLight
         // InputManager
         FarLight::InputManager::Destroy();
         FL_CORE_INFO("[InputManager] is destroyed.");
+
+        // Configuration Manager
+        FarLight::ConfigurationManager::Destroy();
+        FL_CORE_INFO("[Configuration Manager] is destroyed.");
 
         // FileSystem
         FarLight::FileSystem::Destroy();
