@@ -327,8 +327,6 @@ namespace FarLight
             WindowData& data = GET_DATA(win);
 
             data.Callback(MouseMovedEvent(std::move(xPos), std::move(yPos)));
-
-            double tmp = xPos;
         });
     }
 }

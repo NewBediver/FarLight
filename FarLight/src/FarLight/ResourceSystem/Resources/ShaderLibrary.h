@@ -1,59 +1,25 @@
 #pragma once
 
 #include <string>
-#include <vector>
-#include <unordered_map>
-
-#include "FarLight/Core/Core.h"
 
 #include "FarLight/ResourceSystem/ResourceLibrary.h"
 
 #include "FarLight/ResourceSystem/Resources/ShaderResource.h"
 
-#include <boost/lexical_cast.hpp>
-#include <boost/functional/hash/hash.hpp>
-
 namespace FarLight
 {
-    class ShaderLibrary
+    class ShaderLibrary final
+        : public ResourceLibrary<ShaderResource>
     {
     public:
-        ShaderLibrary(const ShaderLibrary&) = delete;
-        ShaderLibrary(ShaderLibrary&&) = delete;
-        ShaderLibrary& operator=(const ShaderLibrary&) = delete;
-        ShaderLibrary& operator=(ShaderLibrary&&) = delete;
+        explicit ShaderLibrary() noexcept;
 
-        static ShaderLibrary& GetInstance() noexcept
-        {
-            static ShaderLibrary s_Instance;
-            return s_Instance;
-        }
-
-        bool HasById(const boost::uuids::uuid& id) const noexcept
-        {
-            //return m_ShaderResourceLibrary.HasById(id);
-        }
-
-        const Ref<ShaderResource>& GetById(const boost::uuids::uuid& id) const noexcept
-        {
-            FL_CORE_ASSERT(HasById(id), "Library doesn't contain resource with the given id!");
-
-            //return m_ShaderResourceLibrary.GetById(id);
-        }
-
-        void SetById(const boost::uuids::uuid& key, const Ref<ShaderResource>& value) noexcept
-        {
-            //m_ShaderResourceLibrary.SetById(key, value);
-            m_ShaderIds.push_back(boost::lexical_cast<std::string>(key));
-        }
-
-        const std::vector<std::string> GetIdsList() const noexcept { return m_ShaderIds; }
+        bool IsExistsByName(const std::string& name) const noexcept;
+        const Ref<ShaderResource>& GetByName(const std::string& name) const noexcept;
+        void SetByName(const std::string& key, const Ref<ShaderResource>& value) noexcept;
+        void RemoveByName(const std::string& name) noexcept;
 
     private:
-        explicit ShaderLibrary() noexcept {};
-
-        ResourceLibrary<ShaderResource> m_ShaderResourceLibrary;
-
-        std::vector<std::string> m_ShaderIds;
+        std::unordered_map<std::string, boost::uuids::uuid> m_NameToUUID;
     };
 }

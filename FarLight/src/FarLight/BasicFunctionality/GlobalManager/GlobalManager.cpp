@@ -5,6 +5,7 @@
 #include "FarLight/LogSystem/Logger.h"
 #include "FarLight/VirtualFileSystem/FileSystem.h"
 #include "FarLight/ConfigurationSystem/ConfigurationManager.h"
+#include "FarLight/ResourceSystem/ResourceManager.h"
 #include "FarLight/InputSystem/InputManager.h"
 #include "FarLight/BasicFunctionality/Application.h"
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
@@ -30,10 +31,7 @@ namespace FarLight
         FarLight::ConfigurationManager::Create();
         FL_CORE_INFO("[Configuration Manager] is initialized.");
 
-        // InputManager
-        FarLight::InputManager::Create();
-        FL_CORE_INFO("[InputManager] is initialized.");
-
+        /////////////
         // Application
         FarLight::Application::Create();
         FL_CORE_INFO("[Application] is initialized.");
@@ -41,6 +39,23 @@ namespace FarLight
         // TODO: use Sigleton base class
         Renderer2D::Init();
         FL_CORE_INFO("[Renderer2D] is initialized.");
+        /////////////
+
+        // Resource Manager
+        FarLight::ResourceManager::Create();
+        FL_CORE_INFO("[Resource Manager] is initialized.");
+
+        // InputManager
+        FarLight::InputManager::Create();
+        FL_CORE_INFO("[InputManager] is initialized.");
+
+        // Application
+        //FarLight::Application::Create();
+        //FL_CORE_INFO("[Application] is initialized.");
+
+        // TODO: use Sigleton base class
+        //Renderer2D::Init();
+        //FL_CORE_INFO("[Renderer2D] is initialized.");
 
         FL_PROFILE_END_SESSION();
     }
@@ -51,16 +66,29 @@ namespace FarLight
         FL_PROFILE_BEGIN_SESSION("Termination", "FarLightProfile-Termination.json");
 
         // TODO: use Sigleton base class
-        Renderer2D::Shutdown();
-        FL_CORE_INFO("[Renderer2D] is destoyed.");
+        //Renderer2D::Shutdown();
+        //FL_CORE_INFO("[Renderer2D] is destoyed.");
 
         // Application
-        FarLight::Application::Destroy();
-        FL_CORE_INFO("[Application] is destoyed.");
+        //FarLight::Application::Destroy();
+        //FL_CORE_INFO("[Application] is destoyed.");
 
         // InputManager
         FarLight::InputManager::Destroy();
         FL_CORE_INFO("[InputManager] is destroyed.");
+
+        // Resource Manager
+        FarLight::ResourceManager::Destroy();
+        FL_CORE_INFO("[Resource Manager] is destroyed.");
+
+        ///////////////
+        // TODO: use Sigleton base class
+        Renderer2D::Shutdown();
+        FL_CORE_INFO("[Renderer2D] is destoyed.");
+
+        FarLight::Application::Destroy();
+        FL_CORE_INFO("[Application] is destoyed.");
+        ///////////////
 
         // Configuration Manager
         FarLight::ConfigurationManager::Destroy();

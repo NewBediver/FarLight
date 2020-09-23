@@ -72,4 +72,20 @@ namespace FarLight
         tmpTree.put<std::string>("FragmentShaderSource", res->GetFragmentShaderPath());
         m_PropertyTree.add_child("Shaders.Shader", tmpTree);
     }
+
+    std::vector<Ref<ShaderResource>> ShaderLibraryConfiguration::GetSavedShaders() const noexcept
+    {
+        std::vector<Ref<ShaderResource>> res;
+
+        for (const auto& node : m_PropertyTree.get_child("Shaders"))
+        {
+            boost::uuids::uuid id = boost::lexical_cast<boost::uuids::uuid>(node.second.get<std::string>("Id"));
+            std::string name = node.second.get<std::string>("Name");
+            std::string vertextSrc = node.second.get<std::string>("VertexShaderSource");
+            std::string fragmentSrc = node.second.get<std::string>("FragmentShaderSource");
+            res.push_back(CreateRef<ShaderResource>(id, name, vertextSrc, fragmentSrc));
+        }
+
+        return res;
+    }
 }

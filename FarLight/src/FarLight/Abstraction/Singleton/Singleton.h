@@ -8,6 +8,8 @@ namespace FarLight
     class Singleton
     {
     public:
+        virtual ~Singleton() noexcept = default;
+
         Singleton(const Singleton<T>&) = delete;
         Singleton(Singleton<T>&&) = delete;
         Singleton& operator=(const Singleton<T>&) = delete;

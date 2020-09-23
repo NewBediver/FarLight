@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 #include <unordered_map>
 
@@ -10,9 +11,11 @@
 namespace FarLight
 {
     template<typename T>
-    class ResourceLibrary final
+    class ResourceLibrary
     {
     public:
+        virtual ~ResourceLibrary() noexcept = default;
+
         bool IsExists(const boost::uuids::uuid& id) const noexcept
         {
             return m_Library.find(id) != m_Library.end();
@@ -22,12 +25,17 @@ namespace FarLight
         {
             FL_CORE_ASSERT(IsExists(id), "Library doesn't contain resource with the given id!");
 
-            return m_Library.find(id)->second;
+            return m_Library.at(id);
         }
 
         void Set(const boost::uuids::uuid& key, const Ref<T>& value) noexcept
         {
             m_Library[key] = value;
+        }
+
+        void Remove(const boost::uuids::uuid& key) noexcept
+        {
+            m_Library.erase(key);
         }
 
     private:
