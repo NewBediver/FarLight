@@ -2,7 +2,7 @@
 
 #include "FarLight/Core/Core.h"
 
-#include "FarLight/BasicFunctionality/Timestep.h"
+#include "FarLight/BasicFunctionality/Timer/Timestep.h"
 #include "FarLight/BasicFunctionality/Camera/OrthographicCameraController.h"
 
 #include <entt/entt.hpp>
@@ -17,7 +17,7 @@ namespace FarLight
         static Ref<Scene> Create() noexcept;
 
         explicit Scene() noexcept
-            : m_EditorCameraController(1289, 720)
+            : m_EditorCameraController(1280, 720)
             , m_IsRenderViewportHovered(true)
             , m_IsRenderViewportFocused(true)
         { }

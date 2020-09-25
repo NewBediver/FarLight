@@ -20,7 +20,22 @@ namespace FarLight
 {
     void RenderComponent::OnUserInterfaceDraw() noexcept
     {
-        ImGui::ColorEdit4("Color", glm::value_ptr(m_Color));
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, GetTitleWidth());
+
+        {
+            std::string text = "Color";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::PushItemWidth(-1);
+            ImGui::ColorEdit4("##Color", glm::value_ptr(m_Color));
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+        }
+
+        ImGui::Columns(1, nullptr, false);
 
         /*std::vector<std::string> items = ShaderLibrary::GetInstance().GetIdsList();
         if (ImGui::BeginCombo("shaders", (m_ShaderIndex == -1 ? "Choose shader" : items[m_ShaderIndex].c_str()))) // The second parameter is the label previewed before opening the combo.

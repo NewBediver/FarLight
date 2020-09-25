@@ -4,7 +4,7 @@
 #include "flpch.h"
 
 #include "FarLight/BasicFunctionality/Application.h"
-#include "FarLight/BasicFunctionality/Timestep.h"
+#include "FarLight/BasicFunctionality/Timer/Timestep.h"
 
 #include "FarLight/EventSystem/EventDispatcher.h"
 
@@ -12,9 +12,7 @@
 
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 
-#ifdef FL_PLATFORM_WINDOWS
-    #include <GLFW/glfw3.h>
-#endif
+#include "FarLight/BasicFunctionality/Timer/Timer.h"
 
 namespace FarLight
 {
@@ -36,15 +34,16 @@ namespace FarLight
         m_EditorLayer = CreateRef<ImGuiLayer>();
         m_LayerStack.PushOverlay(m_EditorLayer);
 
+        Timer::Create();
+
         FL_CORE_INFO("Program execution entered the [Main Loop].");
         while (m_IsRunning)
         {
             {
                 FL_PROFILE_SCOPE("Main loop");
 
-                float time = static_cast<float>(glfwGetTime());
-                Timestep ts(time - m_LastFrameTime);
-                m_LastFrameTime = time;
+                Timer::GetInstance().Update();
+                Timestep ts(Timer::GetInstance().GetDelta());
 
                 if (!m_IsMinimized)
                 {
@@ -68,6 +67,8 @@ namespace FarLight
             }
         }
         FL_CORE_INFO("Program execution left the [Main Loop].");
+
+        Timer::Destroy();
     }
 
     void Application::OnEvent(Event& e) noexcept

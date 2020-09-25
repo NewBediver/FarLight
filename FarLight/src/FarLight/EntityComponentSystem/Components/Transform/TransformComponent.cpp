@@ -70,13 +70,52 @@ namespace FarLight
 
     void TransformComponent::OnUserInterfaceDraw() noexcept
     {
-        if (ImGui::DragFloat3("Position", glm::value_ptr(m_Position), 0.001f, 0.0f))
-            m_IsDataChanged = true;
-        if (ImGui::DragFloat3("Size", glm::value_ptr(m_Size), 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None))
-            m_IsDataChanged = true;
-        glm::vec3 degrees = glm::vec3(glm::degrees(m_Rotation.x), glm::degrees(m_Rotation.y), glm::degrees(m_Rotation.z));
-        if (ImGui::DragFloat3("Rotation", glm::value_ptr(degrees)))
-            m_IsDataChanged = true;
-        m_Rotation = glm::vec3(glm::radians(degrees.x), glm::radians(degrees.y), glm::radians(degrees.z));
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, GetTitleWidth());
+
+        {
+            std::string text = "Position";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::PushItemWidth(-1);
+            if (ImGui::DragFloat3("##Position", glm::value_ptr(m_Position), 0.001f, 0.0f))
+                m_IsDataChanged = true;
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+        }
+        
+        {
+            std::string text = "Size";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::PushItemWidth(-1);
+            if (ImGui::DragFloat3("##Size", glm::value_ptr(m_Size), 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None))
+                m_IsDataChanged = true;
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+        }
+
+        {
+            std::string text = "Rotation";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::PushItemWidth(-1);
+            glm::vec3 degrees = glm::vec3(glm::degrees(m_Rotation.x), glm::degrees(m_Rotation.y), glm::degrees(m_Rotation.z));
+            if (ImGui::DragFloat3("##Rotation", glm::value_ptr(degrees)))
+            {
+                m_IsDataChanged = true;
+                m_Rotation = glm::vec3(glm::radians(degrees.x), glm::radians(degrees.y), glm::radians(degrees.z));
+            }
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+        }
+        
+        ImGui::Columns(1, nullptr, false);
     }
 }

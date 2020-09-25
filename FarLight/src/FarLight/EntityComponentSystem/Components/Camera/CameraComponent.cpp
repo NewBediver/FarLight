@@ -14,22 +14,82 @@ namespace FarLight
 {
     void CameraComponent::OnUserInterfaceDraw() noexcept
     {
-        ImGui::Checkbox("Is primary", &m_IsPrimary);
-        ImGui::Checkbox("Is fixed aspect ratio", &m_IsFixedAspectRatio);
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, 180);
         {
+            std::string text = "Is primary";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::Checkbox("##IsPrimary", &m_IsPrimary);
+            ImGui::NextColumn();
+        }
+
+        {
+            std::string text = "Is Fixed Aspect Ratio";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::Checkbox("##IsFixedAspectRatio", &m_IsFixedAspectRatio);
+            ImGui::NextColumn();
+        }
+
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, GetTitleWidth());
+        {
+            std::string text = "Zoom level";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::PushItemWidth(ImGui::GetColumnWidth() - 2 * ImGui::GetStyle().ItemSpacing.x);
             float zoom = m_Camera->GetZoom();
-            if (ImGui::DragFloat("Zoom level", &zoom, 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None))
+            if (ImGui::DragFloat("##ZoomLevel", &zoom, 0.001f, 0.0f, std::numeric_limits<float>::max(), "%.3f", ImGuiSliderFlags_None))
                 m_Camera->SetZoom(zoom);
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
         }
+
         {
-            int resolution[2] = { m_Camera->GetResolutionWidth(), m_Camera->GetResolutionHeight() };
-            ImGui::Text("Resolution");
-            if (ImGui::DragInt2("Width / Height", resolution, 1, 0, std::numeric_limits<int>::max()))
-            {
-                m_Camera->SetResolutionWidth(resolution[0]);
-                m_Camera->SetResolutionHeight(resolution[1]);
-            }
+            ImGui::Columns(1, nullptr, false);
+            std::string text = "Resolution";
+            ImGui::SetCursorPosX((ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - 2 * ImGui::GetStyle().ItemSpacing.x - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX()) / 2 );
+            ImGui::Text("%s", text.c_str());
+
+            ImGui::Columns(2, nullptr, false);
+            ImGui::SetColumnWidth(0, GetTitleWidth());
+
+            text = "Width";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            int width = m_Camera->GetResolutionWidth();
+            ImGui::PushItemWidth(ImGui::GetColumnWidth() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            if (ImGui::DragInt("##Width", &width, 1, 0, std::numeric_limits<int>::max()))
+                m_Camera->SetResolutionWidth(width);
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+
+            text = "Height";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            int height = m_Camera->GetResolutionHeight();
+            ImGui::PushItemWidth(ImGui::GetColumnWidth() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            if (ImGui::DragInt("##Height", &height, 1, 0, std::numeric_limits<int>::max()))
+                m_Camera->SetResolutionHeight(height);
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
         }
+
+
+
+        ImGui::Columns(1, nullptr, false);
+
         {
             glm::vec2 clippingPlane = { m_Camera->GetNearBound(), m_Camera->GetFarBound() };
             ImGui::Text("Clipping Plane");

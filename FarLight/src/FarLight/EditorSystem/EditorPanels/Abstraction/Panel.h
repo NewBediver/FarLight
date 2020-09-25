@@ -4,10 +4,10 @@
 
 namespace FarLight
 {
-    class IPanel
+    class Panel
     {
     public:
-        virtual ~IPanel() = default;
+        virtual ~Panel() = default;
 
         virtual void ShowContent() noexcept = 0;
 

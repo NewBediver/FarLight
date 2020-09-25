@@ -2,12 +2,12 @@
 
 #include <string>
 
-#include "FarLight/EntityComponentSystem/Interfaces/IComponent.h"
+#include "FarLight/EntityComponentSystem/Interfaces/OnUIDrawable.h"
 
 namespace FarLight
 {
     class TagComponent final
-        : public IComponent
+        : public OnUIDrawable
     {
     public:
         explicit TagComponent(const std::string& tag = "Entity") noexcept

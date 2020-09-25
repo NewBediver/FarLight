@@ -14,6 +14,8 @@
 
 #include "FarLight/RenderSystem/Renderer/Renderer2D.h"
 
+#include "FarLight/BasicFunctionality/Timer/Timer.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace FarLight
@@ -25,6 +27,8 @@ namespace FarLight
 
     void Scene::OnUpdate(const Timestep& ts) noexcept
     {
+        //FL_CORE_TRACE("My timer: {0} s. GLFW Timer: {1} s.", Timer::GetInstance().GetDelta(), ts);
+
         // execute scripts
         {
             m_Registry.view<NativeScriptComponent>().each([&](auto entity, auto& nativeScriptComp)

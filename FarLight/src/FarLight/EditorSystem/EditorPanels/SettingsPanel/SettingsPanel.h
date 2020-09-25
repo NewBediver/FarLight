@@ -2,12 +2,12 @@
 
 #include <FarLight.h>
 
-#include "FarLight/EditorSystem/EditorPanels/Interfaces/IPanel.h"
+#include "FarLight/EditorSystem/EditorPanels/Abstraction/Panel.h"
 
 namespace FarLight
 {
     class SettingsPanel final
-        : public IPanel
+        : public Panel
     {
     public:
         explicit SettingsPanel(bool show = false, const std::string& title = "Settings") noexcept

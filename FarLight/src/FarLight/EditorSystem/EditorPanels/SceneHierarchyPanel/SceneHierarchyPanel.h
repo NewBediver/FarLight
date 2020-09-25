@@ -2,14 +2,14 @@
 
 #include <FarLight.h>
 
-#include "FarLight/EditorSystem/EditorPanels/Interfaces/IPanel.h"
+#include "FarLight/EditorSystem/EditorPanels/Abstraction/Panel.h"
 
 #include "FarLight/EditorSystem/EditorPanels/ComponentsPanel/ComponentsPanel.h"
 
 namespace FarLight
 {
     class SceneHierarchyPanel final
-        : public IPanel
+        : public Panel
     {
     public:
         explicit SceneHierarchyPanel(const Ref<Scene>& scene, bool show = false, const std::string& title = "Scene hierarchy") noexcept

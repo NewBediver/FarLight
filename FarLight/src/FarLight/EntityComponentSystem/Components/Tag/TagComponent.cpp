@@ -13,13 +13,28 @@ namespace FarLight
 {
     void TagComponent::OnUserInterfaceDraw() noexcept
     {
-        ImGui::InputText("Tag", m_Tag.data(), m_Tag.capacity() + 1, ImGuiInputTextFlags_CallbackResize,
-            [](ImGuiInputTextCallbackData* data)
-            {
-                std::string* str = static_cast<std::string*>(data->UserData);
-                str->resize(data->BufTextLen);
-                data->Buf = str->data();
-                return 0;
-            }, &m_Tag);
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, GetTitleWidth());
+
+        {
+            std::string text = "Tag";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::PushItemWidth(-1);
+            ImGui::InputText("##Tag", m_Tag.data(), m_Tag.capacity() + 1, ImGuiInputTextFlags_CallbackResize,
+                [](ImGuiInputTextCallbackData* data)
+                {
+                    std::string* str = static_cast<std::string*>(data->UserData);
+                    str->resize(data->BufTextLen);
+                    data->Buf = str->data();
+                    return 0;
+                }, &m_Tag);
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+        }
+
+        ImGui::Columns(1, nullptr, false);
     }
 }

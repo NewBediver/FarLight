@@ -10,6 +10,8 @@ namespace FarLight
 {
     class Entity final
     {
+        friend class Scene;
+
     public:
         explicit Entity(Scene* scene, entt::entity ent) noexcept
             : m_ScenePtr(scene)
@@ -60,7 +62,5 @@ namespace FarLight
     private:
         Scene* m_ScenePtr;
         entt::entity m_Handle;
-
-        friend class Scene;
     };
 }

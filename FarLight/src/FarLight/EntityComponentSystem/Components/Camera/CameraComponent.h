@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FarLight/EntityComponentSystem/Interfaces/IComponent.h"
+#include "FarLight/EntityComponentSystem/Interfaces/OnUIDrawable.h"
 
 #include "FarLight/BasicFunctionality/Camera/Camera.h"
 #include "FarLight/BasicFunctionality/Camera/RenderOrthoCamera.h"
@@ -10,7 +10,7 @@
 namespace FarLight
 {
     class CameraComponent final
-        : public IComponent
+        : public OnUIDrawable
     {
     public:
         explicit CameraComponent(unsigned width = 1280, unsigned height = 720, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept

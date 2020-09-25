@@ -10,7 +10,7 @@
 //------------------------------------
 //---Basic-Functionality--------------
 #include "FarLight/BasicFunctionality/Application.h"
-#include "FarLight/BasicFunctionality/Timestep.h"
+#include "FarLight/BasicFunctionality/Timer/Timestep.h"
 
 #include "FarLight/BasicFunctionality/Camera/Camera.h"
 #include "FarLight/BasicFunctionality/Camera/RenderOrthoCamera.h"

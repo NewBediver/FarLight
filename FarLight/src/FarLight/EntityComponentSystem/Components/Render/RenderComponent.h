@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FarLight/EntityComponentSystem/Interfaces/IComponent.h"
+#include "FarLight/EntityComponentSystem/Interfaces/OnUIDrawable.h"
 
 #include <glm/glm.hpp>
 
@@ -9,7 +9,7 @@
 namespace FarLight
 {
     class RenderComponent final
-        : public IComponent
+        : public OnUIDrawable
     {
     public:
         explicit RenderComponent(const glm::vec4& color = glm::vec4(1.0f)) noexcept
