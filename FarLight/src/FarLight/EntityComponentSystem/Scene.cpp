@@ -74,7 +74,7 @@ namespace FarLight
 
             m_Registry.view<TransformComponent, RenderComponent>().each([&](auto entity, auto& transformComp, auto& renderComp)
                 {
-                    Renderer2D::DrawRotatedQuad(transformComp.GetPosition(), glm::vec2(transformComp.GetSize()), transformComp.GetRotation().z, renderComp.GetColor());
+                    Renderer2D::DrawRotatedQuad(transformComp.GetPosition(), glm::vec2(transformComp.GetSize()), glm::radians(transformComp.GetRotation().z), renderComp.GetColor());
                 });
 
             Renderer2D::EndScene();
