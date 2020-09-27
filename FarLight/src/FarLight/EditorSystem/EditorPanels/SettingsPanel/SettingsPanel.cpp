@@ -16,22 +16,24 @@ namespace FarLight
 {
     void SettingsPanel::ShowContent() noexcept
     {
-        if (m_IsShown)
+        ImGui::Begin(GetTitle().c_str());
+
+        if (ImGui::BeginTabBar("#SettingsSections"))
         {
-            ImGui::Begin(m_Title.c_str(), &m_IsShown);
-
-            if (ImGui::Button("Application"))
-                m_ShownFunction = &SettingsPanel::ShowApplicationSettings;
-
-            ImGui::SameLine();
-
-            if (ImGui::Button("Directories"))
-                m_ShownFunction = &SettingsPanel::ShowDirectoriesSettings;
-
-            (this->*m_ShownFunction)();
-            
-            ImGui::End();
+            if (ImGui::BeginTabItem("Application"))
+            {
+                ShowApplicationSettings();
+                ImGui::EndTabItem();
+            }
+            if (ImGui::BeginTabItem("Directories"))
+            {
+                ShowDirectoriesSettings();
+                ImGui::EndTabItem();
+            }
+            ImGui::EndTabBar();
         }
+
+        ImGui::End();
     }
 
     void SettingsPanel::ShowApplicationSettings() noexcept

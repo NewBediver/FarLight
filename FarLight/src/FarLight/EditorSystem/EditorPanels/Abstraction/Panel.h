@@ -7,14 +7,17 @@ namespace FarLight
     class Panel
     {
     public:
+        explicit Panel(std::string&& title)
+            : m_Title(std::move(title))
+        { }
+
         virtual ~Panel() = default;
 
         virtual void ShowContent() noexcept = 0;
 
-        virtual bool IsShown() const noexcept = 0;
-        virtual void SetShown(bool show) noexcept = 0;
+        const std::string& GetTitle() const noexcept { return m_Title; }
 
-        virtual const std::string& GetTitle() const noexcept = 0;
-        virtual void SetTitle(const std::string& title) noexcept = 0;
+    private:
+        std::string m_Title;
     };
 }

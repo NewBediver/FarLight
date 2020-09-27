@@ -13,15 +13,12 @@ namespace FarLight
         : public Panel
     {
     public:
-        explicit ComponentsPanel(const Ref<Entity>& entity, bool show = false, const std::string& title = "Components") noexcept;
+        explicit ComponentsPanel(const Ref<Entity>& entity, std::string&& title = "Components") noexcept
+            : Panel(std::move(title))
+            , m_Entity(entity)
+        { }
 
         virtual void ShowContent() noexcept override;
-
-        virtual bool IsShown() const noexcept override { return m_IsShown; }
-        virtual void SetShown(bool show) noexcept override { m_IsShown = show; }
-
-        virtual const std::string& GetTitle() const noexcept override { return m_Title; }
-        virtual void SetTitle(const std::string& title) noexcept override { m_Title = title; }
 
     private:
         void ShowAddComponentButton() noexcept;
@@ -82,8 +79,5 @@ namespace FarLight
         }
 
         Ref<Entity> m_Entity;
-
-        bool m_IsShown;
-        std::string m_Title;
     };
 }

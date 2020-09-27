@@ -8,44 +8,86 @@ namespace FarLight
 {
     void SceneHierarchyPanel::ShowContent() noexcept
     {
-        if (m_IsShown)
+        auto entities = m_Scene->GetEntities<TagComponent>();
+
+        ImGui::Begin(GetTitle().c_str());
+
+        for (int i = 0; i < entities.size(); ++i)
         {
-            ImGui::Begin(m_Title.c_str(), &m_IsShown);
+            ImGui::PushID(i);
 
-            auto entities = m_Scene->GetEntities<TagComponent>();
+            auto& tagComp = entities[i].GetComponent<TagComponent>();
 
-            for (int i = 0; i < entities.size(); ++i)
+            bool open = false;
+            if (i == m_SelectedEntity) open = ImGui::TreeNodeEx(tagComp.GetTag().c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_Selected);
+            else open = ImGui::TreeNodeEx(tagComp.GetTag().c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
+
+            if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
             {
-                ImGui::PushID(i);
-
-                auto& tagComp = entities[i].GetComponent<TagComponent>();
-
-                bool open = ImGui::TreeNodeEx(tagComp.GetTag().c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
-
-                if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-                    m_ComponentsPanel = CreateRef<ComponentsPanel>(CreateRef<Entity>(entities[i]), true);
-
-                ShowEntityPopupMenu(entities[i]);
-
-                if (open)
-                    ImGui::TreePop();
-
-                ImGui::PopID();
+                m_SelectedEntity = i;
+                m_ComponentsPanel = CreateScope<ComponentsPanel>(CreateRef<Entity>(entities[i]));
             }
 
-            if (m_ComponentsPanel != nullptr)
-                m_ComponentsPanel->ShowContent();
+            if (open) ImGui::TreePop();
 
-            ImGui::End();
+            ImGui::PopID();
         }
+
+        bool created = ShowAddEntityButton();
+        if (m_SelectedEntity != -1)
+        {
+            ImGui::SameLine();
+            if (ShowDeleteEntityButton(entities[m_SelectedEntity]))
+            {
+                m_SelectedEntity = -1;
+                m_ComponentsPanel.reset();
+                created = false;
+            }
+        }
+        if (created) ++m_SelectedEntity;
+
+        ImGui::End();
+
+        if (m_ComponentsPanel != nullptr) m_ComponentsPanel->ShowContent();
     }
 
-    void SceneHierarchyPanel::ShowEntityPopupMenu(Entity ent) noexcept
+    // Returns true if entity was deleted
+    //         false otherwise
+    bool SceneHierarchyPanel::ShowDeleteEntityButton(Entity ent) noexcept
     {
-        if (ImGui::BeginPopupContextItem())
+        if (ImGui::Button("Delete"))
         {
-            if (ImGui::MenuItem("Delete entity")) m_Scene->DestroyEntity(ent);
+            m_Scene->DestroyEntity(ent);
+            return true;
+        }
+        return false;
+    }
+
+    // Returns true if entity was created
+    //         false otherwise
+    bool SceneHierarchyPanel::ShowAddEntityButton() noexcept
+    {
+        bool created = false;
+        if (ImGui::Button("Add Entity")) ImGui::OpenPopup("Entity Popup");
+        if (ImGui::BeginPopup("Entity Popup"))
+        {
+            if (ImGui::Selectable("Empty"))
+            {
+                m_Scene->CreateEntity();
+                created = true;
+            }
+            if (ImGui::Selectable("Square"))
+            {
+                m_Scene->CreateSquare();
+                created = true;
+            }
+            if (ImGui::Selectable("Camera"))
+            {
+                m_Scene->CreateCamera();
+                created = true;
+            }
             ImGui::EndPopup();
         }
+        return created;
     }
 }

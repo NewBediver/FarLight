@@ -78,9 +78,6 @@ namespace FarLight
         camera.AddComponent<NativeScriptComponent>().Bind<Script>();*/
 
         //Ref<ShaderResource> res = ConfigurationManager::GetInstance().GetShaderLibraryConfiguration()->GetShader("Default");
-
-        m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene, true);
-        m_Panels.Settings = CreateScope<SettingsPanel>(false);
     }
 
     void EditorLayer::OnDetach() noexcept
@@ -113,8 +110,8 @@ namespace FarLight
         EnableDocking();
         UpdateRenderViewport();
 
-        m_Panels.Hierarchy->ShowContent();
-        m_Panels.Settings->ShowContent();
+        if (m_Panels.Hierarchy != nullptr) m_Panels.Hierarchy->ShowContent();
+        if (m_Panels.Settings != nullptr) m_Panels.Settings->ShowContent();
 
         if (m_Options.ShowBatchStatistics) GetBatchingStatistic();
     }
@@ -190,12 +187,12 @@ namespace FarLight
                 if (ImGui::MenuItem("Create Square", "CS")) m_Scene->CreateSquare();
                 if (ImGui::MenuItem("Create Camera", "CC")) m_Scene->CreateCamera();
                 ImGui::Separator();
-                if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy->SetShown(true);
+                if (ImGui::MenuItem("Show ECS", "ECS")) m_Panels.Hierarchy = CreateScope<SceneHierarchyPanel>(m_Scene);
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Settings"))
             {
-                m_Panels.Settings->SetShown(true);
+                m_Panels.Settings = CreateScope<SettingsPanel>();
                 ImGui::EndMenu();
             }
             ImGui::EndMenuBar();
