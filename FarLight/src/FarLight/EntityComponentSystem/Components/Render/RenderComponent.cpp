@@ -24,6 +24,18 @@ namespace FarLight
         ImGui::SetColumnWidth(0, GetTitleWidth());
 
         {
+            std::string text = "Unique ID";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::PushItemWidth(-1);
+            ImGui::Text(GetId<std::string>().c_str());
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+        }
+
+        {
             std::string text = "Color";
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
             ImGui::Text("%s", text.c_str());

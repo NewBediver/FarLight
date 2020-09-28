@@ -51,7 +51,7 @@ namespace FarLight
     {
     public:
         template<typename T>
-        bool Serialize(T& obj, const std::string& filePath) noexcept
+        static bool Serialize(T& obj, const std::string& filePath) noexcept
         {
             FL_PROFILE_FUNCTION();
 
@@ -70,7 +70,7 @@ namespace FarLight
         }
 
         template<typename T>
-        T Deserialize(const std::string& filePath) noexcept
+        static T Deserialize(const std::string& filePath) noexcept
         {
             FL_PROFILE_FUNCTION();
 

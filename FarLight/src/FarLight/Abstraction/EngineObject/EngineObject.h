@@ -2,7 +2,10 @@
 
 #include <string>
 
+#include "FarLight/SerializationSystem/Serialization.h"
+
 #include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_serialize.hpp>
 #include <boost/uuid/random_generator.hpp>
 
 #include <boost/lexical_cast.hpp>
@@ -11,6 +14,8 @@ namespace FarLight
 {
     class EngineObject
     {
+        FL_REGISTER_SERIALIZABLE;
+
     public:
         virtual ~EngineObject() noexcept = default;
 
@@ -39,6 +44,22 @@ namespace FarLight
         }
 
     private:
+        //=Serialization part======================================
+        template<class Archive>
+        void save(Archive& ar, const unsigned int version) const
+        {
+            ar & FL_SERIALIZE_NAMED("Id", m_Id);
+        }
+
+        template<class Archive>
+        void load(Archive& ar, const unsigned int version)
+        {
+            ar & FL_SERIALIZE_NAMED("Id", m_Id);
+        }
+        //=========================================================
+
         boost::uuids::uuid m_Id;
     };
 }
+
+FL_REGISTER_CLASS_VERSION(FarLight::EngineObject, 0);

@@ -2,13 +2,19 @@
 
 #include <string>
 
+#include "FarLight/Abstraction/EngineObject/EngineObject.h"
 #include "FarLight/EntityComponentSystem/Interfaces/OnUIDrawable.h"
+
+#include "FarLight/SerializationSystem/Serialization.h"
 
 namespace FarLight
 {
     class TagComponent final
-        : public OnUIDrawable
+        : public EngineObject
+        , public OnUIDrawable
     {
+        FL_REGISTER_SERIALIZABLE;
+
     public:
         explicit TagComponent(const std::string& tag = "Entity") noexcept
             : m_Tag(tag)
@@ -20,6 +26,26 @@ namespace FarLight
         virtual void OnUserInterfaceDraw() noexcept override;
 
     private:
+        //=Serialization part======================================
+        template<class Archive>
+        void save(Archive& ar, const unsigned int version) const
+        {
+            ar & FL_SERIALIZE_DERIVED(EngineObject)
+               & FL_SERIALIZE_DERIVED(OnUIDrawable)
+               & FL_SERIALIZE_NAMED("Tag", m_Tag);
+        }
+
+        template<class Archive>
+        void load(Archive& ar, const unsigned int version)
+        {
+            ar & FL_SERIALIZE_DERIVED(EngineObject)
+                & FL_SERIALIZE_DERIVED(OnUIDrawable)
+                & FL_SERIALIZE_NAMED("Tag", m_Tag);
+        }
+        //=========================================================
+
         std::string m_Tag;
     };
 }
+
+FL_REGISTER_CLASS_VERSION(FarLight::TagComponent, 0);

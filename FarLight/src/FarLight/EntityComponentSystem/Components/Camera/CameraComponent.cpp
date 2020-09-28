@@ -15,6 +15,22 @@ namespace FarLight
 {
     void CameraComponent::OnUserInterfaceDraw() noexcept
     {
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0, GetTitleWidth());
+
+        {
+            std::string text = "Unique ID";
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetColumnWidth() - ImGui::CalcTextSize(text.c_str()).x - ImGui::GetScrollX() - 2 * ImGui::GetStyle().ItemSpacing.x);
+            ImGui::Text("%s", text.c_str());
+            ImGui::NextColumn();
+
+            ImGui::PushItemWidth(-1);
+            ImGui::Text(GetId<std::string>().c_str());
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+        }
+        ImGui::Columns(1, nullptr, false);
+
         ImGui::Columns(2, "Is Fixed Aspect Ratio", false);
         ImGui::SetColumnWidth(0, ImGui::CalcTextSize("Is Fixed Aspect Ratio").x + 2 * ImGui::GetStyle().ItemSpacing.x);
         {

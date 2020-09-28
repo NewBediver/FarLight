@@ -5,7 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "FarLight/ConfigurationSystem/ConfigurationManager.h"
-#include "FarLight/ResourceSystem/Resources/ShaderResource.h"
+
+#include "FarLight/SerializationSystem/Serialization.h"
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -27,6 +28,10 @@ namespace FarLight
         auto tmp = m_Scene->CreateEntity("Square");
         tmp.GetComponent<TransformComponent>().SetSize(glm::vec3(400.0f, 400.0f, 0.0f));
         tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+
+        Serializer::Serialize(tmp.GetComponent<TagComponent>(), "TestTagComponent.srl");
+        Serializer::Serialize(tmp.GetComponent<TransformComponent>(), "TestTransformComponent.srl");
+        Serializer::Serialize(tmp.GetComponent<RenderComponent>(), "TestRenderComponent.srl");
 
         //FL_TRACE("Root directory: {0}", FarLight::FileSystem::GetInstance().GetRootDirectory());
         //FL_TRACE("Assets directory: {0}", FarLight::FileSystem::GetInstance().GetAssetsDirectory());
