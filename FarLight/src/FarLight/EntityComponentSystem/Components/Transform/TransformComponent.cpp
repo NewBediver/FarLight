@@ -12,16 +12,6 @@
 
 namespace FarLight
 {
-    TransformComponent::TransformComponent(const glm::vec3& position, const glm::vec3& size, const glm::vec3& rotation) noexcept
-        : m_Position(position)
-        , m_Size(size)
-        , m_Rotation(rotation)
-        , m_IsDataChanged(true)
-        , m_Transform(glm::mat4(0.0f))
-    {
-        FL_CORE_ASSERT(size.x >= 0.0f && size.y >= 0.0f && size.z >= 0.0f, "Size cannot be less than zero!");
-    }
-
     const glm::mat4& TransformComponent::GetTransformationMatrix() noexcept
     {
         if (m_IsDataChanged)

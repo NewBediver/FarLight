@@ -1,5 +1,10 @@
 #pragma once
 
+#include "FarLight/Abstraction/Singleton/Singleton.h"
+
+#include "FarLight/VirtualFileSystem/FileSystem.h"
+
+
 // serialization input/output streams
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
@@ -48,16 +53,18 @@
 namespace FarLight
 {
     class Serializer
+        : public Singleton<Serializer>
     {
     public:
         template<typename T>
-        static bool Serialize(T& obj, const std::string& filePath) noexcept
+        bool Serialize(T& obj, const std::string& fileName) noexcept
         {
             FL_PROFILE_FUNCTION();
 
             bool result = true;
             try
             {
+                std::string filePath = FileSystem::GetInstance().GetFile(fileName);
                 std::ofstream fs(filePath);
                 FL_SERIALIZE_DATA(fs, obj);
             }
@@ -70,13 +77,14 @@ namespace FarLight
         }
 
         template<typename T>
-        static T Deserialize(const std::string& filePath) noexcept
+        T Deserialize(const std::string& fileName) noexcept
         {
             FL_PROFILE_FUNCTION();
 
             T data;
             try
             {
+                std::string filePath = FileSystem::GetInstance().GetFile(fileName);
                 std::ifstream fs(filePath);
                 FL_DESERIALIZE_DATA(fs, data);
             }

@@ -35,7 +35,7 @@ namespace FarLight
         }
 
         template<typename T>
-        T& GetComponent() const noexcept
+        T& GetComponent() noexcept
         {
             FL_CORE_ASSERT(HasAllComponents<T>(), "Current component does not exist!");
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "FarLight/Abstraction/EngineObject/EngineObject.h"
+
+#include "FarLight/EntityComponentSystem/Interfaces/Component.h"
 #include "FarLight/EntityComponentSystem/Interfaces/OnUIDrawable.h"
 
 #include <glm/glm.hpp>
@@ -9,12 +11,22 @@ namespace FarLight
 {
     class TransformComponent final
         : public EngineObject
+        , public Component
         , public OnUIDrawable
     {
         FL_REGISTER_SERIALIZABLE;
 
     public:
-        explicit TransformComponent(const glm::vec3& position = glm::vec3(0.0f), const glm::vec3& size = glm::vec3(1.0f), const glm::vec3& rotation = glm::vec3(0.0f)) noexcept;
+        explicit TransformComponent(const glm::vec3& position = glm::vec3(0.0f), const glm::vec3& size = glm::vec3(0.0f), const glm::vec3& rotation = glm::vec3(0.0f)) noexcept
+            : Component(ComponentType::Transform)
+            , m_Position(position)
+            , m_Size(size)
+            , m_Rotation(rotation)
+            , m_IsDataChanged(true)
+            , m_Transform(glm::mat4(0.0f))
+        {
+            FL_CORE_ASSERT(size.x >= 0.0f && size.y >= 0.0f && size.z >= 0.0f, "Size cannot be less than zero!");
+        }
 
         const glm::mat4& GetTransformationMatrix() noexcept;
 
@@ -35,6 +47,7 @@ namespace FarLight
         void save(Archive& ar, const unsigned int version) const
         {
             ar & FL_SERIALIZE_DERIVED(EngineObject)
+               & FL_SERIALIZE_DERIVED(Component)
                & FL_SERIALIZE_DERIVED(OnUIDrawable)
                & FL_SERIALIZE_NAMED("PositionX", m_Position.x)
                & FL_SERIALIZE_NAMED("PositionY", m_Position.y)
@@ -51,6 +64,7 @@ namespace FarLight
         void load(Archive& ar, const unsigned int version)
         {
             ar & FL_SERIALIZE_DERIVED(EngineObject)
+               & FL_SERIALIZE_DERIVED(Component)
                & FL_SERIALIZE_DERIVED(OnUIDrawable)
                & FL_SERIALIZE_NAMED("PositionX", m_Position.x)
                & FL_SERIALIZE_NAMED("PositionY", m_Position.y)

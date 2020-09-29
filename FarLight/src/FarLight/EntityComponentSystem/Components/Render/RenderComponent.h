@@ -1,6 +1,8 @@
 #pragma once
 
 #include "FarLight/Abstraction/EngineObject/EngineObject.h"
+
+#include "FarLight/EntityComponentSystem/Interfaces/Component.h"
 #include "FarLight/EntityComponentSystem/Interfaces/OnUIDrawable.h"
 
 #include <glm/glm.hpp>
@@ -11,13 +13,15 @@ namespace FarLight
 {
     class RenderComponent final
         : public EngineObject
+        , public Component
         , public OnUIDrawable
     {
         FL_REGISTER_SERIALIZABLE;
 
     public:
         explicit RenderComponent(const glm::vec4& color = glm::vec4(1.0f)) noexcept
-            : m_Color(color)
+            : Component(ComponentType::Render)
+            , m_Color(color)
         { }
 
         void SetColor(const glm::vec4& color) noexcept { m_Color = color; }
@@ -31,6 +35,7 @@ namespace FarLight
         void save(Archive& ar, const unsigned int version) const
         {
             ar & FL_SERIALIZE_DERIVED(EngineObject)
+               & FL_SERIALIZE_DERIVED(Component)
                & FL_SERIALIZE_DERIVED(OnUIDrawable)
                & FL_SERIALIZE_NAMED("R", m_Color.r)
                & FL_SERIALIZE_NAMED("G", m_Color.g)
@@ -42,6 +47,7 @@ namespace FarLight
         void load(Archive& ar, const unsigned int version)
         {
             ar & FL_SERIALIZE_DERIVED(EngineObject)
+               & FL_SERIALIZE_DERIVED(Component)
                & FL_SERIALIZE_DERIVED(OnUIDrawable)
                & FL_SERIALIZE_NAMED("R", m_Color.r)
                & FL_SERIALIZE_NAMED("G", m_Color.g)

@@ -27,7 +27,7 @@ namespace FarLight
         if (!FileSystem::GetInstance().IsFileExists(m_FileName))
             FileSystem::GetInstance().SetFile(m_FileName, FileSystem::GetInstance().GetDirectory("Settings") + '\\' + m_FileName + ".cfg");
 
-        boost::property_tree::write_xml(FileSystem::GetInstance().GetFile(m_FileName), m_PropertyTree);
+        boost::property_tree::write_xml(FileSystem::GetInstance().GetFile(m_FileName), m_PropertyTree, std::locale(), boost::property_tree::xml_writer_make_settings<std::string>(' ', 4));
     }
 
     void Configuration::Load() noexcept
@@ -35,6 +35,6 @@ namespace FarLight
         if (!FileSystem::GetInstance().IsFileExists(m_FileName))
             FileSystem::GetInstance().SetFile(m_FileName, FileSystem::GetInstance().GetDirectory("Settings") + '\\' + m_FileName + ".cfg");
 
-        boost::property_tree::read_xml(FileSystem::GetInstance().GetFile(m_FileName), m_PropertyTree);
+        boost::property_tree::read_xml(FileSystem::GetInstance().GetFile(m_FileName), m_PropertyTree, boost::property_tree::xml_parser::trim_whitespace);
     }
 }

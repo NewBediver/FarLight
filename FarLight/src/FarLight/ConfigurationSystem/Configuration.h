@@ -15,6 +15,8 @@ namespace FarLight
         void Save() noexcept;
         void Load() noexcept;
 
+        const std::string& GetFileName() const noexcept { return m_FileName; }
+
         template<typename T>
         bool IsExists(const std::string& key) const noexcept
         {

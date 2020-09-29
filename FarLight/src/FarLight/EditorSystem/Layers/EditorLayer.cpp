@@ -8,6 +8,8 @@
 
 #include "FarLight/SerializationSystem/Serialization.h"
 
+#include "FarLight/ConfigurationSystem/LocalConfigurations/Serializers/Component/ComponentSerializerConfiguration.h"
+
 #include <imgui.h>
 #include <imgui_internal.h>
 
@@ -28,14 +30,6 @@ namespace FarLight
         auto tmp = m_Scene->CreateEntity("Square");
         tmp.GetComponent<TransformComponent>().SetSize(glm::vec3(400.0f, 400.0f, 0.0f));
         tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
-
-        Serializer::Serialize(tmp.GetComponent<TagComponent>(), "TestTagComponent.srl");
-        Serializer::Serialize(tmp.GetComponent<TransformComponent>(), "TestTransformComponent.srl");
-        Serializer::Serialize(tmp.GetComponent<RenderComponent>(), "TestRenderComponent.srl");
-
-        //FL_TRACE("Root directory: {0}", FarLight::FileSystem::GetInstance().GetRootDirectory());
-        //FL_TRACE("Assets directory: {0}", FarLight::FileSystem::GetInstance().GetAssetsDirectory());
-        //FL_TRACE("Shaders directory: {0}", FarLight::FileSystem::GetInstance().GetShadersDirectory());
 
         /*auto camera = m_Scene->CreateEntity("Camera");
         camera.AddComponent<CameraComponent>(spec.Width, spec.Height, true);
