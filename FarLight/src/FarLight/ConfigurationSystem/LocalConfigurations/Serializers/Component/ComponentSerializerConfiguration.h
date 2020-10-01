@@ -1,8 +1,6 @@
 #pragma once
 
 #include <sstream>
-#include <ostream>
-#include <boost/archive/xml_oarchive.hpp>
 
 #include "FarLight/ConfigurationSystem/Configuration.h"
 
@@ -45,8 +43,7 @@ namespace FarLight
                     std::stringstream result;
                     boost::property_tree::xml_writer_settings<std::string> settings(' ', 4);
                     boost::property_tree::xml_parser::write_xml_element(result, boost::property_tree::ptree::key_type(), tmp, -1, settings);
-                    //boost::property_tree::xml_parser::write_xml(result, tmp, boost::property_tree::xml_writer_make_settings<std::string>(' ', 4));
-                    FL_CORE_TRACE("Deserialized component: {0}", result.str());
+                    //FL_CORE_TRACE("Deserialized component: {0}", result.str());
                     boost::archive::xml_iarchive ia(result, boost::archive::archive_flags::no_header);
                     ia >> FL_SERIALIZE_NAMED("Component", comp);
                     break;
@@ -63,12 +60,12 @@ namespace FarLight
             std::stringstream result;
             boost::archive::xml_oarchive oa(result, boost::archive::archive_flags::no_header);
             oa << FL_SERIALIZE_NAMED("Component", component);
-            FL_CORE_TRACE("Serialized component: {0}", result.str());
+            //FL_CORE_TRACE("Serialized component: {0}", result.str());
 
             if (IsComponentExists(component.GetId<boost::uuids::uuid>()))
             {
                 auto root = m_PropertyTree.get_child("Components");
-                for (auto node : find_children(root, component.GetId<std::string>()))
+                for (auto node : FindChildren(root, component.GetId<std::string>()))
                 {
                     if (node->second.get<std::string>("EngineObject.Id") == component.GetId<std::string>())
                     {
@@ -87,7 +84,8 @@ namespace FarLight
 
     private:
         template <typename Tree>
-        auto find_children(Tree& pt, std::string const& key) {
+        auto FindChildren(Tree& pt, std::string const& key)
+        {
             std::vector<typename Tree::iterator> matches;
             for (auto it = pt.begin(); it != pt.end(); ++it)
                 if (it->first == key) matches.push_back(it);

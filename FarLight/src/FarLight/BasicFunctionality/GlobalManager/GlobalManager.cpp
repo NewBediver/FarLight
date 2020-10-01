@@ -5,7 +5,6 @@
 #include "FarLight/LogSystem/Logger.h"
 #include "FarLight/VirtualFileSystem/FileSystem.h"
 #include "FarLight/ConfigurationSystem/ConfigurationManager.h"
-#include "FarLight/SerializationSystem/Serialization.h"
 #include "FarLight/ResourceSystem/ResourceManager.h"
 #include "FarLight/InputSystem/InputManager.h"
 #include "FarLight/BasicFunctionality/Application.h"
@@ -31,10 +30,6 @@ namespace FarLight
         // Configuration Manager
         FarLight::ConfigurationManager::Create();
         FL_CORE_INFO("[Configuration Manager] is initialized.");
-
-        // Serializer
-        FarLight::Serializer::Create();
-        FL_CORE_INFO("[Serializer] is initialized.");
 
         /////////////
         // Application
@@ -94,10 +89,6 @@ namespace FarLight
         FarLight::Application::Destroy();
         FL_CORE_INFO("[Application] is destoyed.");
         ///////////////
-
-        // Serializer
-        FarLight::Serializer::Destroy();
-        FL_CORE_INFO("[Serializer] is destroyed.");
 
         // Configuration Manager
         FarLight::ConfigurationManager::Destroy();

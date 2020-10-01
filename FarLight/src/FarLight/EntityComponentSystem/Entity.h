@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FarLight/Abstraction/EngineObject/EngineObject.h"
+
 #include "FarLight/EntityComponentSystem/Scene.h"
 
 #include "FarLight/Core/Core.h"
@@ -9,8 +11,10 @@
 namespace FarLight
 {
     class Entity final
+        : public EngineObject
     {
         friend class Scene;
+        friend class EntitySerializerConfiguration;
 
     public:
         explicit Entity(Scene* scene, entt::entity ent) noexcept

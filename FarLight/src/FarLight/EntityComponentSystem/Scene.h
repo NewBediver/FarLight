@@ -2,6 +2,8 @@
 
 #include "FarLight/Core/Core.h"
 
+#include "FarLight/Abstraction/EngineObject/EngineObject.h"
+
 #include "FarLight/BasicFunctionality/Timer/Timestep.h"
 #include "FarLight/BasicFunctionality/Camera/OrthographicCameraController.h"
 
@@ -12,7 +14,11 @@ namespace FarLight
     class Entity;
 
     class Scene final
+        : public EngineObject
     {
+        friend class Entity;
+        friend class SceneSerializerConfiguration;
+
     public:
         static Ref<Scene> Create() noexcept;
 
@@ -53,7 +59,5 @@ namespace FarLight
 
         bool m_IsRenderViewportHovered;
         bool m_IsRenderViewportFocused;
-
-        friend class Entity;
     };
 }

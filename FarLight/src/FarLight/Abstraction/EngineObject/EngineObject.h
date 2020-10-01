@@ -15,6 +15,7 @@ namespace FarLight
     class EngineObject
     {
         FL_REGISTER_SERIALIZABLE;
+        friend class SceneSerializerConfiguration;
 
     public:
         virtual ~EngineObject() noexcept = default;
