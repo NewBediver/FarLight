@@ -6,8 +6,6 @@
 
 #include "FarLight/ConfigurationSystem/ConfigurationManager.h"
 
-#include "FarLight/SerializationSystem/Serialization.h"
-
 #include "FarLight/ConfigurationSystem/LocalConfigurations/Serializers/Component/ComponentSerializerConfiguration.h"
 
 #include <imgui.h>
@@ -21,6 +19,16 @@ namespace FarLight
         : Layer("Editor Layer")
     { }
 
+    EditorLayer::~EditorLayer() noexcept
+    {
+        auto tmp = m_Scene->GetEntities<TagComponent>();
+        auto conf = FarLight::ConfigurationManager::GetInstance().GetComponentSerializerConfiguration();
+        conf->SetComponent<TagComponent>(CreateRef<TagComponent>(tmp[0].GetComponent<TagComponent>()));
+        conf->SetComponent<TransformComponent>(CreateRef<TransformComponent>(tmp[0].GetComponent<TransformComponent>()));
+        conf->SetComponent<RenderComponent>(CreateRef<RenderComponent>(tmp[0].GetComponent<RenderComponent>()));
+        conf->Save();
+    }
+
     void EditorLayer::OnAttach() noexcept
     {
         FramebufferSpecification spec = { 1280, 720 };
@@ -30,6 +38,17 @@ namespace FarLight
         auto tmp = m_Scene->CreateEntity("Square");
         tmp.GetComponent<TransformComponent>().SetSize(glm::vec3(400.0f, 400.0f, 0.0f));
         tmp.AddComponent<RenderComponent>(glm::vec4(0.2f, 0.8, 0.6f, 1.0f));
+
+        auto conf = FarLight::ConfigurationManager::GetInstance().GetComponentSerializerConfiguration();
+        tmp.RemoveComponent<TagComponent>();
+        auto tagTest = conf->GetComponent<TagComponent>(boost::lexical_cast<boost::uuids::uuid>("4c94d179-b3eb-4e52-b756-c289ea4fceab"));
+        tmp.AddComponent<TagComponent>(tagTest->GetId<boost::uuids::uuid>(), tagTest->GetTag());
+        tmp.RemoveComponent<TransformComponent>();
+        auto transformTest = conf->GetComponent<TransformComponent>(boost::lexical_cast<boost::uuids::uuid>("b420e847-8cd3-4bf9-9fc8-c132e28ca78b"));
+        tmp.AddComponent<TransformComponent>(transformTest->GetId<boost::uuids::uuid>(), transformTest->GetPosition(), transformTest->GetSize(), transformTest->GetRotation());
+        tmp.RemoveComponent<RenderComponent>();
+        auto renderTest = conf->GetComponent<RenderComponent>(boost::lexical_cast<boost::uuids::uuid>("0b8e63be-cabb-4e13-bcf8-003e6563499e"));
+        tmp.AddComponent<RenderComponent>(renderTest->GetId<boost::uuids::uuid>(), renderTest->GetColor());
 
         /*auto camera = m_Scene->CreateEntity("Camera");
         camera.AddComponent<CameraComponent>(spec.Width, spec.Height, true);

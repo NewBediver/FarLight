@@ -14,6 +14,7 @@ namespace FarLight
     {
     public:
         explicit EditorLayer() noexcept;
+        ~EditorLayer() noexcept;
 
         virtual void OnAttach() noexcept override;
         virtual void OnDetach() noexcept override;

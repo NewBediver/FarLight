@@ -8,15 +8,11 @@
 
 #include "FarLight/RenderSystem/Shader/Shader.h"
 
-#include "FarLight/SerializationSystem/Serialization.h"
-
 namespace FarLight
 {
     class ShaderResource
         : public Resource
     {
-        FL_REGISTER_SERIALIZABLE;
-
     public:
         explicit ShaderResource(const std::string& name, const std::string& vertexShader, const std::string& fragmentShader) noexcept
             : Resource(ResourceType::Shader)
@@ -43,22 +39,6 @@ namespace FarLight
         const Ref<Shader>& GetShader() const noexcept { return m_Shader; }
 
     private:
-        template<class Archive>
-        void save(Archive& ar, const unsigned int version) const
-        {
-            ar & FL_SERIALIZE_DERIVED(Resource)
-               & FL_SERIALIZE_NAMED("VertexShader", m_VertexShaderPath)
-               & FL_SERIALIZE_NAMED("FragmentShader", m_FragmentShaderPath);
-        }
-
-        template<class Archive>
-        void load(Archive& ar, const unsigned int version)
-        {
-            ar & FL_SERIALIZE_DERIVED(Resource)
-               & FL_SERIALIZE_NAMED("VertexShader", m_VertexShaderPath)
-               & FL_SERIALIZE_NAMED("FragmentShader", m_FragmentShaderPath);
-        }
-
         std::string m_Name;
 
         std::string m_VertexShaderPath;
@@ -67,5 +47,3 @@ namespace FarLight
         Ref<Shader> m_Shader;
     };
 }
-
-FL_REGISTER_CLASS_VERSION(FarLight::ShaderResource, 0);
