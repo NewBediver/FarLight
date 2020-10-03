@@ -14,9 +14,14 @@ namespace FarLight
         : public EngineObject
     {
         friend class Scene;
-        friend class EntitySerializerConfiguration;
 
     public:
+        explicit Entity(boost::uuids::uuid id, Scene* scene, entt::entity ent) noexcept
+            : EngineObject(std::move(id))
+            , m_ScenePtr(scene)
+            , m_Handle(ent)
+        { }
+
         explicit Entity(Scene* scene, entt::entity ent) noexcept
             : m_ScenePtr(scene)
             , m_Handle(ent)
@@ -61,6 +66,11 @@ namespace FarLight
         bool IsExists() const noexcept
         {
             return m_ScenePtr != nullptr && m_Handle != entt::null;
+        }
+
+        Scene* GetScenePtr() noexcept
+        {
+            return m_ScenePtr;
         }
 
     private:

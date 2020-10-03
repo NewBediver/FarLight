@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "FarLight/Core/Core.h"
 
 #include "FarLight/Abstraction/EngineObject/EngineObject.h"
@@ -8,6 +10,7 @@
 #include "FarLight/BasicFunctionality/Camera/OrthographicCameraController.h"
 
 #include <entt/entt.hpp>
+#include <boost/functional/hash/hash.hpp>
 
 namespace FarLight
 {
@@ -54,6 +57,7 @@ namespace FarLight
 
     private:
         entt::registry m_Registry;
+        std::unordered_map<boost::uuids::uuid, entt::entity, boost::hash<boost::uuids::uuid>> m_IdToEntity;
 
         OrthographicCameraController m_EditorCameraController;
 

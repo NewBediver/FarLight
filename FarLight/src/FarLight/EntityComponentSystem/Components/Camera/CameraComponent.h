@@ -16,6 +16,7 @@ namespace FarLight
         , public OnUIDrawable
     {
         friend class ComponentSerializerConfiguration;
+        friend class EntitySerializerConfiguration;
 
     public:
         explicit CameraComponent(boost::uuids::uuid id, unsigned width = 1280, unsigned height = 720, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept
