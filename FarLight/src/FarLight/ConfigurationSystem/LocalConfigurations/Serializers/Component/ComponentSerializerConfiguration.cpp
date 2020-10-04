@@ -6,7 +6,7 @@ namespace FarLight
 {
     bool ComponentSerializerConfiguration::IsComponentExists(const boost::uuids::uuid& id) const noexcept
     {
-        for (auto& node = m_PropertyTree.get_child(m_RootName).begin(); node != m_PropertyTree.get_child(m_RootName).end(); ++node)
+        for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
             if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
                 return true;
@@ -22,7 +22,7 @@ namespace FarLight
             return;
         }
 
-        for (auto& node = m_PropertyTree.get_child(m_RootName).begin(); node != m_PropertyTree.get_child(m_RootName).end(); ++node)
+        for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
             if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
             {
@@ -45,7 +45,7 @@ namespace FarLight
     Ref<TagComponent> ComponentSerializerConfiguration::CreateTagComponent(const boost::uuids::uuid& id) const noexcept
     {
         Ref<TagComponent> tag = CreateRef<TagComponent>(id);
-        for (auto& node = m_PropertyTree.get_child(m_RootName).begin(); node != m_PropertyTree.get_child(m_RootName).end(); ++node)
+        for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
             if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
             {
@@ -83,7 +83,7 @@ namespace FarLight
     Ref<TransformComponent> ComponentSerializerConfiguration::CreateTransformComponent(const boost::uuids::uuid& id) const noexcept
     {
         Ref<TransformComponent> transform = CreateRef<TransformComponent>(id);
-        for (auto& node = m_PropertyTree.get_child(m_RootName).begin(); node != m_PropertyTree.get_child(m_RootName).end(); ++node)
+        for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
             if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
             {
@@ -113,7 +113,7 @@ namespace FarLight
     Ref<RenderComponent> ComponentSerializerConfiguration::CreateRenderComponent(const boost::uuids::uuid& id) const noexcept
     {
         Ref<RenderComponent> render = CreateRef<RenderComponent>(id);
-        for (auto& node = m_PropertyTree.get_child(m_RootName).begin(); node != m_PropertyTree.get_child(m_RootName).end(); ++node)
+        for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
             if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
             {
@@ -171,7 +171,7 @@ namespace FarLight
     Ref<CameraComponent> ComponentSerializerConfiguration::CreateCameraComponent(const boost::uuids::uuid& id) const noexcept
     {
         Ref<CameraComponent> camera = CreateRef<CameraComponent>(id);
-        for (auto& node = m_PropertyTree.get_child(m_RootName).begin(); node != m_PropertyTree.get_child(m_RootName).end(); ++node)
+        for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
             if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
             {

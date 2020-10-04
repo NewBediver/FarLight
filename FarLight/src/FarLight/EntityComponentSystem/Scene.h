@@ -23,7 +23,12 @@ namespace FarLight
         friend class SceneSerializerConfiguration;
 
     public:
-        static Ref<Scene> Create() noexcept;
+        explicit Scene(boost::uuids::uuid id) noexcept
+            : EngineObject(std::move(id))
+            , m_EditorCameraController(1280, 720)
+            , m_IsRenderViewportHovered(true)
+            , m_IsRenderViewportFocused(true)
+        { }
 
         explicit Scene() noexcept
             : m_EditorCameraController(1280, 720)
@@ -31,23 +36,31 @@ namespace FarLight
             , m_IsRenderViewportFocused(true)
         { }
 
-        void OnUpdate(const Timestep& ts) noexcept;
-        void OnViewportResize(unsigned width, unsigned height) noexcept;
-        void OnEvent(Event& e) noexcept;
+        Ref<Entity> CreateEntity() noexcept;
+        Ref<Entity> CreateEntity(const boost::uuids::uuid& id) noexcept;
+        Ref<Entity> GetEntity(const boost::uuids::uuid& id) noexcept;
+        void AddEntity(Ref<Entity> entity) noexcept;
+        bool HasEntity(const boost::uuids::uuid& id) const noexcept;
+        void EraseEntity(const boost::uuids::uuid& id) noexcept;
 
-        Entity CreateEntity(const std::string& name = std::string()) noexcept;
-        void DestroyEntity(const Entity& entity) noexcept;
+        const std::unordered_map<boost::uuids::uuid, entt::entity, boost::hash<boost::uuids::uuid>>& GetEntityMap() noexcept;
 
         void CreateSquare() noexcept;
         void CreateCamera() noexcept;
+
+
+        void OnUpdate(const Timestep& ts) noexcept;
+        void OnViewportResize(unsigned width, unsigned height) noexcept;
+        void OnEvent(Event& e) noexcept;
 
         template<typename... Components>
         std::vector<Entity> GetEntities() noexcept
         {
             std::vector<Entity> res;
-            auto view = m_Registry.view<Components...>();
-            for (auto entity : view) {
-                res.emplace_back(this, entity);
+            for (const auto& elm : m_IdToEntity)
+            {
+                Entity entity(elm.first, this, elm.second);
+                if (entity.HasAllComponents<Components...>()) res.push_back(entity);
             }
             return res;
         }

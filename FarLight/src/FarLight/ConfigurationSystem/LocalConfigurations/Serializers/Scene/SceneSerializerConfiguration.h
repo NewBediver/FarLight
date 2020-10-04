@@ -14,18 +14,15 @@ namespace FarLight
     public:
         explicit SceneSerializerConfiguration() noexcept
             : Configuration("Scenes")
-            , m_RootName("Scenes")
             , m_SceneNodeName("Scene")
         { }
 
         bool IsSceneExists(const boost::uuids::uuid& id) const noexcept;
-
         Ref<Scene> GetScene(const boost::uuids::uuid& id) const noexcept;
         void SetScene(Ref<Scene> scene) noexcept;
         void EraseScene(const boost::uuids::uuid& id) noexcept;
 
     private:
-        std::string m_RootName;
         std::string m_SceneNodeName;
     };
 }

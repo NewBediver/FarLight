@@ -20,10 +20,97 @@
 
 namespace FarLight
 {
-    Ref<Scene> Scene::Create() noexcept
+    Ref<Entity> Scene::CreateEntity() noexcept
     {
-        return CreateRef<Scene>();
+        Ref<Entity> entity = CreateRef<Entity>(this, m_Registry.create());
+        while (HasEntity(entity->GetId<boost::uuids::uuid>())) entity = CreateRef<Entity>(this, m_Registry.create());
+
+        m_IdToEntity.emplace(entity->GetId<boost::uuids::uuid>(), entity->m_Handle);
+
+        entity->AddComponent<TagComponent>();
+        entity->AddComponent<TransformComponent>();
+        
+        return entity;
     }
+
+    Ref<Entity> Scene::CreateEntity(const boost::uuids::uuid& id) noexcept
+    {
+        Ref<Entity> entity = CreateRef<Entity>(id, this, m_Registry.create());
+        if (HasEntity(id))
+        {
+            FL_CORE_WARN("Scene already contains entity with id = \"{0}\"!", entity->GetId<std::string>());
+            m_IdToEntity.find(id)->second = entity->m_Handle;
+        }
+        else
+        {
+            m_IdToEntity.emplace(id, entity->m_Handle);
+        }
+
+        entity->AddComponent<TagComponent>();
+        entity->AddComponent<TransformComponent>();
+
+        return entity;
+    }
+
+    void Scene::AddEntity(Ref<Entity> entity) noexcept
+    {
+        if (HasEntity(entity->GetId<boost::uuids::uuid>()))
+        {
+            FL_CORE_WARN("Scene already contains entity with id = \"{0}\"!", entity->GetId<std::string>());
+            m_IdToEntity.find(entity->GetId<boost::uuids::uuid>())->second = entity->m_Handle;
+        }
+        else
+        {
+            m_IdToEntity.emplace(entity->GetId<boost::uuids::uuid>(), entity->m_Handle);
+        }
+    }
+
+    Ref<Entity> Scene::GetEntity(const boost::uuids::uuid& id) noexcept
+    {
+        if (m_IdToEntity.find(id) != m_IdToEntity.end())
+        {
+            Ref<Entity> entity = CreateRef<Entity>(id, this, m_IdToEntity[id]);
+            return entity;
+        }
+
+        FL_CORE_WARN("Scene doesn't contain entity with id = \"{0}\"!", boost::lexical_cast<std::string>(id));
+        return nullptr;
+    }
+
+    bool Scene::HasEntity(const boost::uuids::uuid& id) const noexcept
+    {
+        return m_IdToEntity.find(id) != m_IdToEntity.end();
+    }
+
+    void Scene::EraseEntity(const boost::uuids::uuid& id) noexcept
+    {
+        if (HasEntity(id))
+        {
+            m_Registry.destroy(m_IdToEntity[id]);
+            m_IdToEntity.erase(id);
+        }
+    }
+
+    const std::unordered_map<boost::uuids::uuid, entt::entity, boost::hash<boost::uuids::uuid>>& Scene::GetEntityMap() noexcept
+    {
+        return m_IdToEntity;
+    }
+
+    void Scene::CreateSquare() noexcept
+    {
+        auto tmp = CreateEntity();
+        tmp->GetComponent<TagComponent>().SetTag("Square");
+        tmp->AddComponent<RenderComponent>();
+    }
+
+    void Scene::CreateCamera() noexcept
+    {
+        auto tmp = CreateEntity();
+        tmp->GetComponent<TagComponent>().SetTag("Camera");
+        tmp->AddComponent<CameraComponent>(1280, 720, false);
+    }
+
+
 
     void Scene::OnUpdate(const Timestep& ts) noexcept
     {
@@ -79,7 +166,6 @@ namespace FarLight
 
             Renderer2D::EndScene();
         }
-        
     }
 
     void Scene::OnViewportResize(unsigned width, unsigned height) noexcept
@@ -100,34 +186,5 @@ namespace FarLight
     {
         if (m_IsRenderViewportFocused && m_IsRenderViewportHovered)
             m_EditorCameraController.OnEvent(e);
-    }
-
-    Entity Scene::CreateEntity(const std::string& name) noexcept
-    {
-        Entity entity(this, m_Registry.create());
-
-        entity.AddComponent<TransformComponent>();
-
-        if (name.empty()) entity.AddComponent<TagComponent>();
-        else entity.AddComponent<TagComponent>(name);
-
-        return entity;
-    }
-
-    void Scene::DestroyEntity(const Entity& entity) noexcept
-    {
-        m_Registry.destroy(entity.m_Handle);
-    }
-
-    void Scene::CreateSquare() noexcept
-    {
-        auto tmp = CreateEntity("Square");
-        tmp.AddComponent<RenderComponent>();
-    }
-
-    void Scene::CreateCamera() noexcept
-    {
-        auto tmp = CreateEntity("Camera");
-        tmp.AddComponent<CameraComponent>(1280, 720, false);
     }
 }

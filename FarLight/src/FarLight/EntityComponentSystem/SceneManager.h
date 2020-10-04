@@ -5,7 +5,6 @@
 #include "FarLight/Core/Core.h"
 
 #include "FarLight/Abstraction/Singleton/Singleton.h"
-#include "FarLight/Abstraction/CRUD/CRUD.h"
 
 #include "FarLight/ConfigurationSystem/ConfigurationManager.h"
 
@@ -17,13 +16,14 @@ namespace FarLight
 {
     class SceneManager
         : public Singleton<SceneManager>
-        , public CRUD<Scene>
     {
     public:
-        virtual Ref<Scene> Get(const boost::uuids::uuid& id) const noexcept override;
-        virtual void Set(const Ref<Scene> entity) noexcept override;
-        virtual bool Has(const boost::uuids::uuid& id) const noexcept override;
-        virtual void Erase(const boost::uuids::uuid& id) noexcept override;
+        Ref<Scene> CreateScene() noexcept;
+        Ref<Scene> CreateScene(const boost::uuids::uuid& id) noexcept;
+        Ref<Scene> GetScene(const boost::uuids::uuid& id) noexcept;
+        void AddScene(Ref<Scene> scene) noexcept;
+        bool HasScene(const boost::uuids::uuid& id) const noexcept;
+        void EraseScene(const boost::uuids::uuid& id) noexcept;
 
     private:
         std::unordered_map<boost::uuids::uuid, Ref<Scene>, boost::hash<boost::uuids::uuid>> m_SceneMap;

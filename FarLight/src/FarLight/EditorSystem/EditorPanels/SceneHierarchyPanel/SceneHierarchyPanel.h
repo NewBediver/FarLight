@@ -12,7 +12,7 @@ namespace FarLight
         : public Panel
     {
     public:
-        explicit SceneHierarchyPanel(const Ref<Scene>& scene, std::string&& title = "Scene hierarchy") noexcept
+        explicit SceneHierarchyPanel(Ref<Scene> scene, std::string&& title = "Scene hierarchy") noexcept
             : Panel(std::move(title))
             , m_Scene(scene)
             , m_ComponentsPanel(nullptr)

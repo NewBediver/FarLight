@@ -17,7 +17,6 @@ namespace FarLight
     public:
         explicit ComponentSerializerConfiguration() noexcept
             : Configuration("Components")
-            , m_RootName("Components")
             , m_ComponentNodeName("Component")
         { }
 
@@ -84,31 +83,31 @@ namespace FarLight
         { }
 
         template<>
-        void SetComponent(Ref<TagComponent> component) noexcept
+        void SetComponent<TagComponent>(Ref<TagComponent> component) noexcept
         {
             EraseComponent(component->GetId<boost::uuids::uuid>());
-            m_PropertyTree.add_child(m_RootName + "." + m_ComponentNodeName, CreateTagComponentTree(component).get_child(m_ComponentNodeName));
+            m_PropertyTree.add_child(m_ComponentNodeName, CreateTagComponentTree(component).get_child(m_ComponentNodeName));
         }
 
         template<>
-        void SetComponent(Ref<TransformComponent> component) noexcept
+        void SetComponent<TransformComponent>(Ref<TransformComponent> component) noexcept
         {
             EraseComponent(component->GetId<boost::uuids::uuid>());
-            m_PropertyTree.add_child(m_RootName + "." + m_ComponentNodeName, CreateTransformComponentTree(component).get_child(m_ComponentNodeName));
+            m_PropertyTree.add_child(m_ComponentNodeName, CreateTransformComponentTree(component).get_child(m_ComponentNodeName));
         }
 
         template<>
-        void SetComponent(Ref<RenderComponent> component) noexcept
+        void SetComponent<RenderComponent>(Ref<RenderComponent> component) noexcept
         {
             EraseComponent(component->GetId<boost::uuids::uuid>());
-            m_PropertyTree.add_child(m_RootName + "." + m_ComponentNodeName, CreateRenderComponentTree(component).get_child(m_ComponentNodeName));
+            m_PropertyTree.add_child(m_ComponentNodeName, CreateRenderComponentTree(component).get_child(m_ComponentNodeName));
         }
 
         template<>
-        void SetComponent(Ref<CameraComponent> component) noexcept
+        void SetComponent<CameraComponent>(Ref<CameraComponent> component) noexcept
         {
             EraseComponent(component->GetId<boost::uuids::uuid>());
-            m_PropertyTree.add_child(m_RootName + "." + m_ComponentNodeName, CreateCameraComponentTree(component).get_child(m_ComponentNodeName));
+            m_PropertyTree.add_child(m_ComponentNodeName, CreateCameraComponentTree(component).get_child(m_ComponentNodeName));
         }
 
     private:
@@ -122,7 +121,6 @@ namespace FarLight
         Ref<RenderComponent> CreateRenderComponent(const boost::uuids::uuid& id) const noexcept;
         Ref<CameraComponent> CreateCameraComponent(const boost::uuids::uuid& id) const noexcept;
 
-        std::string m_RootName;
         std::string m_ComponentNodeName;
     };
 }
