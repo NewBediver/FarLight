@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include "FarLight/ConfigurationSystem/Configuration.h"
 
@@ -18,9 +19,11 @@ namespace FarLight
         { }
 
         bool IsSceneExists(const boost::uuids::uuid& id) const noexcept;
-        Ref<Scene> GetScene(const boost::uuids::uuid& id) const noexcept;
-        void SetScene(Ref<Scene> scene) noexcept;
+        Ref<Scene> LoadScene(const boost::uuids::uuid& id) const noexcept;
+        void SaveScene(Ref<Scene> scene) noexcept;
         void EraseScene(const boost::uuids::uuid& id) noexcept;
+
+        std::vector<Ref<Scene>> LoadAllScenes() const noexcept;
 
     private:
         std::string m_SceneNodeName;

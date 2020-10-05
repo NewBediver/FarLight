@@ -16,11 +16,7 @@ namespace FarLight
 
     void ComponentSerializerConfiguration::EraseComponent(const boost::uuids::uuid& id) noexcept
     {
-        if (!IsComponentExists(id))
-        {
-            FL_CORE_ERROR("Component with id = \"{0}\" doesn't exists!", boost::lexical_cast<std::string>(id));
-            return;
-        }
+        if (!IsComponentExists(id)) return;
 
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
@@ -31,6 +27,7 @@ namespace FarLight
             }
         }
     }
+
 
     boost::property_tree::ptree ComponentSerializerConfiguration::CreateTagComponentTree(Ref<TagComponent> component) const noexcept
     {
@@ -87,9 +84,9 @@ namespace FarLight
         {
             if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
             {
-                transform->SetPosition({ node->second.get<float>("Position.X"), node->second.get<float>("Position.Y"), node->second.get<float>("Position.Z") });
-                transform->SetSize({ node->second.get<float>("Size.X"), node->second.get<float>("Size.Y"), node->second.get<float>("Size.Z") });
-                transform->SetRotation({ node->second.get<float>("Rotation.X"), node->second.get<float>("Rotation.Y"), node->second.get<float>("Rotation.Z") });
+                transform->SetPosition(glm::vec3(node->second.get<float>("Position.X"), node->second.get<float>("Position.Y"), node->second.get<float>("Position.Z")));
+                transform->SetSize(glm::vec3(node->second.get<float>("Size.X"), node->second.get<float>("Size.Y"), node->second.get<float>("Size.Z")));
+                transform->SetRotation(glm::vec3(node->second.get<float>("Rotation.X"), node->second.get<float>("Rotation.Y"), node->second.get<float>("Rotation.Z")));
                 break;
             }
         }
@@ -117,7 +114,7 @@ namespace FarLight
         {
             if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
             {
-                render->SetColor({ node->second.get<float>("Color.R"), node->second.get<float>("Color.G"), node->second.get<float>("Color.B"), node->second.get<float>("Color.A") });
+                render->SetColor(glm::vec4(node->second.get<float>("Color.R"), node->second.get<float>("Color.G"), node->second.get<float>("Color.B"), node->second.get<float>("Color.A")));
                 break;
             }
         }

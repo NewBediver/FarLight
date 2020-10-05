@@ -25,6 +25,8 @@ namespace FarLight
         bool HasScene(const boost::uuids::uuid& id) const noexcept;
         void EraseScene(const boost::uuids::uuid& id) noexcept;
 
+        const std::unordered_map<boost::uuids::uuid, Ref<Scene>, boost::hash<boost::uuids::uuid>>& GetSceneMap() const noexcept { return m_SceneMap; }
+
     private:
         std::unordered_map<boost::uuids::uuid, Ref<Scene>, boost::hash<boost::uuids::uuid>> m_SceneMap;
     };

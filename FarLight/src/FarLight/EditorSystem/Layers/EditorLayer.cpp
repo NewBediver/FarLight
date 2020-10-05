@@ -20,10 +20,7 @@ namespace FarLight
         : Layer("Editor Layer")
     { }
 
-    EditorLayer::~EditorLayer() noexcept
-    {
-        ConfigurationManager::GetInstance().GetSceneSerializerConfiguration()->SetScene(m_Scene);
-    }
+    EditorLayer::~EditorLayer() noexcept { }
 
     void EditorLayer::OnAttach() noexcept
     {
@@ -32,7 +29,7 @@ namespace FarLight
 
         //m_Scene = SceneManager::GetInstance().CreateScene();
 
-        m_Scene = ConfigurationManager::GetInstance().GetSceneSerializerConfiguration()->GetScene(boost::lexical_cast<boost::uuids::uuid>("6cb8347b-8352-40dc-861e-78e817ed349e"));
+        m_Scene = SceneManager::GetInstance().GetScene(boost::lexical_cast<boost::uuids::uuid>("6cb8347b-8352-40dc-861e-78e817ed349e"));
 
         /*auto tmp = m_Scene->CreateEntity();
         tmp->GetComponent<TransformComponent>().SetSize(glm::vec3(400.0f, 400.0f, 0.0f));
@@ -98,10 +95,7 @@ namespace FarLight
         //Ref<ShaderResource> res = ConfigurationManager::GetInstance().GetShaderLibraryConfiguration()->GetShader("Default");
     }
 
-    void EditorLayer::OnDetach() noexcept
-    {
-
-    }
+    void EditorLayer::OnDetach() noexcept { }
 
     void EditorLayer::OnUpdate(const Timestep& timestep) noexcept
     {

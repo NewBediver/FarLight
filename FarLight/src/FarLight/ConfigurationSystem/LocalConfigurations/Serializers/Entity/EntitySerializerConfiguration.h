@@ -19,11 +19,16 @@ namespace FarLight
         { }
 
         bool IsEntityExists(const boost::uuids::uuid& id) const noexcept;
-        Ref<Entity> GetEntity(const boost::uuids::uuid& id, Ref<Scene> scene) const noexcept;
-        void SetEntity(Ref<Entity> entity) noexcept;
+        Ref<Entity> LoadEntity(const boost::uuids::uuid& id, Ref<Scene> scene) const noexcept;
+        void SaveEntity(Ref<Entity> entity) noexcept;
         void EraseEntity(const boost::uuids::uuid& id) noexcept;
 
     private:
+        template<typename T>
+        void LoadComponentIfExist(const boost::property_tree::ptree& tree, const std::string& name, Ref<Entity> entity) const noexcept;
+        template<typename T>
+        void SaveComponentIfExist(boost::property_tree::ptree& tree, const std::string& name, Ref<Entity> entity) noexcept;
+
         std::string m_EntityNodeName;
     };
 }

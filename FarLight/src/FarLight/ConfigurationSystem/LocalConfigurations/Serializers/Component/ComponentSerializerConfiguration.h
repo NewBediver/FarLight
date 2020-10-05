@@ -23,14 +23,12 @@ namespace FarLight
         bool IsComponentExists(const boost::uuids::uuid& id) const noexcept;
         void EraseComponent(const boost::uuids::uuid& id) noexcept;
 
+        //////////////////// Deserialize Section
         template<typename T>
-        Ref<T> GetComponent(const boost::uuids::uuid& id) const noexcept
-        {
-            return nullptr;
-        }
+        Ref<T> LoadComponent(const boost::uuids::uuid& id) const noexcept { return nullptr; }
 
         template<>
-        Ref<TagComponent> GetComponent(const boost::uuids::uuid& id) const noexcept
+        Ref<TagComponent> LoadComponent(const boost::uuids::uuid& id) const noexcept
         {
             if (!IsComponentExists(id))
             {
@@ -42,7 +40,7 @@ namespace FarLight
         }
 
         template<>
-        Ref<TransformComponent> GetComponent(const boost::uuids::uuid& id) const noexcept
+        Ref<TransformComponent> LoadComponent(const boost::uuids::uuid& id) const noexcept
         {
             if (!IsComponentExists(id))
             {
@@ -54,7 +52,7 @@ namespace FarLight
         }
 
         template<>
-        Ref<RenderComponent> GetComponent(const boost::uuids::uuid& id) const noexcept
+        Ref<RenderComponent> LoadComponent(const boost::uuids::uuid& id) const noexcept
         {
             if (!IsComponentExists(id))
             {
@@ -66,7 +64,7 @@ namespace FarLight
         }
 
         template<>
-        Ref<CameraComponent> GetComponent(const boost::uuids::uuid& id) const noexcept
+        Ref<CameraComponent> LoadComponent(const boost::uuids::uuid& id) const noexcept
         {
             if (!IsComponentExists(id))
             {
@@ -76,39 +74,61 @@ namespace FarLight
 
             return CreateCameraComponent(id);
         }
+        ////////////////////////////////////////////////////
 
 
+        //////////////////// Serialize Section
         template<typename T>
-        void SetComponent(Ref<T> component) noexcept
-        { }
+        void SaveComponent(Ref<T> component) noexcept { return nullptr; }
 
         template<>
-        void SetComponent<TagComponent>(Ref<TagComponent> component) noexcept
+        void SaveComponent<TagComponent>(Ref<TagComponent> component) noexcept
         {
-            EraseComponent(component->GetId<boost::uuids::uuid>());
+            if (IsComponentExists(component->GetId<boost::uuids::uuid>()))
+            {
+                FL_CORE_WARN("Try to save component with the existent id = \"{0}\"!", boost::lexical_cast<std::string>(component->GetId<boost::uuids::uuid>()));
+                EraseComponent(component->GetId<boost::uuids::uuid>());
+            }
+            
             m_PropertyTree.add_child(m_ComponentNodeName, CreateTagComponentTree(component).get_child(m_ComponentNodeName));
         }
 
         template<>
-        void SetComponent<TransformComponent>(Ref<TransformComponent> component) noexcept
+        void SaveComponent<TransformComponent>(Ref<TransformComponent> component) noexcept
         {
-            EraseComponent(component->GetId<boost::uuids::uuid>());
+            if (IsComponentExists(component->GetId<boost::uuids::uuid>()))
+            {
+                FL_CORE_WARN("Try to save component with the existent id = \"{0}\"!", boost::lexical_cast<std::string>(component->GetId<boost::uuids::uuid>()));
+                EraseComponent(component->GetId<boost::uuids::uuid>());
+            }
+
             m_PropertyTree.add_child(m_ComponentNodeName, CreateTransformComponentTree(component).get_child(m_ComponentNodeName));
         }
 
         template<>
-        void SetComponent<RenderComponent>(Ref<RenderComponent> component) noexcept
+        void SaveComponent<RenderComponent>(Ref<RenderComponent> component) noexcept
         {
-            EraseComponent(component->GetId<boost::uuids::uuid>());
+            if (IsComponentExists(component->GetId<boost::uuids::uuid>()))
+            {
+                FL_CORE_WARN("Try to save component with the existent id = \"{0}\"!", boost::lexical_cast<std::string>(component->GetId<boost::uuids::uuid>()));
+                EraseComponent(component->GetId<boost::uuids::uuid>());
+            }
+
             m_PropertyTree.add_child(m_ComponentNodeName, CreateRenderComponentTree(component).get_child(m_ComponentNodeName));
         }
 
         template<>
-        void SetComponent<CameraComponent>(Ref<CameraComponent> component) noexcept
+        void SaveComponent<CameraComponent>(Ref<CameraComponent> component) noexcept
         {
-            EraseComponent(component->GetId<boost::uuids::uuid>());
+            if (IsComponentExists(component->GetId<boost::uuids::uuid>()))
+            {
+                FL_CORE_WARN("Try to save component with the existent id = \"{0}\"!", boost::lexical_cast<std::string>(component->GetId<boost::uuids::uuid>()));
+                EraseComponent(component->GetId<boost::uuids::uuid>());
+            }
+
             m_PropertyTree.add_child(m_ComponentNodeName, CreateCameraComponentTree(component).get_child(m_ComponentNodeName));
         }
+        ////////////////////////////////////////////////////
 
     private:
         boost::property_tree::ptree CreateTagComponentTree(Ref<TagComponent> component) const noexcept;

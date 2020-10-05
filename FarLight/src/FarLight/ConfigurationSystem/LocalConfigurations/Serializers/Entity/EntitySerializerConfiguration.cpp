@@ -21,7 +21,22 @@ namespace FarLight
         return false;
     }
 
-    Ref<Entity> EntitySerializerConfiguration::GetEntity(const boost::uuids::uuid& id, Ref<Scene> scene) const noexcept
+    void EntitySerializerConfiguration::EraseEntity(const boost::uuids::uuid& id) noexcept
+    {
+        if (!IsEntityExists(id)) return;
+
+        for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
+        {
+            if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            {
+                node = m_PropertyTree.erase(node);
+                break;
+            }
+        }
+    }
+
+
+    Ref<Entity> EntitySerializerConfiguration::LoadEntity(const boost::uuids::uuid& id, Ref<Scene> scene) const noexcept
     {
         if (!IsEntityExists(id))
         {
@@ -34,82 +49,60 @@ namespace FarLight
         {
             if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
             {
-                if (node->second.find("TagComponent") != node->second.not_found() && ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->IsComponentExists(boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("TagComponent"))))
-                {
-                    auto tag = ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->GetComponent<TagComponent>(boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("TagComponent")));
-                    entity->ReplaceComponent<TagComponent>(*(tag.get()));
-                }
-                if (node->second.find("TransformComponent") != node->second.not_found() && ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->IsComponentExists(boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("TransformComponent"))))
-                {
-                    auto transform = ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->GetComponent<TransformComponent>(boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("TransformComponent")));
-                    entity->ReplaceComponent<TransformComponent>(*(transform.get()));
-                }
-                if (node->second.find("RenderComponent") != node->second.not_found() && ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->IsComponentExists(boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("RenderComponent"))))
-                {
-                    auto render = ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->GetComponent<RenderComponent>(boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("RenderComponent")));
-                    entity->AddComponent<RenderComponent>(*(render.get()));
-                }
-                /* TODO: Camera should be Ref
-                if (node->second.find("CameraComponent") != node->second.not_found() && ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->IsComponentExists(boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("CameraComponent"))))
-                {
-                    auto camera = ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->GetComponent<CameraComponent>(boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("CameraComponent")));
-                    entity->AddComponent<CameraComponent>(*(camera.get()));
-                }*/
+                LoadComponentIfExist<TagComponent>(node->second, "TagComponent", entity);
+                LoadComponentIfExist<TransformComponent>(node->second, "TransformComponent", entity);
+                LoadComponentIfExist<RenderComponent>(node->second, "RenderComponent", entity);
+                // TODO: Camera should be Ref
+                //LoadComponentIfExist<CameraComponent>(node->second, "CameraComponent", entity);
                 break;
             }
         }
         return entity;
     }
 
-    void EntitySerializerConfiguration::SetEntity(Ref<Entity> entity) noexcept
+    void EntitySerializerConfiguration::SaveEntity(Ref<Entity> entity) noexcept
     {
-        EraseEntity(entity->GetId<boost::uuids::uuid>());
+        if (IsEntityExists(entity->GetId<boost::uuids::uuid>()))
+        {
+            FL_CORE_WARN("Try to save entity with the existent id = \"{0}\"!", boost::lexical_cast<std::string>(entity->GetId<boost::uuids::uuid>()));
+            EraseEntity(entity->GetId<boost::uuids::uuid>());
+        }
 
         std::string id = entity->GetId<std::string>();
         boost::property_tree::ptree tmpTree;
         tmpTree.put<std::string>(m_EntityNodeName + ".<xmlattr>.id", id);
 
-        if (entity->HasAllComponents<TagComponent>())
-        {
-            tmpTree.put<std::string>(m_EntityNodeName + ".TagComponent", entity->GetComponent<TagComponent>().GetId<std::string>());
-            ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->SetComponent<TagComponent>(CreateRef<TagComponent>(entity->GetComponent<TagComponent>()));
-        }
-        if (entity->HasAllComponents<TransformComponent>())
-        {
-            tmpTree.put<std::string>(m_EntityNodeName + ".TransformComponent", entity->GetComponent<TransformComponent>().GetId<std::string>());
-            ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->SetComponent<TransformComponent>(CreateRef<TransformComponent>(entity->GetComponent<TransformComponent>()));
-        }
-        if (entity->HasAllComponents<RenderComponent>())
-        {
-            tmpTree.put<std::string>(m_EntityNodeName + ".RenderComponent", entity->GetComponent<RenderComponent>().GetId<std::string>());
-            ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->SetComponent<RenderComponent>(CreateRef<RenderComponent>(entity->GetComponent<RenderComponent>()));
-        }
-        /* TODO: Camera should be Ref
-        if (entity->HasAllComponents<CameraComponent>())
-        {
-            tmpTree.put<std::string>(m_EntityNodeName + ".CameraComponent", entity->GetComponent<CameraComponent>().GetId<std::string>());
-            ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->SetComponent<CameraComponent>(CreateRef<CameraComponent>(entity->GetComponent<CameraComponent>()));
-        }*/
+        SaveComponentIfExist<TagComponent>(tmpTree, "TagComponent", entity);
+        SaveComponentIfExist<TransformComponent>(tmpTree, "TransformComponent", entity);
+        SaveComponentIfExist<RenderComponent>(tmpTree, "RenderComponent", entity);
+        // TODO: Camera should be Ref
+        //SaveComponentIfExist<CameraComponent>(tmpTree, "CameraComponent", entity);
+        
         ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->Save();
 
         m_PropertyTree.add_child(m_EntityNodeName, tmpTree.get_child(m_EntityNodeName));
     }
 
-    void EntitySerializerConfiguration::EraseEntity(const boost::uuids::uuid& id) noexcept
+    template<typename T>
+    inline void EntitySerializerConfiguration::LoadComponentIfExist(const boost::property_tree::ptree& tree, const std::string& name, Ref<Entity> entity) const noexcept
     {
-        if (!IsEntityExists(id))
+        if (tree.find(name) != tree.not_found() && ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->IsComponentExists(boost::lexical_cast<boost::uuids::uuid>(tree.get<std::string>(name))))
         {
-            FL_CORE_ERROR("Entity with id = \"{0}\" doesn't exists!", boost::lexical_cast<std::string>(id));
-            return;
+            Ref<T> component = ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->LoadComponent<T>(boost::lexical_cast<boost::uuids::uuid>(tree.get<std::string>(name)));
+            if (entity->HasAllComponents<T>())
+                entity->ReplaceComponent<T>(*(component.get()));
+            else
+                entity->AddComponent<T>(*(component.get()));
         }
+    }
 
-        for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
+    template<typename T>
+    inline void EntitySerializerConfiguration::SaveComponentIfExist(boost::property_tree::ptree& tree, const std::string& name, Ref<Entity> entity) noexcept
+    {
+        if (entity->HasAllComponents<T>())
         {
-            if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
-            {
-                node = m_PropertyTree.erase(node);
-                break;
-            }
+            tree.put<std::string>(m_EntityNodeName + "." + name, entity->GetComponent<T>().GetId<std::string>());
+            ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->SaveComponent<T>(CreateRef<T>(entity->GetComponent<T>()));
         }
     }
 }

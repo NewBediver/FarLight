@@ -21,11 +21,13 @@ namespace FarLight
 
         InitializeFileSystem();
         InitializeConfiguration();
+
+        InitializeScene();
+
         InitializeApplication();
         InitializeRender();
         InitializeResource();
         InitializeInput();
-        InitializeScene();
 
         // Application
         //FarLight::Application::Create();
@@ -55,9 +57,11 @@ namespace FarLight
         TerminateResource();
         TerminateRender();
         TerminateApplication();
+        
+        TerminateScene();
+
         TerminateConfiguration();
         TerminateFileSystem();
-        TerminateScene();
 
         TerminateLogger();
         FL_PROFILE_END_SESSION();
@@ -166,14 +170,32 @@ namespace FarLight
         FL_CORE_INFO("[Renderer2D] is destoyed.");
     }
 
+
     void GlobalManager::InitializeScene() const noexcept
     {
         SceneManager::Create();
         FL_CORE_INFO("[Scene Manager] is initialized.");
+
+        // Load all scenes on startup
+        std::vector<Ref<Scene>> sceneMap = ConfigurationManager::GetInstance().GetSceneSerializerConfiguration()->LoadAllScenes();
+        for (Ref<Scene> elm : sceneMap)
+        {
+            SceneManager::GetInstance().AddScene(elm);
+        }
+        FL_CORE_INFO("All scenes are loaded.");
     }
 
     void GlobalManager::TerminateScene() const noexcept
     {
+        // Save all scenes on shutdown
+        const auto& sceneMap = SceneManager::GetInstance().GetSceneMap();
+        for (const auto& elm : sceneMap)
+        {
+            ConfigurationManager::GetInstance().GetSceneSerializerConfiguration()->SaveScene(elm.second);
+        }
+        ConfigurationManager::GetInstance().GetSceneSerializerConfiguration()->Save();
+        FL_CORE_INFO("All scenes are saved.");
+
         SceneManager::Destroy();
         FL_CORE_INFO("[Scene manager] is destoyed.");
     }
