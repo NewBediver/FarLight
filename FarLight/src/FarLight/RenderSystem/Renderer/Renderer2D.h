@@ -36,7 +36,7 @@ namespace FarLight
         static void Init() noexcept;
         static void Shutdown() noexcept;
 
-        static void BeginScene(const Scope<Camera>& camera) noexcept;
+        static void BeginScene(Ref<Camera> camera) noexcept;
 
         static void EndScene() noexcept;
 

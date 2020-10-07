@@ -2,22 +2,24 @@
 
 #include "FarLight/Core/Core.h"
 
-#include "FarLight/EntityComponentSystem/ScriptableBehaviour.h"
+#include "FarLight/EntityComponentSystem/Components/Script/ScriptableBehaviour.h"
 #include "FarLight/EntityComponentSystem/Entity.h"
 
 namespace FarLight
 {
     class NativeScriptComponent
     {
+        friend class Scene;
+
     public:
         Scope<ScriptableBehaviour> Script;
 
         template<typename T>
-        void Bind()
+        void Bind(Ref<Entity> entity)
         {
             FL_CORE_ASSERT(Script == nullptr, "Script has already been binded! Unbind it first!");
 
-            m_Instanciate = [](NativeScriptComponent& nsComp) { nsComp.Script = CreateScope<T>(); };
+            m_Instanciate = [](NativeScriptComponent& nsComp, Ref<Entity> entity) { nsComp.Script = CreateScope<T>(entity); };
             m_Destroy = [](NativeScriptComponent& nsComp) { nsComp.Unbind(); };
         }
 
@@ -29,9 +31,7 @@ namespace FarLight
         }
 
     private:
-        void(*m_Instanciate)(NativeScriptComponent&);
+        void(*m_Instanciate)(NativeScriptComponent&, Ref<Entity>);
         void(*m_Destroy)(NativeScriptComponent&);
-
-        friend class Scene;
     };
 }

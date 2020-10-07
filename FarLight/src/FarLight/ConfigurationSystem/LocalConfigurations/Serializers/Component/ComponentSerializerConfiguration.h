@@ -28,7 +28,7 @@ namespace FarLight
         Ref<T> LoadComponent(const boost::uuids::uuid& id) const noexcept { return nullptr; }
 
         template<>
-        Ref<TagComponent> LoadComponent(const boost::uuids::uuid& id) const noexcept
+        Ref<TagComponent> LoadComponent<TagComponent>(const boost::uuids::uuid& id) const noexcept
         {
             if (!IsComponentExists(id))
             {
@@ -40,7 +40,7 @@ namespace FarLight
         }
 
         template<>
-        Ref<TransformComponent> LoadComponent(const boost::uuids::uuid& id) const noexcept
+        Ref<TransformComponent> LoadComponent<TransformComponent>(const boost::uuids::uuid& id) const noexcept
         {
             if (!IsComponentExists(id))
             {
@@ -52,7 +52,7 @@ namespace FarLight
         }
 
         template<>
-        Ref<RenderComponent> LoadComponent(const boost::uuids::uuid& id) const noexcept
+        Ref<RenderComponent> LoadComponent<RenderComponent>(const boost::uuids::uuid& id) const noexcept
         {
             if (!IsComponentExists(id))
             {
@@ -64,7 +64,7 @@ namespace FarLight
         }
 
         template<>
-        Ref<CameraComponent> LoadComponent(const boost::uuids::uuid& id) const noexcept
+        Ref<CameraComponent> LoadComponent<CameraComponent>(const boost::uuids::uuid& id) const noexcept
         {
             if (!IsComponentExists(id))
             {

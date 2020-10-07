@@ -8,13 +8,19 @@ namespace FarLight
 {
     class ScriptableBehaviour
     {
+        friend class Scene;
+
     public:
-        virtual ~ScriptableBehaviour() = default;
+        explicit ScriptableBehaviour(Ref<Entity> entity) noexcept
+            : m_Entity(entity)
+        { }
 
-        virtual void OnCreate() noexcept = 0;
-        virtual void OnDestroy() noexcept = 0;
+        virtual ~ScriptableBehaviour() noexcept = default;
 
-        virtual void OnUpdate(const Timestep& ts) noexcept = 0;
+        virtual void OnCreate() noexcept { };
+        virtual void OnDestroy() noexcept { };
+
+        virtual void OnUpdate(const Timestep& ts) noexcept { };
 
     protected:
         template<typename T>
@@ -22,23 +28,22 @@ namespace FarLight
         {
             FL_CORE_ASSERT(HasAllComponents<T>(), "Current entity does not containt this component!");
 
-            return m_Entity.GetComponent<T>();
+            return m_Entity->GetComponent<T>();
         }
 
         template<typename... Components>
         bool HasAllComponents() noexcept
         {
-            return m_Entity.HasAllComponents<Components...>();
+            return m_Entity->HasAllComponents<Components...>();
         }
 
         template<typename... Components>
         bool HasAnyComponents() noexcept
         {
-            return m_Entity.HasAllComponents<Components...>();
+            return m_Entity->HasAllComponents<Components...>();
         }
 
     private:
-        Entity m_Entity = Entity(nullptr, entt::null);
-        friend class Scene;
+        Ref<Entity> m_Entity;
     };
 }

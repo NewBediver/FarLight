@@ -52,8 +52,7 @@ namespace FarLight
                 LoadComponentIfExist<TagComponent>(node->second, "TagComponent", entity);
                 LoadComponentIfExist<TransformComponent>(node->second, "TransformComponent", entity);
                 LoadComponentIfExist<RenderComponent>(node->second, "RenderComponent", entity);
-                // TODO: Camera should be Ref
-                //LoadComponentIfExist<CameraComponent>(node->second, "CameraComponent", entity);
+                LoadComponentIfExist<CameraComponent>(node->second, "CameraComponent", entity);
                 break;
             }
         }
@@ -75,8 +74,7 @@ namespace FarLight
         SaveComponentIfExist<TagComponent>(tmpTree, "TagComponent", entity);
         SaveComponentIfExist<TransformComponent>(tmpTree, "TransformComponent", entity);
         SaveComponentIfExist<RenderComponent>(tmpTree, "RenderComponent", entity);
-        // TODO: Camera should be Ref
-        //SaveComponentIfExist<CameraComponent>(tmpTree, "CameraComponent", entity);
+        SaveComponentIfExist<CameraComponent>(tmpTree, "CameraComponent", entity);
         
         ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->Save();
 

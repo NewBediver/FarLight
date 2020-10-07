@@ -174,16 +174,16 @@ namespace FarLight
             {
                 camera->SetIsPrimary(node->second.get<bool>("IsPrimary"));
                 camera->SetIsFixedAspectRatio(node->second.get<bool>("IsFixedAspectRatio"));
-                camera->m_Camera->SetResolutionWidth(node->second.get<unsigned>("Resolution.Width"));
-                camera->m_Camera->SetResolutionHeight(node->second.get<unsigned>("Resolution.Height"));
-                camera->m_Camera->SetZoom(node->second.get<float>("Zoom"));
-                camera->m_Camera->SetLeftBound(node->second.get<float>("ViewFrustum.Left"));
-                camera->m_Camera->SetRightBound(node->second.get<float>("ViewFrustum.Right"));
-                camera->m_Camera->SetTopBound(node->second.get<float>("ViewFrustum.Top"));
-                camera->m_Camera->SetBottomBound(node->second.get<float>("ViewFrustum.Bottom"));
-                camera->m_Camera->SetNearBound(node->second.get<float>("ViewFrustum.Near"));
-                camera->m_Camera->SetFarBound(node->second.get<float>("ViewFrustum.Far"));
-                camera->m_Camera->SetBackgroundColor({ node->second.get<float>("BackgroundColor.R"), node->second.get<float>("BackgroundColor.G"), node->second.get<float>("BackgroundColor.B"), node->second.get<float>("BackgroundColor.A") });
+                camera->m_Camera->SetResolutionWidth(node->second.get<unsigned>("Camera.Resolution.Width"));
+                camera->m_Camera->SetResolutionHeight(node->second.get<unsigned>("Camera.Resolution.Height"));
+                camera->m_Camera->SetZoom(node->second.get<float>("Camera.Zoom"));
+                camera->m_Camera->SetLeftBound(node->second.get<float>("Camera.ViewFrustum.Left"));
+                camera->m_Camera->SetRightBound(node->second.get<float>("Camera.ViewFrustum.Right"));
+                camera->m_Camera->SetTopBound(node->second.get<float>("Camera.ViewFrustum.Top"));
+                camera->m_Camera->SetBottomBound(node->second.get<float>("Camera.ViewFrustum.Bottom"));
+                camera->m_Camera->SetNearBound(node->second.get<float>("Camera.ViewFrustum.Near"));
+                camera->m_Camera->SetFarBound(node->second.get<float>("Camera.ViewFrustum.Far"));
+                camera->m_Camera->SetBackgroundColor({ node->second.get<float>("Camera.BackgroundColor.R"), node->second.get<float>("Camera.BackgroundColor.G"), node->second.get<float>("Camera.BackgroundColor.B"), node->second.get<float>("Camera.BackgroundColor.A") });
                 break;
             }
         }

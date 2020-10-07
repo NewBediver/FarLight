@@ -38,7 +38,7 @@
 #include "FarLight/EntityComponentSystem/Components/Camera/CameraComponent.h"
 #include "FarLight/EntityComponentSystem/Components/Script/NativeScriptComponent.h"
 
-#include "FarLight/EntityComponentSystem/ScriptableBehaviour.h"
+#include "FarLight/EntityComponentSystem/Components/Script/ScriptableBehaviour.h"
 
 #include "FarLight/EntityComponentSystem/Entity.h"
 #include "FarLight/EntityComponentSystem/Scene.h"

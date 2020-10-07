@@ -38,12 +38,12 @@ namespace FarLight
         void SetIsPrimary(bool isPrimary) { m_IsPrimary = m_IsPrimary; }
         bool IsPrimary() const noexcept { return m_IsPrimary; }
 
-        const Scope<Camera>& GetCamera() noexcept { return m_Camera; }
+        const Ref<Camera>& GetCamera() noexcept { return m_Camera; }
 
         virtual void OnUserInterfaceDraw() noexcept override;
 
     private:
-        Scope<Camera> m_Camera;
+        Ref<Camera> m_Camera;
 
         bool m_IsPrimary, m_IsFixedAspectRatio;
     };

@@ -28,7 +28,7 @@ namespace FarLight
         s_BatchController.reset();
     }
 
-    void Renderer2D::BeginScene(const Scope<Camera>& camera) noexcept
+    void Renderer2D::BeginScene(Ref<Camera> camera) noexcept
     {
         FL_PROFILE_FUNCTION();
 

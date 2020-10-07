@@ -20,7 +20,7 @@ namespace FarLight
         void OnEvent(Event& e) noexcept;
         void OnResize(unsigned width, unsigned height) noexcept;
 
-        const Scope<Camera>& GetCamera() const noexcept { return m_Camera; }
+        const Ref<Camera>& GetCamera() const noexcept { return m_Camera; }
 
         float GetMovementSpeed() const noexcept { return m_MovementSpeed; }
         void SetMovementSpeed(float speed) noexcept { m_MovementSpeed = speed; }
@@ -38,7 +38,7 @@ namespace FarLight
         const bool OnMouseScrolledEvent(const MouseScrolledEvent& e) noexcept;
         const bool OnWindowResizedEvent(const WindowResizedEvent& e) noexcept;
 
-        Scope<Camera> m_Camera;
+        Ref<Camera> m_Camera;
 
         glm::vec3 m_Position;
         glm::vec3 m_Rotation;

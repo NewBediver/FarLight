@@ -122,8 +122,9 @@ namespace FarLight
                 {
                     if (nativeScriptComp.Script == nullptr)
                     {
-                        nativeScriptComp.m_Instanciate(nativeScriptComp);
-                        nativeScriptComp.Script->m_Entity = Entity(this, entity);
+                        nativeScriptComp.Bind<ScriptableBehaviour>(CreateRef<Entity>(this, entity));
+                        //nativeScriptComp.m_Instanciate(nativeScriptComp);
+                        //nativeScriptComp.Script->m_Entity = CreateRef<Entity>()Entity(this, entity);
                         nativeScriptComp.Script->OnCreate();
                     }
                     nativeScriptComp.Script->OnUpdate(ts);
@@ -152,7 +153,7 @@ namespace FarLight
             else if (m_IsRenderViewportFocused && m_IsRenderViewportHovered)
                 m_EditorCameraController.OnUpdate(ts);
 
-            const Scope<Camera>& camera = (mainCamera ? mainCamera->GetCamera() : m_EditorCameraController.GetCamera());
+            Ref<Camera> camera = (mainCamera ? mainCamera->GetCamera() : m_EditorCameraController.GetCamera());
 
             RenderCommand::SetClearColor(camera->GetBackgroundColor());
             RenderCommand::Clear();
