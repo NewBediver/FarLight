@@ -29,7 +29,7 @@ namespace FarLight
 
         //m_Scene = SceneManager::GetInstance().CreateScene();
 
-        m_Scene = SceneManager::GetInstance().GetScene(boost::lexical_cast<boost::uuids::uuid>("6cb8347b-8352-40dc-861e-78e817ed349e"));
+        m_Scene = SceneManager::GetInstance().GetScene(EngineID("6cb8347b-8352-40dc-861e-78e817ed349e"));
 
         /*auto tmp = m_Scene->CreateEntity();
         tmp->GetComponent<TransformComponent>().SetSize(glm::vec3(400.0f, 400.0f, 0.0f));
@@ -215,6 +215,10 @@ namespace FarLight
     {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
         ImGui::Begin("Render Viewport", nullptr);
+
+        bool isPlayPressed = ImGui::Button("Play");
+        ImGui::SameLine();
+        bool isStopPressed = ImGui::Button("Stop");
 
         m_RenderViewportOptions.IsFocused = ImGui::IsWindowFocused();
         m_RenderViewportOptions.IsHovered = ImGui::IsWindowFocused();

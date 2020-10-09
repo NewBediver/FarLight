@@ -23,9 +23,9 @@ namespace FarLight
     Ref<Entity> Scene::CreateEntity() noexcept
     {
         Ref<Entity> entity = CreateRef<Entity>(this, m_Registry.create());
-        while (HasEntity(entity->GetId<boost::uuids::uuid>())) entity = CreateRef<Entity>(this, m_Registry.create());
+        while (HasEntity(entity->GetId())) entity = CreateRef<Entity>(this, m_Registry.create());
 
-        m_IdToEntity.emplace(entity->GetId<boost::uuids::uuid>(), entity->m_Handle);
+        m_IdToEntity.emplace(entity->GetId(), entity->m_Handle);
 
         entity->AddComponent<TagComponent>();
         entity->AddComponent<TransformComponent>();
@@ -33,12 +33,12 @@ namespace FarLight
         return entity;
     }
 
-    Ref<Entity> Scene::CreateEntity(const boost::uuids::uuid& id) noexcept
+    Ref<Entity> Scene::CreateEntity(EngineID id) noexcept
     {
-        Ref<Entity> entity = CreateRef<Entity>(id, this, m_Registry.create());
+        Ref<Entity> entity = CreateRef<Entity>(std::move(id), this, m_Registry.create());
         if (HasEntity(id))
         {
-            FL_CORE_WARN("Scene already contains entity with id = \"{0}\"!", entity->GetId<std::string>());
+            FL_CORE_WARN("Scene already contains entity with id = \"{0}\"!", entity->GetId().ToString());
             m_IdToEntity.find(id)->second = entity->m_Handle;
         }
         else
@@ -54,18 +54,18 @@ namespace FarLight
 
     void Scene::AddEntity(Ref<Entity> entity) noexcept
     {
-        if (HasEntity(entity->GetId<boost::uuids::uuid>()))
+        if (HasEntity(entity->GetId()))
         {
-            FL_CORE_WARN("Scene already contains entity with id = \"{0}\"!", entity->GetId<std::string>());
-            m_IdToEntity.find(entity->GetId<boost::uuids::uuid>())->second = entity->m_Handle;
+            FL_CORE_WARN("Scene already contains entity with id = \"{0}\"!", entity->GetId().ToString());
+            m_IdToEntity.find(entity->GetId())->second = entity->m_Handle;
         }
         else
         {
-            m_IdToEntity.emplace(entity->GetId<boost::uuids::uuid>(), entity->m_Handle);
+            m_IdToEntity.emplace(entity->GetId(), entity->m_Handle);
         }
     }
 
-    Ref<Entity> Scene::GetEntity(const boost::uuids::uuid& id) noexcept
+    Ref<Entity> Scene::GetEntity(const EngineID& id) noexcept
     {
         if (m_IdToEntity.find(id) != m_IdToEntity.end())
         {
@@ -73,27 +73,22 @@ namespace FarLight
             return entity;
         }
 
-        FL_CORE_WARN("Scene doesn't contain entity with id = \"{0}\"!", boost::lexical_cast<std::string>(id));
+        FL_CORE_WARN("Scene doesn't contain entity with id = \"{0}\"!", id.ToString());
         return nullptr;
     }
 
-    bool Scene::HasEntity(const boost::uuids::uuid& id) const noexcept
+    bool Scene::HasEntity(const EngineID& id) const noexcept
     {
         return m_IdToEntity.find(id) != m_IdToEntity.end();
     }
 
-    void Scene::EraseEntity(const boost::uuids::uuid& id) noexcept
+    void Scene::EraseEntity(const EngineID& id) noexcept
     {
         if (HasEntity(id))
         {
             m_Registry.destroy(m_IdToEntity[id]);
             m_IdToEntity.erase(id);
         }
-    }
-
-    const std::unordered_map<boost::uuids::uuid, entt::entity, boost::hash<boost::uuids::uuid>>& Scene::GetEntityMap() noexcept
-    {
-        return m_IdToEntity;
     }
 
     void Scene::CreateSquare() noexcept

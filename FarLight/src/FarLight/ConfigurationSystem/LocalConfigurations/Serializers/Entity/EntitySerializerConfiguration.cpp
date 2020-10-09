@@ -11,23 +11,25 @@
 
 namespace FarLight
 {
-    bool EntitySerializerConfiguration::IsEntityExists(const boost::uuids::uuid& id) const noexcept
+    bool EntitySerializerConfiguration::IsEntityExists(const EngineID& id) const noexcept
     {
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
+            {
                 return true;
+            }
         }
         return false;
     }
 
-    void EntitySerializerConfiguration::EraseEntity(const boost::uuids::uuid& id) noexcept
+    void EntitySerializerConfiguration::EraseEntity(const EngineID& id) noexcept
     {
         if (!IsEntityExists(id)) return;
 
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
                 node = m_PropertyTree.erase(node);
                 break;
@@ -35,19 +37,18 @@ namespace FarLight
         }
     }
 
-
-    Ref<Entity> EntitySerializerConfiguration::LoadEntity(const boost::uuids::uuid& id, Ref<Scene> scene) const noexcept
+    Ref<Entity> EntitySerializerConfiguration::LoadEntity(const EngineID& id, Ref<Scene> scene) const noexcept
     {
         if (!IsEntityExists(id))
         {
-            FL_CORE_ERROR("Entity with id = \"{0}\" doesn't exists!", boost::lexical_cast<std::string>(id));
+            FL_CORE_ERROR("Entity with id = \"{0}\" doesn't exists!", id.ToString());
             return nullptr;
         }
 
         Ref<Entity> entity = scene->CreateEntity(id);
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_EntityNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
                 LoadComponentIfExist<TagComponent>(node->second, "TagComponent", entity);
                 LoadComponentIfExist<TransformComponent>(node->second, "TransformComponent", entity);
@@ -61,13 +62,13 @@ namespace FarLight
 
     void EntitySerializerConfiguration::SaveEntity(Ref<Entity> entity) noexcept
     {
-        if (IsEntityExists(entity->GetId<boost::uuids::uuid>()))
+        if (IsEntityExists(entity->GetId()))
         {
-            FL_CORE_WARN("Try to save entity with the existent id = \"{0}\"!", boost::lexical_cast<std::string>(entity->GetId<boost::uuids::uuid>()));
-            EraseEntity(entity->GetId<boost::uuids::uuid>());
+            FL_CORE_WARN("Try to save entity with the existent id = \"{0}\"!", entity->GetId().ToString());
+            EraseEntity(entity->GetId());
         }
 
-        std::string id = entity->GetId<std::string>();
+        std::string id = entity->GetId().ToString();
         boost::property_tree::ptree tmpTree;
         tmpTree.put<std::string>(m_EntityNodeName + ".<xmlattr>.id", id);
 
@@ -84,13 +85,17 @@ namespace FarLight
     template<typename T>
     inline void EntitySerializerConfiguration::LoadComponentIfExist(const boost::property_tree::ptree& tree, const std::string& name, Ref<Entity> entity) const noexcept
     {
-        if (tree.find(name) != tree.not_found() && ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->IsComponentExists(boost::lexical_cast<boost::uuids::uuid>(tree.get<std::string>(name))))
+        if (tree.find(name) != tree.not_found() && ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->IsComponentExists(EngineID(tree.get<std::string>(name))))
         {
-            Ref<T> component = ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->LoadComponent<T>(boost::lexical_cast<boost::uuids::uuid>(tree.get<std::string>(name)));
+            Ref<T> component = ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->LoadComponent<T>(EngineID(tree.get<std::string>(name)));
             if (entity->HasAllComponents<T>())
+            {
                 entity->ReplaceComponent<T>(*(component.get()));
+            }
             else
+            {
                 entity->AddComponent<T>(*(component.get()));
+            }
         }
     }
 
@@ -99,7 +104,7 @@ namespace FarLight
     {
         if (entity->HasAllComponents<T>())
         {
-            tree.put<std::string>(m_EntityNodeName + "." + name, entity->GetComponent<T>().GetId<std::string>());
+            tree.put<std::string>(m_EntityNodeName + "." + name, entity->GetComponent<T>().GetId().ToString());
             ConfigurationManager::GetInstance().GetComponentSerializerConfiguration()->SaveComponent<T>(CreateRef<T>(entity->GetComponent<T>()));
         }
     }

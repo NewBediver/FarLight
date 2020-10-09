@@ -19,7 +19,7 @@ namespace FarLight
         friend class EntitySerializerConfiguration;
 
     public:
-        explicit CameraComponent(boost::uuids::uuid id, unsigned width = 1280, unsigned height = 720, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept
+        explicit CameraComponent(EngineID id, unsigned width = 1280, unsigned height = 720, bool isPrimary = false, bool isFixedAspectRatio = false) noexcept
             : EngineObject(std::move(id))
             , m_Camera(CreateScope<RenderOrthoCamera>(width, height))
             , m_IsPrimary(isPrimary)

@@ -4,23 +4,25 @@
 
 namespace FarLight
 {
-    bool ComponentSerializerConfiguration::IsComponentExists(const boost::uuids::uuid& id) const noexcept
+    bool ComponentSerializerConfiguration::IsComponentExists(const EngineID& id) const noexcept
     {
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
+            {
                 return true;
+            }
         }
         return false;
     }
 
-    void ComponentSerializerConfiguration::EraseComponent(const boost::uuids::uuid& id) noexcept
+    void ComponentSerializerConfiguration::EraseComponent(const EngineID& id) noexcept
     {
         if (!IsComponentExists(id)) return;
 
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
                 node = m_PropertyTree.erase(node);
                 break;
@@ -32,19 +34,19 @@ namespace FarLight
     boost::property_tree::ptree ComponentSerializerConfiguration::CreateTagComponentTree(Ref<TagComponent> component) const noexcept
     {
         boost::property_tree::ptree tree;
-        tree.put<std::string>(m_ComponentNodeName + ".<xmlattr>.id", component->GetId<std::string>());
+        tree.put<std::string>(m_ComponentNodeName + ".<xmlattr>.id", component->GetId().ToString());
         
         tree.put<std::string>(m_ComponentNodeName + ".Tag", component->GetTag());
         
         return tree;
     }
 
-    Ref<TagComponent> ComponentSerializerConfiguration::CreateTagComponent(const boost::uuids::uuid& id) const noexcept
+    Ref<TagComponent> ComponentSerializerConfiguration::CreateTagComponent(const EngineID& id) const noexcept
     {
         Ref<TagComponent> tag = CreateRef<TagComponent>(id);
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
                 tag->SetTag(node->second.get<std::string>("Tag"));
                 break;
@@ -57,7 +59,7 @@ namespace FarLight
     boost::property_tree::ptree ComponentSerializerConfiguration::CreateTransformComponentTree(Ref<TransformComponent> component) const noexcept
     {
         boost::property_tree::ptree tree;
-        tree.put<std::string>(m_ComponentNodeName + ".<xmlattr>.id", component->GetId<std::string>());
+        tree.put<std::string>(m_ComponentNodeName + ".<xmlattr>.id", component->GetId().ToString());
         
         const auto& pos = component->GetPosition();
         tree.put<float>(m_ComponentNodeName + ".Position.X", pos.x);
@@ -77,16 +79,22 @@ namespace FarLight
         return tree;
     }
 
-    Ref<TransformComponent> ComponentSerializerConfiguration::CreateTransformComponent(const boost::uuids::uuid& id) const noexcept
+    Ref<TransformComponent> ComponentSerializerConfiguration::CreateTransformComponent(const EngineID& id) const noexcept
     {
         Ref<TransformComponent> transform = CreateRef<TransformComponent>(id);
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
-                transform->SetPosition(glm::vec3(node->second.get<float>("Position.X"), node->second.get<float>("Position.Y"), node->second.get<float>("Position.Z")));
-                transform->SetSize(glm::vec3(node->second.get<float>("Size.X"), node->second.get<float>("Size.Y"), node->second.get<float>("Size.Z")));
-                transform->SetRotation(glm::vec3(node->second.get<float>("Rotation.X"), node->second.get<float>("Rotation.Y"), node->second.get<float>("Rotation.Z")));
+                transform->SetPosition(glm::vec3(node->second.get<float>("Position.X"),
+                                                 node->second.get<float>("Position.Y"),
+                                                 node->second.get<float>("Position.Z")));
+                transform->SetSize(glm::vec3(node->second.get<float>("Size.X"),
+                                             node->second.get<float>("Size.Y"),
+                                             node->second.get<float>("Size.Z")));
+                transform->SetRotation(glm::vec3(node->second.get<float>("Rotation.X"),
+                                                 node->second.get<float>("Rotation.Y"),
+                                                 node->second.get<float>("Rotation.Z")));
                 break;
             }
         }
@@ -96,7 +104,7 @@ namespace FarLight
     boost::property_tree::ptree ComponentSerializerConfiguration::CreateRenderComponentTree(Ref<RenderComponent> component) const noexcept
     {
         boost::property_tree::ptree tree;
-        tree.put<std::string>(m_ComponentNodeName + ".<xmlattr>.id", component->GetId<std::string>());
+        tree.put<std::string>(m_ComponentNodeName + ".<xmlattr>.id", component->GetId().ToString());
         
         const auto& col = component->GetColor();
         tree.put<float>(m_ComponentNodeName + ".Color.R", col.r);
@@ -107,14 +115,17 @@ namespace FarLight
         return tree;
     }
 
-    Ref<RenderComponent> ComponentSerializerConfiguration::CreateRenderComponent(const boost::uuids::uuid& id) const noexcept
+    Ref<RenderComponent> ComponentSerializerConfiguration::CreateRenderComponent(const EngineID& id) const noexcept
     {
         Ref<RenderComponent> render = CreateRef<RenderComponent>(id);
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
-                render->SetColor(glm::vec4(node->second.get<float>("Color.R"), node->second.get<float>("Color.G"), node->second.get<float>("Color.B"), node->second.get<float>("Color.A")));
+                render->SetColor(glm::vec4(node->second.get<float>("Color.R"),
+                                           node->second.get<float>("Color.G"),
+                                           node->second.get<float>("Color.B"),
+                                           node->second.get<float>("Color.A")));
                 break;
             }
         }
@@ -124,7 +135,7 @@ namespace FarLight
     boost::property_tree::ptree ComponentSerializerConfiguration::CreateCameraComponentTree(Ref<CameraComponent> component) const noexcept
     {
         boost::property_tree::ptree tree;
-        tree.put<std::string>(m_ComponentNodeName + ".<xmlattr>.id", component->GetId<std::string>());
+        tree.put<std::string>(m_ComponentNodeName + ".<xmlattr>.id", component->GetId().ToString());
         
         tree.put<bool>(m_ComponentNodeName + ".IsPrimary", component->IsPrimary());
         tree.put<bool>(m_ComponentNodeName + ".IsFixedAspectRatio", component->IsFixedAspectRatio());
@@ -165,12 +176,12 @@ namespace FarLight
         return tree;
     }
 
-    Ref<CameraComponent> ComponentSerializerConfiguration::CreateCameraComponent(const boost::uuids::uuid& id) const noexcept
+    Ref<CameraComponent> ComponentSerializerConfiguration::CreateCameraComponent(const EngineID& id) const noexcept
     {
         Ref<CameraComponent> camera = CreateRef<CameraComponent>(id);
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_ComponentNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
                 camera->SetIsPrimary(node->second.get<bool>("IsPrimary"));
                 camera->SetIsFixedAspectRatio(node->second.get<bool>("IsFixedAspectRatio"));
@@ -183,7 +194,10 @@ namespace FarLight
                 camera->m_Camera->SetBottomBound(node->second.get<float>("Camera.ViewFrustum.Bottom"));
                 camera->m_Camera->SetNearBound(node->second.get<float>("Camera.ViewFrustum.Near"));
                 camera->m_Camera->SetFarBound(node->second.get<float>("Camera.ViewFrustum.Far"));
-                camera->m_Camera->SetBackgroundColor({ node->second.get<float>("Camera.BackgroundColor.R"), node->second.get<float>("Camera.BackgroundColor.G"), node->second.get<float>("Camera.BackgroundColor.B"), node->second.get<float>("Camera.BackgroundColor.A") });
+                camera->m_Camera->SetBackgroundColor({ node->second.get<float>("Camera.BackgroundColor.R"),
+                                                       node->second.get<float>("Camera.BackgroundColor.G"),
+                                                       node->second.get<float>("Camera.BackgroundColor.B"),
+                                                       node->second.get<float>("Camera.BackgroundColor.A") });
                 break;
             }
         }

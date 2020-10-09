@@ -70,7 +70,7 @@ namespace FarLight
             ImGui::NextColumn();
 
             ImGui::PushItemWidth(-1);
-            ImGui::Text(GetId<std::string>().c_str());
+            ImGui::Text(GetId().ToString().c_str());
             ImGui::PopItemWidth();
             ImGui::NextColumn();
         }

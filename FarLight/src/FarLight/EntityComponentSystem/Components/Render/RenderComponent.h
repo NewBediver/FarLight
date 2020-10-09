@@ -13,13 +13,13 @@ namespace FarLight
         , public OnUIDrawable
     {
     public:
-        explicit RenderComponent(boost::uuids::uuid id, const glm::vec4& color = glm::vec4(1.0f)) noexcept
+        explicit RenderComponent(EngineID id, glm::vec4 color = glm::vec4(1.0f)) noexcept
             : EngineObject(std::move(id))
-            , m_Color(color)
+            , m_Color(std::move(color))
         { }
 
-        explicit RenderComponent(const glm::vec4& color = glm::vec4(1.0f)) noexcept
-            : m_Color(color)
+        explicit RenderComponent(glm::vec4 color = glm::vec4(1.0f)) noexcept
+            : m_Color(std::move(color))
         { }
 
         void SetColor(const glm::vec4& color) noexcept { m_Color = color; }

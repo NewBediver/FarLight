@@ -10,7 +10,6 @@
 #include "FarLight/BasicFunctionality/Camera/OrthographicCameraController.h"
 
 #include <entt/entt.hpp>
-#include <boost/functional/hash/hash.hpp>
 
 namespace FarLight
 {
@@ -23,7 +22,7 @@ namespace FarLight
         friend class SceneSerializerConfiguration;
 
     public:
-        explicit Scene(boost::uuids::uuid id) noexcept
+        explicit Scene(EngineID id) noexcept
             : EngineObject(std::move(id))
             , m_EditorCameraController(1280, 720)
             , m_IsRenderViewportHovered(true)
@@ -37,13 +36,17 @@ namespace FarLight
         { }
 
         Ref<Entity> CreateEntity() noexcept;
-        Ref<Entity> CreateEntity(const boost::uuids::uuid& id) noexcept;
-        Ref<Entity> GetEntity(const boost::uuids::uuid& id) noexcept;
-        void AddEntity(Ref<Entity> entity) noexcept;
-        bool HasEntity(const boost::uuids::uuid& id) const noexcept;
-        void EraseEntity(const boost::uuids::uuid& id) noexcept;
+        Ref<Entity> CreateEntity(EngineID id) noexcept;
 
-        const std::unordered_map<boost::uuids::uuid, entt::entity, boost::hash<boost::uuids::uuid>>& GetEntityMap() noexcept;
+        Ref<Entity> GetEntity(const EngineID& id) noexcept;
+
+        void AddEntity(Ref<Entity> entity) noexcept;
+
+        bool HasEntity(const EngineID& id) const noexcept;
+
+        void EraseEntity(const EngineID& id) noexcept;
+
+        const std::unordered_map<EngineID, entt::entity>& GetEntityMap() noexcept { return m_IdToEntity; }
 
         void CreateSquare() noexcept;
         void CreateCamera() noexcept;
@@ -70,7 +73,7 @@ namespace FarLight
 
     private:
         entt::registry m_Registry;
-        std::unordered_map<boost::uuids::uuid, entt::entity, boost::hash<boost::uuids::uuid>> m_IdToEntity;
+        std::unordered_map<EngineID, entt::entity> m_IdToEntity;
 
         OrthographicCameraController m_EditorCameraController;
 

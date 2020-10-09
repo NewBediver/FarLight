@@ -13,21 +13,21 @@ namespace FarLight
         , public OnUIDrawable
     {
     public:
-        explicit TransformComponent(boost::uuids::uuid id, const glm::vec3& position = glm::vec3(0.0f), const glm::vec3& size = glm::vec3(0.0f), const glm::vec3& rotation = glm::vec3(0.0f)) noexcept
+        explicit TransformComponent(EngineID id, glm::vec3 position = glm::vec3(0.0f), glm::vec3 size = glm::vec3(0.0f), glm::vec3 rotation = glm::vec3(0.0f)) noexcept
             : EngineObject(std::move(id))
-            , m_Position(position)
-            , m_Size(size)
-            , m_Rotation(rotation)
+            , m_Position(std::move(position))
+            , m_Size(std::move(size))
+            , m_Rotation(std::move(rotation))
             , m_IsDataChanged(true)
             , m_Transform(glm::mat4(0.0f))
         {
             FL_CORE_ASSERT(size.x >= 0.0f && size.y >= 0.0f && size.z >= 0.0f, "Size cannot be less than zero!");
         }
 
-        explicit TransformComponent(const glm::vec3& position = glm::vec3(0.0f), const glm::vec3& size = glm::vec3(0.0f), const glm::vec3& rotation = glm::vec3(0.0f)) noexcept
-            : m_Position(position)
-            , m_Size(size)
-            , m_Rotation(rotation)
+        explicit TransformComponent(glm::vec3 position = glm::vec3(0.0f), glm::vec3 size = glm::vec3(0.0f), glm::vec3 rotation = glm::vec3(0.0f)) noexcept
+            : m_Position(std::move(position))
+            , m_Size(std::move(size))
+            , m_Rotation(std::move(rotation))
             , m_IsDataChanged(true)
             , m_Transform(glm::mat4(0.0f))
         {

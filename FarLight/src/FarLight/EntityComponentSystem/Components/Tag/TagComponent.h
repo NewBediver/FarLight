@@ -13,13 +13,13 @@ namespace FarLight
         , public OnUIDrawable
     {
     public:
-        explicit TagComponent(boost::uuids::uuid id, const std::string& tag = "Entity") noexcept
+        explicit TagComponent(EngineID id, std::string tag = "Entity") noexcept
             : EngineObject(std::move(id))
-            , m_Tag(tag)
+            , m_Tag(std::move(tag))
         { }
 
-        explicit TagComponent(const std::string& tag = "Entity") noexcept
-            : m_Tag(tag)
+        explicit TagComponent(std::string tag = "Entity") noexcept
+            : m_Tag(std::move(tag))
         { }
 
         void SetTag(const std::string& tag) noexcept { m_Tag = tag; }

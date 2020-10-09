@@ -19,15 +19,19 @@ namespace FarLight
     {
     public:
         Ref<Scene> CreateScene() noexcept;
-        Ref<Scene> CreateScene(const boost::uuids::uuid& id) noexcept;
-        Ref<Scene> GetScene(const boost::uuids::uuid& id) noexcept;
-        void AddScene(Ref<Scene> scene) noexcept;
-        bool HasScene(const boost::uuids::uuid& id) const noexcept;
-        void EraseScene(const boost::uuids::uuid& id) noexcept;
+        Ref<Scene> CreateScene(EngineID id) noexcept;
 
-        const std::unordered_map<boost::uuids::uuid, Ref<Scene>, boost::hash<boost::uuids::uuid>>& GetSceneMap() const noexcept { return m_SceneMap; }
+        Ref<Scene> GetScene(const EngineID& id) noexcept;
+
+        void AddScene(Ref<Scene> scene) noexcept;
+
+        bool HasScene(const EngineID& id) const noexcept;
+
+        void EraseScene(const EngineID& id) noexcept;
+
+        const std::unordered_map<EngineID, Ref<Scene>>& GetSceneMap() const noexcept { return m_SceneMap; }
 
     private:
-        std::unordered_map<boost::uuids::uuid, Ref<Scene>, boost::hash<boost::uuids::uuid>> m_SceneMap;
+        std::unordered_map<EngineID, Ref<Scene>> m_SceneMap;
     };
 }

@@ -19,8 +19,8 @@ namespace FarLight
             auto& tagComp = entities[i].GetComponent<TagComponent>();
 
             bool open = false;
-            if (i == m_SelectedEntity) open = ImGui::TreeNodeEx((tagComp.GetTag() + " (" + entities[i].GetId<std::string>() +")").c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_Selected);
-            else open = ImGui::TreeNodeEx((tagComp.GetTag() + " (" + entities[i].GetId<std::string>() + ")").c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
+            if (i == m_SelectedEntity) open = ImGui::TreeNodeEx((tagComp.GetTag() + " (" + entities[i].GetId().ToString() +")").c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_Selected);
+            else open = ImGui::TreeNodeEx((tagComp.GetTag() + " (" + entities[i].GetId().ToString() + ")").c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
 
             if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
             {
@@ -57,7 +57,7 @@ namespace FarLight
     {
         if (ImGui::Button("Delete"))
         {
-            m_Scene->EraseEntity(ent.GetId<boost::uuids::uuid>());
+            m_Scene->EraseEntity(ent.GetId());
             return true;
         }
         return false;

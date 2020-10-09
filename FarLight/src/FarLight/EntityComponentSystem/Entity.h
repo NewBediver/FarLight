@@ -17,7 +17,7 @@ namespace FarLight
         friend class SceneSerializerConfiguration;
 
     public:
-        explicit Entity(boost::uuids::uuid id, Scene* scene, entt::entity ent) noexcept
+        explicit Entity(EngineID id, Scene* scene, entt::entity ent) noexcept
             : EngineObject(std::move(id))
             , m_Scene(scene)
             , m_Handle(ent)

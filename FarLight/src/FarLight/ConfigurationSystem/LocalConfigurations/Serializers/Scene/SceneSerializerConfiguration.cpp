@@ -6,23 +6,25 @@
 
 namespace FarLight
 {
-    bool SceneSerializerConfiguration::IsSceneExists(const boost::uuids::uuid& id) const noexcept
+    bool SceneSerializerConfiguration::IsSceneExists(const EngineID& id) const noexcept
     {
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_SceneNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_SceneNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
+            {
                 return true;
+            }
         }
         return false;
     }
 
-    void SceneSerializerConfiguration::EraseScene(const boost::uuids::uuid& id) noexcept
+    void SceneSerializerConfiguration::EraseScene(const EngineID& id) noexcept
     {
         if (!IsSceneExists(id)) return;
 
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_SceneNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_SceneNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
                 node = m_PropertyTree.erase(node);
                 break;
@@ -30,26 +32,25 @@ namespace FarLight
         }
     }
 
-
-    Ref<Scene> SceneSerializerConfiguration::LoadScene(const boost::uuids::uuid& id) const noexcept
+    Ref<Scene> SceneSerializerConfiguration::LoadScene(const EngineID& id) const noexcept
     {
         if (!IsSceneExists(id))
         {
-            FL_CORE_ERROR("Scene with id = \"{0}\" doesn't exists!", boost::lexical_cast<std::string>(id));
+            FL_CORE_ERROR("Scene with id = \"{0}\" doesn't exists!", id.ToString());
             return nullptr;
         }
 
         Ref<Scene> scene = CreateRef<Scene>(id);
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            if (node->first == m_SceneNodeName && node->second.get<std::string>("<xmlattr>.id") == boost::lexical_cast<std::string>(id))
+            if (node->first == m_SceneNodeName && node->second.get<std::string>("<xmlattr>.id") == id.ToString())
             {
                 std::stringstream ss;
                 ss << node->second.get<std::string>("Entities");
                 std::string str;
                 while (ss >> str)
                 {
-                    ConfigurationManager::GetInstance().GetEntitySerializerConfiguration()->LoadEntity(boost::lexical_cast<boost::uuids::uuid>(str), scene);
+                    ConfigurationManager::GetInstance().GetEntitySerializerConfiguration()->LoadEntity(EngineID(std::move(str)), scene);
                 }
                 break;
             }
@@ -59,21 +60,21 @@ namespace FarLight
 
     void SceneSerializerConfiguration::SaveScene(Ref<Scene> scene) noexcept
     {
-        if (IsSceneExists(scene->GetId<boost::uuids::uuid>()))
+        if (IsSceneExists(scene->GetId()))
         {
-            FL_CORE_WARN("Try to save scene with the existent id = \"{0}\"!", boost::lexical_cast<std::string>(scene->GetId<boost::uuids::uuid>()));
-            EraseScene(scene->GetId<boost::uuids::uuid>());
+            FL_CORE_WARN("Try to save scene with the existent id = \"{0}\"!", scene->GetId().ToString());
+            EraseScene(scene->GetId());
         }
 
         boost::property_tree::ptree tmpTree;
-        tmpTree.put<std::string>(m_SceneNodeName + ".<xmlattr>.id", scene->GetId<std::string>());
+        tmpTree.put<std::string>(m_SceneNodeName + ".<xmlattr>.id", scene->GetId().ToString());
 
         auto mp = scene->GetEntityMap();
         std::string str;
         for (const auto& p : mp)
         {
             ConfigurationManager::GetInstance().GetEntitySerializerConfiguration()->SaveEntity(CreateRef<Entity>(p.first, scene.get(), p.second));
-            str += boost::lexical_cast<std::string>(p.first) + " ";
+            str += p.first.ToString() + " ";
         }
         str.pop_back();
         ConfigurationManager::GetInstance().GetEntitySerializerConfiguration()->Save();
@@ -88,7 +89,7 @@ namespace FarLight
 
         for (auto& node = m_PropertyTree.begin(); node != m_PropertyTree.end(); ++node)
         {
-            boost::uuids::uuid id = boost::lexical_cast<boost::uuids::uuid>(node->second.get<std::string>("<xmlattr>.id"));
+            EngineID id(node->second.get<std::string>("<xmlattr>.id"));
             Ref<Scene> scene = CreateRef<Scene>(id);
 
             std::stringstream entities;
@@ -96,7 +97,7 @@ namespace FarLight
             std::string entityId;
             while (entities >> entityId)
             {
-                ConfigurationManager::GetInstance().GetEntitySerializerConfiguration()->LoadEntity(boost::lexical_cast<boost::uuids::uuid>(entityId), scene);
+                ConfigurationManager::GetInstance().GetEntitySerializerConfiguration()->LoadEntity(EngineID(std::move(entityId)), scene);
             }
 
             res.push_back(scene);

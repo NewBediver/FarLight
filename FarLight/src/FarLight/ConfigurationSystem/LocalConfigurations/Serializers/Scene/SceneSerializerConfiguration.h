@@ -18,10 +18,10 @@ namespace FarLight
             , m_SceneNodeName("Scene")
         { }
 
-        bool IsSceneExists(const boost::uuids::uuid& id) const noexcept;
-        Ref<Scene> LoadScene(const boost::uuids::uuid& id) const noexcept;
+        bool IsSceneExists(const EngineID& id) const noexcept;
+        Ref<Scene> LoadScene(const EngineID& id) const noexcept;
         void SaveScene(Ref<Scene> scene) noexcept;
-        void EraseScene(const boost::uuids::uuid& id) noexcept;
+        void EraseScene(const EngineID& id) noexcept;
 
         std::vector<Ref<Scene>> LoadAllScenes() const noexcept;
 

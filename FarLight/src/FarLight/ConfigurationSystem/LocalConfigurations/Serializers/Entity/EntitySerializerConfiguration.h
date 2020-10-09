@@ -18,10 +18,10 @@ namespace FarLight
             , m_EntityNodeName("Entity")
         { }
 
-        bool IsEntityExists(const boost::uuids::uuid& id) const noexcept;
-        Ref<Entity> LoadEntity(const boost::uuids::uuid& id, Ref<Scene> scene) const noexcept;
+        bool IsEntityExists(const EngineID& id) const noexcept;
+        Ref<Entity> LoadEntity(const EngineID& id, Ref<Scene> scene) const noexcept;
         void SaveEntity(Ref<Entity> entity) noexcept;
-        void EraseEntity(const boost::uuids::uuid& id) noexcept;
+        void EraseEntity(const EngineID& id) noexcept;
 
     private:
         template<typename T>
